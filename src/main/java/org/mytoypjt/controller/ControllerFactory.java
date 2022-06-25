@@ -15,7 +15,7 @@ public class ControllerFactory {
         Properties properties = new Properties();
 
         try {
-            properties.load(new FileReader("/uri_handler_mapping.properties"));
+            properties.load(new FileInputStream("/uri_handler_mapping.properties"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
