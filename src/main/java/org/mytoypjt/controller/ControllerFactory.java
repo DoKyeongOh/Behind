@@ -30,14 +30,11 @@ public class ControllerFactory {
                 controllerName = properties.getProperty(uri);
                 Class aClass = Class.forName(controllerName);
                 IController iController = (IController) aClass.newInstance();
-
                 controllerMap.put(uri, iController);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public IController getController(String uri) {
