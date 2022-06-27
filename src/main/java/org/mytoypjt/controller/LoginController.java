@@ -8,6 +8,6 @@ public class LoginController implements IController {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        return "/WEB-INF/views/login.jsp";
+        return "login";
     }
 }
