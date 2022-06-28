@@ -1,0 +1,26 @@
+.profile_setting {
+    text-align:right;
+}
+
+.offcanvas-theme-gray {
+    background-color:darkgray;
+    color:white;
+}
+
+.btn-size-big {
+    width: 30%;
+    height: 55%;
+    font-size: 150%;
+    margin-left:30px;
+    margin-right:30px;
+}
+
+.btn-margin-center {
+    margin-top: 10%;
+    text-align: center;
+}
+
+
+
+
+

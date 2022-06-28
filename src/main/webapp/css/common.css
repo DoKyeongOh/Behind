@@ -1,0 +1,19 @@
+.logo-img {
+    width: 50%;
+    height: 50%;
+    margin-bottom:7px;
+}
+
+.logo-text {
+    font-size: 120%;
+}
+
+.input-form {   
+    margin-top: 3%;
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+.text-center{
+    text-align: center;
+}
