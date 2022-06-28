@@ -1,19 +1,15 @@
 <%--
   Created by IntelliJ IDEA.
   User: dokyeongoh
-  Date: 2022/06/27
-  Time: 12:33 PM
+  Date: 2022/06/28
+  Time: 10:45 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% request.setAttribute("loginPage", request.getContextPath() + "/login"); %>
-<% request.setAttribute("registerPage", request.getContextPath() + "/register"); %>
-<% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
-
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" href= "../../css/login.css"/>
+    <link rel="stylesheet" type="text/css" href= "../../css/findId.css"/>
     <link rel="stylesheet" type="text/css" href= "../../css/common.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"/>
 </head>
