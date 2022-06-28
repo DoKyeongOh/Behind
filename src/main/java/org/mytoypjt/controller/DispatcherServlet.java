@@ -16,6 +16,7 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         IController iController = null;
         iController = controllerFactory.getController(req.getRequestURI());
         String page = "index";
