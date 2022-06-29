@@ -6,6 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<% request.setAttribute("loginPage", request.getContextPath() + "/login"); %>
+<% request.setAttribute("registerPage", request.getContextPath() + "/register"); %>
+<% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 <html>
 <head>
     <title>Title</title>
@@ -35,7 +38,7 @@
                         <a class="nav-link text-center" aria-current="page" href="#">로그인 하러가기</a>
                     </li> -->
                     <li class="nav-item">
-                        <a class="nav-link text-center" href="#">회원가입 하러가기</a>
+                        <a class="nav-link text-center" href="${registerPage}">회원가입 하러가기</a>
                     </li>
                 </ul>
             </div>
@@ -46,39 +49,29 @@
 <!-- navbar + offcanvas -->
 
 <div class="text-center main-text">
-    <h1 class="main-text-font">Log in</h1>
+    <h1 class="main-text-font">Find ID</h1>
 </div>
 
-<!-- 로그인 폼 -->
-<div>
+<!-- 아이디 찾기 폼 -->
+<div class="form-auth-input">
     <form class="input-form">
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">ID</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
-        </div>
-        <div>
-            <button type="submit" class="btn btn-primary btn-login-submit">로그인 하기</button>
-        </div>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Email" aria-label="Username">
+            <span class="input-group-text">@</span>
+            <input type="text" class="form-control" placeholder="Domain" aria-label="Server">
+          </div>
+        <button type="submit" class="btn btn-primary btn-login-submit btn-auth-margin">인증번호 받기</button>
+        <button type="submit" class="btn btn-outline-primary btn-login-submit btn-auth-margin">인증번호 다시받기</button>
     </form>
 </div>
-<!-- 로그인 폼 -->
+<!-- 아이디 찾기 폼 -->
 
-<!-- 아이디/비밀번호 찾기 버튼 -->
-<div class="text-center form-find-account">
-    <div class="label-find-account">
-        <h6>아이디를 잃어버리셨나요?</h6>
-        <button class="btn btn-outline-primary btn-find-account">아이디 찾기</button>
-    </div>
-    <div class="label-find-account">
-        <h6>비밀번호를 잃어버리셨나요?</h6>
-        <button class="btn btn-outline-primary btn-find-account">비밀번호 찾기</button>
-    </div>
-</div>
-<!-- 아이디/비밀번호 찾기 버튼 -->
+<!-- 인증번호 입력 폼 -->
+    <form class="form-auth-check text-center">
+        <span><input type="password" class="" id="inputPassword"></span>
+        <span><button class="btn btn-outline-primary btn-sm btn-auth-check" type="submit">인증</button></span>
+    </form>
+<!-- 인증번호 입력 폼 -->
 
 
 

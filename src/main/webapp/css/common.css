@@ -17,3 +17,22 @@
 .text-center{
     text-align: center;
 }
+
+.main-text {
+    margin-top:10%;
+}
+
+.main-text-font {
+    font-size: 80px;
+    font-weight: 700;
+}
+
+.page-not-found-messege {
+    text-align: center;
+    margin-top: 20%;
+}
+
+.page-not-found-font {
+    font-size:400%;
+    font-weight: 900;
+}

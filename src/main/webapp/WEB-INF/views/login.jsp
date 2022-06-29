@@ -9,6 +9,10 @@
 <% request.setAttribute("loginPage", request.getContextPath() + "/login"); %>
 <% request.setAttribute("registerPage", request.getContextPath() + "/register"); %>
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
+<% request.setAttribute("findId", request.getContextPath() + "/findId"); %>
+<% request.setAttribute("findPw", request.getContextPath() + "/findPw"); %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -39,7 +43,7 @@
                         <a class="nav-link text-center" aria-current="page" href="#">로그인 하러가기</a>
                     </li> -->
                     <li class="nav-item">
-                        <a class="nav-link text-center" href="#">회원가입 하러가기</a>
+                        <a class="nav-link text-center" href="${registerPage}">회원가입 하러가기</a>
                     </li>
                 </ul>
             </div>
@@ -55,10 +59,10 @@
 
 <!-- 로그인 폼 -->
 <div>
-    <form class="input-form">
+    <form class="input-form" method="post">
         <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">ID</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <label class="form-label">ID</label>
+            <input type="text" class="form-control">
         </div>
         <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Password</label>
@@ -75,11 +79,11 @@
 <div class="text-center form-find-account">
     <div class="label-find-account">
         <h6>아이디를 잃어버리셨나요?</h6>
-        <button class="btn btn-outline-primary btn-find-account">아이디 찾기</button>
+        <button class="btn btn-outline-primary btn-find-account" onclick="location.href='${findId}'">아이디 찾기</button>
     </div>
     <div class="label-find-account">
         <h6>비밀번호를 잃어버리셨나요?</h6>
-        <button class="btn btn-outline-primary btn-find-account">비밀번호 찾기</button>
+        <button class="btn btn-outline-primary btn-find-account" onclick="location.href='${findPw}'">비밀번호 찾기</button>
     </div>
 </div>
 <!-- 아이디/비밀번호 찾기 버튼 -->

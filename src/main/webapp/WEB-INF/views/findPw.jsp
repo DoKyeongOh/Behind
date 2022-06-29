@@ -1,3 +1,13 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: dokyeongoh
+  Date: 2022/06/28
+  Time: 10:45 PM
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<% request.setAttribute("registerPage", request.getContextPath() + "/register"); %>
+<% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 <html>
 <head>
     <title>Title</title>
@@ -23,11 +33,11 @@
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3"><br/>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link text-center" aria-current="page" href="#">로그인 하러가기</a>
+                    </li> -->
                     <li class="nav-item">
-                      <a class="nav-link text-center" aria-current="page" href="#">로그인 하러가기</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-center" href="#">회원가입 하러가기</a>
+                        <a class="nav-link text-center" href="${registerPage}">회원가입 하러가기</a>
                     </li>
                 </ul>
             </div>
@@ -38,17 +48,19 @@
 <!-- navbar + offcanvas -->
 
 <div class="text-center main-text">
-    <h1 class="main-text-font">Find ID</h1>
+    <h1 class="main-text-font">Find Password</h1>
 </div>
 
 <!-- 아이디 찾기 폼 -->
-<div>
+<div class="form-auth-input">
     <form class="input-form">
+        <p><input type="text" class="form-control" placeholder="ID" /></p>
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Email" aria-label="Username">
             <span class="input-group-text">@</span>
             <input type="text" class="form-control" placeholder="Domain" aria-label="Server">
-          </div>
+        </div>
+
         <button type="submit" class="btn btn-primary btn-login-submit btn-auth-margin">인증번호 받기</button>
         <button type="submit" class="btn btn-outline-primary btn-login-submit btn-auth-margin">인증번호 다시받기</button>
     </form>
@@ -56,12 +68,10 @@
 <!-- 아이디 찾기 폼 -->
 
 <!-- 인증번호 입력 폼 -->
-<div class="text-center">
-    <form class="form-auth-size">
-        <input type="password" class="form-control" id="inputPassword">
-        <button class="btn btn-outline-primary" type="submit">확인</button>
+    <form class="form-auth-check text-center">
+        <span><input type="password" class=""></span>
+        <span><button class="btn btn-outline-primary btn-sm btn-auth-check" type="submit">인증하고 비밀번호 재설정하기</button></span>
     </form>
-</div>
 <!-- 인증번호 입력 폼 -->
 
 
