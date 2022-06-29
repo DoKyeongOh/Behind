@@ -1,0 +1,11 @@
+CREATE TABLE `POST` (
+	`post_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`title`	VARCHAR(15)	NULL,
+	`content` TEXT NULL,
+	`posted_date` DATE NULL,
+	`is_use_anonymous_city`	BOOL NULL,
+	`is_use_anonymous_name` BOOL NULL,
+	`comment_count` INT UNSIGNED NULL,
+	`like_count` INT UNSIGNED NULL,
+	`account_no` INT NULL REFERENCES USER(account_no)
+);

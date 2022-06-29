@@ -1,0 +1,7 @@
+CREATE TABLE `REPLY` (
+	`reply_no` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`content` TEXT NULL,
+	`is_use_anonymous_name` BOOL NULL,
+	`account_no` INT NULL,
+	`comment_id` VARCHAR(30) NULL REFERENCES USER(account_no)
+);

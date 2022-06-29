@@ -1,0 +1,8 @@
+CREATE TABLE `COMMENT` (
+	`comment_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`content` TEXT NULL,
+	`reply_count` INT UNSIGNED NULL,
+	`is_use_anonymous_name`	BOOL NULL,
+	`account_no` INT NULL REFERENCES USER(account_no),
+	`post_id` BIGINT NULL REFERENCES POST(post_id)
+);

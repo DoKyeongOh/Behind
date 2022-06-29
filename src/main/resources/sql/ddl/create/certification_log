@@ -1,0 +1,7 @@
+CREATE TABLE `CERTIFICATION_LOG` (
+	`certification_no` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`logging_date` DATE NULL,
+	`type` VARCHAR(15) NULL,
+	`account_no` INT NOT NULL REFERENCES USER(account_no),
+	`is_completed` BOOL NOT NULL
+);

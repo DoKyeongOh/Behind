@@ -1,0 +1,6 @@
+CREATE TABLE `REGISTER_LOG` (
+	`register_log_no` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`logging_date` DATE NULL,
+	`is_registerd` BOOL NULL,
+	`account_no` INT NULL REFERENCES USER(account_no)
+);
