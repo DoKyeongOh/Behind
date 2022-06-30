@@ -1,4 +1,4 @@
-package org.mytoypjt.controller;
+package org.mytoypjt.controller.structure;
 
 import java.io.FileReader;
 import java.net.URL;
@@ -12,7 +12,7 @@ public class RequestControllerMapping {
     private Map<String, IController> controllerMap = new HashMap<String, IController>();
 
     @SuppressWarnings("deprecation")
-    RequestControllerMapping() {
+    public RequestControllerMapping() {
         Properties properties = new Properties();
         String uri;
         String controllerName;

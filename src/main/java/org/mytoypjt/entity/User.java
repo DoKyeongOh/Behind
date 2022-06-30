@@ -4,32 +4,28 @@ import java.util.Date;
 
 public class User {
     int userNo;
-    String nicName;
-
-    public User(String nicName, Date joinDate, String city, int age, String gender, int userLevel) {
-        this.nicName = nicName;
-        this.joinDate = joinDate;
-        this.city = city;
-        this.age = age;
-        this.gender = gender;
-        this.userLevel = userLevel;
-    }
-
-    public User(int userNo, String nicName, Date joinDate, String city, int age, String gender, int userLevel) {
-        this.userNo = userNo;
-        this.nicName = nicName;
-        this.joinDate = joinDate;
-        this.city = city;
-        this.age = age;
-        this.gender = gender;
-        this.userLevel = userLevel;
-    }
-
+    String nicname;
     Date joinDate;
     String city;
     int age;
     String gender;
     int userLevel;
+
+    public User(int userNo, String nicName, Date joinDate, String city, int age, String gender, int userLevel) {
+        this.userNo = userNo;
+        this.nicname = nicName;
+        this.joinDate = joinDate;
+        this.city = city;
+        this.age = age;
+        this.gender = gender;
+        this.userLevel = userLevel;
+    }
+
+
+    public static boolean isCorrectUserNo(int userNo){
+        if (userNo < 0) return false;
+        return true;
+    }
 
     public int getUserNo() {
         return userNo;
@@ -39,12 +35,12 @@ public class User {
         this.userNo = userNo;
     }
 
-    public String getNicName() {
-        return nicName;
+    public String getNicname() {
+        return nicname;
     }
 
-    public void setNicName(String nicName) {
-        this.nicName = nicName;
+    public void setNicname(String nicname) {
+        this.nicname = nicname;
     }
 
     public Date getJoinDate() {
