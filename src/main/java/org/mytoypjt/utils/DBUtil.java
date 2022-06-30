@@ -4,9 +4,9 @@ import java.sql.*;
 
 public class DBUtil {
 
-    String url = "jdbc:mysql://localhost:3306/behind?useSSL=false&serverTimezone=UTC";
+    String url = "jdbc:mysql://localhost:3306/behind?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     String id="behind_admin";
-    String pw="123456789";
+    String pw="1234";
 
     public Connection getConnection() {
         try {
@@ -18,6 +18,7 @@ public class DBUtil {
 
         return null;
     }
+
 
 
 }
