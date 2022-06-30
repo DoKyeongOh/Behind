@@ -1,20 +1,39 @@
-package org.mytoypjt.controller;
+package org.mytoypjt.controller.structure;
+
+import org.mytoypjt.entity.ModelView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public abstract class ControllerTemplete implements IController {
+
+    protected HttpServletRequest req;
+    protected HttpServletResponse resp;
+
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) {
+    public ModelView execute(HttpServletRequest req, HttpServletResponse resp) {
+        this.req = req;
+        this.resp = resp;
+
+        Object object = null;
+        ModelView modelView = null;
+
         switch (req.getMethod()) {
-            case "GET" : return executeGetRequest(req,resp);
+            case "GET" : object = executeGetRequest();
 
-            case "POST" : return executePostRequest(req,resp);
-
+            case "POST" : object = executePostRequest();
         }
-        return "pageNotFound";
+
+        if (object instanceof String)
+            modelView = new ModelView((String) object);
+        else if (object instanceof ModelView)
+            modelView = (ModelView) object;
+        else
+            modelView = new ModelView("pageNotFound");
+
+        return modelView;
     }
 
-    public abstract String executeGetRequest(HttpServletRequest req, HttpServletResponse resp);
-    public abstract String executePostRequest(HttpServletRequest req, HttpServletResponse resp);
+    public abstract Object executeGetRequest();
+    public abstract Object executePostRequest();
 }
