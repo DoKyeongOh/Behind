@@ -1,17 +1,21 @@
 package org.mytoypjt.controller;
 
+import org.mytoypjt.controller.structure.ControllerTemplete;
+import org.mytoypjt.entity.ModelView;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class IndexController extends ControllerTemplete{
+public class IndexController extends ControllerTemplete {
 
     @Override
-    public String executeGetRequest(HttpServletRequest req, HttpServletResponse resp) {
+    public Object executeGetRequest() {
         return "index";
     }
 
     @Override
-    public String executePostRequest(HttpServletRequest req, HttpServletResponse resp) {
+    public Object executePostRequest() {
         return "index";
     }
 }
+

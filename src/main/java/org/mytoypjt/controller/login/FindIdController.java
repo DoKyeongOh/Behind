@@ -1,6 +1,7 @@
 package org.mytoypjt.controller.login;
 
-import org.mytoypjt.controller.ControllerTemplete;
+import org.mytoypjt.controller.structure.ControllerTemplete;
+import org.mytoypjt.entity.ModelView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,12 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 public class FindIdController extends ControllerTemplete {
 
     @Override
-    public String executeGetRequest(HttpServletRequest req, HttpServletResponse resp) {
+    public Object executeGetRequest() {
         return "findId";
     }
 
     @Override
-    public String executePostRequest(HttpServletRequest req, HttpServletResponse resp) {
+    public Object executePostRequest() {
         return "findId";
     }
 }
