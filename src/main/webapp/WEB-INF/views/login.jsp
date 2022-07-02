@@ -1,4 +1,4 @@
-<%--
+<%@ page import="org.mytoypjt.entity.User" %><%--
   Created by IntelliJ IDEA.
   User: dokyeongoh
   Date: 2022/06/27
@@ -11,6 +11,7 @@
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 <% request.setAttribute("findId", request.getContextPath() + "/findId"); %>
 <% request.setAttribute("findPw", request.getContextPath() + "/findPw"); %>
+<% request.setAttribute("mainPage", request.getContextPath() + "/main"); %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -24,6 +25,7 @@
 <body>
 
 <!-- navbar + offcanvas -->
+
 <nav class="navbar bg-light fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
@@ -57,11 +59,11 @@
     <form class="input-form" method="post">
         <div class="mb-3">
             <label class="form-label">ID</label>
-            <input type="text" class="form-control" name="userId" value=${userId}>
+            <input type="text" class="form-control" name="userId">
         </div>
         <div class="mb-3">
             <label class="form-label">Password</label>
-            <input type="password" class="form-control" name="userPw" value=${userPw}>
+            <input type="password" class="form-control" name="userPw">
         </div>
         <div>
             <button type="submit" class="btn btn-primary btn-login-submit">로그인 하기</button>
