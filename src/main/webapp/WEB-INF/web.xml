@@ -9,7 +9,7 @@
 
   <servlet>
     <servlet-name>DispatcherServlet</servlet-name>
-    <servlet-class>org.mytoypjt.controller.DispatcherServlet</servlet-class>
+    <servlet-class>org.mytoypjt.servlet.DispatcherServlet</servlet-class>
   </servlet>
   
   <servlet-mapping>
