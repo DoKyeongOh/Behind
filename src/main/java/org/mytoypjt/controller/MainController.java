@@ -1,14 +1,16 @@
 package org.mytoypjt.controller;
 
 import org.mytoypjt.controller.structure.ControllerTemplete;
-import org.mytoypjt.entity.ModelView;
+import org.mytoypjt.entity.User;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class MainController extends ControllerTemplete {
     @Override
     public Object executeGetRequest() {
+        if (!isUserExist())
+            return "index";
+
         return "main";
     }
 
@@ -16,4 +18,6 @@ public class MainController extends ControllerTemplete {
     public Object executePostRequest() {
         return "main";
     }
+
+
 }

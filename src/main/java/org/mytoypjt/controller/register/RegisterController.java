@@ -1,14 +1,12 @@
 package org.mytoypjt.controller.register;
 
 import org.mytoypjt.controller.structure.ControllerTemplete;
-import org.mytoypjt.entity.ModelView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class RegisterController extends ControllerTemplete {
     @Override
     public Object executeGetRequest() {
+        if (isUserExist())
+            return "main";
         return "register";
     }
 
