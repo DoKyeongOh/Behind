@@ -1,15 +1,16 @@
 package org.mytoypjt.controller.login;
 
 import org.mytoypjt.controller.structure.ControllerTemplete;
-import org.mytoypjt.entity.ModelView;
+import org.mytoypjt.service.FindAccountService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class FindPwController extends ControllerTemplete {
 
     @Override
     public Object executeGetRequest() {
+        if (isUserExist())
+            return "main";
         return "findPw";
     }
 

@@ -21,7 +21,6 @@ public class User {
         this.userLevel = userLevel;
     }
 
-
     public static boolean isCorrectUserNo(int userNo){
         if (userNo < 0) return false;
         return true;

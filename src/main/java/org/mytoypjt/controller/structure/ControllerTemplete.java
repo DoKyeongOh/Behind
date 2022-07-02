@@ -1,9 +1,11 @@
 package org.mytoypjt.controller.structure;
 
-import org.mytoypjt.entity.ModelView;
+import org.mytoypjt.entity.User;
+import org.mytoypjt.servlet.ViewInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public abstract class ControllerTemplete implements IController {
 
@@ -11,29 +13,44 @@ public abstract class ControllerTemplete implements IController {
     protected HttpServletResponse resp;
 
     @Override
-    public ModelView execute(HttpServletRequest req, HttpServletResponse resp) {
+    public ViewInfo execute(HttpServletRequest req, HttpServletResponse resp) {
         this.req = req;
         this.resp = resp;
 
         Object object = null;
-        ModelView modelView = null;
+        ViewInfo viewInfo = null;
 
         switch (req.getMethod()) {
-            case "GET" : object = executeGetRequest();
+            case "GET" : {
+                object = executeGetRequest();
+                break;
+            }
 
-            case "POST" : object = executePostRequest();
+            case "POST" : {
+                object = executePostRequest();
+                break;
+            }
         }
 
         if (object instanceof String)
-            modelView = new ModelView((String) object);
-        else if (object instanceof ModelView)
-            modelView = (ModelView) object;
+            viewInfo = new ViewInfo((String) object);
+        else if (object instanceof ViewInfo)
+            viewInfo = (ViewInfo) object;
         else
-            modelView = new ModelView("pageNotFound");
+            viewInfo = new ViewInfo("pageNotFound");
 
-        return modelView;
+        return viewInfo;
+    }
+
+    public boolean isUserExist(){
+        HttpSession httpSession = req.getSession();
+        User user = (User) httpSession.getAttribute("user");
+        if (user == null)
+            return false;
+        return true;
     }
 
     public abstract Object executeGetRequest();
     public abstract Object executePostRequest();
+
 }
