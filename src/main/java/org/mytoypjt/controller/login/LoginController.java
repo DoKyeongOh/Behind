@@ -1,10 +1,11 @@
 package org.mytoypjt.controller.login;
 
 import org.mytoypjt.controller.structure.ControllerTemplete;
-import org.mytoypjt.servlet.ViewInfo;
-import org.mytoypjt.entity.User;
+import org.mytoypjt.models.etc.ViewInfo;
+import org.mytoypjt.models.entity.User;
 import org.mytoypjt.service.LoginService;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
 public class LoginController extends ControllerTemplete {
@@ -33,6 +34,9 @@ public class LoginController extends ControllerTemplete {
         viewInfo.setRedirectRequired();
         HttpSession httpSession = req.getSession();
         httpSession.setAttribute("user", user);
+
+//        Cookie cookie = new Cookie("behindUserSessionId", httpSession.getId());
+//        resp.addCookie(cookie);
 
         return viewInfo;
     }
