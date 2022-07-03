@@ -2,6 +2,7 @@ package org.mytoypjt.servlet;
 
 import org.mytoypjt.controller.structure.IController;
 import org.mytoypjt.controller.structure.RequestControllerMapping;
+import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.utils.ViewResolver;
 
 import javax.servlet.*;
@@ -26,8 +27,6 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        System.out.println("디스패쳐 실행됨");
 
         IController controller = null;
         controller = contollerMapping.getHandler(req.getRequestURI());

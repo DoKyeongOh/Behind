@@ -1,6 +1,6 @@
 package org.mytoypjt.dao;
 
-import org.mytoypjt.entity.User;
+import org.mytoypjt.models.entity.User;
 import org.mytoypjt.utils.DBUtil;
 
 import java.sql.Connection;
