@@ -1,4 +1,4 @@
-<%@ page import="org.mytoypjt.entity.User" %><%--
+<%@ page import="org.mytoypjt.models.entity.User" %><%--
   Created by IntelliJ IDEA.
   User: dokyeongoh
   Date: 2022/06/30
