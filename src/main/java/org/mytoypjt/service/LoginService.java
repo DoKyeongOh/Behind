@@ -2,7 +2,7 @@ package org.mytoypjt.service;
 
 import org.mytoypjt.dao.AccountDao;
 import org.mytoypjt.dao.UserDao;
-import org.mytoypjt.entity.User;
+import org.mytoypjt.models.entity.User;
 
 public class LoginService {
     private AccountDao loginDao;
@@ -13,7 +13,7 @@ public class LoginService {
 
     public User getUser(String userId, String userPw){
         AccountDao loginDao = new AccountDao();
-        int accountNo = loginDao.getUserNo(userId, userPw);
+        int accountNo = loginDao.getAccountNo(userId, userPw);
 
         if (!User.isCorrectUserNo(accountNo)) return null;
 

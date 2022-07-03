@@ -12,7 +12,7 @@ public class AccountDao {
     final int DUPLICATION_ACCOUNT = -2;
     final String NOT_FOUND_USER_ID = "";
 
-    public int getUserNo(String id, String pw) {
+    public int getAccountNo(String id, String pw) {
         String sql = "select account_no from account where id=? and password=?";
         int userNo = NOT_CORRECTED_USER_NO;
         try (
@@ -35,7 +35,7 @@ public class AccountDao {
     }
 
 
-    public String getUserIdFromEmail(String email){
+    public String getAccountIdFromEmail(String email){
         String sql = "select id from account where email=?";
         String userId = NOT_FOUND_USER_ID;
 
