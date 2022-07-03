@@ -1,7 +1,7 @@
 package org.mytoypjt.controller.structure;
 
-import org.mytoypjt.entity.User;
-import org.mytoypjt.servlet.ViewInfo;
+import org.mytoypjt.models.entity.User;
+import org.mytoypjt.models.etc.ViewInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

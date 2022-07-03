@@ -1,9 +1,9 @@
 package org.mytoypjt.controller;
 
 import org.mytoypjt.controller.structure.ControllerTemplete;
-import org.mytoypjt.entity.User;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.Cookie;
+import java.util.Arrays;
 
 public class MainController extends ControllerTemplete {
     @Override
