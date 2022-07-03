@@ -1,5 +1,8 @@
 package org.mytoypjt.utils;
 
+import com.sun.mail.smtp.SMTPSSLTransport;
+import com.sun.mail.smtp.SMTPTransport;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -8,24 +11,23 @@ import javax.mail.internet.MimeMultipart;
 import java.util.Properties;
 
 public class MailUtil {
-
     Properties mailProperties;
     Session mailSession;
-
     String title = "Title is empty";
     String contentText = "Content is empty";
-    String sendUserName = "behindsender";
-    String sendUserPassword = "pekztzjueieylsji";
+    String hostServer = "smtp.gmail.com";
+    String connectPort = "465";
+    String sendUserName = "behindsender@gmail.com";
+    String sendUserPassword = "**********";
     String hostEmail = "behindsender@gmail.com";
 
     public MailUtil () {
         // 이메일 프로토콜인 smtp를 이용하여 메일송신
         // 보안 방식을 ssl로 사용.
         mailProperties = new Properties();
-
         mailProperties.put("mail.transport.protocol", "smtp");
-        mailProperties.put("mail.smtp.host", "smtp.gmail.com");
-        mailProperties.put("mail.smtp.port", "465");
+        mailProperties.put("mail.smtp.host", hostServer);
+        mailProperties.put("mail.smtp.port", connectPort);
         mailProperties.put("mail.smtp.auth", "true");
         mailProperties.put("mail.smtp.ssl.enable", "true");
         mailProperties.put("mail.smtp.ssl.trust", "true");
