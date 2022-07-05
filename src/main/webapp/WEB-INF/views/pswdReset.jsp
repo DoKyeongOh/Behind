@@ -1,3 +1,11 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: dokyeongoh
+  Date: 2022/07/05
+  Time: 11:15 AM
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Title</title>
@@ -38,11 +46,21 @@
 <!-- navbar + offcanvas -->
 
 <div class="text-center main-text">
-    <h1 class="main-text-font">Reset Complete!</h1>
-    <button type="button" class="btn btn-primary" id="btn-return" onclick="location.href='/'">
-        메인 화면으로 돌아가기
-    </button>
+    <h1 class="main-text-font">Password Reset</h1>
 </div>
+
+<!-- 아이디 찾기 폼 -->
+<div class="form-auth-input">
+    <form class="input-form">
+        <p><input type="text" class="form-control" placeholder="비밀번호" name="password"/></p>
+        <p><input type="text" class="form-control" placeholder="비밀번호 확인" name="passwordCheck"/></p>
+        <button type="submit" class="btn btn-primary btn-login-submit btn-auth-margin">재설정하기</button>
+    </form>
+</div>
+<!-- 아이디 찾기 폼 -->
+
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 

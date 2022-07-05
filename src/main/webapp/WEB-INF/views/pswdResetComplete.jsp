@@ -1,3 +1,12 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: dokyeongoh
+  Date: 2022/07/05
+  Time: 11:15 AM
+  To change this template use File | Settings | File Templates.
+--%>
+<% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Title</title>
@@ -39,8 +48,8 @@
 
 <div class="text-center main-text">
     <h1 class="main-text-font">Reset Complete!</h1>
-    <button type="button" class="btn btn-primary" id="btn-return" onclick="location.href='/'">
-        메인 화면으로 돌아가기
+    <button type="button" class="btn btn-primary" id="btn-return" onclick="location.href='${indexPage}'">
+      메인 화면으로 돌아가기
     </button>
 </div>
 

@@ -77,7 +77,7 @@
 
 <!-- 인증번호 입력 폼 -->
     <form class="form-auth-check text-center" method="post" action="${findId}">
-        <span><input type="password" name="certificationInput"></span>
+        <span><input type="password" name="idCertificationInput"></span>
         <span><button class="btn btn-outline-primary btn-sm btn-auth-check" type="submit">인증</button></span>
     </form>
 <!-- 인증번호 입력 폼 -->
