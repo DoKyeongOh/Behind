@@ -3,11 +3,13 @@ package org.mytoypjt.models.dto;
 public class PwCertificationInfo {
 
     String certificationValue = "";
-    String emailAddress = "";
-    String id = "";
+    int accountNo = -1;
 
     public PwCertificationInfo() {}
-
+    public PwCertificationInfo(int accountNo, String certificationValue) {
+        this.certificationValue = certificationValue;
+        this.accountNo = accountNo;
+    }
     public String getCertificationValue() {
         return certificationValue;
     }
@@ -16,19 +18,11 @@ public class PwCertificationInfo {
         this.certificationValue = certificationValue;
     }
 
-    public String getEmailAddress() {
-        return emailAddress;
+    public int getAccountNo() {
+        return accountNo;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public void setAccountNo(int accountNo) {
+        this.accountNo = accountNo;
     }
 }

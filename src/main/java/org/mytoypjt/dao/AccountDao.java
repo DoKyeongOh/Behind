@@ -35,7 +35,7 @@ public class AccountDao {
     }
 
 
-    public String getAccountIdFromEmail(String email){
+    public String getAccountNoByEmail(String email){
         String sql = "select id from account where email=?";
         String userId = NOT_FOUND_USER_ID;
 
@@ -56,6 +56,43 @@ public class AccountDao {
             e.printStackTrace();
             return NOT_FOUND_USER_ID;
         }
+    }
+
+    public int findAccountNo(String id, String email){
+        String sql = "select account_no from account where id=? and email=?";
+        int accountNo = NOT_CORRECTED_USER_NO;
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setString(1, id);
+            preparedStatement.setString(2, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                if (accountNo != NOT_CORRECTED_USER_NO) return DUPLICATION_ACCOUNT;
+                accountNo = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return accountNo;
+    }
+
+    public boolean setAccountPw(int accountNo, String password){
+        String sql = "update account set password = ? where account_no = ?";
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setString(1, password);
+            preparedStatement.setInt(2, accountNo);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 }
