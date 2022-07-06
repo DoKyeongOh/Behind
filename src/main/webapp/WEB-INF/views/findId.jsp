@@ -83,7 +83,7 @@
 <!-- 인증번호 입력 폼 -->
 
 <!-- 인증완료 아이디 라벨 -->
-<h6 class="text-center user-id-label">${userIdMessage}</h6>
+<h6 class="text-center user-id-label">${noticeMessage}</h6>
 <!-- 인증완료 아이디 라벨 -->
 
 

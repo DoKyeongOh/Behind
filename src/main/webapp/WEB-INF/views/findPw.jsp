@@ -8,6 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <% request.setAttribute("registerPage", request.getContextPath() + "/register"); %>
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
+<% request.setAttribute("pwCertification", request.getContextPath() + "/pwCertification"); %>
+<% request.setAttribute("findPw", request.getContextPath() + "/findPw"); %>
+
 <html>
 <head>
     <title>Title</title>
@@ -51,31 +54,35 @@
     <h1 class="main-text-font">Find Password</h1>
 </div>
 
-<!-- 아이디 찾기 폼 -->
+<!-- 아이디, 이메일 입력 폼 -->
 <div class="form-auth-input">
-    <form class="input-form">
-        <p><input type="text" class="form-control" placeholder="ID" /></p>
+    <form class="input-form" method="post" action="pwCertification">
+        <p><input type="text" class="form-control" placeholder="ID" name="id"/></p>
         <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Email" aria-label="Username">
+            <input type="text" class="form-control" placeholder="Email" name="email">
             <span class="input-group-text">@</span>
-            <input type="text" class="form-control" placeholder="Domain" aria-label="Server">
+            <select class="form-select" name="domain">
+                <option selected>gmail.com</option>
+                <!-- <option value="1">gmail.com</option> -->
+            </select>
         </div>
 
         <button type="submit" class="btn btn-primary btn-login-submit btn-auth-margin">인증번호 받기</button>
         <button type="submit" class="btn btn-outline-primary btn-login-submit btn-auth-margin">인증번호 다시받기</button>
     </form>
 </div>
-<!-- 아이디 찾기 폼 -->
+<!-- 아이디, 이메일 입력 폼 -->
 
 <!-- 인증번호 입력 폼 -->
-    <form class="form-auth-check text-center">
-        <span><input type="password" class=""></span>
+    <form class="form-auth-check text-center" method="post" action="${findPw}">
+        <span><input type="password" name="pwCertificationInput"></span>
         <span><button class="btn btn-outline-primary btn-sm btn-auth-check" type="submit">인증하고 비밀번호 재설정하기</button></span>
     </form>
 <!-- 인증번호 입력 폼 -->
 
-
-
+<!-- 인증 완료 여부 라벨 -->
+<h6 class="text-center user-id-label">${noticeMessage}</h6>
+<!-- 인증 완료 여부 라벨 -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 
