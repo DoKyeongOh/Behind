@@ -22,12 +22,22 @@ public abstract class ControllerTemplete implements IController {
 
         switch (req.getMethod()) {
             case "GET" : {
-                object = executeGetRequest();
+                object = doGet();
                 break;
             }
 
             case "POST" : {
-                object = executePostRequest();
+                object = doPost();
+                break;
+            }
+
+            case "PUT" : {
+                object = doPut();
+                break;
+            }
+
+            case "DELETE" : {
+                object = doDelete();
                 break;
             }
         }
@@ -50,7 +60,17 @@ public abstract class ControllerTemplete implements IController {
         return true;
     }
 
-    public abstract Object executeGetRequest();
-    public abstract Object executePostRequest();
+    public Object doGet(){
+        return null;
+    };
+    public Object doPost(){
+        return null;
+    };
+    public Object doPut(){
+        return null;
+    };
+    public Object doDelete(){
+        return null;
+    };
 
 }
