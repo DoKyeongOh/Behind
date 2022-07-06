@@ -2,6 +2,7 @@ package org.mytoypjt.utils;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.net.URL;
 import java.util.Properties;
 
 public class ResourceUtil {
@@ -19,8 +20,10 @@ public class ResourceUtil {
 
     public void setPath(String path) {
         this.path = path;
+        Class clazz = getClass();
+        URL url = clazz.getResource(path);
         try {
-            FileReader fileReader = new FileReader(path);
+            FileReader fileReader = new FileReader(url.getPath());
             properties.load(fileReader);
         } catch (Exception e) {
             e.printStackTrace();
