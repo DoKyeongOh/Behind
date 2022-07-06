@@ -2,18 +2,17 @@ package org.mytoypjt.controller;
 
 import org.mytoypjt.controller.structure.ControllerTemplete;
 
+import java.util.Iterator;
+
 public class IndexController extends ControllerTemplete {
 
     @Override
-    public Object executeGetRequest() {
-        boolean test = isUserExist();
-        if (isUserExist())
-            return "main";
+    public Object doGet() {
         return "index";
     }
 
     @Override
-    public Object executePostRequest() {
+    public Object doPost() {
         return "index";
     }
 }

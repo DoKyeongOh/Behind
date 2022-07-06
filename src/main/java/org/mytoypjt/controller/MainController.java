@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class MainController extends ControllerTemplete {
     @Override
-    public Object executeGetRequest() {
+    public Object doGet() {
         if (!isUserExist())
             return "index";
 
@@ -15,7 +15,7 @@ public class MainController extends ControllerTemplete {
     }
 
     @Override
-    public Object executePostRequest() {
+    public Object doPost() {
         return "main";
     }
 

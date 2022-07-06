@@ -4,14 +4,14 @@ import org.mytoypjt.controller.structure.ControllerTemplete;
 
 public class RegisterController extends ControllerTemplete {
     @Override
-    public Object executeGetRequest() {
+    public Object doGet() {
         if (isUserExist())
             return "main";
         return "register";
     }
 
     @Override
-    public Object executePostRequest() {
+    public Object doPost() {
         return "register";
     }
 }

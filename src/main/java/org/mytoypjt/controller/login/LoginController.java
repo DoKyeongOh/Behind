@@ -11,14 +11,16 @@ import javax.servlet.http.HttpSession;
 public class LoginController extends ControllerTemplete {
 
     @Override
-    public Object executeGetRequest() {
+    public Object doGet() {
         if (isUserExist())
             return "main";
+
+        System.out.println(req.getRequestURI());
         return "login";
     }
 
     @Override
-    public Object executePostRequest() {
+    public Object doPost() {
         String userId = req.getParameter("userId");
         String userPw = req.getParameter("userPw");
 
