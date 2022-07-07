@@ -1,6 +1,8 @@
 package org.mytoypjt.controller.structure;
 
+import org.mytoypjt.controller.structure.annotation.AnnotationRequestControllerMapping;
 import org.mytoypjt.controller.structure.enums.MappingName;
+import org.mytoypjt.controller.structure.properties.PropertiesRequestControllerMapping;
 
 public class RequestControllerMappingFactory {
 

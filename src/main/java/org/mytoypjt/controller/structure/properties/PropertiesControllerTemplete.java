@@ -1,4 +1,4 @@
-package org.mytoypjt.controller.structure;
+package org.mytoypjt.controller.structure.properties;
 
 import org.mytoypjt.models.entity.User;
 import org.mytoypjt.models.etc.ViewInfo;

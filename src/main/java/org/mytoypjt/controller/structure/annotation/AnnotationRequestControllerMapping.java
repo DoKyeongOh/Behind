@@ -1,7 +1,8 @@
-package org.mytoypjt.controller.structure;
+package org.mytoypjt.controller.structure.annotation;
 
-import org.mytoypjt.controller.IndexController;
+import org.mytoypjt.controller.structure.IRequestControllerMapping;
 import org.mytoypjt.controller.structure.annotations.RequestMapping;
+import org.mytoypjt.utils.ResourceUtil;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -23,10 +24,12 @@ public class AnnotationRequestControllerMapping implements IRequestControllerMap
     }
 
     @Override
-    public void entryController(){ // Class controllerClass
+    public void entryController(){
+        ResourceUtil resourceUtil = new ResourceUtil("/annotation_config.properties");
+        String className = (String) resourceUtil.getProperty("controller.mapping.root");
+
         try {
-            // 클래스가 저장된 곳의 경로를 불러옴
-            Class basedClass = IndexController.class;
+            Class basedClass = Class.forName(className);
             URL url = basedClass.getResource(".");
 
             File directory = new File(url.getFile());
@@ -34,6 +37,7 @@ public class AnnotationRequestControllerMapping implements IRequestControllerMap
             String packageName = basedClass.getPackageName();
 
             dfsSearchFromDir(directory.list(), rootPath, packageName);
+            System.out.println();
         } catch (Exception e) {
             e.printStackTrace();
         }

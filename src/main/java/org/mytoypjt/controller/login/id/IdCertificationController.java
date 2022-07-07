@@ -1,6 +1,6 @@
 package org.mytoypjt.controller.login.id;
 
-import org.mytoypjt.controller.structure.PropertiesControllerTemplete;
+import org.mytoypjt.controller.structure.properties.PropertiesControllerTemplete;
 import org.mytoypjt.models.dto.IdCertificationInfo;
 import org.mytoypjt.service.FindAccountService;
 

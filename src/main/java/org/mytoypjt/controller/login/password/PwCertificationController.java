@@ -1,6 +1,6 @@
 package org.mytoypjt.controller.login.password;
 
-import org.mytoypjt.controller.structure.PropertiesControllerTemplete;
+import org.mytoypjt.controller.structure.properties.PropertiesControllerTemplete;
 import org.mytoypjt.models.dto.PwCertificationInfo;
 import org.mytoypjt.service.FindAccountService;
 

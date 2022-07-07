@@ -1,4 +1,6 @@
-package org.mytoypjt.controller.structure;
+package org.mytoypjt.controller.structure.properties;
+
+import org.mytoypjt.controller.structure.IRequestControllerMapping;
 
 import java.io.FileReader;
 import java.net.URL;

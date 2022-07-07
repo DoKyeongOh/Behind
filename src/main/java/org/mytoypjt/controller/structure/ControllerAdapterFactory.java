@@ -1,6 +1,8 @@
 package org.mytoypjt.controller.structure;
 
+import org.mytoypjt.controller.structure.annotation.AnnotationControllerAdapter;
 import org.mytoypjt.controller.structure.enums.MappingName;
+import org.mytoypjt.controller.structure.properties.PropertiesControllerAdapter;
 
 public class ControllerAdapterFactory {
 

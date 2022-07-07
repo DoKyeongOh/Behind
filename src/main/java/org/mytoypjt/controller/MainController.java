@@ -1,6 +1,6 @@
 package org.mytoypjt.controller;
 
-import org.mytoypjt.controller.structure.PropertiesControllerTemplete;
+import org.mytoypjt.controller.structure.properties.PropertiesControllerTemplete;
 
 public class MainController extends PropertiesControllerTemplete {
     @Override

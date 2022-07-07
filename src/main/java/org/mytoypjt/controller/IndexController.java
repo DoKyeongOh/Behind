@@ -1,11 +1,12 @@
 package org.mytoypjt.controller;
 
 import org.mytoypjt.controller.structure.annotations.RequestMapping;
-import org.mytoypjt.controller.structure.PropertiesControllerTemplete;
+import org.mytoypjt.controller.structure.properties.PropertiesControllerTemplete;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class IndexController extends PropertiesControllerTemplete {
 
-    @RequestMapping(uri = "/", method = "GET")
     @Override
     public Object doGet() {
         return "index";
@@ -17,6 +18,9 @@ public class IndexController extends PropertiesControllerTemplete {
         return "index";
     }
 
-    private void test(){}
+    @RequestMapping(uri = "/", method = "GET")
+    public String test(){
+        return "index";
+    }
 }
 

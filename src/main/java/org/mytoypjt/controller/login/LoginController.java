@@ -1,6 +1,6 @@
 package org.mytoypjt.controller.login;
 
-import org.mytoypjt.controller.structure.PropertiesControllerTemplete;
+import org.mytoypjt.controller.structure.properties.PropertiesControllerTemplete;
 import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.models.entity.User;
 import org.mytoypjt.service.LoginService;
