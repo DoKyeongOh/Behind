@@ -1,11 +1,8 @@
 package org.mytoypjt.controller;
 
-import org.mytoypjt.controller.structure.ControllerTemplete;
+import org.mytoypjt.controller.structure.PropertiesControllerTemplete;
 
-import javax.servlet.http.Cookie;
-import java.util.Arrays;
-
-public class MainController extends ControllerTemplete {
+public class MainController extends PropertiesControllerTemplete {
     @Override
     public Object doGet() {
         if (!isUserExist())

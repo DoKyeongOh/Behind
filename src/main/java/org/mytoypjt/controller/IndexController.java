@@ -1,19 +1,22 @@
 package org.mytoypjt.controller;
 
-import org.mytoypjt.controller.structure.ControllerTemplete;
+import org.mytoypjt.controller.structure.annotations.RequestMapping;
+import org.mytoypjt.controller.structure.PropertiesControllerTemplete;
 
-import java.util.Iterator;
+public class IndexController extends PropertiesControllerTemplete {
 
-public class IndexController extends ControllerTemplete {
-
+    @RequestMapping(uri = "/", method = "GET")
     @Override
     public Object doGet() {
         return "index";
     }
 
+    @RequestMapping(uri = "/", method = "POST")
     @Override
     public Object doPost() {
         return "index";
     }
+
+    private void test(){}
 }
 

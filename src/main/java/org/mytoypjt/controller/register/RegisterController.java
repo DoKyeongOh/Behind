@@ -1,8 +1,8 @@
 package org.mytoypjt.controller.register;
 
-import org.mytoypjt.controller.structure.ControllerTemplete;
+import org.mytoypjt.controller.structure.PropertiesControllerTemplete;
 
-public class RegisterController extends ControllerTemplete {
+public class RegisterController extends PropertiesControllerTemplete {
     @Override
     public Object doGet() {
         if (isUserExist())

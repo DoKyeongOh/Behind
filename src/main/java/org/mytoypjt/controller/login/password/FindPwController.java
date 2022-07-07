@@ -1,13 +1,12 @@
 package org.mytoypjt.controller.login.password;
 
-import org.mytoypjt.controller.structure.ControllerTemplete;
+import org.mytoypjt.controller.structure.PropertiesControllerTemplete;
 import org.mytoypjt.models.dto.PwCertificationInfo;
 import org.mytoypjt.models.etc.ViewInfo;
-import org.mytoypjt.service.FindAccountService;
 
 import javax.servlet.http.HttpSession;
 
-public class FindPwController extends ControllerTemplete {
+public class FindPwController extends PropertiesControllerTemplete {
 
     @Override
     public Object doGet() {

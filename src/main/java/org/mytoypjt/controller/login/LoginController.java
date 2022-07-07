@@ -1,21 +1,19 @@
 package org.mytoypjt.controller.login;
 
-import org.mytoypjt.controller.structure.ControllerTemplete;
+import org.mytoypjt.controller.structure.PropertiesControllerTemplete;
 import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.models.entity.User;
 import org.mytoypjt.service.LoginService;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
-public class LoginController extends ControllerTemplete {
+public class LoginController extends PropertiesControllerTemplete {
 
     @Override
     public Object doGet() {
         if (isUserExist())
             return "main";
 
-        System.out.println(req.getRequestURI());
         return "login";
     }
 
