@@ -6,11 +6,11 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 <% request.setAttribute("loginPage", request.getContextPath() + "/login"); %>
 <% request.setAttribute("registerPage", request.getContextPath() + "/register"); %>
-<% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 <% request.setAttribute("findId", request.getContextPath() + "/findId"); %>
-<% request.setAttribute("certification", request.getContextPath() + "/certification"); %>
+<% request.setAttribute("certification", request.getContextPath() + "/idCertification"); %>
 <html>
 <head>
     <title>Title</title>
@@ -56,7 +56,7 @@
 
 <!-- 아이디 찾기 폼 -->
 <div class="form-auth-input">
-    <form class="input-form" method="post" action="${certification}">
+    <form class="input-form" action="${certification}">
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Email" name="email">
             <span class="input-group-text">@</span>
@@ -76,7 +76,7 @@
 <!-- 아이디 찾기 폼 -->
 
 <!-- 인증번호 입력 폼 -->
-    <form class="form-auth-check text-center" method="post" action="${findId}">
+    <form class="form-auth-check text-center" method="post" action="${certification}">
         <span><input type="password" name="idCertificationInput"></span>
         <span><button class="btn btn-outline-primary btn-sm btn-auth-check" type="submit">인증</button></span>
     </form>
