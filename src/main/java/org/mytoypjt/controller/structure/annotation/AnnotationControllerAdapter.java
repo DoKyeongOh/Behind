@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 
 public class AnnotationControllerAdapter extends BaseControllerAdapter {
+
     public AnnotationControllerAdapter() {
         this.requestControllerMapping =
                 RequestControllerMappingFactory.getMappingClass(MappingName.Annotation);
@@ -22,17 +23,35 @@ public class AnnotationControllerAdapter extends BaseControllerAdapter {
         String uri = req.getRequestURI();
         String methodName = req.getMethod();
 
-        Object controllerObject = requestControllerMapping.getController(uri);
-        Method controllerMethod = getControllerMethod(controllerObject, uri, methodName);
+        Object controller = requestControllerMapping.getController(uri);
+        if (controller == null)
+            return new ViewInfo("pageNotFound");
 
-        return getViewInfoByMethod(controllerMethod, controllerObject);
+        Method method = getControllerMethod(controller, uri, methodName);
+
+        Object viewObject = null;
+        try {
+            if (hasHttpParam(method)) {
+                // 반드시 req, resp의 순서대로 넣어야함.
+                viewObject = method.invoke(controller, req, resp);
+            } else {
+                viewObject = method.invoke(controller, null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ObjectToViewInfo(viewObject);
     }
 
-    public Method getControllerMethod(Object object, String uri, String methodName){
-        for (Method method : object.getClass().getMethods()) {
+    public Method getControllerMethod(Object controllerObject, String uri, String methodName){
+        for (Method method : controllerObject.getClass().getDeclaredMethods()) {
             RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
             if (requestMapping == null) continue;
-            if (!methodName.equals(requestMapping.method())) continue;
+            String mappedName = methodName.toUpperCase();
+            String inputName = requestMapping.method().toUpperCase();
+
+            if (!mappedName.equals(inputName)) continue;
             if (!uri.equals(requestMapping.uri())) continue;
             return method;
         }
@@ -54,4 +73,30 @@ public class AnnotationControllerAdapter extends BaseControllerAdapter {
         else
             return new ViewInfo("pageNotFound");
     }
+
+    public boolean hasHttpParam(Method method){
+        Class[] classes = method.getParameterTypes();
+        if (classes.length != 2) return false;
+
+        for (Class aClass : classes) {
+            if (aClass.equals(HttpServletRequest.class))
+                continue;
+
+            if (aClass.equals(HttpServletResponse.class))
+                continue;
+
+            return false;
+        }
+        return true;
+    }
+
+    public ViewInfo ObjectToViewInfo(Object object){
+        if (object instanceof String)
+            return new ViewInfo((String) object);
+        else if (object instanceof ViewInfo)
+            return (ViewInfo) object;
+        else
+            return new ViewInfo("pageNotFound");
+    }
+
 }
