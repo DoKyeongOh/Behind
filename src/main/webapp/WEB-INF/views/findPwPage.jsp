@@ -1,15 +1,20 @@
 <%--
   Created by IntelliJ IDEA.
   User: dokyeongoh
-  Date: 2022/07/05
-  Time: 11:15 AM
+  Date: 2022/06/28
+  Time: 10:45 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<% request.setAttribute("registerPage", request.getContextPath() + "/registerPage"); %>
+<% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
+<% request.setAttribute("findPw", request.getContextPath() + "/findPwPage"); %>
+<% request.setAttribute("pwCertification", request.getContextPath() + "/pwCertification"); %>
+
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" href= "../../css/findPw.css"/>
+    <link rel="stylesheet" type="text/css" href= "../../css/findId.css"/>
     <link rel="stylesheet" type="text/css" href= "../../css/common.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"/>
 </head>
@@ -46,22 +51,38 @@
 <!-- navbar + offcanvas -->
 
 <div class="text-center main-text">
-    <h1 class="main-text-font">Password Reset</h1>
+    <h1 class="main-text-font">Find Password</h1>
 </div>
 
-<!-- 비밀번호 입력 폼 -->
+<!-- 아이디, 이메일 입력 폼 -->
 <div class="form-auth-input">
-    <form class="input-form" method="post">
-        <p><input type="text" class="form-control" placeholder="비밀번호" name="password"/></p>
-        <p><input type="text" class="form-control" placeholder="비밀번호 확인" name="passwordCheck"/></p>
-        <button type="submit" class="btn btn-primary btn-login-submit btn-auth-margin">재설정하기</button>
+    <form class="input-form" method="get" action="${pwCertification}">
+        <p><input type="text" class="form-control" placeholder="ID" name="id"/></p>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Email" name="email">
+            <span class="input-group-text">@</span>
+            <select class="form-select" name="domain">
+                <option selected>gmail.com</option>
+                <!-- <option value="1">gmail.com</option> -->
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-login-submit btn-auth-margin">인증번호 받기</button>
+        <button type="submit" class="btn btn-outline-primary btn-login-submit btn-auth-margin">인증번호 다시받기</button>
     </form>
 </div>
-<!-- 비밀번호 입력 폼 -->
+<!-- 아이디, 이메일 입력 폼 -->
 
-<!-- 비밀번호 유효성 체크 라벨 -->
-<h6 class="text-center user-id-label">${isCorrect}</h6>
-<!-- 비밀번호 유효성 체크 라벨 -->
+<!-- 인증번호 입력 폼 -->
+    <form class="form-auth-check text-center" method="post" action="${pwCertification}">
+        <span><input type="password" name="pwCertificationInput"></span>
+        <span><button class="btn btn-outline-primary btn-sm btn-auth-check" type="submit">인증하고 비밀번호 재설정하기</button></span>
+    </form>
+<!-- 인증번호 입력 폼 -->
+
+<!-- 인증 완료 여부 라벨 -->
+<h6 class="text-center user-id-label">${noticeMessage}</h6>
+<!-- 인증 완료 여부 라벨 -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 

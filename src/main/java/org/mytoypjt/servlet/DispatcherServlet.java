@@ -49,6 +49,12 @@ public class DispatcherServlet extends HttpServlet {
         requestDispatcher.forward(req, resp);
     }
 
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int a = 32;
+        this.service(req, resp);
+    }
+
     public MappingName getMappingMethod(){
         ResourceUtil resourceUtil = new ResourceUtil("/annotation_config.properties");
         String method = (String) resourceUtil.getProperty("controller.mapping.method");

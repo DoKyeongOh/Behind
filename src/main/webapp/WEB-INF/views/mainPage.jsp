@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
-<% request.setAttribute("mainPage", request.getContextPath() + "/main"); %>
+<% request.setAttribute("mainPage", request.getContextPath() + "/mainPage"); %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -40,17 +40,18 @@
                     <li class="nav-item dropdown text-center">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">글 목록 보기</a>
                         <ul class="dropdown-menu text-center">
-                          <li><a class="dropdown-item" href="#">실시간 글</a></li>
-                          <li><a class="dropdown-item" href="#">일일 인기글</a></li>
-                          <li><a class="dropdown-item" href="#">주간 인기글</a></li>
+                            <li><a class="dropdown-item" href="#">실시간 글</a></li>
+                            <li><a class="dropdown-item" href="#">일일 인기글</a></li>
+                            <li><a class="dropdown-item" href="#">주간 인기글</a></li>
                         </ul>
-                      </li>
+                    </li>
 
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">마이페이지</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">글 작성하기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">공지 목록 보기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">알림 확인하기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">관리자 페이지</a></li>
+                    <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">로그아웃 하기</a></li>
                 </ul>
             </div>
             <button type="button" class="btn btn-dark" data-bs-dismiss="offcanvas">돌아가기</button>

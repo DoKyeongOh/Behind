@@ -4,6 +4,8 @@ import org.mytoypjt.controller.structure.annotations.RequestMapping;
 import org.mytoypjt.controller.structure.properties.PropertiesControllerTemplete;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class IndexController extends PropertiesControllerTemplete {
 
@@ -19,7 +21,11 @@ public class IndexController extends PropertiesControllerTemplete {
     }
 
     @RequestMapping(uri = "/", method = "GET")
-    public String test(){
+    public String showIndexPage(HttpServletRequest req, HttpServletResponse resp){
+        HttpSession session = req.getSession();
+        if (session.getAttribute("user") != null)
+            return "mainPage";
+
         return "index";
     }
 }

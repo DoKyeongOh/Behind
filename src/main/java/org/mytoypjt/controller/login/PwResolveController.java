@@ -11,9 +11,17 @@ import javax.servlet.http.HttpSession;
 
 public class PwResolveController {
 
-    @RequestMapping(uri = "/findPw", method = "get")
-    public String showFindPwPage(){
-        return "findPw";
+    FindAccountService findAccountService;
+
+    public PwResolveController(){
+        findAccountService = new FindAccountService();
+    }
+
+    @RequestMapping(uri = "/findPwPage", method = "get")
+    public String showFindPwPage(HttpServletRequest req, HttpServletResponse resp){
+        HttpSession session = req.getSession();
+        session.setAttribute("pwCertificationInfo", null);
+        return "findPwPage";
     }
 
     @RequestMapping(uri = "/pwCertification", method="get")
@@ -23,18 +31,17 @@ public class PwResolveController {
         String domain = (String) req.getParameter("domain");
         String emailAddress = email + "@" + domain;
 
-        FindAccountService findAccountService = new FindAccountService();
         PwCertificationInfo certificationInfo = findAccountService.getPwCertification(id, emailAddress);
         if (certificationInfo== null) {
             req.setAttribute("noticeMessage", "입력 정보가 잘못되었습니다 !!");
-            return "findPw";
+            return "findPwPage";
         }
 
         req.setAttribute("noticeMessage", "이메일을 확인해주세요 !!");
 
         HttpSession httpSession = req.getSession();
         httpSession.setAttribute("pwCertificationInfo", certificationInfo);
-        return "findPw";
+        return "findPwPage";
     }
 
     @RequestMapping(uri = "/pwCertification", method = "post")
@@ -44,7 +51,7 @@ public class PwResolveController {
                 (PwCertificationInfo) session.getAttribute("pwCertificationInfo");
         String inputValue = (String) req.getParameter("pwCertificationInput");
 
-        ViewInfo viewInfo = new ViewInfo("findPw");
+        ViewInfo viewInfo = new ViewInfo("findPwPage");
 
         if (certificationInfo == null) {
             req.setAttribute("noticeMessage", "인증을 재시도해주세요 !!");
@@ -57,9 +64,53 @@ public class PwResolveController {
         }
 
         viewInfo.setRedirectRequired();
-        viewInfo.setViewName("pwReset");
+        viewInfo.setViewName("pwResetPage");
 
         return viewInfo;
     }
 
+    @RequestMapping(uri = "/pwResetPage", method = "get")
+    public String showPwResetPage(){
+        return "pwResetPage";
+    }
+
+    @RequestMapping(uri = "/pwReset", method = "post")
+    public ViewInfo resetAccountPw(HttpServletRequest req, HttpServletResponse resp){
+        ViewInfo viewInfo = new ViewInfo("pwResetPage");
+
+        String pwInput = req.getParameter("password");
+        String pwInputCheck = req.getParameter("passwordCheck");
+
+        if (pwInput == null) {
+            req.setAttribute("noticeMessage", "비밀번호와 비밀번호 체크를 입력해주세요 !!");
+            return viewInfo;
+        }
+
+        if (!pwInput.equals(pwInputCheck)) {
+            req.setAttribute("noticeMessage", "비밀번호와 비밀번호 체크가 같지 않습니다 !!");
+            return viewInfo;
+        }
+
+        HttpSession session = req.getSession();
+        PwCertificationInfo certificationInfo =
+                (PwCertificationInfo) session.getAttribute("pwCertificationInfo");
+
+        int accountNo = certificationInfo.getAccountNo();
+        boolean success = this.findAccountService.resetPassword(accountNo, pwInput);
+
+        if (!success) {
+            req.setAttribute("noticeMessage", "오류입니다. 관리자에게 문의하세요..");
+            return viewInfo;
+        }
+
+        session.setAttribute("pwCertificationInfo", null);
+        viewInfo.setRedirectRequired();
+        viewInfo.setViewName("pwResetCompletePage");
+        return viewInfo;
+    }
+
+    @RequestMapping(uri = "/pwResetCompletePage", method = "get")
+    public String showPwResetCompletePage(){
+        return "pwResetCompletePage";
+    }
 }

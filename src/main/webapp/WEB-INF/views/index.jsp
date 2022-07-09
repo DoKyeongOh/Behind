@@ -6,8 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% request.setAttribute("loginPage", request.getContextPath() + "/login"); %>
-<% request.setAttribute("registerPage", request.getContextPath() + "/register"); %>
+<% request.setAttribute("loginPage", request.getContextPath() + "/loginPage"); %>
+<% request.setAttribute("registerPage", request.getContextPath() + "/registerPage"); %>
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 
 <html>

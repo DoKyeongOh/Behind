@@ -23,7 +23,7 @@ public class PropertiesRequestControllerMapping implements IRequestControllerMap
     }
 
     @Override
-    public void entryController() {
+    public void entryControllers() {
 
         Properties properties = new Properties();
         String uri;

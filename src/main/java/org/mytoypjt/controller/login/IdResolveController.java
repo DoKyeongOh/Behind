@@ -10,9 +10,9 @@ import javax.servlet.http.HttpSession;
 
 public class IdResolveController {
 
-    @RequestMapping(uri = "/findId", method = "get")
+    @RequestMapping(uri = "/findIdPage", method = "get")
     public String showFindIdPage(){
-        return "findId";
+        return "findIdPage";
     }
 
     @RequestMapping(uri = "/idCertification", method = "get")
@@ -26,7 +26,7 @@ public class IdResolveController {
 
         if (certificationInfo.equals(null)) {
             req.setAttribute("noticeMessage", "이메일 정보가 잘못되었습니다 !!");
-            return ("findId");
+            return ("findIdPage");
         }
 
         req.setAttribute("noticeMessage", "이메일을 확인해주세요 !!");
@@ -34,7 +34,7 @@ public class IdResolveController {
         HttpSession httpSession = req.getSession();
         httpSession.setAttribute("idCertificationInfo", certificationInfo);
 
-        return "findId";
+        return "findIdPage";
     }
 
     @RequestMapping(uri = "/idCertification", method = "post")
@@ -45,18 +45,18 @@ public class IdResolveController {
                 (IdCertificationInfo) httpSession.getAttribute("idCertificationInfo");
         if (certificationInfo == null) {
             req.setAttribute("noticeMessage", "이메일을 입력해주세요 !!");
-            return "findId";
+            return "findIdPage";
         }
 
         String inputValue = (String) req.getParameter("idCertificationInput");
         if (inputValue == null) {
             req.setAttribute("noticeMessage", "인증번호가 잘못되었습니다 !!");
-            return "findId";
+            return "findIdPage";
         }
 
         if (!inputValue.equals(certificationInfo.getCertificationValue())){
             req.setAttribute("noticeMessage", "인증번호가 잘못되었습니다 !!");
-            return "findId";
+            return "findIdPage";
         }
 
         FindAccountService findAccountService = new FindAccountService();
@@ -64,7 +64,7 @@ public class IdResolveController {
         httpSession.setAttribute("idCertificationInfo", null);
 
         req.setAttribute("noticeMessage", "당신의 아이디는 '" + accountId + "' 입니다 !!");
-        return "findId";
+        return "findIdPage";
     }
 
 }

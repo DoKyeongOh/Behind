@@ -4,6 +4,6 @@ public interface IRequestControllerMapping {
 
     Object getController(String uri);
 
-    void entryController();
+    void entryControllers();
 
 }

@@ -12,15 +12,30 @@ import javax.servlet.http.HttpSession;
 
 public class LoginController extends PropertiesControllerTemplete {
 
-    @RequestMapping(uri = "/login", method = "GET")
+    @RequestMapping(uri = "/loginPage", method = "GET")
     public String getLoginPage(){
-        return "login";
+        return "loginPage";
     }
 
-    @RequestMapping(uri = "/login", method = "POST")
+    @RequestMapping(uri = "/loginPage", method = "POST")
     public ViewInfo getLoginSession(HttpServletRequest req, HttpServletResponse resp){
-        int a = 3;
-        return login(req, resp);
+        String userId = req.getParameter("userId");
+        String userPw = req.getParameter("userPw");
+
+        LoginService loginService = new LoginService();
+        User user = loginService.getUser(userId, userPw);
+
+        ViewInfo viewInfo = new ViewInfo("mainPage");
+        if (user == null) {
+            viewInfo.setViewName("loginPage");
+            return viewInfo;
+        }
+
+        viewInfo.setRedirectRequired();
+        HttpSession httpSession = req.getSession();
+        httpSession.setAttribute("user", user);
+
+        return viewInfo;
     }
 
     @Override
@@ -28,7 +43,7 @@ public class LoginController extends PropertiesControllerTemplete {
         if (isUserExist())
             return "main";
 
-        return "login";
+        return "loginPage";
     }
 
     @Override
@@ -43,9 +58,9 @@ public class LoginController extends PropertiesControllerTemplete {
         LoginService loginService = new LoginService();
         User user = loginService.getUser(userId, userPw);
 
-        ViewInfo viewInfo = new ViewInfo("main");
+        ViewInfo viewInfo = new ViewInfo("mainPage");
         if (user == null) {
-            viewInfo.setViewName("login");
+            viewInfo.setViewName("loginPage");
             return viewInfo;
         }
 

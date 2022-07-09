@@ -15,7 +15,7 @@ public class AnnotationControllerAdapter extends BaseControllerAdapter {
     public AnnotationControllerAdapter() {
         this.requestControllerMapping =
                 RequestControllerMappingFactory.getMappingClass(MappingName.Annotation);
-        requestControllerMapping.entryController();
+        requestControllerMapping.entryControllers();
     }
 
     @Override
@@ -25,7 +25,7 @@ public class AnnotationControllerAdapter extends BaseControllerAdapter {
 
         Object controller = requestControllerMapping.getController(uri);
         if (controller == null)
-            return new ViewInfo("pageNotFound");
+            return new ViewInfo("pageNotFoundPage");
 
         Method method = getControllerMethod(controller, uri, methodName);
 
@@ -71,7 +71,7 @@ public class AnnotationControllerAdapter extends BaseControllerAdapter {
         else if (viewObject instanceof ViewInfo)
             return (ViewInfo) viewObject;
         else
-            return new ViewInfo("pageNotFound");
+            return new ViewInfo("pageNotFoundPage");
     }
 
     public boolean hasHttpParam(Method method){
@@ -96,7 +96,7 @@ public class AnnotationControllerAdapter extends BaseControllerAdapter {
         else if (object instanceof ViewInfo)
             return (ViewInfo) object;
         else
-            return new ViewInfo("pageNotFound");
+            return new ViewInfo("pageNotFoundPage");
     }
 
 }

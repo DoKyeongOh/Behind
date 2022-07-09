@@ -1,5 +1,9 @@
 package org.mytoypjt.models.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
 public class PwCertificationInfo {
 
     String certificationValue = "";
@@ -8,21 +12,6 @@ public class PwCertificationInfo {
     public PwCertificationInfo() {}
     public PwCertificationInfo(int accountNo, String certificationValue) {
         this.certificationValue = certificationValue;
-        this.accountNo = accountNo;
-    }
-    public String getCertificationValue() {
-        return certificationValue;
-    }
-
-    public void setCertificationValue(String certificationValue) {
-        this.certificationValue = certificationValue;
-    }
-
-    public int getAccountNo() {
-        return accountNo;
-    }
-
-    public void setAccountNo(int accountNo) {
         this.accountNo = accountNo;
     }
 }

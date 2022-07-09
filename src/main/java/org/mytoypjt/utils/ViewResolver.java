@@ -57,6 +57,6 @@ public class ViewResolver {
         if (isExistPage(pageName))
             return this.prefix + pageName + this.suffix;
         else
-            return this.prefix + "pageNotFound" + this.suffix;
+            return this.prefix + "pageNotFoundPage" + this.suffix;
     }
 }

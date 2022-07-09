@@ -6,7 +6,6 @@
          version="4.0">
 
   <display-name>Archetype Created Web Application</display-name>
-
   <servlet>
     <servlet-name>DispatcherServlet</servlet-name>
     <servlet-class>org.mytoypjt.servlet.DispatcherServlet</servlet-class>

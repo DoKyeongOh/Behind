@@ -7,9 +7,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
-<% request.setAttribute("loginPage", request.getContextPath() + "/login"); %>
-<% request.setAttribute("registerPage", request.getContextPath() + "/register"); %>
-<% request.setAttribute("findId", request.getContextPath() + "/findId"); %>
+<% request.setAttribute("loginPage", request.getContextPath() + "/loginPage"); %>
+<% request.setAttribute("registerPage", request.getContextPath() + "/registerPage"); %>
+<% request.setAttribute("findId", request.getContextPath() + "/findIdPage"); %>
 <% request.setAttribute("certification", request.getContextPath() + "/idCertification"); %>
 <html>
 <head>

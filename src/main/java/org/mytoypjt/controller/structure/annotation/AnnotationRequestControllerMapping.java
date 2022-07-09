@@ -24,7 +24,7 @@ public class AnnotationRequestControllerMapping implements IRequestControllerMap
     }
 
     @Override
-    public void entryController(){
+    public void entryControllers(){
         ResourceUtil resourceUtil = new ResourceUtil("/annotation_config.properties");
         String className = (String) resourceUtil.getProperty("controller.mapping.root");
 
@@ -55,6 +55,8 @@ public class AnnotationRequestControllerMapping implements IRequestControllerMap
                 dfsSearchFromDir(childDir.list(), childPath, childClassPath);
                 continue;
             }
+
+            if (className.indexOf(".class") < 0) continue;
 
             className = (classPath + "." + className).replace(".class", "");
 

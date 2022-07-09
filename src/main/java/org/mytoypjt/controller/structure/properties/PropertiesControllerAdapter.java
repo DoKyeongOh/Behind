@@ -13,7 +13,7 @@ public class PropertiesControllerAdapter extends BaseControllerAdapter {
     public PropertiesControllerAdapter() {
         this.requestControllerMapping =
                 RequestControllerMappingFactory.getMappingClass(MappingName.Properties);
-        requestControllerMapping.entryController();
+        requestControllerMapping.entryControllers();
     }
 
     @Override
