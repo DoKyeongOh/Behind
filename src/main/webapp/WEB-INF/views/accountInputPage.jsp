@@ -1,3 +1,14 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: dokyeongoh
+  Date: 2022/06/28
+  Time: 10:45 PM
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<% request.setAttribute("registerPage", request.getContextPath() + "/registerPage"); %>
+<% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
+
 <html>
 <head>
     <title>Title</title>
@@ -63,7 +74,7 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn-outline-primary" id="next-button">제출하고 이메일 인증하기</button>
+        <button type="submit" class="btn btn-outline-primary" id="next-button">이메일 인증하기</button>
     </form>
 </div>
 <!-- 계정 정보 입력 폼 -->
