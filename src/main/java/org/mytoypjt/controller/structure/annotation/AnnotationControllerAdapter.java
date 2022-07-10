@@ -31,14 +31,10 @@ public class AnnotationControllerAdapter extends BaseControllerAdapter {
 
         Object viewObject = null;
         try {
-            if (hasHttpParam(method)) {
-                // 반드시 req, resp의 순서대로 넣어야함.
-                viewObject = method.invoke(controller, req, resp);
-            } else {
-                viewObject = method.invoke(controller, null);
-            }
+            if (hasHttpParam(method)) viewObject = method.invoke(controller, req, resp);
+            else viewObject = method.invoke(controller, null);
         } catch (Exception e) {
-            e.printStackTrace();
+            return new ViewInfo("pageNotFoundPage");
         }
 
         return ObjectToViewInfo(viewObject);
