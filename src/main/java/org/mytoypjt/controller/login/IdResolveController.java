@@ -24,7 +24,7 @@ public class IdResolveController {
         FindAccountService findAccountService = new FindAccountService();
         IdCertificationInfo certificationInfo = findAccountService.getIdCertification(mailAddress);
 
-        if (certificationInfo.equals(null)) {
+        if (certificationInfo == null) {
             req.setAttribute("noticeMessage", "이메일 정보가 잘못되었습니다 !!");
             return ("findIdPage");
         }

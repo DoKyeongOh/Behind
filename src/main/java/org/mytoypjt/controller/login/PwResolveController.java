@@ -32,7 +32,7 @@ public class PwResolveController {
         String emailAddress = email + "@" + domain;
 
         PwCertificationInfo certificationInfo = findAccountService.getPwCertification(id, emailAddress);
-        if (certificationInfo== null) {
+        if (certificationInfo == null) {
             req.setAttribute("noticeMessage", "입력 정보가 잘못되었습니다 !!");
             return "findPwPage";
         }
@@ -45,7 +45,7 @@ public class PwResolveController {
     }
 
     @RequestMapping(uri = "/pwCertification", method = "post")
-    public ViewInfo removePwCertification(HttpServletRequest req, HttpServletResponse resp){
+    public ViewInfo checkPwCertification(HttpServletRequest req, HttpServletResponse resp){
         HttpSession session = req.getSession();
         PwCertificationInfo certificationInfo =
                 (PwCertificationInfo) session.getAttribute("pwCertificationInfo");
@@ -70,7 +70,16 @@ public class PwResolveController {
     }
 
     @RequestMapping(uri = "/pwResetPage", method = "get")
-    public String showPwResetPage(){
+    public String showPwResetPage(HttpServletRequest req, HttpServletResponse resp){
+        HttpSession session = req.getSession();
+        PwCertificationInfo certificationInfo =
+                (PwCertificationInfo) session.getAttribute("pwCertificationInfo");
+
+        if (certificationInfo == null) {
+            req.setAttribute("noticeMessage", "인증을 먼저 진행해주세요 !!");
+            return "findPwPage";
+        }
+
         return "pwResetPage";
     }
 
