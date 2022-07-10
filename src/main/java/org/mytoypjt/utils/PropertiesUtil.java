@@ -1,15 +1,14 @@
 package org.mytoypjt.utils;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.net.URL;
 import java.util.Properties;
 
-public class ResourceUtil {
+public class PropertiesUtil {
     private Properties properties;
     private String path;
 
-    public ResourceUtil(String path) {
+    public PropertiesUtil(String path) {
         properties = new Properties();
         setPath(path);
     }

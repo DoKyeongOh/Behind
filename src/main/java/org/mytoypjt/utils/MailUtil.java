@@ -18,8 +18,8 @@ public class MailUtil {
     String hostEmail = "behindsender@gmail.com";
 
     public MailUtil () {
-        ResourceUtil resourceUtil = new ResourceUtil("/mail_properties.properties");
-        String password = (String) resourceUtil.getProperty("gmail.password");
+        PropertiesUtil propertiesUtil = new PropertiesUtil("/mail_properties.properties");
+        String password = (String) propertiesUtil.getProperty("gmail.password");
         setMailProperties();
         mailSession = Session.getDefaultInstance(mailProperties, new Authenticator() {
             @Override
