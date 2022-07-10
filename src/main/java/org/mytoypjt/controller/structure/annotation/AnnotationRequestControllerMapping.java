@@ -2,7 +2,7 @@ package org.mytoypjt.controller.structure.annotation;
 
 import org.mytoypjt.controller.structure.IRequestControllerMapping;
 import org.mytoypjt.controller.structure.annotations.RequestMapping;
-import org.mytoypjt.utils.ResourceUtil;
+import org.mytoypjt.utils.PropertiesUtil;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -25,8 +25,8 @@ public class AnnotationRequestControllerMapping implements IRequestControllerMap
 
     @Override
     public void entryControllers(){
-        ResourceUtil resourceUtil = new ResourceUtil("/annotation_config.properties");
-        String className = (String) resourceUtil.getProperty("controller.mapping.root");
+        PropertiesUtil propertiesUtil = new PropertiesUtil("/annotation_config.properties");
+        String className = (String) propertiesUtil.getProperty("controller.mapping.root");
 
         try {
             Class basedClass = Class.forName(className);

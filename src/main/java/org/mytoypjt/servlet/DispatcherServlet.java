@@ -1,10 +1,11 @@
 package org.mytoypjt.servlet;
 
+import org.json.simple.JSONObject;
 import org.mytoypjt.controller.structure.BaseControllerAdapter;
 import org.mytoypjt.controller.structure.ControllerAdapterFactory;
 import org.mytoypjt.controller.structure.enums.MappingName;
 import org.mytoypjt.models.etc.ViewInfo;
-import org.mytoypjt.utils.ResourceUtil;
+import org.mytoypjt.utils.PropertiesUtil;
 import org.mytoypjt.utils.ViewResolver;
 
 import javax.servlet.RequestDispatcher;
@@ -12,7 +13,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class DispatcherServlet extends HttpServlet {
     private BaseControllerAdapter controllerAdapter;
@@ -40,6 +43,17 @@ public class DispatcherServlet extends HttpServlet {
         ViewInfo viewInfo = controllerAdapter.execute(req, resp);
         String viewName = viewResolver.getViewName(viewInfo.getViewName());
 
+        if (viewInfo.getViewName().equals("")) {
+            resp.setCharacterEncoding("UTF-8");
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("name", "mr. kim");
+            jsonObject.put("age", "20");
+
+            resp.getWriter().println(jsonObject.toJSONString());
+            return;
+        }
+
         if (viewInfo.isRedirectRequire()) {
             resp.sendRedirect(viewInfo.getViewName());
             return;
@@ -56,8 +70,8 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     public MappingName getMappingMethod(){
-        ResourceUtil resourceUtil = new ResourceUtil("/annotation_config.properties");
-        String method = (String) resourceUtil.getProperty("controller.mapping.method");
+        PropertiesUtil propertiesUtil = new PropertiesUtil("/annotation_config.properties");
+        String method = (String) propertiesUtil.getProperty("controller.mapping.method");
         method = method.toLowerCase().trim();
 
         if (method.equals("annotation"))
