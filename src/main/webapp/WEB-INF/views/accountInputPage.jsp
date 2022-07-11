@@ -6,8 +6,11 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<% request.setAttribute("loginPage", request.getContextPath() + "/loginPage"); %>
 <% request.setAttribute("registerPage", request.getContextPath() + "/registerPage"); %>
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
+
+<% request.setAttribute("account", request.getContextPath() + "/account"); %>
 
 <html>
 <head>
@@ -15,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href= "../../css/register.css"/>
     <link rel="stylesheet" type="text/css" href= "../../css/common.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"/>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 </head>
 <body>
 
@@ -55,16 +59,17 @@
 
 <!-- 계정 정보 입력 폼 -->
 <div class="text-center">
-    <form class="form-input-account" method="get" action="${entryAccountInfo}">
+    <form class="form-input-account" method="post" action="${account}">
         <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="id" id="input-account-id">
+            <input type="text" class="form-control" placeholder="id" id="input-account-id" name="id">
             <button class="btn btn-outline-secondary" type="button" id="btn-same-check">중복체크</button>
         </div>
+        <label id="labelIsUsableId"></label><br><br>
 
-        <p><input type="password" class="form-control" placeholder="Password" name="password" id="input-account-pw"/></p>
+        <p><input type="password" class="form-control" placeholder="Password" id="input-account-pw" name="pw"/></p>
         <p>
-            <input type="password" class="form-control" placeholder="Password check" name="passwordCheck" id="input-account-pw-check"/>
-            <label id="labelIsSame"></label>
+            <input type="password" class="form-control" placeholder="Password check" name="pwCheck" id="input-account-pw-check"/>
+            <label id="labelIsSamePw"></label>
         </p>
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Email" name="email">
@@ -79,7 +84,10 @@
 </div>
 <!-- 계정 정보 입력 폼 -->
 
-
+<br>
+<%--메시지--%>
+<h6 class="text-center" id="notice-label">${noticeMessage}</h6>
+<%--메시지--%>
 <script src="../../js/accountInput.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 

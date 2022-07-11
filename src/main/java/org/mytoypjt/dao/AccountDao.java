@@ -95,4 +95,27 @@ public class AccountDao {
         return true;
     }
 
+    public boolean isExistId(String id){
+        String sql = "select account_no from account where id=?";
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setString(1, id);
+            preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            int accountNo = -1;
+
+            while (resultSet.next()) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return true;
+        }
+        return false;
+    }
+
 }
