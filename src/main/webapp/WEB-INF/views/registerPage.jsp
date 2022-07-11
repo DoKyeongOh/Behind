@@ -6,6 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<% request.setAttribute("loginPage", request.getContextPath() + "/loginPage"); %>
+<% request.setAttribute("registerPage", request.getContextPath() + "/registerPage"); %>
+<% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
+
 <html>
 <head>
     <title>Title</title>
@@ -31,7 +35,7 @@
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3"><br/>
-                    <li class="nav-item"><a class="nav-link text-center" href="${registerPage}">회원가입 하러가기</a></li>
+                    <li class="nav-item"><a class="nav-link text-center" href="${loginPage}">로그인 하러가기</a></li>
                 </ul>
             </div>
             <button type="button" class="btn btn-dark" data-bs-dismiss="offcanvas">돌아가기</button>
@@ -290,7 +294,7 @@
 <%--이용 약관--%>
 
 <%--약관 동의 폼--%>
-<form method="post">
+<form method="post" action="${registerPage}">
     <div class="text-center">
         이용 약관에 동의하십니까? <br>
         <div class="form-check form-check-inline">

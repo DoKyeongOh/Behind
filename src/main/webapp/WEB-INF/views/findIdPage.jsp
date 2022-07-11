@@ -6,11 +6,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 <% request.setAttribute("loginPage", request.getContextPath() + "/loginPage"); %>
 <% request.setAttribute("registerPage", request.getContextPath() + "/registerPage"); %>
+<% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
+
 <% request.setAttribute("findId", request.getContextPath() + "/findIdPage"); %>
 <% request.setAttribute("certification", request.getContextPath() + "/idCertification"); %>
+
 <html>
 <head>
     <title>Title</title>

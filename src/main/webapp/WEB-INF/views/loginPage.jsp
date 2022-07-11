@@ -9,6 +9,7 @@
 <% request.setAttribute("loginPage", request.getContextPath() + "/loginPage"); %>
 <% request.setAttribute("registerPage", request.getContextPath() + "/registerPage"); %>
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
+
 <% request.setAttribute("findId", request.getContextPath() + "/findIdPage"); %>
 <% request.setAttribute("findPw", request.getContextPath() + "/findPwPage"); %>
 <% request.setAttribute("mainPage", request.getContextPath() + "/mainPage"); %>
