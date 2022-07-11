@@ -1,5 +1,7 @@
 package org.mytoypjt.utils;
 
+import org.mytoypjt.models.etc.ViewInfo;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,9 +55,10 @@ public class ViewResolver {
         return true;
     }
 
-    public String getViewName(String pageName) {
-        if (isExistPage(pageName))
-            return this.prefix + pageName + this.suffix;
+    public String getViewName(ViewInfo viewInfo) {
+        if (!viewInfo.isContainView()) return "";
+        if (isExistPage(viewInfo.getViewName()))
+            return this.prefix + viewInfo.getViewName() + this.suffix;
         else
             return this.prefix + "pageNotFoundPage" + this.suffix;
     }
