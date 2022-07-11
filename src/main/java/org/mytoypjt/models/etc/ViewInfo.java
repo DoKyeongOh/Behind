@@ -1,8 +1,15 @@
 package org.mytoypjt.models.etc;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ViewInfo {
     String viewName = "";
     boolean redirectRequire = false;
+
+    boolean isContainView = true;
 
     public ViewInfo() {
 

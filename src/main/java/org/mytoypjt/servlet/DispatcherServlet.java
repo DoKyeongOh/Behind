@@ -41,16 +41,17 @@ public class DispatcherServlet extends HttpServlet {
 
         controllerAdapter = ControllerAdapterFactory.getControllerAdapter(mappingName);
         ViewInfo viewInfo = controllerAdapter.execute(req, resp);
-        String viewName = viewResolver.getViewName(viewInfo.getViewName());
+
+        if (!viewInfo.isContainView()) {
+            resp.setCharacterEncoding("UTF-8");
+            return;
+        }
+
+        String viewName = viewResolver.getViewName(viewInfo);
 
         if (viewInfo.getViewName().equals("")) {
-            resp.setCharacterEncoding("UTF-8");
 
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("name", "mr. kim");
-            jsonObject.put("age", "20");
 
-            resp.getWriter().println(jsonObject.toJSONString());
             return;
         }
 

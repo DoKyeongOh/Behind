@@ -1,6 +1,5 @@
 package org.mytoypjt.controller;
 
-import org.json.simple.JSONObject;
 import org.mytoypjt.controller.structure.annotations.RequestMapping;
 import org.mytoypjt.controller.structure.properties.PropertiesControllerTemplete;
 import org.mytoypjt.models.etc.ViewInfo;
@@ -25,10 +24,5 @@ public class IndexController extends PropertiesControllerTemplete {
         return "index";
     }
 
-    @RequestMapping(uri = "/idSameTest", method = "post")
-    public ViewInfo test(){
-        int a = 23;
-        return new ViewInfo("");
-    }
 }
 
