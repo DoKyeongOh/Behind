@@ -12,12 +12,12 @@ import javax.servlet.http.HttpSession;
 
 public class LoginController extends PropertiesControllerTemplete {
 
-    @RequestMapping(uri = "/loginPage", method = "GET")
+    @RequestMapping(uri = "/login/page", method = "GET")
     public String getLoginPage(){
         return "loginPage";
     }
 
-    @RequestMapping(uri = "/loginPage", method = "POST")
+    @RequestMapping(uri = "/login", method = "POST")
     public ViewInfo getLoginSession(HttpServletRequest req, HttpServletResponse resp){
         String userId = req.getParameter("userId");
         String userPw = req.getParameter("userPw");
@@ -25,13 +25,12 @@ public class LoginController extends PropertiesControllerTemplete {
         LoginService loginService = new LoginService();
         User user = loginService.getUser(userId, userPw);
 
-        ViewInfo viewInfo = new ViewInfo("mainPage");
         if (user == null) {
-            viewInfo.setViewName("loginPage");
-            return viewInfo;
+            return new ViewInfo("loginPage");
         }
 
-        viewInfo.setRedirectRequired();
+        ViewInfo viewInfo = new ViewInfo();
+        viewInfo.setRedirectTo("/main/page");
         HttpSession httpSession = req.getSession();
         httpSession.setAttribute("user", user);
 
@@ -64,7 +63,7 @@ public class LoginController extends PropertiesControllerTemplete {
             return viewInfo;
         }
 
-        viewInfo.setRedirectRequired();
+        viewInfo.setRedirectRequire(true);
         HttpSession httpSession = req.getSession();
         httpSession.setAttribute("user", user);
 

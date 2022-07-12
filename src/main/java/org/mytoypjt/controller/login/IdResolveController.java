@@ -10,12 +10,12 @@ import javax.servlet.http.HttpSession;
 
 public class IdResolveController {
 
-    @RequestMapping(uri = "/findIdPage", method = "get")
+    @RequestMapping(uri = "/id/page", method = "get")
     public String showFindIdPage(){
         return "findIdPage";
     }
 
-    @RequestMapping(uri = "/idCertification", method = "get")
+    @RequestMapping(uri = "/id/cert", method = "get")
     public String createIdCertification(HttpServletRequest req, HttpServletResponse resp){
         String email = (String) req.getParameter("email");
         String domain = (String) req.getParameter("domain");
@@ -37,7 +37,7 @@ public class IdResolveController {
         return "findIdPage";
     }
 
-    @RequestMapping(uri = "/idCertification", method = "post")
+    @RequestMapping(uri = "/id/cert", method = "post")
     public String removeIdCertification(HttpServletRequest req, HttpServletResponse resp){
         HttpSession httpSession = req.getSession();
 

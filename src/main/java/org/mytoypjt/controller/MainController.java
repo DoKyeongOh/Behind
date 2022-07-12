@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 
 public class MainController extends PropertiesControllerTemplete {
 
-    @RequestMapping(uri = "/mainPage", method = "get")
+    @RequestMapping(uri = "/main/page", method = "get")
     public String showMainPage(HttpServletRequest req, HttpServletResponse resp){
         HttpSession session = req.getSession();
         if (session.getAttribute("user") == null)

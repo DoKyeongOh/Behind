@@ -17,14 +17,33 @@ public class PwResolveController {
         findAccountService = new FindAccountService();
     }
 
-    @RequestMapping(uri = "/findPwPage", method = "get")
-    public String showFindPwPage(HttpServletRequest req, HttpServletResponse resp){
+    @RequestMapping(uri = "/pw/page/1", method = "get")
+    public String getFindPwPage(HttpServletRequest req, HttpServletResponse resp){
         HttpSession session = req.getSession();
         session.setAttribute("pwCertificationInfo", null);
         return "findPwPage";
     }
 
-    @RequestMapping(uri = "/pwCertification", method="get")
+    @RequestMapping(uri = "/pw/page/2", method = "get")
+    public String getPwResetPage(HttpServletRequest req, HttpServletResponse resp){
+        HttpSession session = req.getSession();
+        PwCertificationInfo certificationInfo =
+                (PwCertificationInfo) session.getAttribute("pwCertificationInfo");
+
+        if (certificationInfo == null) {
+            req.setAttribute("noticeMessage", "인증을 먼저 진행해주세요 !!");
+            return "findPwPage";
+        }
+
+        return "pwResetPage";
+    }
+
+    @RequestMapping(uri = "/pw/page/3", method = "get")
+    public String getPwResetCompletePage(HttpServletRequest req, HttpServletResponse resp){
+        return "pwResetCompletePage";
+    }
+
+    @RequestMapping(uri = "/pw/cert", method="get")
     public String createPwCertification(HttpServletRequest req, HttpServletResponse resp){
         String id = (String) req.getParameter("id");
         String email = (String) req.getParameter("email");
@@ -44,7 +63,7 @@ public class PwResolveController {
         return "findPwPage";
     }
 
-    @RequestMapping(uri = "/pwCertification", method = "post")
+    @RequestMapping(uri = "/pw/cert", method = "post")
     public ViewInfo checkPwCertification(HttpServletRequest req, HttpServletResponse resp){
         HttpSession session = req.getSession();
         PwCertificationInfo certificationInfo =
@@ -63,27 +82,12 @@ public class PwResolveController {
             return viewInfo;
         }
 
-        viewInfo.setRedirectRequired();
-        viewInfo.setViewName("pwResetPage");
-
+        viewInfo.setRedirectTo("/pw/page/2");
         return viewInfo;
     }
 
-    @RequestMapping(uri = "/pwResetPage", method = "get")
-    public String showPwResetPage(HttpServletRequest req, HttpServletResponse resp){
-        HttpSession session = req.getSession();
-        PwCertificationInfo certificationInfo =
-                (PwCertificationInfo) session.getAttribute("pwCertificationInfo");
 
-        if (certificationInfo == null) {
-            req.setAttribute("noticeMessage", "인증을 먼저 진행해주세요 !!");
-            return "findPwPage";
-        }
-
-        return "pwResetPage";
-    }
-
-    @RequestMapping(uri = "/pwReset", method = "post")
+    @RequestMapping(uri = "/pw", method = "put")
     public ViewInfo resetAccountPw(HttpServletRequest req, HttpServletResponse resp){
         ViewInfo viewInfo = new ViewInfo("pwResetPage");
 
@@ -113,13 +117,10 @@ public class PwResolveController {
         }
 
         session.setAttribute("pwCertificationInfo", null);
-        viewInfo.setRedirectRequired();
-        viewInfo.setViewName("pwResetCompletePage");
+        viewInfo.setRedirectRequire(true);
+        viewInfo.setViewName("/pw/page/3");
         return viewInfo;
     }
 
-    @RequestMapping(uri = "/pwResetCompletePage", method = "get")
-    public String showPwResetCompletePage(){
-        return "pwResetCompletePage";
-    }
+
 }
