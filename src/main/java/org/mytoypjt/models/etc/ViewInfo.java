@@ -3,8 +3,6 @@ package org.mytoypjt.models.etc;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
 public class ViewInfo {
     String viewName = "";
     boolean redirectRequire = false;
@@ -19,18 +17,6 @@ public class ViewInfo {
         this.viewName = viewName;
     }
 
-    public void setRedirectRequired() {
-        this.redirectRequire = true;
-    }
-
-    public void setNotRedirectRequired(){
-        this.redirectRequire = false;
-    }
-
-    public boolean isRedirectRequire() {
-        return redirectRequire;
-    }
-
     public String getViewName() {
         return viewName;
     }
@@ -39,4 +25,24 @@ public class ViewInfo {
         this.viewName = viewName;
     }
 
+    public boolean isRedirectRequire() {
+        return redirectRequire;
+    }
+
+    public void setRedirectRequire(boolean redirectRequire) {
+        this.redirectRequire = redirectRequire;
+    }
+
+    public boolean isContainView() {
+        return isContainView;
+    }
+
+    public void setContainView(boolean containView) {
+        isContainView = containView;
+    }
+
+    public void setRedirectTo(String url){
+        setRedirectRequire(true);
+        setViewName(url);
+    }
 }
