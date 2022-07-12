@@ -43,6 +43,10 @@ function checkPw(event){
     } else {
         labelIsSame.innerText="비밀번호와 비밀번호 확인 값이 일치합니다.";
     }
+
+    if (input==="" && inputCheck === "") {
+        labelIsSame.innerText="";
+    }
 }
 
 // 비동기 통신으로 중복 아이디 있는지 체크
