@@ -6,11 +6,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% request.setAttribute("loginPage", request.getContextPath() + "/loginPage"); %>
-<% request.setAttribute("registerPage", request.getContextPath() + "/registerPage"); %>
+<% request.setAttribute("loginPage", request.getContextPath() + "/login/page"); %>
+<% request.setAttribute("registerPage", request.getContextPath() + "/register/page/1"); %>
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 
 <% request.setAttribute("account", request.getContextPath() + "/account"); %>
+<% request.setAttribute("accountCert", request.getContextPath() + "/account/cert"); %>
+
 
 <html>
 <head>
@@ -26,7 +28,7 @@
 <nav class="navbar bg-light fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <img class="logo-img" src="icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
+            <img class="logo-img" src="../../icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
             <strong class="logo-text" onclick="location.href='${indexPage}'">Blind </strong>
         </a>
         <button class="navbar-toggler btn-dark " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
@@ -77,12 +79,19 @@
             <select class="form-select" name="domain">
                 <option selected>gmail.com</option>
             </select>
+            <button type="submit" class="btn btn-outline-primary" >이메일 인증하기</button>
         </div>
-
-        <button type="submit" class="btn btn-outline-primary" id="next-button">이메일 인증하기</button>
     </form>
 </div>
 <!-- 계정 정보 입력 폼 -->
+
+
+<%--인증번호 입력 폼--%>
+<form class="text-center" method="post" action="${accountCert}">
+    <span><input type="password" name="accountCertInput"></span>
+    <span><button class="btn btn-outline-primary btn-sm btn-auth-check" type="submit">인증</button></span>
+</form>
+<%--인증번호 입력 폼--%>
 
 <br>
 <%--메시지--%>

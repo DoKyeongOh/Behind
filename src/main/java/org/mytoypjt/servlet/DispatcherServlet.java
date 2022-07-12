@@ -49,14 +49,9 @@ public class DispatcherServlet extends HttpServlet {
 
         String viewName = viewResolver.getViewName(viewInfo);
 
-        if (viewInfo.getViewName().equals("")) {
-
-
-            return;
-        }
-
         if (viewInfo.isRedirectRequire()) {
-            resp.sendRedirect(viewInfo.getViewName());
+            String contextPath = getServletContext().getContextPath();
+            resp.sendRedirect(contextPath + viewName);
             return;
         }
         

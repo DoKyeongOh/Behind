@@ -1,9 +1,16 @@
 package org.mytoypjt.service;
 
 import org.mytoypjt.dao.AccountDao;
+import org.mytoypjt.models.dto.AccountCertDTO;
+import org.mytoypjt.models.entity.Account;
 import org.mytoypjt.utils.MailUtil;
 
 public class RegisterService {
+
+    public enum CertErrorType {
+        isNull, notInput, notSame, good
+    }
+
     public RegisterService() {
     }
 
@@ -13,30 +20,57 @@ public class RegisterService {
         return !isExistId;
     }
 
-    public boolean sendAccountCert(String email){
+    public AccountCertDTO sendAccountCert(Account account){
         String certValue = getRandomValue().trim();
-        sendMail(email, certValue);
-        return true;
-    }
-
-    public void sendMail(String email, String value){
         MailUtil mailUtil = new MailUtil();
-        mailUtil.setTitle("[비하인드] 요청하신 인증번를 알려드립니다.\n");
-
-        StringBuffer sb = new StringBuffer();
-        sb.append("<h3 style='color:black'> 요청하신 인증번호를 알려드립니다.</h3>\n");
-        sb.append("<h3 style='color:black'>아래의 인증번호를 인증번호 입력 창에 입력해 주세요.</h3>\n\n");
-        sb.append("<h2 style='color:red'>" + value + "</h2>");
-        sb.append("\n\n<h3 style='color:black'>감사합니다.</h3>");
-        String messageText = sb.toString();
-
-        mailUtil.setContentText(messageText);
-
-        mailUtil.sendMail(email);
+        mailUtil.sendCertMail(account.getEmail(), certValue);
+        return new AccountCertDTO(account, certValue);
     }
-    
+
+
     public String getRandomValue(){
         String value = Integer.toString((int)(Math.random() * 1000000));
         return value;
     }
+
+    public boolean isCorrectPw(String pw, String pwCheck){
+        if (pw == null || pwCheck == null) return false;
+        if (!pw.equals(pwCheck)) return false;
+        return true;
+    }
+
+
+
+    public CertErrorType getCertErrorType(AccountCertDTO dto, String inputValue){
+        CertErrorType type = CertErrorType.isNull;
+        if (dto == null)
+            return CertErrorType.isNull;
+
+        if (inputValue == null)
+            return CertErrorType.notInput;
+
+        if (!inputValue.equals(dto.getCertValue()))
+            return CertErrorType.notSame;
+
+        return CertErrorType.good;
+    }
+
+    public String getCertErrorMessage(CertErrorType selector){
+
+        switch (selector) {
+            case isNull : return "정보를 입력하고 이메일 인증을 먼저 시도해주세요 !!";
+
+            case notInput : return "인증번호를 입력해주세요 !!";
+
+            case notSame : return "인증번호가 일치하지 않습니다 !!";
+
+            case good: return "";
+        }
+
+        return "예상치 못한 에러가 발생했습니다 관리자에게 문의해주세요 !!";
+    }
+
+
+
+
 }

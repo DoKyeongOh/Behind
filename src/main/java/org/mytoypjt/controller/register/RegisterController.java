@@ -1,10 +1,8 @@
 package org.mytoypjt.controller.register;
 
-import com.mysql.cj.xdevapi.JsonParser;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.mytoypjt.controller.structure.annotations.RequestMapping;
+import org.mytoypjt.models.dto.AccountCertDTO;
 import org.mytoypjt.models.entity.Account;
 import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.service.RegisterService;
@@ -12,14 +10,12 @@ import org.mytoypjt.utils.ControllerUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class RegisterController {
+
+    final String accountCertKey = "accountCert";
 
     RegisterService registerService;
 
@@ -27,7 +23,7 @@ public class RegisterController {
         registerService = new RegisterService();
     }
 
-    @RequestMapping(uri = "/registerPage", method = "get")
+    @RequestMapping(uri = "/register/page/1", method = "get")
     public String showRegisterPage(HttpServletRequest req, HttpServletResponse resp){
         if (ControllerUtils.isExistUserSession(req))
             return "mainPage";
@@ -35,7 +31,7 @@ public class RegisterController {
         return "registerPage";
     }
 
-    @RequestMapping(uri = "/registerPage", method = "post")
+    @RequestMapping(uri = "/register/page/2", method = "get")
     public String showAccountInputPage(HttpServletRequest req, HttpServletResponse resp){
         String agreement = req.getParameter("isAgree");
         if (agreement == null) {
@@ -46,7 +42,18 @@ public class RegisterController {
             req.setAttribute("noticeMessage", "약관에 동의해주세요!!");
             return "registerPage";
         }
+
+        HttpSession session = req.getSession();
+        session.setAttribute(accountCertKey, null);
+
         return "accountInputPage";
+    }
+
+    @RequestMapping(uri = "/register/page/3", method = "get")
+    public String showProfileInputPage(HttpServletRequest req, HttpServletResponse resp){
+        // 프로필 입력 페이지 해야함.
+
+        return "registerPage";
     }
 
     @RequestMapping(uri = "/account", method = "post")
@@ -65,20 +72,20 @@ public class RegisterController {
             return viewInfo;
         }
 
-        if (pw == null || pwCheck == null) {
-            req.setAttribute("noticeMessage", "비밀번호를 입력해주세요 !!");
-            return viewInfo;
-        }
-
-        if (!pw.equals(pwCheck)) {
-            req.setAttribute("noticeMessage", "비밀번호와 비밀번호 확인이 다릅니다 !!");
+        if (!registerService.isCorrectPw(pw, pwCheck)) {
+            req.setAttribute("noticeMessage", "비밀번호를 확인해주세요 !!");
             return viewInfo;
         }
 
         String rcvMailAddress = email + "@" + domain;
-        registerService.sendAccountCert(rcvMailAddress);
-
         Account account = new Account(id, pw, rcvMailAddress);
+
+        AccountCertDTO dto = registerService.sendAccountCert(account);
+        dto.setAccount(account);
+
+        HttpSession session = req.getSession();
+        session.setAttribute(accountCertKey, dto);
+
         req.setAttribute("noticeMessage", "이메일에서 인증번호 확인 후 인증번호를 입력해주세요");
         return viewInfo;
     }
@@ -106,6 +113,28 @@ public class RegisterController {
         ViewInfo viewInfo = new ViewInfo();
         viewInfo.setContainView(false);
 
+        return viewInfo;
+    }
+
+    @RequestMapping(uri = "/account/cert", method = "post")
+    public ViewInfo checkAccountCert(HttpServletRequest req, HttpServletResponse resp){
+        HttpSession session = req.getSession();
+        AccountCertDTO dto = (AccountCertDTO) session.getAttribute(accountCertKey);
+        String inputValue = req.getParameter("accountCertInput");
+
+        RegisterService.CertErrorType type = registerService.getCertErrorType(dto, inputValue);
+        String errorMessage = registerService.getCertErrorMessage(type);
+
+        ViewInfo viewInfo = new ViewInfo();
+
+        if (!errorMessage.equals("")) {
+            req.setAttribute("noticeMessage", errorMessage);
+            return new ViewInfo("accountInputPage");
+        }
+
+        session.setAttribute(accountCertKey, null);
+
+        viewInfo.setRedirectTo("/register/page/3");
         return viewInfo;
     }
 }
