@@ -57,9 +57,13 @@ public class ViewResolver {
 
     public String getViewName(ViewInfo viewInfo) {
         if (!viewInfo.isContainView()) return "";
-        if (isExistPage(viewInfo.getViewName()))
-            return this.prefix + viewInfo.getViewName() + this.suffix;
-        else
+
+        if (viewInfo.isRedirectRequire())
+            return viewInfo.getViewName();
+
+        if (!isExistPage(viewInfo.getViewName()))
             return this.prefix + "pageNotFoundPage" + this.suffix;
+
+        return this.prefix + viewInfo.getViewName() + this.suffix;
     }
 }
