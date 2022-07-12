@@ -63,6 +63,21 @@ public class MailUtil {
         }
     }
 
+    public void sendCertMail(String mailAddress, String value){
+        setTitle("[비하인드] 요청하신 인증번를 알려드립니다.\n");
+
+        StringBuffer sb = new StringBuffer();
+        sb.append("<h3 style='color:black'> 요청하신 인증번호를 알려드립니다.</h3>\n");
+        sb.append("<h3 style='color:black'>아래의 인증번호를 인증번호 입력 창에 입력해 주세요.</h3>\n\n");
+        sb.append("<h2 style='color:red'>" + value + "</h2>");
+        sb.append("\n\n<h3 style='color:black'>감사합니다.</h3>");
+        String messageText = sb.toString();
+
+        setContentText(messageText);
+
+        sendMail(mailAddress);
+    }
+
     public Properties getMailProperties() {
         return mailProperties;
     }
