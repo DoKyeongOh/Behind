@@ -6,12 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% request.setAttribute("loginPage", request.getContextPath() + "/loginPage"); %>
-<% request.setAttribute("registerPage", request.getContextPath() + "/registerPage"); %>
+<% request.setAttribute("loginPage", request.getContextPath() + "/login/page"); %>
+<% request.setAttribute("registerPage", request.getContextPath() + "/register/page/1"); %>
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 
-<% request.setAttribute("pwResetCompletePage", request.getContextPath() + "/pwResetCompletePage"); %>
-<% request.setAttribute("pwReset", request.getContextPath() + "/pwReset"); %>
+<% request.setAttribute("pwPage", request.getContextPath() + "/pw/page/2"); %>
+<% request.setAttribute("pwResetRequest", request.getContextPath() + "/pw"); %>
 
 <html>
 <head>
@@ -26,7 +26,7 @@
 <nav class="navbar bg-light fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <img class="logo-img" src="icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
+            <img class="logo-img" src="../../icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
             <strong class="logo-text" onclick="location.href='${indexPage}'">Blind </strong>
         </a>
         <button class="navbar-toggler btn-dark " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
@@ -58,7 +58,8 @@
 
 <!-- 비밀번호 입력 폼 -->
 <div class="form-auth-input">
-    <form class="input-form" method="post" action="${pwReset}">
+    <form class="input-form" method="POST" action="${pwResetRequest}">
+        <input type="hidden" name="_method" value="PUT">
         <p><input type="text" class="form-control" placeholder="비밀번호" name="password"/></p>
         <p><input type="text" class="form-control" placeholder="비밀번호 확인" name="passwordCheck"/></p>
         <button type="submit" class="btn btn-primary btn-login-submit btn-auth-margin">재설정하기</button>

@@ -21,7 +21,7 @@
     <nav class="navbar bg-light fixed-top">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">
-              <img class="logo-img" src="icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
+              <img class="logo-img" src="../../icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
               <strong class="logo-text" onclick="location.href='${indexPage}'">Blind </strong>
             </a>
           <button class="navbar-toggler btn-dark " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">

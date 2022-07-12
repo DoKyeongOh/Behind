@@ -6,8 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% request.setAttribute("loginPage", request.getContextPath() + "/loginPage"); %>
-<% request.setAttribute("registerPage", request.getContextPath() + "/registerPage"); %>
+<% request.setAttribute("loginPage", request.getContextPath() + "/login/page"); %>
+<% request.setAttribute("registerPage", request.getContextPath() + "/register/page/1"); %>
+<% request.setAttribute("accountEntryPage", request.getContextPath() + "/register/page/2"); %>
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 
 <html>
@@ -23,7 +24,7 @@
 <nav class="navbar bg-light fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <img class="logo-img" src="icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
+            <img class="logo-img" src="../../icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
             <strong class="logo-text" onclick="location.href='${indexPage}'">Blind </strong>
         </a>
         <button class="navbar-toggler btn-dark" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
@@ -294,7 +295,7 @@
 <%--이용 약관--%>
 
 <%--약관 동의 폼--%>
-<form method="post" action="${registerPage}">
+<form method="get" action="${accountEntryPage}">
     <div class="text-center">
         이용 약관에 동의하십니까? <br>
         <div class="form-check form-check-inline">

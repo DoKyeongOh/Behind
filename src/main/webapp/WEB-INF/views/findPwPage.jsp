@@ -6,11 +6,11 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% request.setAttribute("loginPage", request.getContextPath() + "/loginPage"); %>
-<% request.setAttribute("registerPage", request.getContextPath() + "/registerPage"); %>
+<% request.setAttribute("loginPage", request.getContextPath() + "/login/page"); %>
+<% request.setAttribute("registerPage", request.getContextPath() + "/register/page/1"); %>
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 
-<% request.setAttribute("pwCertification", request.getContextPath() + "/pwCertification"); %>
+<% request.setAttribute("pwCert", request.getContextPath() + "/pw/cert"); %>
 
 <html>
 <head>
@@ -25,7 +25,7 @@
 <nav class="navbar bg-light fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <img class="logo-img" src="icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
+            <img class="logo-img" src="../../icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
             <strong class="logo-text" onclick="location.href='${indexPage}'">Blind </strong>
         </a>
         <button class="navbar-toggler btn-dark " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
@@ -57,7 +57,7 @@
 
 <!-- 아이디, 이메일 입력 폼 -->
 <div class="form-auth-input">
-    <form class="input-form" method="get" action="${pwCertification}">
+    <form class="input-form" method="get" action="${pwCert}">
         <p><input type="text" class="form-control" placeholder="ID" name="id"/></p>
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Email" name="email">
@@ -75,7 +75,7 @@
 <!-- 아이디, 이메일 입력 폼 -->
 
 <!-- 인증번호 입력 폼 -->
-    <form class="form-auth-check text-center" method="post" action="${pwCertification}">
+    <form class="form-auth-check text-center" method="post" action="${pwCert}">
         <span><input type="password" name="pwCertificationInput"></span>
         <span><button class="btn btn-outline-primary btn-sm btn-auth-check" type="submit">인증하고 비밀번호 재설정하기</button></span>
     </form>

@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
-<% request.setAttribute("mainPage", request.getContextPath() + "/mainPage"); %>
+<% request.setAttribute("mainPage", request.getContextPath() + "/main/page"); %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -24,7 +24,7 @@
 <nav class="navbar bg-light fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="${mainPage}">
-            <img class="logo-img" src="icons/chat-left-heart-fill.svg" onclick="location.href='${mainPage}'"/>
+            <img class="logo-img" src="../../icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
             <strong class="logo-text" onclick="location.href='${mainPage}'">Blind</strong>
         </a>
         <button class="navbar-toggler btn-dark" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
