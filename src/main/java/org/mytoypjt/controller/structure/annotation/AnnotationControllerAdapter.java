@@ -23,6 +23,10 @@ public class AnnotationControllerAdapter extends BaseControllerAdapter {
         String uri = req.getRequestURI();
         String methodName = req.getMethod();
 
+        String hiddenMethod = req.getParameter("_method");
+        if (hiddenMethod != null)
+            methodName = hiddenMethod;
+
         Object controller = requestControllerMapping.getController(uri);
         if (controller == null)
             return new ViewInfo("pageNotFoundPage");
