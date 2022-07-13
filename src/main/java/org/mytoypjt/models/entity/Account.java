@@ -4,13 +4,13 @@ import lombok.Getter;
 
 @Getter
 public class Account {
-    int userNo;
+    int accountNo;
     String id;
     String password;
     String email;
 
     public Account(int userNo, String id, String password, String email) {
-        this.userNo = userNo;
+        this.accountNo = userNo;
         this.id = id;
         this.password = password;
         this.email = email;
