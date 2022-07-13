@@ -1,21 +1,27 @@
 package org.mytoypjt.service;
 
 import org.mytoypjt.dao.AccountDao;
+import org.mytoypjt.dao.UserDao;
 import org.mytoypjt.models.dto.AccountCertDTO;
 import org.mytoypjt.models.entity.Account;
+import org.mytoypjt.models.entity.User;
 import org.mytoypjt.utils.MailUtil;
 
 public class RegisterService {
+
+    AccountDao accountDao;
+    UserDao userDao;
 
     public enum CertErrorType {
         isNull, notInput, notSame, good
     }
 
     public RegisterService() {
+        accountDao = new AccountDao();
+        userDao = new UserDao();
     }
 
     public boolean isUsableAccountId(String id){
-        AccountDao accountDao = new AccountDao();
         boolean isExistId = accountDao.isExistId(id);
         return !isExistId;
     }
@@ -33,13 +39,27 @@ public class RegisterService {
         return value;
     }
 
+    public boolean createAccount(Account account){
+        boolean successed = accountDao.createAccount(account);
+        return successed;
+    }
+
+    public boolean createDefaultUser(Account account){
+        int accountNo = accountDao.findAccountNo(account);
+        User user = new User(accountNo);
+        boolean successed = userDao.createUser(user);
+        return successed;
+    }
+
+    public boolean updateUser(User user) {
+        return userDao.updateUser(user);
+    }
+
     public boolean isCorrectPw(String pw, String pwCheck){
         if (pw == null || pwCheck == null) return false;
         if (!pw.equals(pwCheck)) return false;
         return true;
     }
-
-
 
     public CertErrorType getCertErrorType(AccountCertDTO dto, String inputValue){
         CertErrorType type = CertErrorType.isNull;
