@@ -20,6 +20,12 @@ public class AnnotationControllerAdapter extends BaseControllerAdapter {
 
     @Override
     public ViewInfo execute(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            req.setCharacterEncoding("UTF-8");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
         String uri = req.getRequestURI();
         String methodName = req.getMethod();
 
