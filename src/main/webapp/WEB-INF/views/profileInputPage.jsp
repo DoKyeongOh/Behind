@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: dokyeongoh
-  Date: 2022/06/28
-  Time: 10:45 PM
+  Date: 2022/07/13
+  Time: 10:41 AM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -10,9 +10,7 @@
 <% request.setAttribute("registerPage", request.getContextPath() + "/register/page/1"); %>
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 
-<% request.setAttribute("account", request.getContextPath() + "/account"); %>
-<% request.setAttribute("accountCert", request.getContextPath() + "/account/cert"); %>
-
+<% request.setAttribute("profile", request.getContextPath() + "/profile"); %>
 
 <html>
 <head>
@@ -55,49 +53,52 @@
 <!-- navbar + offcanvas -->
 
 <div class="text-center main-text">
-    <h1 class="main-text-font">Your Account</h1>
+    <h1 class="main-text-font">Your Profile</h1>
     <strong>please fill this form for use our service</strong>
 </div>
 
 <!-- 계정 정보 입력 폼 -->
 <div class="text-center">
-    <form class="form-input-account" method="post" action="${account}">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="id" id="input-account-id" name="id">
-            <button class="btn btn-outline-secondary" type="button" id="btn-same-check">중복체크</button>
-        </div>
-        <label id="labelIsUsableId"></label><br><br>
+    <form id="profile-input-form" method="post" action="${profile}">
 
-        <p><input type="password" class="form-control" placeholder="Password" id="input-account-pw" name="pw"/></p>
-        <p>
-            <input type="password" class="form-control" placeholder="Password check" name="pwCheck" id="input-account-pw-check"/>
-            <label id="labelIsSamePw"></label>
-        </p>
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Email" name="email">
-            <span class="input-group-text">@</span>
-            <select class="form-select" name="domain">
-                <option selected>gmail.com</option>
+        <input type="text" class="form-control" placeholder="사용할 닉네임" id="input-nicname" name="nicname">
+
+        <div class="certer-inline-align">
+            <select class="form-select" name="age" id="btn-age-dropdown">
+                <option selected>나이를 선택하세요</option>
             </select>
-            <button type="submit" class="btn btn-outline-primary" >이메일 인증하기</button>
+
+            <select class="form-select" name="city" id="btn-city-dropdown">
+                <option selected>지역을 선택하세요</option>
+            </select>
         </div>
+
+        <div id="gender-select-box">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" id="radio-man" type="radio" name="genderSelector" value="남자">
+                <label class="form-check-label" id="label-man">남자</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" id="radio-woman" type="radio" name="genderSelector" value="여자">
+                <label class="form-check-label" id="label-woman">여자</label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="btn-prifile-apply">적용하기</button>
     </form>
+
+    <button type="submit" class="btn btn-outline-primary" id="btn-prifile-not-apply" onclick="location.href='${indexPage}'">
+        건너뛰기
+    </button>
 </div>
 <!-- 계정 정보 입력 폼 -->
 
-
-<%--인증번호 입력 폼--%>
-<form class="text-center" method="post" action="${accountCert}">
-    <span><input type="password" name="accountCertInput"></span>
-    <span><button class="btn btn-outline-primary btn-sm btn-auth-check" type="submit">인증</button></span>
-</form>
-<%--인증번호 입력 폼--%>
-
 <br>
-<%--메시지--%>
+<!--메시지-->
 <h6 class="text-center" id="notice-label">${noticeMessage}</h6>
-<%--메시지--%>
-<script src="../../js/accountInput.js"></script>
+<!--메시지-->
+
+<script src="../../js/profileInput.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
