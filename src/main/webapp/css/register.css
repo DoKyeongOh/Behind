@@ -31,3 +31,47 @@
     margin-right: 2%;
 }
 
+#profile-input-form {
+    margin-top: 5%;
+    margin-left: 20%;
+    margin-right: 20%;
+    text-align: center; 
+}
+
+#btn-age-dropdown {
+    width: 300px;
+    margin-top: 3%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+#btn-city-dropdown {
+    width: 300px;
+    margin-top: 3%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+#input-nicname {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+#btn-prifile-apply {
+    margin-top:4%;
+    width: 40%;
+}
+
+#gender-select-box {
+    margin-top:5%;
+}
+#btn-prifile-not-apply {
+    width: 24%;
+}
+
+.certer-inline-align {
+    display: flex;
+    text-align: center;
+}
+

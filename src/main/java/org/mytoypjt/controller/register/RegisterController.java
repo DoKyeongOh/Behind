@@ -4,6 +4,7 @@ import org.json.simple.JSONObject;
 import org.mytoypjt.controller.structure.annotations.RequestMapping;
 import org.mytoypjt.models.dto.AccountCertDTO;
 import org.mytoypjt.models.entity.Account;
+import org.mytoypjt.models.entity.User;
 import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.service.RegisterService;
 import org.mytoypjt.utils.ControllerUtils;
@@ -12,10 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
 
 public class RegisterController {
 
-    final String accountCertKey = "accountCert";
+    final String ACCOUNT_CERT_KEY = "accountCert";
+    final String ACCOUNT_NO = "accountNo";
+
 
     RegisterService registerService;
 
@@ -44,16 +49,14 @@ public class RegisterController {
         }
 
         HttpSession session = req.getSession();
-        session.setAttribute(accountCertKey, null);
+        session.setAttribute(ACCOUNT_CERT_KEY, null);
 
         return "accountInputPage";
     }
 
     @RequestMapping(uri = "/register/page/3", method = "get")
     public String showProfileInputPage(HttpServletRequest req, HttpServletResponse resp){
-        // 프로필 입력 페이지 해야함.
-
-        return "registerPage";
+        return "profileInputPage";
     }
 
     @RequestMapping(uri = "/account", method = "post")
@@ -84,7 +87,7 @@ public class RegisterController {
         dto.setAccount(account);
 
         HttpSession session = req.getSession();
-        session.setAttribute(accountCertKey, dto);
+        session.setAttribute(ACCOUNT_CERT_KEY, dto);
 
         req.setAttribute("noticeMessage", "이메일에서 인증번호 확인 후 인증번호를 입력해주세요");
         return viewInfo;
@@ -119,7 +122,7 @@ public class RegisterController {
     @RequestMapping(uri = "/account/cert", method = "post")
     public ViewInfo checkAccountCert(HttpServletRequest req, HttpServletResponse resp){
         HttpSession session = req.getSession();
-        AccountCertDTO dto = (AccountCertDTO) session.getAttribute(accountCertKey);
+        AccountCertDTO dto = (AccountCertDTO) session.getAttribute(ACCOUNT_CERT_KEY);
         String inputValue = req.getParameter("accountCertInput");
 
         RegisterService.CertErrorType type = registerService.getCertErrorType(dto, inputValue);
@@ -132,9 +135,41 @@ public class RegisterController {
             return new ViewInfo("accountInputPage");
         }
 
-        session.setAttribute(accountCertKey, null);
+        boolean successed = registerService.createAccount(dto.getAccount());
+        if (!successed) {
+            req.setAttribute("noticeMessage", "예상치 못한 오류가 발생했습니다 다시 시도해주세요.");
+            return new ViewInfo("accountInputPage");
+        }
+
+        registerService.createDefaultUser(dto.getAccount());
+
+        session.setAttribute(ACCOUNT_CERT_KEY, null);
+        session.setAttribute(ACCOUNT_NO, dto.getAccount().getAccountNo());
 
         viewInfo.setRedirectTo("/register/page/3");
+        return viewInfo;
+    }
+
+    @RequestMapping(uri = "/profile", method = "post")
+    public ViewInfo updateUser(HttpServletRequest req, HttpServletResponse resp){
+
+        String nicname = req.getParameter("nicname");
+        String age = req.getParameter("age");
+        String city = req.getParameter("city");
+        String gender = req.getParameter("genderSelector");
+
+        HttpSession session = req.getSession();
+        int accountNo = (int) session.getAttribute(ACCOUNT_NO);
+        session.setAttribute(ACCOUNT_NO, null);
+
+        User user = new User(accountNo, nicname, new Date(), city, Integer.parseInt(age), gender, 1);
+        boolean successed = registerService.updateUser(user);
+
+        if (!successed)
+            return new ViewInfo("profileInputPage");
+
+        ViewInfo viewInfo = new ViewInfo();
+        viewInfo.setRedirectTo("/");
         return viewInfo;
     }
 }

@@ -7,8 +7,6 @@ import org.mytoypjt.models.entity.User;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
-import java.net.URL;
-import java.util.Map;
 
 public class ControllerUtils {
 
@@ -18,7 +16,7 @@ public class ControllerUtils {
         User user = (User) session.getAttribute("user");
         if (user == null)
             return false;
-        if (user.getUserNo() < 0)
+        if (user.getAccountNo() < 0)
             return false;
         return true;
     }
