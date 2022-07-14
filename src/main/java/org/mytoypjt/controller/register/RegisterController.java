@@ -4,7 +4,7 @@ import org.json.simple.JSONObject;
 import org.mytoypjt.controller.structure.annotations.RequestMapping;
 import org.mytoypjt.models.dto.AccountCertDTO;
 import org.mytoypjt.models.entity.Account;
-import org.mytoypjt.models.entity.User;
+import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.service.RegisterService;
 import org.mytoypjt.utils.ControllerUtils;
@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 public class RegisterController {
@@ -30,7 +29,7 @@ public class RegisterController {
 
     @RequestMapping(uri = "/register/page/1", method = "get")
     public String showRegisterPage(HttpServletRequest req, HttpServletResponse resp){
-        if (ControllerUtils.isExistUserSession(req))
+        if (ControllerUtils.isExistProfileSession(req))
             return "mainPage";
 
         return "registerPage";
@@ -69,7 +68,7 @@ public class RegisterController {
         String email = (String) req.getParameter("email");
         String domain = (String) req.getParameter("domain");
 
-        boolean isUsableId = registerService.isUsableAccountId(id);
+        boolean isUsableId = registerService.isUsableAccountNo(id);
         if (!isUsableId) {
             req.setAttribute("noticeMessage", "아이디를 이미 사용중입니다 !!");
             return viewInfo;
@@ -93,7 +92,7 @@ public class RegisterController {
         return viewInfo;
     }
 
-    @RequestMapping(uri = "/idUsage", method = "post")
+    @RequestMapping(uri = "/id-usage", method = "post")
     public ViewInfo checkSameId(HttpServletRequest req, HttpServletResponse resp){
         JSONObject jsonObject = ControllerUtils.getJsonObject(req);
 
@@ -104,7 +103,7 @@ public class RegisterController {
 
         JSONObject respJsonObject = new JSONObject();
 
-        boolean isUsable = registerService.isUsableAccountId(newId);
+        boolean isUsable = registerService.isUsableAccountNo(newId);
         respJsonObject.put("isUsable", isUsable);
 
         try {
@@ -128,45 +127,56 @@ public class RegisterController {
         RegisterService.CertErrorType type = registerService.getCertErrorType(dto, inputValue);
         String errorMessage = registerService.getCertErrorMessage(type);
 
-        ViewInfo viewInfo = new ViewInfo();
-
         if (!errorMessage.equals("")) {
             req.setAttribute("noticeMessage", errorMessage);
             return new ViewInfo("accountInputPage");
         }
 
-        boolean successed = registerService.createAccount(dto.getAccount());
+        boolean successed = registerService.createAccount(dto);
         if (!successed) {
             req.setAttribute("noticeMessage", "예상치 못한 오류가 발생했습니다 다시 시도해주세요.");
             return new ViewInfo("accountInputPage");
         }
 
-        registerService.createDefaultUser(dto.getAccount());
+        int accountNo = registerService.getCreatedAccountNo(dto);
+        if (!registerService.isUsableAccountNo(Integer.toString(accountNo))) {
+            req.setAttribute("noticeMessage", "예상치 못한 오류가 발생했습니다 다시 시도해주세요.");
+            return new ViewInfo("accountInputPage");
+        }
 
         session.setAttribute(ACCOUNT_CERT_KEY, null);
-        session.setAttribute(ACCOUNT_NO, dto.getAccount().getAccountNo());
+        session.setAttribute(ACCOUNT_NO, accountNo);
 
+        ViewInfo viewInfo = new ViewInfo();
         viewInfo.setRedirectTo("/register/page/3");
         return viewInfo;
     }
 
     @RequestMapping(uri = "/profile", method = "post")
-    public ViewInfo updateUser(HttpServletRequest req, HttpServletResponse resp){
-
+    public ViewInfo updateProfile(HttpServletRequest req, HttpServletResponse resp){
         String nicname = req.getParameter("nicname");
         String age = req.getParameter("age");
         String city = req.getParameter("city");
         String gender = req.getParameter("genderSelector");
 
         HttpSession session = req.getSession();
-        int accountNo = (int) session.getAttribute(ACCOUNT_NO);
+        String accountNoString = (String) session.getAttribute(ACCOUNT_NO);
+
+        if (accountNoString == null) {
+            return ViewInfo.getRedirectViewInfo("index");
+        }
+
+        int accountNo = Integer.parseInt(accountNoString);
         session.setAttribute(ACCOUNT_NO, null);
 
-        User user = new User(accountNo, nicname, new Date(), city, Integer.parseInt(age), gender, 1);
-        boolean successed = registerService.updateUser(user);
 
-        if (!successed)
+        Profile profile = new Profile(accountNo, nicname, new Date(), city, Integer.parseInt(age), gender, 1);
+        boolean successed = registerService.updateProfile(profile);
+
+        if (!successed) {
+            req.setAttribute("noticeMessage", "예상치 못한 문제가 발생했습니다. 관리자에게 문의하세요!");
             return new ViewInfo("profileInputPage");
+        }
 
         ViewInfo viewInfo = new ViewInfo();
         viewInfo.setRedirectTo("/");
