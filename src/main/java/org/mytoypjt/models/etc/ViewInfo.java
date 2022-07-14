@@ -45,4 +45,10 @@ public class ViewInfo {
         setRedirectRequire(true);
         setViewName(url);
     }
+
+    public static ViewInfo getRedirectViewInfo(String viewName){
+        ViewInfo viewInfo = new ViewInfo();
+        viewInfo.setRedirectTo(viewName);
+        return viewInfo;
+    }
 }
