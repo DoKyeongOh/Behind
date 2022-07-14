@@ -1,16 +1,16 @@
 package org.mytoypjt.service;
 
 import org.mytoypjt.dao.AccountDao;
-import org.mytoypjt.dao.UserDao;
+import org.mytoypjt.dao.ProfileDao;
 import org.mytoypjt.models.dto.AccountCertDTO;
 import org.mytoypjt.models.entity.Account;
-import org.mytoypjt.models.entity.User;
+import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.MailUtil;
 
 public class RegisterService {
 
     AccountDao accountDao;
-    UserDao userDao;
+    ProfileDao profileDao;
 
     public enum CertErrorType {
         isNull, notInput, notSame, good
@@ -18,11 +18,11 @@ public class RegisterService {
 
     public RegisterService() {
         accountDao = new AccountDao();
-        userDao = new UserDao();
+        profileDao = new ProfileDao();
     }
 
-    public boolean isUsableAccountId(String id){
-        boolean isExistId = accountDao.isExistId(id);
+    public boolean isUsableAccountNo(String no){
+        boolean isExistId = accountDao.isExistId(no);
         return !isExistId;
     }
 
@@ -39,20 +39,34 @@ public class RegisterService {
         return value;
     }
 
-    public boolean createAccount(Account account){
-        boolean successed = accountDao.createAccount(account);
-        return successed;
+    public boolean createAccount(AccountCertDTO certDTO){
+        Account account = certDTO.getAccount();
+        boolean accountOk = accountDao.createAccount(account);
+        boolean profileOk = true;
+        if (accountOk)
+            profileOk = createDefaultProfile(account);
+
+        if (!profileOk) {
+            int accountNo = accountDao.findAccountNo(account);
+            accountDao.deleteAccount(accountNo);
+        }
+
+        return profileOk;
     }
 
-    public boolean createDefaultUser(Account account){
+    public boolean createDefaultProfile(Account account){
         int accountNo = accountDao.findAccountNo(account);
-        User user = new User(accountNo);
-        boolean successed = userDao.createUser(user);
+        Profile profile = new Profile(accountNo);
+        boolean successed = profileDao.createProfile(profile);
         return successed;
     }
 
-    public boolean updateUser(User user) {
-        return userDao.updateUser(user);
+    public int getCreatedAccountNo(AccountCertDTO certDTO){
+        return accountDao.findAccountNo(certDTO.getAccount());
+    }
+
+    public boolean updateProfile(Profile profile) {
+        return profileDao.updateProfile(profile);
     }
 
     public boolean isCorrectPw(String pw, String pwCheck){

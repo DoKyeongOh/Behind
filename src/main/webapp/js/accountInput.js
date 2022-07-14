@@ -1,7 +1,6 @@
-
+// 아이디 중복확인
 const btnCheckSameId = document.getElementById("btn-same-check");
 
-// 아이디 중복확인
 btnCheckSameId.addEventListener("click", (event) => new function(event){
     const inputId = document.getElementById("input-account-id").value;
     if (inputId === "") {
@@ -9,7 +8,7 @@ btnCheckSameId.addEventListener("click", (event) => new function(event){
         return;
     } 
     
-    const xhr = getXmlHttpRequest('post', '/idUsage', {id:inputId});
+    const xhr = getXmlHttpRequest('post', '/id-usage', {id:inputId});
 
     xhr.onreadystatechange = function(event) {
         const {target} = event;

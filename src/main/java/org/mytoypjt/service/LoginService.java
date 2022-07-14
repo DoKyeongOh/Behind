@@ -1,8 +1,8 @@
 package org.mytoypjt.service;
 
 import org.mytoypjt.dao.AccountDao;
-import org.mytoypjt.dao.UserDao;
-import org.mytoypjt.models.entity.User;
+import org.mytoypjt.dao.ProfileDao;
+import org.mytoypjt.models.entity.Profile;
 
 public class LoginService {
     private AccountDao loginDao;
@@ -11,15 +11,15 @@ public class LoginService {
 
     }
 
-    public User getUser(String userId, String userPw){
+    public Profile getProfile(String accountId, String accountPw){
         AccountDao loginDao = new AccountDao();
-        int accountNo = loginDao.getAccountNo(userId, userPw);
+        int accountNo = loginDao.getAccountNo(accountId, accountPw);
 
-        if (!User.isCorrectUserNo(accountNo)) return null;
+        if (!Profile.isCorrectProfileNo(accountNo)) return null;
 
-        UserDao userDao = new UserDao();
-        User user = userDao.getUser(accountNo);
+        ProfileDao profileDao = new ProfileDao();
+        Profile profile = profileDao.getProfile(accountNo);
 
-        return user;
+        return profile;
     }
 }
