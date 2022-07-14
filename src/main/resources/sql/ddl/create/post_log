@@ -2,5 +2,5 @@ CREATE TABLE `POST_LOG` (
 	`post_log_no` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	`logging_date` DATE NULL,
 	`is_post` BOOL NULL,
-	`account_no` INT NULL REFERENCES USER(account_no)
+	`account_no` INT NULL REFERENCES PROFILE(account_no)
 );

@@ -1,6 +1,6 @@
 package org.mytoypjt.controller.structure.properties;
 
-import org.mytoypjt.models.entity.User;
+import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.etc.ViewInfo;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,10 +52,10 @@ public abstract class PropertiesControllerTemplete implements IController {
         return viewInfo;
     }
 
-    public boolean isUserExist(){
+    public boolean isProfileExist(){
         HttpSession httpSession = req.getSession();
-        User user = (User) httpSession.getAttribute("user");
-        if (user == null)
+        Profile profile = (Profile) httpSession.getAttribute("profile");
+        if (profile == null)
             return false;
         return true;
     }

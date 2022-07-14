@@ -2,5 +2,5 @@ CREATE TABLE `LOGIN_LOG` (
 	`login_log_no` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	`logging_date` DATE NULL,
 	`is_login` BOOL NULL,
-	`account_no` INT NULL REFERENCES USER(account_no)
+	`account_no` INT NULL REFERENCES PROFILE(account_no)
 );

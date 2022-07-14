@@ -12,7 +12,7 @@ public class MainController extends PropertiesControllerTemplete {
     @RequestMapping(uri = "/main/page", method = "get")
     public String showMainPage(HttpServletRequest req, HttpServletResponse resp){
         HttpSession session = req.getSession();
-        if (session.getAttribute("user") == null)
+        if (session.getAttribute("profile") == null)
             return "index";
 
         return "mainPage";
@@ -20,7 +20,7 @@ public class MainController extends PropertiesControllerTemplete {
 
     @Override
     public Object doGet() {
-        if (!isUserExist())
+        if (!isProfileExist())
             return "index";
 
         return "main";

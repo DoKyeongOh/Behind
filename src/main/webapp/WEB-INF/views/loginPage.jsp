@@ -1,4 +1,4 @@
-<%@ page import="org.mytoypjt.models.entity.User" %><%--
+<%@ page import="org.mytoypjt.models.entity.Profile" %><%--
   Created by IntelliJ IDEA.
   User: dokyeongoh
   Date: 2022/06/27
@@ -60,11 +60,11 @@
     <form class="input-form" method="post" action="${login}">
         <div class="mb-3">
             <label class="form-label">ID</label>
-            <input type="text" class="form-control" name="userId">
+            <input type="text" class="form-control" name="accountId">
         </div>
         <div class="mb-3">
             <label class="form-label">Password</label>
-            <input type="password" class="form-control" name="userPw">
+            <input type="password" class="form-control" name="accountPw">
         </div>
         <div>
             <button type="submit" class="btn btn-primary btn-login-submit">로그인 하기</button>

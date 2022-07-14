@@ -18,7 +18,7 @@ public class IndexController extends PropertiesControllerTemplete {
     @RequestMapping(uri = "/", method = "GET")
     public String showIndexPage(HttpServletRequest req, HttpServletResponse resp){
         HttpSession session = req.getSession();
-        if (session.getAttribute("user") != null)
+        if (session.getAttribute("profile") != null)
             return "mainPage";
 
         return "index";

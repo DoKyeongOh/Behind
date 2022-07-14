@@ -1,4 +1,4 @@
-<%@ page import="org.mytoypjt.models.entity.User" %><%--
+<%@ page import="org.mytoypjt.models.entity.Profile" %><%--
   Created by IntelliJ IDEA.
   User: dokyeongoh
   Date: 2022/06/30
@@ -62,7 +62,7 @@
 
 <div class="text-center main-text">
     <h1 class="main-text-font">Behind</h1>
-    당신의 닉네임은 "${user.nicname}" 입니다!!!
+    당신의 닉네임은 "${profile.nicname}" 입니다!!!
 </div>
 
 

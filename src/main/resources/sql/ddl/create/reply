@@ -3,5 +3,5 @@ CREATE TABLE `REPLY` (
 	`content` TEXT NULL,
 	`is_use_anonymous_name` BOOL NULL,
 	`account_no` INT NULL,
-	`comment_id` VARCHAR(30) NULL REFERENCES USER(account_no)
+	`comment_id` VARCHAR(30) NULL REFERENCES PROFILE(account_no)
 );

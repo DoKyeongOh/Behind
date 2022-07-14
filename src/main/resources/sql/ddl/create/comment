@@ -3,6 +3,6 @@ CREATE TABLE `COMMENT` (
 	`content` TEXT NULL,
 	`reply_count` INT UNSIGNED NULL,
 	`is_use_anonymous_name`	BOOL NULL,
-	`account_no` INT NULL REFERENCES USER(account_no),
+	`account_no` INT NULL REFERENCES PROFILE(account_no),
 	`post_id` BIGINT NULL REFERENCES POST(post_id)
 );

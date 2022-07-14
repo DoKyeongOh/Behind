@@ -1,7 +1,7 @@
 CREATE TABLE `REPORT` (
 	`report_no` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	`account_no2` INT NOT NULL REFERENCES USER(account_no),
-	`account_no` INT NOT NULL REFERENCES USER(account_no),
+	`account_no2` INT NOT NULL REFERENCES PROFILE(account_no),
+	`account_no` INT NOT NULL REFERENCES PROFILE(account_no),
 	`reason` TEXT NULL,
 	`type` TEXT NULL,
 	`is_processed` BOOL NULL

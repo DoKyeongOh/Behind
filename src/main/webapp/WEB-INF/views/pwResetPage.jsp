@@ -60,8 +60,8 @@
 <div class="form-auth-input">
     <form class="input-form" method="POST" action="${pwResetRequest}">
         <input type="hidden" name="_method" value="PUT">
-        <p><input type="text" class="form-control" placeholder="비밀번호" name="password"/></p>
-        <p><input type="text" class="form-control" placeholder="비밀번호 확인" name="passwordCheck"/></p>
+        <p><input type="password" class="form-control" placeholder="비밀번호" name="password"/></p>
+        <p><input type="password" class="form-control" placeholder="비밀번호 확인" name="passwordCheck"/></p>
         <button type="submit" class="btn btn-primary btn-login-submit btn-auth-margin">재설정하기</button>
     </form>
 </div>

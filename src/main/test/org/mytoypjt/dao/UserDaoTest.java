@@ -1,7 +1,7 @@
 package org.mytoypjt.dao;
 
 import org.junit.jupiter.api.Test;
-import org.mytoypjt.models.entity.User;
+import org.mytoypjt.models.entity.Profile;
 
 import java.sql.Date;
 
@@ -9,14 +9,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserDaoTest {
 
-    UserDao userDao = new UserDao();
+    ProfileDao profileDao = new ProfileDao();
 
 
     @Test
-    void createUser() {
+    void createProfile() {
         boolean a = true;
         try {
-            userDao.createUser(new User(7));
+            profileDao.createProfile(new Profile(7));
         } catch (Exception e) {
             String errorMessage = e.getMessage();
             a = false;
@@ -26,12 +26,12 @@ class UserDaoTest {
     }
 
     @Test
-    void updateUser() {
+    void updateProfile() {
         boolean test = true;
         try {
             java.util.Date date = new java.util.Date();
             Date sqlDate = new Date(date.getTime());
-            userDao.updateUser(new User(10, "BehindAdmin", sqlDate, "choen-an", 26, "M", 1));
+            profileDao.updateProfile(new Profile(10, "BehindAdmin", sqlDate, "choen-an", 26, "M", 1));
         } catch (Exception e) {
             String errorMessage = e.getMessage();
             test = false;

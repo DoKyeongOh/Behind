@@ -2,7 +2,7 @@ package org.mytoypjt.utils;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.mytoypjt.models.entity.User;
+import org.mytoypjt.models.entity.Profile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -10,13 +10,13 @@ import java.io.BufferedReader;
 
 public class ControllerUtils {
 
-    public static boolean isExistUserSession(HttpServletRequest req){
+    public static boolean isExistProfileSession(HttpServletRequest req){
 
         HttpSession session = req.getSession();
-        User user = (User) session.getAttribute("user");
-        if (user == null)
+        Profile profile = (Profile) session.getAttribute("user");
+        if (profile == null)
             return false;
-        if (user.getAccountNo() < 0)
+        if (profile.getAccountNo() < 0)
             return false;
         return true;
     }

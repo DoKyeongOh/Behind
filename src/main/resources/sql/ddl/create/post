@@ -7,5 +7,5 @@ CREATE TABLE `POST` (
 	`is_use_anonymous_name` BOOL NULL,
 	`comment_count` INT UNSIGNED NULL,
 	`like_count` INT UNSIGNED NULL,
-	`account_no` INT NULL REFERENCES USER(account_no)
+	`account_no` INT NULL REFERENCES PROFILE(account_no)
 );

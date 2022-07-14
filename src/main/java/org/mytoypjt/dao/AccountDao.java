@@ -9,13 +9,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AccountDao {
-    final int NOT_CORRECTED_USER_NO = -1;
+    final int NOT_CORRECTED_ACCOUNT_NO = -1;
     final int DUPLICATION_ACCOUNT = -2;
-    final String NOT_FOUND_USER_ID = "";
+    final String NOT_FOUND_ACCOUNT_ID = "";
 
     public int getAccountNo(String id, String pw) {
         String sql = "select account_no from account where id=? and password=?";
-        int userNo = NOT_CORRECTED_USER_NO;
+        int accountNo = NOT_CORRECTED_ACCOUNT_NO;
         try (
                 Connection conn = new DBUtil().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -25,19 +25,19 @@ public class AccountDao {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                if (userNo != NOT_CORRECTED_USER_NO) return DUPLICATION_ACCOUNT;
-                userNo = resultSet.getInt(1);
+                if (accountNo != NOT_CORRECTED_ACCOUNT_NO) return DUPLICATION_ACCOUNT;
+                accountNo = resultSet.getInt(1);
             }
-            return userNo;
+            return accountNo;
         } catch (SQLException e) {
             e.printStackTrace();
-            return NOT_CORRECTED_USER_NO;
+            return NOT_CORRECTED_ACCOUNT_NO;
         }
     }
 
     public String getAccountNoByEmail(String email){
         String sql = "select id from account where email=?";
-        String userId = NOT_FOUND_USER_ID;
+        String id = NOT_FOUND_ACCOUNT_ID;
 
         try (
                 Connection conn = new DBUtil().getConnection();
@@ -47,20 +47,20 @@ public class AccountDao {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                if (userId != NOT_FOUND_USER_ID) return NOT_FOUND_USER_ID;
-                userId = resultSet.getString("id");
+                if (id != NOT_FOUND_ACCOUNT_ID) return NOT_FOUND_ACCOUNT_ID;
+                id = resultSet.getString("id");
             }
 
-            return userId;
+            return id;
         } catch (SQLException e) {
             e.printStackTrace();
-            return NOT_FOUND_USER_ID;
+            return NOT_FOUND_ACCOUNT_ID;
         }
     }
 
     public int findAccountNo(String id, String email){
         String sql = "select account_no from account where id=? and email=?";
-        int accountNo = NOT_CORRECTED_USER_NO;
+        int accountNo = NOT_CORRECTED_ACCOUNT_NO;
         try (
                 Connection conn = new DBUtil().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -70,7 +70,7 @@ public class AccountDao {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                if (accountNo != NOT_CORRECTED_USER_NO) return DUPLICATION_ACCOUNT;
+                if (accountNo != NOT_CORRECTED_ACCOUNT_NO) return DUPLICATION_ACCOUNT;
                 accountNo = resultSet.getInt(1);
             }
         } catch (SQLException e) {
@@ -81,7 +81,7 @@ public class AccountDao {
 
     public int findAccountNo(String id, String password, String email){
         String sql = "select account_no from account where id=? and password=? and email=?";
-        int accountNo = NOT_CORRECTED_USER_NO;
+        int accountNo = NOT_CORRECTED_ACCOUNT_NO;
         try (
                 Connection conn = new DBUtil().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -92,7 +92,7 @@ public class AccountDao {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                if (accountNo != NOT_CORRECTED_USER_NO) return DUPLICATION_ACCOUNT;
+                if (accountNo != NOT_CORRECTED_ACCOUNT_NO) return DUPLICATION_ACCOUNT;
                 accountNo = resultSet.getInt(1);
             }
         } catch (SQLException e) {
@@ -168,5 +168,19 @@ public class AccountDao {
             return false;
         }
         return true;
+    }
+
+    public void deleteAccount(int accountNo){
+        String sql = "delete from account where account_no=?";
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setInt(1, accountNo);
+            preparedStatement.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
