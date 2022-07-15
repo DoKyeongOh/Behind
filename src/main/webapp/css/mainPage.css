@@ -1,0 +1,24 @@
+#btn-logout {
+    width: 100%;
+    margin-bottom: -4%;
+}
+
+#table-posts {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+}
+
+tr, td {
+    padding: 30px;
+}
+
+.card-size {
+    height: 200px;
+    width: 100px;
+}
+
+.un-visiable {
+    visibility: hidden;
+}
+

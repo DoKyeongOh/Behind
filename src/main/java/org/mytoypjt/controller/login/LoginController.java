@@ -37,6 +37,13 @@ public class LoginController extends PropertiesControllerTemplete {
         return viewInfo;
     }
 
+    @RequestMapping(uri = "/login", method = "delete")
+    public ViewInfo deleteLoginSession(HttpServletRequest req, HttpServletResponse resp){
+        HttpSession session = req.getSession();
+        session.setAttribute("profile", null);
+        return ViewInfo.getRedirectViewInfo("/");
+    }
+
     @Override
     public Object doGet() {
         if (isProfileExist())
