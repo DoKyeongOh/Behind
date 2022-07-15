@@ -1,87 +1,91 @@
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" href= "../../css/register.css"/>
+    <link rel="stylesheet" type="text/css" href= "../../css/mainPage.css"/>
     <link rel="stylesheet" type="text/css" href= "../../css/common.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"/>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 </head>
 <body>
 
 <!-- navbar + offcanvas -->
 <nav class="navbar bg-light fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="${mainPage}">
             <img class="logo-img" src="../../icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
-            <strong class="logo-text" onclick="location.href='${indexPage}'">Blind </strong>
+            <strong class="logo-text" onclick="location.href='${mainPage}'">Blind</strong>
         </a>
-        <button class="navbar-toggler btn-dark " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+        <button class="navbar-toggler btn-dark" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar">
             <div class="text-center"><br/>
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">사이드바 메뉴</h5>
+                <h5 class="offcanvas-title">사이드바 메뉴</h5>
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3"><br/>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link text-center" aria-current="page" href="#">로그인 하러가기</a>
-                    </li> -->
-                    <li class="nav-item">
-                        <a class="nav-link text-center" href="${loginPage}">로그인 하러가기</a>
+
+                    <li class="nav-item dropdown text-center">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">글 목록 보기</a>
+                        <ul class="dropdown-menu text-center">
+                            <li><a class="dropdown-item" href="#">실시간 글</a></li>
+                            <li><a class="dropdown-item" href="#">일일 인기글</a></li>
+                            <li><a class="dropdown-item" href="#">주간 인기글</a></li>
+                        </ul>
                     </li>
+
+                    <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">마이페이지</a></li>
+                    <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">글 작성하기</a></li>
+                    <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">공지 목록 보기</a></li>
+                    <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">알림 확인하기</a></li>
+                    <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">관리자 페이지</a></li>
                 </ul>
             </div>
-            <button type="button" class="btn btn-dark" data-bs-dismiss="offcanvas" aria-label="Close">돌아가기</button>
+            <form action="${logout}" method="post">
+                <input type="hidden" name="_method" value="delete">
+                <button type="submit" class="btn btn-outline-dark" data-bs-dismiss="offcanvas" id="btn-logout">로그아웃 하기</button>
+            </form>
+            
+            <button type="button" class="btn btn-dark" data-bs-dismiss="offcanvas">돌아가기</button>
         </div>
     </div>
 </nav>
 <!-- navbar + offcanvas -->
 
 <div class="text-center main-text">
-    <h1 class="main-text-font">Your Profile</h1>
-    <strong>please fill this form for use our service</strong>
+    <h1 class="main-text-font">Behind</h1>
+    <!-- 당신의 닉네임은 "${profile.nicname}" 입니다!!! -->
 </div>
 
-<!-- 계정 정보 입력 폼 -->
-<div class="text-center">
-    <form id="profile-input-form" method="post" action="${profile}">
 
-        <input type="text" class="form-control" placeholder="사용할 닉네임" id="input-nicname" name="nicname">
 
-        <div class="certer-inline-align">
-            <select class="form-select" name="age" id="btn-age-dropdown">
-                <option selected>나이를 선택하세요</option>
-            </select>
-
-            <select class="form-select" name="city" id="btn-city-dropdown">
-                <option selected>지역을 선택하세요</option>
-            </select>
-        </div>
-
-        <div id="gender-select-box">
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" id="radio-man" type="radio" name="genderSelector" value="남자">
-                <label class="form-check-label" id="label-man">남자</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" id="radio-woman" type="radio" name="genderSelector" value="여자">
-                <label class="form-check-label" id="label-woman">여자</label>
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary" id="btn-prifile-apply">적용하기</button>
-    </form>
-    <button type="submit" class="btn btn-outline-primary" id="btn-prifile-not-apply" onclick="${}">건너뛰기</button>
+<div>
+    <table id="table-posts">
+        <tr>
+            <td>
+                <div class="card ${visiable}" style="width: 250px;">
+                    <img src="${imgPath}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="${post[1].title}">Card title</h5>
+                       <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td> </td>
+        </tr>
+        </table>
 </div>
-<!-- 계정 정보 입력 폼 -->
 
-<br>
-<!--메시지-->
-<h6 class="text-center" id="notice-label">${noticeMessage}</h6>
-<!--메시지-->
 
-<script src="../../js/profileInput.js"></script>
+
+<script src="../../js/mainPage.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

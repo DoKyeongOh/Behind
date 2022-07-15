@@ -15,6 +15,8 @@ public class MainController extends PropertiesControllerTemplete {
         if (session.getAttribute("profile") == null)
             return "index";
 
+
+
         return "mainPage";
     }
 
