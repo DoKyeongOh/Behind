@@ -9,12 +9,14 @@
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 <% request.setAttribute("mainPage", request.getContextPath() + "/main/page"); %>
 
+<% request.setAttribute("logout", request.getContextPath() + "/login"); %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" href= "../../css/login.css"/>
+    <link rel="stylesheet" type="text/css" href= "../../css/mainPage.css"/>
     <link rel="stylesheet" type="text/css" href= "../../css/common.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"/>
 </head>
@@ -51,9 +53,13 @@
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">공지 목록 보기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">알림 확인하기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">관리자 페이지</a></li>
-                    <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">로그아웃 하기</a></li>
                 </ul>
             </div>
+            <form action="${logout}" method="post">
+                <input type="hidden" name="_method" value="delete">
+                <button type="submit" class="btn btn-outline-dark" data-bs-dismiss="offcanvas" id="btn-logout">로그아웃 하기</button>
+            </form>
+            
             <button type="button" class="btn btn-dark" data-bs-dismiss="offcanvas">돌아가기</button>
         </div>
     </div>
@@ -62,11 +68,39 @@
 
 <div class="text-center main-text">
     <h1 class="main-text-font">Behind</h1>
-    당신의 닉네임은 "${profile.nicname}" 입니다!!!
+    <!-- 당신의 닉네임은 "${profile.nicname}" 입니다!!! -->
 </div>
 
 
 
+<div>
+    <table id="table-posts">
+        <tr>
+            <td>
+                <div class="card ${post[1].visiable}" style="width: 250px;">
+                    <img src="${post[1].imgPath}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="${post[1].title}">Card title</h5>
+                       <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td> </td>
+        </tr>
+        </table>
+</div>
+
+
+
+<script src="../../js/mainPage.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
