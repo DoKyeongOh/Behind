@@ -7,8 +7,16 @@ import org.mytoypjt.service.FindAccountService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 public class IdResolveController {
+
+    FindAccountService findAccountService;
+
+    public IdResolveController(){
+        findAccountService = new FindAccountService();
+    }
 
     @RequestMapping(uri = "/id/page", method = "get")
     public String showFindIdPage(){
@@ -21,7 +29,6 @@ public class IdResolveController {
         String domain = (String) req.getParameter("domain");
         String mailAddress = email + "@" + domain;
 
-        FindAccountService findAccountService = new FindAccountService();
         IdCertificationInfo certificationInfo = findAccountService.getIdCertification(mailAddress);
 
         if (certificationInfo == null) {
@@ -59,11 +66,19 @@ public class IdResolveController {
             return "findIdPage";
         }
 
-        FindAccountService findAccountService = new FindAccountService();
-        String accountId = findAccountService.getAccountNoByEmail(certificationInfo.getEmailAddress());
-        httpSession.setAttribute("idCertificationInfo", null);
+        List<String> idList = findAccountService.getAccountListByEmail(certificationInfo.getEmailAddress());
+        if (idList == null){
+            req.setAttribute("noticeMessage", "오류가 발생했습니다 관리자에게 문의해주세요 !!");
+            return "findIdPage";
+        }
 
-        req.setAttribute("noticeMessage", "당신의 아이디는 '" + accountId + "' 입니다 !!");
+        httpSession.setAttribute("idCertificationInfo", null);
+        String returnMessage = "해당 이메일로 가입되어있는 아이디는 아래와 같습니다!<br>";
+        for (String id : idList) {
+            returnMessage = returnMessage + id + "<br>";
+        }
+
+        req.setAttribute("noticeMessage", returnMessage);
         return "findIdPage";
     }
 

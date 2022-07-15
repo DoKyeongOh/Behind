@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccountDao {
     final int NOT_CORRECTED_ACCOUNT_NO = -1;
@@ -35,9 +37,9 @@ public class AccountDao {
         }
     }
 
-    public String getAccountNoByEmail(String email){
+    public List<String> getAccountListByEmail(String email){
         String sql = "select id from account where email=?";
-        String id = NOT_FOUND_ACCOUNT_ID;
+        List<String> idList = new ArrayList<String>();
 
         try (
                 Connection conn = new DBUtil().getConnection();
@@ -47,14 +49,12 @@ public class AccountDao {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                if (id != NOT_FOUND_ACCOUNT_ID) return NOT_FOUND_ACCOUNT_ID;
-                id = resultSet.getString("id");
+                idList.add(resultSet.getString("id"));
             }
-
-            return id;
+            return idList;
         } catch (SQLException e) {
             e.printStackTrace();
-            return NOT_FOUND_ACCOUNT_ID;
+            return null;
         }
     }
 
@@ -181,6 +181,22 @@ public class AccountDao {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public boolean isRegisteredEmail(String email) {
+        String sql = "select id from account where email=?";
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) return true;
+            else return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

@@ -5,14 +5,21 @@ import org.mytoypjt.models.dto.IdCertificationInfo;
 import org.mytoypjt.models.dto.PwCertificationInfo;
 import org.mytoypjt.utils.MailUtil;
 
+import java.util.List;
+
 public class FindAccountService {
 
+    AccountDao accountDao;
+    public FindAccountService(){
+        accountDao = new AccountDao();
+    }
+
     public IdCertificationInfo getIdCertification(String email){
-        if (getAccountNoByEmail(email).equals(""))
+        if (!isRegisteredEmail(email))
             return null;
 
         String certificationValue = getRandomValue();
-        sendMail(email, certificationValue);
+        new MailUtil().sendCertMail(email, certificationValue);
 
         return new IdCertificationInfo(certificationValue, email);
     }
@@ -23,24 +30,9 @@ public class FindAccountService {
             return null;
 
         String certificationValue = getRandomValue();
-        sendMail(email, certificationValue);
+        new MailUtil().sendCertMail(email, certificationValue);
 
         return new PwCertificationInfo(accountNo, certificationValue);
-    }
-    public void sendMail(String email, String value){
-        MailUtil mailUtil = new MailUtil();
-        mailUtil.setTitle("[비하인드] 요청하신 인증번를 알려드립니다.\n");
-
-        StringBuffer sb = new StringBuffer();
-        sb.append("<h3 style='color:black'> 요청하신 인증번호를 알려드립니다.</h3>\n");
-        sb.append("<h3 style='color:black'>아래의 인증번호를 인증번호 입력 창에 입력해 주세요.</h3>\n\n");
-        sb.append("<h2 style='color:red'>" + value + "</h2>");
-        sb.append("\n\n<h3 style='color:black'>감사합니다.</h3>");
-        String messageText = sb.toString();
-
-        mailUtil.setContentText(messageText);
-
-        mailUtil.sendMail(email);
     }
 
     public String getRandomValue(){
@@ -48,16 +40,15 @@ public class FindAccountService {
         return value;
     }
 
-    public String getAccountNoByEmail(String email) {
-        AccountDao accountDao = new AccountDao();
-        String accountNo = accountDao.getAccountNoByEmail(email);
-        if (accountNo.equals(""))
-            return "";
-        return accountNo;
+    public boolean isRegisteredEmail(String email){
+        return accountDao.isRegisteredEmail(email);
+    }
+
+    public List<String> getAccountListByEmail(String email){
+        return accountDao.getAccountListByEmail(email);
     }
 
     public int getAccountNo(String id, String email){
-        AccountDao accountDao = new AccountDao();
         int accountNo = accountDao.findAccountNo(id, email);
         return accountNo;
     }
@@ -68,7 +59,6 @@ public class FindAccountService {
     }
 
     public boolean resetPassword(int accountNo, String password){
-        AccountDao accountDao = new AccountDao();
         return accountDao.setAccountPw(accountNo, password);
     }
 }

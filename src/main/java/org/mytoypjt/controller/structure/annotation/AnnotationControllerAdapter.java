@@ -30,8 +30,11 @@ public class AnnotationControllerAdapter extends BaseControllerAdapter {
         String methodName = req.getMethod();
 
         String hiddenMethod = req.getParameter("_method");
-        if (hiddenMethod != null)
-            methodName = hiddenMethod;
+        if (hiddenMethod != null) {
+            hiddenMethod = hiddenMethod.toUpperCase();
+            if (hiddenMethod.equals("PUT") || hiddenMethod.equals("DELETE"))
+                methodName = hiddenMethod;
+        }
 
         Object controller = requestControllerMapping.getController(uri);
         if (controller == null)

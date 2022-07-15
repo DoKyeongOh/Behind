@@ -6,6 +6,9 @@ import org.mytoypjt.controller.structure.properties.PropertiesControllerAdapter;
 
 public class ControllerAdapterFactory {
 
+    BaseControllerAdapter propertiesAdapter = null;
+    BaseControllerAdapter annotationAdapter = null;
+
     public static BaseControllerAdapter getControllerAdapter(MappingName mappingName){
 
         switch (mappingName) {
