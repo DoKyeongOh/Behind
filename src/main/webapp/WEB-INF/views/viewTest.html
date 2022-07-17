@@ -56,30 +56,146 @@
     <!-- 당신의 닉네임은 "${profile.nicname}" 입니다!!! -->
 </div>
 
+<div class="text-center" id="posts-sort-type">
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-outline-dark" onclick="location.href='/posts?type=1'">실시간 글</button>
+        <button type="button" class="btn btn-outline-dark">일일 인기글</button>
+        <button type="button" class="btn btn-outline-dark">주간 인기글</button>
+    </div>
+
+
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" checked>
+        <label class="btn btn-outline-dark" for="btnradio1">실시간 글</label>
+      
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio2">
+        <label class="btn btn-outline-dark" for="btnradio2">일일 인기글</label>
+      
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio3">
+        <label class="btn btn-outline-dark" for="btnradio3">주간 인기글</label>
+      </div>
+</div>
+
 
 
 <div>
     <table id="table-posts">
+        <c:forEach var="tr" begin="0" end="2">
         <tr>
             <td>
-                <div class="card ${visiable}" style="width: 250px;">
-                    <img src="${imgPath}" class="card-img-top" alt="...">
+                <div class="card" style="width: 300px;">
+                    <img src="../../pictures/mini/${post[idx].pictureNo}.jpeg" class="card-img-top" alt="...">
                     <div class="card-body">
-                      <h5 class="${post[1].title}">Card title</h5>
-                       <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <h5 class="">${post[idx].title}</h5>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
                     </div>
                 </div>
             </td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>
+                <div class="card" style="width: 300px;">
+                    <img src="../../pictures/mini/${post[idx].pictureNo}.jpeg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="">${post[idx].title}</h5>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="card" style="width: 300px;">
+                    <img src="../../pictures/mini/${post[idx].pictureNo}.jpeg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="">${post[idx].title}</h5>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="card" style="width: 300px;">
+                    <img src="../../pictures/mini/${post[idx].pictureNo}.jpeg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="">${post[idx].title}</h5>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </td>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td> </td>
+            <td>
+                <div class="card" style="width: 300px;">
+                    <img src="../../pictures/mini/${post[idx].pictureNo}.jpeg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="">${post[idx].title}</h5>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="card" style="width: 300px;">
+                    <img src="../../pictures/mini/${post[idx].pictureNo}.jpeg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="">${post[idx].title}</h5>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="card" style="width: 300px;">
+                    <img src="../../pictures/mini/${post[idx].pictureNo}.jpeg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="">${post[idx].title}</h5>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="card" style="width: 300px;">
+                    <img src="../../pictures/mini/${post[idx].pictureNo}.jpeg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="">${post[idx].title}</h5>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </td>
         </tr>
+        <tr>
+            <td>
+                <div class="card" style="width: 300px;">
+                    <img src="../../pictures/mini/${post[idx].pictureNo}.jpeg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="">${post[idx].title}</h5>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="card" style="width: 300px;">
+                    <img src="../../pictures/mini/${post[idx].pictureNo}.jpeg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="">${post[idx].title}</h5>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="card" style="width: 300px;">
+                    <img src="../../pictures/mini/${post[idx].pictureNo}.jpeg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="">${post[idx].title}</h5>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="card" style="width: 300px;">
+                    <img src="../../pictures/mini/${post[idx].pictureNo}.jpeg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="">${post[idx].title}</h5>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </c:forEach>
         </table>
 </div>
 

@@ -5,3 +5,5 @@ Behind/*.*
 target/*
 target/*.*
 */*/*/mail*.*
+*.jpeg*
+*.jpg*
