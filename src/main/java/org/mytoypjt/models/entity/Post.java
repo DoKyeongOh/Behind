@@ -18,11 +18,12 @@ public class Post {
     int commentCount;
     int likeCount;
     int accountNo;
+    int pictureNo;
 
     public Post() {
     }
 
-    public Post(int postNo, String title, String content, Date postedDate, boolean is_use_anonymous_city, boolean is_use_anonymous_name, int commentCount, int likeCount, int accountNo) {
+    public Post(int postNo, String title, String content, Date postedDate, boolean is_use_anonymous_city, boolean is_use_anonymous_name, int commentCount, int likeCount, int accountNo, int pictureNo) {
         this.postNo = postNo;
         this.title = title;
         this.content = content;
@@ -32,5 +33,6 @@ public class Post {
         this.commentCount = commentCount;
         this.likeCount = likeCount;
         this.accountNo = accountNo;
+        this.pictureNo = pictureNo;
     }
 }

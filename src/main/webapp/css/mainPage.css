@@ -6,11 +6,15 @@
 #table-posts {
     margin-left: auto;
     margin-right: auto;
-    margin-top: 5%;
+    margin-top: 2%;
+}
+
+#posts-sort-type {
+    margin-top: 2%;
 }
 
 tr, td {
-    padding: 30px;
+    padding: 10px;
 }
 
 .card-size {
