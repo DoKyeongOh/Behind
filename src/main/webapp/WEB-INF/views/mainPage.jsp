@@ -71,32 +71,51 @@
     <!-- 당신의 닉네임은 "${profile.nicname}" 입니다!!! -->
 </div>
 
+<!-- 글 목록 정렬 방식 버튼 -->
+<div class="text-center" id="posts-sort-type">
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-outline-dark" onclick="location.href='/posts?type=1'">실시간 글</button>
+        <button type="button" class="btn btn-outline-dark">일일 인기글</button>
+        <button type="button" class="btn btn-outline-dark">주간 인기글</button>
+    </div>
 
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" onclick="location.href='/posts?type=1'" checked>
+        <label class="btn btn-outline-dark" for="btnradio1">실시간 글</label>
+      
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" onclick="location.href='/posts?type=2'">
+        <label class="btn btn-outline-dark" for="btnradio2">일일 인기글</label>
+      
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" onclick="location.href='/posts?type=3'">
+        <label class="btn btn-outline-dark" for="btnradio3">주간 인기글</label>
+      </div>
+</div>
+<!-- 글 목록 정렬 방식 버튼 -->
 
+<!-- 글 목록 테이블 -->
 <div>
     <table id="table-posts">
+        <c:forEach var="tr" begin="0" end="2">
         <tr>
-            <td>
-                <div class="card ${post[1].visiable}" style="width: 250px;">
-                    <img src="${post[1].imgPath}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="${post[1].title}">Card title</h5>
-                       <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <c:forEach var="td" begin="0" end="3">
+                <c:set var="idx" scope="request" value="${tr * 4 + td}"/>
+                <c:if test="${empty posts[idx] eq false}">
+                    <td>
+                        <div class="card" style="width: 280px;">
+                            <img src="../../pictures/mini/${posts[idx].pictureNo}.jpeg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="">${posts[idx].title}</h5>
+                                <a href="#" class="btn btn-outline-primary">자세히 보기</a>
+                            </div>
+                        </div>
+                    </td>
+                </c:if>
+            </c:forEach>
         </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td> </td>
-        </tr>
+        </c:forEach>
         </table>
 </div>
+<!-- 글 목록 테이블 -->
 
 
 
