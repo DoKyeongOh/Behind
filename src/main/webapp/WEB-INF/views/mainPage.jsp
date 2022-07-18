@@ -8,8 +8,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 <% request.setAttribute("mainPage", request.getContextPath() + "/main/page"); %>
-
 <% request.setAttribute("logout", request.getContextPath() + "/login"); %>
+<% request.setAttribute("realTimePosts", request.getContextPath() + "/posts?type=1"); %>
+<% request.setAttribute("daysMostPosts", request.getContextPath() + "/posts?type=2"); %>
+<% request.setAttribute("weeksMostPosts", request.getContextPath() + "/posts?type=3"); %>
+<% request.setAttribute("post", request.getContextPath() + "/post"); %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -42,9 +45,9 @@
                     <li class="nav-item dropdown text-center">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">글 목록 보기</a>
                         <ul class="dropdown-menu text-center">
-                            <li><a class="dropdown-item" href="#">실시간 글</a></li>
-                            <li><a class="dropdown-item" href="#">일일 인기글</a></li>
-                            <li><a class="dropdown-item" href="#">주간 인기글</a></li>
+                            <li><a class="dropdown-item" href="${realTimePosts}">실시간 글</a></li>
+                            <li><a class="dropdown-item" href="${daysMostPosts}">일일 인기글</a></li>
+                            <li><a class="dropdown-item" href="${weeksMostPosts}">주간 인기글</a></li>
                         </ul>
                     </li>
 
@@ -68,29 +71,25 @@
 
 <div class="text-center main-text">
     <h1 class="main-text-font">Behind</h1>
-    <!-- 당신의 닉네임은 "${profile.nicname}" 입니다!!! -->
 </div>
+
+<hr>
 
 <!-- 글 목록 정렬 방식 버튼 -->
 <div class="text-center" id="posts-sort-type">
-    <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-outline-dark" onclick="location.href='/posts?type=1'">실시간 글</button>
-        <button type="button" class="btn btn-outline-dark">일일 인기글</button>
-        <button type="button" class="btn btn-outline-dark">주간 인기글</button>
-    </div>
-
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" onclick="location.href='/posts?type=1'" checked>
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" onclick="location.href='${realTimePosts}'">
         <label class="btn btn-outline-dark" for="btnradio1">실시간 글</label>
-      
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" onclick="location.href='/posts?type=2'">
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" onclick="location.href='${daysMostPosts}'">
         <label class="btn btn-outline-dark" for="btnradio2">일일 인기글</label>
-      
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" onclick="location.href='/posts?type=3'">
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" onclick="location.href='${weeksMostPosts}'">
         <label class="btn btn-outline-dark" for="btnradio3">주간 인기글</label>
-      </div>
+    </div>
 </div>
 <!-- 글 목록 정렬 방식 버튼 -->
+
 
 <!-- 글 목록 테이블 -->
 <div>
@@ -104,9 +103,10 @@
                         <div class="card" style="width: 280px;">
                             <img src="../../pictures/mini/${posts[idx].pictureNo}.jpeg" class="card-img-top" alt="...">
                             <div class="card-body">
-                                <h5 class="">${posts[idx].title}</h5>
-                                <a href="#" class="btn btn-outline-primary">자세히 보기</a>
+                                <h5 class="title-font">${posts[idx].title}</h5>
+                                <a href="${post}/${posts[idx].postNo}" class="btn btn-outline-primary btn-show-detail">자세히 보기</a>
                             </div>
+                            <label class="like-label">댓글 ${posts[idx].commentCount} 개 ・ 좋아요 ${posts[idx].likeCount} 개</label>
                         </div>
                     </td>
                 </c:if>
@@ -114,6 +114,10 @@
         </tr>
         </c:forEach>
         </table>
+
+    <c:if test="${empty posts eq true}">
+        <h1 class="text-center" id="label-not-posted">글이 게시되지 않았습니다...</h1>
+    </c:if>
 </div>
 <!-- 글 목록 테이블 -->
 

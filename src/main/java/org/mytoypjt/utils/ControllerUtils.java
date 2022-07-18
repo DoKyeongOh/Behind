@@ -13,7 +13,7 @@ public class ControllerUtils {
     public static boolean isExistProfileSession(HttpServletRequest req){
 
         HttpSession session = req.getSession();
-        Profile profile = (Profile) session.getAttribute("user");
+        Profile profile = (Profile) session.getAttribute("profile");
         if (profile == null)
             return false;
         if (profile.getAccountNo() < 0)

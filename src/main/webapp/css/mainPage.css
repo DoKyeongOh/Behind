@@ -13,6 +13,22 @@
     margin-top: 2%;
 }
 
+#line-mid {
+    border: solid 3px black;
+    width: 40%;
+    margin: auto;
+    margin-top:4%;
+    margin-bottom:2%;
+}
+
+.btn-radio-size {
+    width: 200px;
+}
+
+.btn-show-detail {
+    width: 100%;
+}
+
 tr, td {
     padding: 10px;
 }
@@ -22,7 +38,20 @@ tr, td {
     width: 100px;
 }
 
-.un-visiable {
-    visibility: hidden;
+.title-font {
+    padding-bottom: 5%;
+}
+
+.like-label {
+    text-align: right;
+    padding-right: 3%;
+    padding-bottom: 3%;
+    font-size: 100%;
+}
+
+#label-not-posted {
+    margin-top: 5%;
+    font-size: 400%;
+    font-weight: 900;
 }
 
