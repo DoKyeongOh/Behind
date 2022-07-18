@@ -4,6 +4,7 @@ import org.mytoypjt.controller.structure.annotations.RequestMapping;
 import org.mytoypjt.models.dto.PwCertificationInfo;
 import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.service.FindAccountService;
+import org.mytoypjt.utils.ControllerUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,10 +19,14 @@ public class PwResolveController {
     }
 
     @RequestMapping(uri = "/pw/page/1", method = "get")
-    public String getFindPwPage(HttpServletRequest req, HttpServletResponse resp){
+    public ViewInfo getFindPwPage(HttpServletRequest req, HttpServletResponse resp){
         HttpSession session = req.getSession();
         session.setAttribute("pwCertificationInfo", null);
-        return "findPwPage";
+
+        if (ControllerUtils.isExistProfileSession(req))
+            return ViewInfo.getRedirectViewInfo("/main/page");
+
+        return new ViewInfo("findPwPage");
     }
 
     @RequestMapping(uri = "/pw/page/2", method = "get")

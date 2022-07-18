@@ -5,6 +5,7 @@ import org.mytoypjt.controller.structure.properties.PropertiesControllerTemplete
 import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.service.LoginService;
+import org.mytoypjt.utils.ControllerUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,8 +14,12 @@ import javax.servlet.http.HttpSession;
 public class LoginController extends PropertiesControllerTemplete {
 
     @RequestMapping(uri = "/login/page", method = "GET")
-    public String getLoginPage(){
-        return "loginPage";
+    public ViewInfo getLoginPage(HttpServletRequest req, HttpServletResponse resp){
+
+        if (ControllerUtils.isExistProfileSession(req))
+            return ViewInfo.getRedirectViewInfo("/main/page");
+
+        return new ViewInfo("loginPage");
     }
 
     @RequestMapping(uri = "/login", method = "POST")

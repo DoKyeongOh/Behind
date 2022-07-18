@@ -16,12 +16,12 @@ public class IndexController extends PropertiesControllerTemplete {
     }
 
     @RequestMapping(uri = "/", method = "GET")
-    public String showIndexPage(HttpServletRequest req, HttpServletResponse resp){
+    public ViewInfo showIndexPage(HttpServletRequest req, HttpServletResponse resp){
         HttpSession session = req.getSession();
         if (session.getAttribute("profile") != null)
-            return "mainPage";
+            return ViewInfo.getRedirectViewInfo("/main/page");
 
-        return "index";
+        return new ViewInfo("index");
     }
 
 }

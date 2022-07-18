@@ -3,7 +3,9 @@ package org.mytoypjt.controller;
 import org.mytoypjt.controller.structure.annotations.RequestMapping;
 import org.mytoypjt.controller.structure.properties.PropertiesControllerTemplete;
 import org.mytoypjt.models.entity.Post;
+import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.service.PostViewService;
+import org.mytoypjt.utils.ControllerUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,20 +28,7 @@ public class MainController extends PropertiesControllerTemplete {
             return "index";
 
         List<Post> postList = postViewService.getDefaultPosts(1);
-        req.setAttribute("post", postList);
-
-        return "mainPage";
-    }
-
-    @RequestMapping(uri = "/posts", method = "get")
-    public String showPosts(HttpServletRequest req, HttpServletResponse resp){
-
-        String pageNo = req.getParameter("pageNo");
-        String sortType = req.getParameter("sortType");
-
-        List<Post> posts = postViewService.getPosts(pageNo, sortType);
-        if (posts != null)
-            req.setAttribute("post", posts);
+        req.setAttribute("posts", postList);
 
         return "mainPage";
     }

@@ -2,7 +2,9 @@ package org.mytoypjt.controller.login;
 
 import org.mytoypjt.controller.structure.annotations.RequestMapping;
 import org.mytoypjt.models.dto.IdCertificationInfo;
+import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.service.FindAccountService;
+import org.mytoypjt.utils.ControllerUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,8 +21,15 @@ public class IdResolveController {
     }
 
     @RequestMapping(uri = "/id/page", method = "get")
-    public String showFindIdPage(){
-        return "findIdPage";
+    public ViewInfo showFindIdPage(HttpServletRequest req, HttpServletResponse resp){
+
+        HttpSession httpSession = req.getSession();
+        httpSession.setAttribute("idCertificationInfo", null);
+
+        if (ControllerUtils.isExistProfileSession(req))
+            return ViewInfo.getRedirectViewInfo("/main/page");
+
+        return new ViewInfo("findIdPage");
     }
 
     @RequestMapping(uri = "/id/cert", method = "get")
