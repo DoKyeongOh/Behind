@@ -3,6 +3,7 @@ package org.mytoypjt.dao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mytoypjt.models.entity.Post;
+import org.mytoypjt.models.etc.PostSortType;
 
 import java.util.List;
 
@@ -19,13 +20,13 @@ class PostDaoTest {
 
 
     @Test
-    void getPostListByPage() {
+    void getPosts() {
         boolean successed = true;
 
         try {
-            List<Post> postList = postDao.getPosts(1);
+            List<Post> postList = postDao.getPosts(PostSortType.WEEKS_FAVORITE,1);
             for (Post p : postList) {
-                System.out.println(p.getPostedDate());
+                System.out.println(p.getPostNo() + ") : " + p.getPictureNo());
             }
         }catch (Exception e) {
             e.printStackTrace();
@@ -35,7 +36,5 @@ class PostDaoTest {
 
 
         assertEquals(true, successed);
-
-
     }
 }

@@ -2,6 +2,7 @@ package org.mytoypjt.service;
 
 import org.mytoypjt.dao.PostDao;
 import org.mytoypjt.models.entity.Post;
+import org.mytoypjt.models.etc.PostSortType;
 
 import java.util.List;
 
@@ -19,18 +20,31 @@ public class PostViewService {
         postDao = new PostDao();
     }
 
-    public List<Post> getPosts(String pageNo, String sortType){
-        if (pageNo == null || sortType == null)
-            return null;
+    public List<Post> getPosts(String page, String type){
+        if (page == null)
+            page = "1";
+        if (type == null)
+            type = "1";
 
+        int pageNo = Integer.parseInt(page);
+        PostSortType sortType = getPostSortType(type);
 
+        List<Post> postList = postDao.getPosts(sortType, pageNo);
 
+        return postList;
+    }
 
-        return null;
+    public PostSortType getPostSortType(String sortType){
+        switch (sortType) {
+            case "1": return PostSortType.REAL_TIME;
+            case "2": return PostSortType.DAYS_FAVORITE;
+            case "3": return PostSortType.WEEKS_FAVORITE;
+        }
+        return PostSortType.REAL_TIME;
     }
 
     public List<Post> getDefaultPosts(int pageNo){
-        List<Post> postList = postDao.getPosts(pageNo);
+        List<Post> postList = postDao.getPosts(PostSortType.REAL_TIME, pageNo);
         return postList;
     }
 
