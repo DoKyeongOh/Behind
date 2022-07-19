@@ -34,16 +34,11 @@ body {
 }
 
 #form-report {
-    text-align: right;
-    /* margin-top: -5%;
-    margin-right: 7%;
-    padding: 1%; */
+    display :inline-block;
 }
 
 #form-like {
-    text-align: right;
-    /* padding: 1%;
-    margin-top: -5.63%; */
+    display :inline-block;
 }
 
 #comment-wrapper {
@@ -52,4 +47,8 @@ body {
 
 #btn-comment-submit {
     width: 10%;
+}
+
+.text-right {
+    text-align: right;
 }
