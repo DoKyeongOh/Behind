@@ -73,4 +73,35 @@ public class PostDao {
         return null;
     }
 
+    public Post getPost(int postNo) {
+        String sql = "select * from post where post_no = ?";
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setInt(1, postNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Post post = null;
+
+            if (resultSet.next()) {
+                post = new Post(
+                        resultSet.getInt("post_no"),
+                        resultSet.getString("title"),
+                        resultSet.getString("content"),
+                        resultSet.getTimestamp("posted_date"),
+                        resultSet.getBoolean("is_use_anonymous_city"),
+                        resultSet.getBoolean("is_use_anonymous_name"),
+                        resultSet.getInt("comment_count"),
+                        resultSet.getInt("like_count"),
+                        resultSet.getInt("account_no"),
+                        resultSet.getInt("picture_no")
+                );
+            }
+
+            return post;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

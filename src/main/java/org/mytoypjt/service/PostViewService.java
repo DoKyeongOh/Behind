@@ -49,7 +49,19 @@ public class PostViewService {
     }
 
 
+    public Post getPost(String no) {
+        if (no == null)
+            return null;
 
+        int postNo = -1;
+        try {
+            postNo = Integer.parseInt(no);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
 
-
+        Post post = postDao.getPost(postNo);
+        return post;
+    }
 }

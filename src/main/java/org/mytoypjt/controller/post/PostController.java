@@ -29,6 +29,39 @@ public class PostController {
         if (posts != null)
             req.setAttribute("posts", posts);
 
+        switch (postViewService.getPostSortType(sortType)) {
+            case REAL_TIME: {
+                req.setAttribute("realtimeChecked", "checked");
+                break;
+            }
+
+            case DAYS_FAVORITE: {
+                req.setAttribute("daysChecked", "checked");
+                break;
+            }
+
+            case WEEKS_FAVORITE: {
+                req.setAttribute("weeksChecked", "checked");
+                break;
+            }
+        }
+
         return "mainPage";
     }
+
+    @RequestMapping(uri = "/post", method = "get")
+    public String showPost(HttpServletRequest req, HttpServletResponse resp){
+
+        String no = req.getParameter("no");
+        Post post = postViewService.getPost(no);
+
+        if (post == null) {
+            return "mainPage";
+        }
+
+        req.setAttribute("post", post);
+
+        return "";
+    }
+
 }
