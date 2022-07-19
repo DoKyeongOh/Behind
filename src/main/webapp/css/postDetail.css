@@ -1,0 +1,55 @@
+img {
+    filter: brightness(60%); 
+}
+
+body {
+    background-color: black;
+}
+
+.comment {
+    padding-left: 3%;
+}
+
+#post-wrapper {
+    position:relative;
+    overflow:auto;
+}
+
+#post-img {
+    width: 30%;
+}
+
+#post-content {
+    color: white;
+    font-size: 150%;
+    position:absolute;
+    top: 20%;
+    padding: 5%;
+}
+
+#post-title {
+    font-weight: 930;
+    padding-left: 3%;
+    padding-top: 2%;
+}
+
+#form-report {
+    text-align: right;
+    /* margin-top: -5%;
+    margin-right: 7%;
+    padding: 1%; */
+}
+
+#form-like {
+    text-align: right;
+    /* padding: 1%;
+    margin-top: -5.63%; */
+}
+
+#comment-wrapper {
+    width: 80%;
+}
+
+#btn-comment-submit {
+    width: 10%;
+}
