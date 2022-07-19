@@ -1,7 +1,3 @@
-#btn-logout {
-    width: 100%;
-    margin-bottom: -4%;
-}
 
 #table-posts {
     margin-left: auto;
@@ -11,14 +7,19 @@
 
 #posts-sort-type {
     margin-top: 2%;
+    
 }
 
 #line-mid {
-    border: solid 3px black;
+    border: solid 0.3px gray;
     width: 40%;
     margin: auto;
     margin-top:4%;
-    margin-bottom:2%;
+    margin-bottom:3%;
+}
+
+.btn-sort-type {
+    width: 300px;
 }
 
 .btn-radio-size {

@@ -7,3 +7,5 @@ target/*.*
 */*/*/mail*.*
 *.jpeg*
 *.jpg*
+*/*/*/icons/*.*
+*/*/*/css/*.*

@@ -1,3 +1,10 @@
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
 .logo-img {
     width: 50%;
     height: 50%;
@@ -39,4 +46,9 @@
 
 .footer {
     margin-top: 10%;
+}
+
+#btn-logout {
+    width: 100%;
+    margin-bottom: -4%;
 }
