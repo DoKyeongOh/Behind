@@ -29,8 +29,14 @@ body {
 
 #post-title {
     font-weight: 930;
-    padding-left: 3%;
-    padding-top: 2%;
+    padding-left: 1%;
+}
+
+#post-comments {
+    font-weight: 930;
+    padding-left: 1%;
+    padding-bottom: 0%;
+    margin-top: 1%;
 }
 
 #form-report {
@@ -52,3 +58,8 @@ body {
 .text-right {
     text-align: right;
 }
+
+.inline-block {
+    display: inline-block;
+}
+

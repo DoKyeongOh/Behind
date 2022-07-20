@@ -51,24 +51,13 @@
 </nav>
 <!-- navbar + offcanvas -->
 
-<!-- 글 본문 -->
-<div id="post-wrapper" class="bg-dark">
-    <div class="text-center">
-      <img src="../../pictures/origin/1.jpeg" id="post-img">
-      <div id="post-content">
-        <span class="text-center">
-            Some representative placeholder content for the first slide kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-            kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-            kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-        </span>
-      </div>
-    </div>
-  </div>
-  <h1 id="post-title"> 글 제목 </h1>
-<!-- 글 본문 -->
+<!-- 글 제목 -->
+<br><br><br><br>
+<h2 class="inline-block" id="post-title"> 글 제목 </h2>
+<!-- 글 제목 -->
 
 <!-- 좋아요, 신고하기 버튼 -->
-<div class="text-right">
+<div class="text-right inline-block" style="width: 92%;">
     <form action="/report/page" method="get" id="form-report">
         <button class="btn btn-outline-danger"> 
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-flag" viewBox="0 0 16 16">
@@ -87,50 +76,30 @@
         </button>
     </form>
 </div>
-    
   <!-- 좋아요, 신고하기 버튼 -->
 
+<!-- 글 본문 -->
+<div id="post-wrapper" class="bg-dark">
+    <div class="text-center">
+      <img src="../../pictures/origin/1.jpeg" id="post-img">
+      <div id="post-content">
+        <span class="text-center">
+            Some representative placeholder 
+            
+        </span>
+      </div>
+    </div>
+  </div>
+<!-- 글 본문 -->
+
   <!-- 댓글 -->
-<ul class="list-group list-group-horizontal">
-    <li class="list-group-item list-group-item-dark">사람 1</li>
-  <li class="list-group-item">나는 1입니다.</li>
-  <a class="btn btn-outline-dark" data-bs-toggle="collapse" href="#collapseExample">
-      펼치기/접기
-  </a>
-</ul>
+  <h3 id="post-comments"> 댓글 </h3>
   <div class="comment-wrapper">
     <ul class="list-group">
-        <li class="list-group-item">
-            사람2 : 22222222
-            <a class="btn btn-outline-dark" data-bs-toggle="collapse" href="#collapseExample">
-                펼치기/접기
-            </a>
-
-            <div class="collapse" id="collapseExample">
-                <br>
-                <div class="comment">
-        
-                    <ul class="list-group">
-                        <li class="list-group-item">사람2 : 22222222</li>
-                        <li class="list-group-item">사람1 : 11111111</li>
-                        <li class="list-group-item">사람1 : 11111111</li>
-                        <li class="list-group-item">사람1 : 11111111</li>
-                        <li class="list-group-item">사람1 : 11111111</li>
-                      </ul>
-                    <form class="text-center">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
-                            <button class="btn btn-outline-secondary" type="submit" id="btn-comment-submit">등록</button>
-                        </div>
-                    </form>
-                </div>
-            </div>            
-        </li>
-
-      <li class="list-group-item">사람1 : 11111111</li>
-      <li class="list-group-item">사람1 : 11111111</li>
-      <li class="list-group-item">사람1 : 11111111</li>
-      <li class="list-group-item">사람1 : 11111111</li>
+      <li class="list-group-item">사람1 : 11111111 <button class="btn btn-outline-secondary btn-sm">자세히보기</button></li>
+      <li class="list-group-item">사람1 : 11111111 <button class="btn btn-outline-secondary btn-sm">자세히보기</button></li>
+      <li class="list-group-item">사람1 : 11111111 <button class="btn btn-outline-secondary btn-sm">자세히보기</button></li>
+      <li class="list-group-item">사람1 : 11111111 <button class="btn btn-outline-secondary btn-sm">자세히보기</button></li>
     </ul>
     <form class="text-center">
         <div class="input-group">
@@ -139,11 +108,6 @@
         </div>
     </form>
   </div>
-<p>
-    <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-        펼치기/접기
-    </a>
-</p>
   
   <!-- 댓글 -->
 
