@@ -1,2 +1,2 @@
 # Behind
- Toy Project - A website that communicates anonymously
+ Toy Project - An anonymous website
