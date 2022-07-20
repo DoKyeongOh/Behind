@@ -1,6 +1,7 @@
 package org.mytoypjt.controller.post;
 
 import org.mytoypjt.controller.structure.annotations.RequestMapping;
+import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.service.PostViewService;
 import org.mytoypjt.utils.ControllerUtils;
@@ -55,13 +56,14 @@ public class PostController {
         String no = req.getParameter("no");
         Post post = postViewService.getPost(no);
 
-        if (post == null) {
-            return "mainPage";
-        }
+        if (post == null)
+            return "postDetailPage";
 
+        List<Comment> comments = postViewService.getComments(post.getPostNo());
         req.setAttribute("post", post);
+        req.setAttribute("comments", comments);
 
-        return "";
+        return "postDetailPage";
     }
 
 }

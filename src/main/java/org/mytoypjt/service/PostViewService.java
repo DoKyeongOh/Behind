@@ -1,6 +1,8 @@
 package org.mytoypjt.service;
 
+import org.mytoypjt.dao.CommentDao;
 import org.mytoypjt.dao.PostDao;
+import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.etc.PostSortType;
 
@@ -14,10 +16,12 @@ public class PostViewService {
     final int SORT_WEEKS_LIKE = 3;
 
     int page;
-    private PostDao postDao;
+    private PostDao postDao;;
+    private CommentDao commentDao;
 
     public PostViewService(){
         postDao = new PostDao();
+        commentDao = new CommentDao();
     }
 
     public List<Post> getPosts(String page, String type){
@@ -63,5 +67,9 @@ public class PostViewService {
 
         Post post = postDao.getPost(postNo);
         return post;
+    }
+
+    public List<Comment> getComments(int postNo) {
+        return commentDao.getComments(postNo);
     }
 }
