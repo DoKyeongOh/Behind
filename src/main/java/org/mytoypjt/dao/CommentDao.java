@@ -1,6 +1,7 @@
 package org.mytoypjt.dao;
 
 import org.mytoypjt.models.entity.Comment;
+import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.DBUtil;
 
 import java.sql.Connection;
@@ -24,12 +25,13 @@ public class CommentDao {
             List<Comment> comments = new ArrayList<Comment>();
             while (resultSet.next()) {
                 comments.add(new Comment(
-                                resultSet.getInt("comment_id"),
+                                resultSet.getInt("comment_no"),
                                 resultSet.getString("content"),
                                 resultSet.getInt("reply_count"),
                                 resultSet.getBoolean("is_use_anonymous_name"),
                                 resultSet.getInt("account_no"),
-                                resultSet.getInt("post_id")
+                                resultSet.getInt("post_no"),
+                                resultSet.getString("nicname")
                         )
                 );
             }
@@ -38,5 +40,25 @@ public class CommentDao {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean createComment(int postNo, Profile profile, boolean isAnonymous, String content) {
+        String sql = "insert into comment values (null , ?, 0, ?, ?, ?, ?)";
+
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setString(1, content);
+            preparedStatement.setBoolean(2, isAnonymous);
+            preparedStatement.setInt(3, profile.getAccountNo());
+            preparedStatement.setInt(4, postNo);
+            preparedStatement.setString(5, profile.getNicname());
+            preparedStatement.execute();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

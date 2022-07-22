@@ -19,11 +19,12 @@ public class Post {
     int likeCount;
     int accountNo;
     int pictureNo;
+    String nicname;
 
     public Post() {
     }
 
-    public Post(int postNo, String title, String content, Date postedDate, boolean is_use_anonymous_city, boolean is_use_anonymous_name, int commentCount, int likeCount, int accountNo, int pictureNo) {
+    public Post(int postNo, String title, String content, Date postedDate, boolean is_use_anonymous_city, boolean is_use_anonymous_name, int commentCount, int likeCount, int accountNo, int pictureNo, String nicname) {
         this.postNo = postNo;
         this.title = title;
         this.content = content;
@@ -34,5 +35,6 @@ public class Post {
         this.likeCount = likeCount;
         this.accountNo = accountNo;
         this.pictureNo = pictureNo;
+        this.nicname = nicname;
     }
 }
