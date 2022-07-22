@@ -1,19 +1,26 @@
 #before-picture {
-    width: 10%;
+    margin-left: 5%;
+}
+
+#now-picture {
 }
 
 #after-picture {
-    width: 10%;
 }
 
 #center-text {
-    margin-top: 10%;
+    margin-top: 7%;
+    font-weight: 930;
     text-align: center;
 }
 
-#title-wrapper {
-    margin-top:5%;
+#post-wrapper {
     width: 50%;
+}
+
+#title-wrapper {
+    text-align: left;
+    width: 100%;
 }
 
 #title-text {
@@ -21,7 +28,8 @@
 }
 
 #content-wrapper {
-    width: 50%;
+    text-align: left;
+    width: 100%;
     margin-top: 2%;
 }
 
@@ -30,7 +38,16 @@
 }
 
 #post-input-form {
+    padding: 3%;
+}
 
+#checkbox-option {
+    margin-top: 1%;
+}
+
+#btn-post {
+    margin-top: 1%;
+    width: 50%;
 }
 
 .margin-auto {
@@ -40,3 +57,16 @@
 .display-inline-block {
     display: inline-block;
 }
+
+.pictures {
+    width: 13%;
+    padding: 1%;
+    margin-top: 10%;
+    vertical-align: top;
+}
+
+.btn-picture-change {
+    width: 100%;
+}
+
+

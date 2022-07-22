@@ -25,6 +25,10 @@ html, body {
     text-align: center;
 }
 
+.text-right {
+    text-align: right;
+}
+
 .main-text {
     margin-top:10%;
 }
