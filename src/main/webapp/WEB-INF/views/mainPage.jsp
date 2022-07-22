@@ -13,6 +13,7 @@
 <% request.setAttribute("daysMostPosts", request.getContextPath() + "/posts?type=2"); %>
 <% request.setAttribute("weeksMostPosts", request.getContextPath() + "/posts?type=3"); %>
 <% request.setAttribute("post", request.getContextPath() + "/post"); %>
+<% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page"); %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -52,7 +53,7 @@
                     </li>
 
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">마이페이지</a></li>
-                    <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">글 작성하기</a></li>
+                    <li class="nav-item"><a class="nav-link text-center" href="${postCreatePage}">글 작성하기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">공지 목록 보기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">알림 확인하기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">관리자 페이지</a></li>

@@ -79,7 +79,7 @@ public class PostController {
 
     @RequestMapping(uri = "/post/page", method = "get")
     public String showPostPage(){
-        return "";
+        return "postCreatePage";
     }
 
     @RequestMapping(uri = "/post", method = "post")
