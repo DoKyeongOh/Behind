@@ -1,0 +1,42 @@
+#before-picture {
+    width: 10%;
+}
+
+#after-picture {
+    width: 10%;
+}
+
+#center-text {
+    margin-top: 10%;
+    text-align: center;
+}
+
+#title-wrapper {
+    margin-top:5%;
+    width: 50%;
+}
+
+#title-text {
+    font-weight: 930;
+}
+
+#content-wrapper {
+    width: 50%;
+    margin-top: 2%;
+}
+
+#content-text {
+    font-weight: 930;
+}
+
+#post-input-form {
+
+}
+
+.margin-auto {
+    margin: auto;
+}
+
+.display-inline-block {
+    display: inline-block;
+}

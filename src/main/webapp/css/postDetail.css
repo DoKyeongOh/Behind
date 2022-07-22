@@ -23,13 +23,16 @@ body {
     color: white;
     font-size: 150%;
     position:absolute;
-    top: 20%;
     padding: 5%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 #post-title {
     font-weight: 930;
     padding-left: 1%;
+    margin-bottom: 1%;
 }
 
 #post-comments {
@@ -53,6 +56,14 @@ body {
 
 #btn-comment-submit {
     width: 10%;
+}
+
+#label-like-count {
+    margin-right: 3%;
+}
+
+#label-comment-count {
+    margin-left: 1%;
 }
 
 .text-right {
