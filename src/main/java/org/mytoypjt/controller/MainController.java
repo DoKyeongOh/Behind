@@ -3,22 +3,19 @@ package org.mytoypjt.controller;
 import org.mytoypjt.controller.structure.annotations.RequestMapping;
 import org.mytoypjt.controller.structure.properties.PropertiesControllerTemplete;
 import org.mytoypjt.models.entity.Post;
-import org.mytoypjt.models.etc.ViewInfo;
-import org.mytoypjt.service.PostViewService;
-import org.mytoypjt.utils.ControllerUtils;
+import org.mytoypjt.service.PostService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Iterator;
 import java.util.List;
 
 public class MainController extends PropertiesControllerTemplete {
 
-    PostViewService postViewService;
+    PostService postViewService;
 
     public MainController (){
-        postViewService = new PostViewService();
+        postViewService = new PostService();
     }
 
     @RequestMapping(uri = "/main/page", method = "get")
@@ -29,6 +26,10 @@ public class MainController extends PropertiesControllerTemplete {
 
         List<Post> postList = postViewService.getDefaultPosts(1);
         req.setAttribute("posts", postList);
+
+        req.setAttribute("realtimeChecked", "checked");
+        req.setAttribute("daysChecked", "");
+        req.setAttribute("weeksChecked", "");
 
         return "mainPage";
     }
