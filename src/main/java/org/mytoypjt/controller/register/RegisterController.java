@@ -159,16 +159,14 @@ public class RegisterController {
         String city = req.getParameter("city");
         String gender = req.getParameter("genderSelector");
 
+        int accountNo = 0;
         HttpSession session = req.getSession();
-        String accountNoString = (String) session.getAttribute(ACCOUNT_NO);
-
-        if (accountNoString == null) {
+        try {
+            accountNo = (int) session.getAttribute(ACCOUNT_NO);
+            session.setAttribute(ACCOUNT_NO, null);
+        } catch (Exception e) {
             return ViewInfo.getRedirectViewInfo("index");
         }
-
-        int accountNo = Integer.parseInt(accountNoString);
-        session.setAttribute(ACCOUNT_NO, null);
-
 
         Profile profile = new Profile(accountNo, nicname, new Date(), city, Integer.parseInt(age), gender, 1);
         boolean successed = registerService.updateProfile(profile);
