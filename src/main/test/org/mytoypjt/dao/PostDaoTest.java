@@ -3,7 +3,7 @@ package org.mytoypjt.dao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mytoypjt.models.entity.Post;
-import org.mytoypjt.models.etc.PostSortType;
+import org.mytoypjt.models.dto.PostSortType;
 
 import java.util.List;
 
@@ -37,4 +37,18 @@ class PostDaoTest {
 
         assertEquals(true, successed);
     }
+
+    @Test
+    void modifyLike() {
+        boolean successed = true;
+        try {
+            // test content
+//            postDao.modifyLike(15,19,false);
+        }catch (Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(true, successed);
+    }
+
 }
