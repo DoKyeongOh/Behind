@@ -1,4 +1,4 @@
-package org.mytoypjt.models.etc;
+package org.mytoypjt.models.dto;
 
 public enum PostSortType {
 
