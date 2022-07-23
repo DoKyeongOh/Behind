@@ -2,10 +2,11 @@ package org.mytoypjt.service;
 
 import org.mytoypjt.dao.CommentDao;
 import org.mytoypjt.dao.PostDao;
+import org.mytoypjt.models.dto.PostsOptionDto;
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
-import org.mytoypjt.models.etc.PostSortType;
+import org.mytoypjt.models.dto.PostSortType;
 
 import java.util.List;
 
@@ -16,7 +17,6 @@ public class PostService {
     final int SORT_DAYS_LIKE = 2;
     final int SORT_WEEKS_LIKE = 3;
 
-    int page;
     private PostDao postDao;
     private CommentDao commentDao;
 
@@ -25,18 +25,38 @@ public class PostService {
         commentDao = new CommentDao();
     }
 
-    public List<Post> getPosts(String page, String type){
-        if (page == null)
-            page = "1";
-        if (type == null)
-            type = "1";
-
-        int pageNo = Integer.parseInt(page);
-        PostSortType sortType = getPostSortType(type);
+    public List<Post> getPosts(PostsOptionDto options){
+        int pageNo = getPostPage(options.getPageNo());
+        PostSortType sortType = getPostSortType(options.getSortType());
 
         List<Post> postList = postDao.getPosts(sortType, pageNo);
 
         return postList;
+    }
+
+    public PostsOptionDto getPostsOption(PostsOptionDto optionInRequest, PostsOptionDto optionInSession){
+        String sortType = "";
+        String pageNo = "";
+
+        if (!optionInRequest.getSortType().isEmpty() && !optionInSession.getSortType().isEmpty()) {
+            sortType = optionInRequest.getSortType();
+            pageNo = "1";
+        } else if (optionInRequest.getSortType().isEmpty() && !optionInSession.getSortType().isEmpty()) {
+            sortType = optionInSession.getSortType();
+            pageNo = optionInRequest.getPageNo();
+        } else if (!optionInRequest.getSortType().isEmpty() && optionInSession.getSortType().isEmpty()) {
+            sortType = optionInRequest.getSortType();
+            pageNo = optionInSession.getPageNo();
+        }
+
+        if (sortType.isEmpty())
+            sortType = "1";
+
+        if (pageNo.isEmpty())
+            pageNo = "1";
+
+        PostsOptionDto options = new PostsOptionDto(pageNo, sortType);
+        return options;
     }
 
     public PostSortType getPostSortType(String sortType){
@@ -51,9 +71,12 @@ public class PostService {
         }
     }
 
-    public List<Post> getDefaultPosts(int pageNo){
-        List<Post> postList = postDao.getPosts(PostSortType.REAL_TIME, pageNo);
-        return postList;
+    public int getPostPage(String pageNo){
+        try {
+            return Integer.parseInt(pageNo);
+        } catch (Exception e) {
+            return 1;
+        }
     }
 
     public Post getPost(String no) {
@@ -165,5 +188,13 @@ public class PostService {
                 return true;
         }
         return false;
+    }
+
+    public int getPageCount() {
+        int postCount = postDao.getPostCount();
+        int pageCount = (int) postCount / postDao.getPictureCountInPage();
+        if (pageCount == 0) pageCount = 1;
+        if (pageCount > 5) pageCount = 5;
+        return pageCount;
     }
 }
