@@ -1,9 +1,11 @@
 package org.mytoypjt.controller.post;
 
 import org.mytoypjt.controller.structure.annotations.RequestMapping;
+import org.mytoypjt.models.dto.PostsOptionDto;
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
+import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.service.PostService;
 import org.mytoypjt.utils.ControllerUtils;
@@ -21,19 +23,51 @@ public class PostController {
         postService = new PostService();
     }
 
+    @RequestMapping(uri = "/main/page", method = "get")
+    public String showMainPage(HttpServletRequest req, HttpServletResponse resp){
+        HttpSession session = req.getSession();
+        if (session.getAttribute("profile") == null)
+            return "index";
+
+        PostsOptionDto postsOptionDto = new PostsOptionDto("1", "1");
+
+        List<Post> posts = postService.getPosts(postsOptionDto);
+        req.setAttribute("posts", posts);
+
+        req.setAttribute("realtimeChecked", "checked");
+        req.setAttribute("daysChecked", "");
+        req.setAttribute("weeksChecked", "");
+
+        session.setAttribute("postsOption", postsOptionDto);
+
+        return "mainPage";
+    }
     @RequestMapping(uri = "/posts", method = "get")
     public String showPosts(HttpServletRequest req, HttpServletResponse resp){
         if (!ControllerUtils.isExistProfileSession(req))
             return "index";
 
-        String pageNo = req.getParameter("pageNo");
-        String sortType = req.getParameter("type");
+        HttpSession session = req.getSession();
 
-        List<Post> posts = postService.getPosts(pageNo, sortType);
-        if (posts != null)
-            req.setAttribute("posts", posts);
+        PostsOptionDto optionInSession =
+                (PostsOptionDto) session.getAttribute("postsOption");
 
-        switch (postService.getPostSortType(sortType)) {
+        PostsOptionDto optionInRequest = new PostsOptionDto(
+                req.getParameter("pageNo"),
+                req.getParameter("type")
+        );
+
+        PostsOptionDto actualOption = postService.getPostsOption(optionInRequest, optionInSession);
+
+        List<Post> posts = postService.getPosts(actualOption);
+        int pageCount = postService.getPageCount();
+
+        req.setAttribute("posts", posts);
+        req.setAttribute("pageCount", pageCount);
+
+        PostSortType postSortType = postService.getPostSortType(actualOption.getSortType());
+
+        switch (postSortType) {
             case REAL_TIME: {
                 req.setAttribute("realtimeChecked", "checked");
                 break;
