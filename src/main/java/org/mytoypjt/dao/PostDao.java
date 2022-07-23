@@ -1,7 +1,7 @@
 package org.mytoypjt.dao;
 
 import org.mytoypjt.models.entity.Post;
-import org.mytoypjt.models.etc.PostSortType;
+import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.utils.DBUtil;
 
 import java.sql.Connection;
@@ -13,7 +13,15 @@ import java.util.List;
 
 public class PostDao {
 
-    int pictureCountInPage = 12;
+    public int pictureCountInPage = 12;
+
+    public int getPictureCountInPage() {
+        return pictureCountInPage;
+    }
+
+    public void setPictureCountInPage(int pictureCountInPage) {
+        this.pictureCountInPage = pictureCountInPage;
+    }
 
     public List<Post> getPosts(PostSortType sortType, int pageNo){
         int startNo = (pageNo - 1) * pictureCountInPage;
@@ -137,7 +145,7 @@ public class PostDao {
     public void modifyLike(int postNo, int accountNo, boolean isAdd){
         String sql = "delete from likes where post_no=? and account_no=?";
         if (isAdd)
-            sql = "insert into likes (post_no, account_no) values (?, ?)";
+            sql = "insert into likes (like_no, post_no, account_no) values (null, ?, ?)";
 
         try (
                 Connection conn = new DBUtil().getConnection();
@@ -228,4 +236,18 @@ public class PostDao {
         }
     }
 
+    public int getPostCount() {
+        String sql = "select count(*) from post";
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                return resultSet.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }
