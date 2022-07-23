@@ -92,7 +92,7 @@
 <!-- 글 본문 -->
 <div id="post-wrapper" class="bg-dark">
     <div class="text-center">
-        <img class="inline-block" src="../../pictures/origin/1.jpeg" id="post-img">
+        <img class="inline-block" src="../../pictures/origin/${post.pictureNo}.jpeg" id="post-img">
         <div class="inline-block text-center" id="post-content">
             <c:if test="${post ne null}">
                 ${post.content}

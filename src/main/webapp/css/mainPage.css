@@ -18,6 +18,11 @@
     margin-bottom:3%;
 }
 
+#pagenation {
+    width: 100%;
+    justify-content: center;
+}
+
 .btn-sort-type {
     width: 300px;
 }

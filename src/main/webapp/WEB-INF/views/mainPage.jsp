@@ -122,6 +122,18 @@
 </div>
 <!-- 글 목록 테이블 -->
 
+<!-- 페이지네이션 -->
+<ul class="pagination" id="pagenation">
+    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">4</a></li>
+    <li class="page-item"><a class="page-link" href="#">5</a></li>
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+</ul>
+<!-- 페이지네이션 -->
+
 <!-- footer -->
 <div class="container footer">
     <footer class="py-3 my-4">

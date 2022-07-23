@@ -1,7 +1,7 @@
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" href= "../../css/postCreate.css"/>
+    <link rel="stylesheet" type="text/css" href= "../../css/mainPage.css"/>
     <link rel="stylesheet" type="text/css" href= "../../css/common.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"/>
 </head>
@@ -34,7 +34,7 @@
                     </li>
 
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">마이페이지</a></li>
-                    <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">글 작성하기</a></li>
+                    <li class="nav-item"><a class="nav-link text-center" href="${postCreatePage}">글 작성하기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">공지 목록 보기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">알림 확인하기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">관리자 페이지</a></li>
@@ -44,80 +44,96 @@
                 <input type="hidden" name="_method" value="delete">
                 <button type="submit" class="btn btn-outline-dark" data-bs-dismiss="offcanvas" id="btn-logout">로그아웃 하기</button>
             </form>
-
+            
             <button type="button" class="btn btn-dark" data-bs-dismiss="offcanvas">돌아가기</button>
         </div>
     </div>
 </nav>
 <!-- navbar + offcanvas -->
 
-<!-- 입력 창 -->
-<h1 id="center-text">Write down what do you want to say !</h1>
-<form id="post-input-form" method="post" action="">
-    <div class="display-inline-block" id="post-wrapper">
-        <div id="title-wrapper">
-            <h2 id="title-text">Title</h2>
-            <input type="text" class="form-control">
-        </div>
+<div class="text-center main-text">
+    <h1 class="main-text-font">Behind</h1>
+</div>
 
-        <div id="content-wrapper">
-            <h2 id="content-text">Content</h2>
-            <textarea rows="15" class="form-control"></textarea>
-        </div>
+
+<hr id="line-mid">
+
+<!-- 글 목록 정렬 방식 버튼 -->
+<div class="text-center" id="posts-sort-type">
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" onclick="location.href='${realTimePosts}'" ${realtimeChecked}>
+        <label class="btn btn-outline-dark btn-sort-type" for="btnradio1">실시간 글</label>
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" onclick="location.href='${daysMostPosts}'" ${daysChecked}>
+        <label class="btn btn-outline-dark btn-sort-type" for="btnradio2">일일 인기글</label>
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" onclick="location.href='${weeksMostPosts}'" ${weeksChecked}>
+        <label class="btn btn-outline-dark btn-sort-type" for="btnradio3">주간 인기글</label>
     </div>
+</div>
+<!-- 글 목록 정렬 방식 버튼 -->
 
-    <div class="display-inline-block pictures" id="before-picture">
-        <img src="../../pictures/origin/1.jpeg" class="card-img-top">
-        <span class="btn btn-outline-primary btn-picture-change">◁</span>
-    </div>
+<!-- 글 목록 테이블 -->
+<div>
+    <table id="table-posts">
+        <c:forEach var="tr" begin="0" end="2">
+        <tr>
+            <c:forEach var="td" begin="0" end="3">
+                <c:set var="idx" scope="request" value="${tr * 4 + td}"/>
+                <c:if test="${empty posts[idx] eq false}">
+                    <td>
+                        <div class="card" style="width: 280px;">
+                            <img src="../../pictures/mini/${posts[idx].pictureNo}.jpeg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="title-font">${posts[idx].title}</h5>
+                                <a href="${post}?no=${posts[idx].postNo}" class="btn btn-outline-primary btn-show-detail">자세히 보기</a>
+                            </div>
+                            <label class="like-label">댓글 ${posts[idx].commentCount} 개 ・ 좋아요 ${posts[idx].likeCount} 개</label>
+                        </div>
+                    </td>
+                </c:if>
+            </c:forEach>
+        </tr>
+        </c:forEach>
+        </table>
 
-    <div class="display-inline-block pictures" id="now-picture">
-        <img src="../../pictures/origin/2.jpeg" class="card-img-top">
-        <span class="btn btn-outline-primary btn-picture-change"> now</span>
-    </div>
+    <c:if test="${empty posts eq true}">
+        <h1 class="text-center" id="label-not-posted">글이 게시되지 않았습니다...</h1>
+    </c:if>
+</div>
+<!-- 글 목록 테이블 -->
 
-    <div class="display-inline-block pictures" id="after-picture">
-        <img src="../../pictures/origin/3.jpeg" class="card-img-top">
-        <span class="btn btn-outline-primary btn-picture-change">▷</span>
-    </div>
-
-    <div id="checkbox-option" class="">
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
-                Default checkbox
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-            <label class="form-check-label" for="flexCheckChecked">
-                Checked checkbox
-            </label>
-        </div>
-    </div>
-
-    <button id="btn-post" type="submit" class="btn btn-success">게시하기</button>
-
-</form>
-<!-- 입력 창 -->
+<!-- 페이지네이션 -->
+<ul class="pagination" id="pagenation">
+    <form>
+        <li class="page-item display-inline-block"><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item display-inline-block"><a class="page-link" href="#">1</a></li>
+        <li class="page-item display-inline-block"><a class="page-link" href="#">2</a></li>
+        <li class="page-item display-inline-block"><a class="page-link" href="#">3</a></li>
+        <li class="page-item display-inline-block"><a class="page-link" href="#">4</a></li>
+        <li class="page-item display-inline-block"><a class="page-link" href="#">5</a></li>
+        <li class="page-item display-inline-block"><a class="page-link" href="#">Next</a></li>
+    </form>
+</ul>
+<!-- 페이지네이션 -->
 
 <!-- footer -->
 <div class="container footer">
     <footer class="py-3 my-4">
-        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Pricing</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
-        </ul>
-        <p class="text-center text-muted">© 2022 Company, Inc</p>
+      <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
+        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
+        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Pricing</a></li>
+        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
+        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+      </ul>
+      <p class="text-center text-muted">© 2022 Company, Inc</p>
     </footer>
-</div>
+  </div>
 <!-- footer -->
 
 
-<script src="../../js/postCreate.js"></script>
+<script src="../../js/mainPage.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
