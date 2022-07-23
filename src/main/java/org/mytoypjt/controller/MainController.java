@@ -12,26 +12,10 @@ import java.util.List;
 
 public class MainController extends PropertiesControllerTemplete {
 
-    PostService postViewService;
+    PostService postService;
 
     public MainController (){
-        postViewService = new PostService();
-    }
-
-    @RequestMapping(uri = "/main/page", method = "get")
-    public String showMainPage(HttpServletRequest req, HttpServletResponse resp){
-        HttpSession session = req.getSession();
-        if (session.getAttribute("profile") == null)
-            return "index";
-
-        List<Post> postList = postViewService.getDefaultPosts(1);
-        req.setAttribute("posts", postList);
-
-        req.setAttribute("realtimeChecked", "checked");
-        req.setAttribute("daysChecked", "");
-        req.setAttribute("weeksChecked", "");
-
-        return "mainPage";
+        postService = new PostService();
     }
 
     @Override
