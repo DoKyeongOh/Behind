@@ -2,7 +2,7 @@ package org.mytoypjt.service;
 
 import org.mytoypjt.dao.CommentDao;
 import org.mytoypjt.dao.PostDao;
-import org.mytoypjt.models.dto.PostsOptionDto;
+import org.mytoypjt.models.vo.PostsOptionVO;
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
@@ -17,6 +17,9 @@ public class PostService {
     final int SORT_DAYS_LIKE = 2;
     final int SORT_WEEKS_LIKE = 3;
 
+    final int POST_COUNT_IN_PAGE = 12;
+    final int PAGE_COUNT_IN_PAGE = 5;
+
     private PostDao postDao;
     private CommentDao commentDao;
 
@@ -25,22 +28,22 @@ public class PostService {
         commentDao = new CommentDao();
     }
 
-    public List<Post> getPosts(PostsOptionDto options){
+    public List<Post> getPosts(PostsOptionVO options){
         int pageNo = getPostPage(options.getPageNo());
         PostSortType sortType = getPostSortType(options.getSortType());
 
-        List<Post> postList = postDao.getPosts(sortType, pageNo);
+        List<Post> postList = postDao.getPosts(sortType, pageNo, POST_COUNT_IN_PAGE);
 
         return postList;
     }
 
-    public PostsOptionDto getPostsOption(PostsOptionDto optionInRequest, PostsOptionDto optionInSession){
+    public PostsOptionVO getPostsOption(PostsOptionVO optionInRequest, PostsOptionVO optionInSession){
         String sortType = "";
         String pageNo = "";
 
         if (!optionInRequest.getSortType().isEmpty() && !optionInSession.getSortType().isEmpty()) {
             sortType = optionInRequest.getSortType();
-            pageNo = "1";
+            pageNo = optionInRequest.getPageNo();
         } else if (optionInRequest.getSortType().isEmpty() && !optionInSession.getSortType().isEmpty()) {
             sortType = optionInSession.getSortType();
             pageNo = optionInRequest.getPageNo();
@@ -49,13 +52,32 @@ public class PostService {
             pageNo = optionInSession.getPageNo();
         }
 
+        if (pageNo.isEmpty())
+            pageNo = "1";
         if (sortType.isEmpty())
             sortType = "1";
 
-        if (pageNo.isEmpty())
-            pageNo = "1";
+        int pageTotalCount = 1;
+        PostSortType type = getPostSortType(sortType);
+        switch (type) {
+            case REAL_TIME: pageTotalCount = getRealTimePageCount();
+                break;
+            case DAYS_FAVORITE: pageTotalCount = getDaysPageCount();
+                break;
+            case WEEKS_FAVORITE: pageTotalCount = getWeeksPageCount();
+                break;
+        }
 
-        PostsOptionDto options = new PostsOptionDto(pageNo, sortType);
+        PostsOptionVO options = new PostsOptionVO(pageNo, sortType);
+        options.setStartEndPageNo(pageTotalCount, 5);
+
+        return options;
+    }
+
+    public PostsOptionVO getDefaultPostsOption() {
+        int pageTotalCount = getRealTimePageCount();
+        PostsOptionVO options = new PostsOptionVO("1", "1");
+        options.setStartEndPageNo(pageTotalCount, 5);
         return options;
     }
 
@@ -190,11 +212,27 @@ public class PostService {
         return false;
     }
 
-    public int getPageCount() {
+    public int getRealTimePageCount() {
         int postCount = postDao.getPostCount();
-        int pageCount = (int) postCount / postDao.getPictureCountInPage();
-        if (pageCount == 0) pageCount = 1;
-        if (pageCount > 5) pageCount = 5;
+        int pageCount = (int) postCount / POST_COUNT_IN_PAGE;
+        if (postCount % POST_COUNT_IN_PAGE != 0)
+            pageCount++;
+        return pageCount;
+    }
+
+    public int getDaysPageCount(){
+        int postCount = postDao.getDaysPostCount(POST_COUNT_IN_PAGE);
+        int pageCount = (int) postCount / POST_COUNT_IN_PAGE;
+        if (postCount % POST_COUNT_IN_PAGE != 0)
+            pageCount++;
+        return pageCount;
+    }
+
+    public int getWeeksPageCount(){
+        int postCount = postDao.getWeeksPostCount(POST_COUNT_IN_PAGE);
+        int pageCount = (int) postCount / POST_COUNT_IN_PAGE;
+        if (postCount % POST_COUNT_IN_PAGE != 0)
+            pageCount++;
         return pageCount;
     }
 }

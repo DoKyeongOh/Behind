@@ -10,10 +10,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class PostServiceTest {
 
     PostDao postDao;
+    PostService postService;
 
     @BeforeEach
     public void init() {
         postDao = new PostDao();
+        postService = new PostService();
     }
 
 
@@ -23,7 +25,6 @@ class PostServiceTest {
         boolean successed = true;
 
         try {
-            PostService postService = new PostService();
             System.out.println(postService.isLikePost("1",""));
         } catch (Exception e) {
             e.printStackTrace();
@@ -31,7 +32,6 @@ class PostServiceTest {
         }
 
         assertEquals(true, successed);
-
     }
 
 }
