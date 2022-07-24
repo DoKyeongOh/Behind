@@ -24,7 +24,7 @@ class PostDaoTest {
         boolean successed = true;
 
         try {
-            List<Post> postList = postDao.getPosts(PostSortType.WEEKS_FAVORITE,1);
+            List<Post> postList = postDao.getPosts(PostSortType.WEEKS_FAVORITE,1, 12);
             for (Post p : postList) {
                 System.out.println(p.getPostNo() + ") : " + p.getPictureNo());
             }

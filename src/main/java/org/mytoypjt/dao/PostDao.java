@@ -13,18 +13,8 @@ import java.util.List;
 
 public class PostDao {
 
-    public int pictureCountInPage = 12;
-
-    public int getPictureCountInPage() {
-        return pictureCountInPage;
-    }
-
-    public void setPictureCountInPage(int pictureCountInPage) {
-        this.pictureCountInPage = pictureCountInPage;
-    }
-
-    public List<Post> getPosts(PostSortType sortType, int pageNo){
-        int startNo = (pageNo - 1) * pictureCountInPage;
+    public List<Post> getPosts(PostSortType sortType, int pageNo, int postCountInPage){
+        int startNo = (pageNo - 1) * postCountInPage;
         if (startNo < 0) startNo = 1;
         String sql = "";
 
@@ -54,7 +44,7 @@ public class PostDao {
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, startNo);
-            preparedStatement.setInt(2, pictureCountInPage);
+            preparedStatement.setInt(2, postCountInPage);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Post> postList = new ArrayList<Post>();
 
@@ -242,6 +232,42 @@ public class PostDao {
                 Connection conn = new DBUtil().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                return resultSet.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public int getDaysPostCount(int postCountInPage) {
+        String sql = "select count(*) from post " +
+                "where posted_date between date_add(now(), interval -1 day) and now() " +
+                "order by like_count desc limit 0, ?";
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setInt(1, postCountInPage);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                return resultSet.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public int getWeeksPostCount(int postCountInPage) {
+        String sql = "select count(*) from post " +
+                "where posted_date between date_add(now(), interval -1 week) and now() " +
+                "order by like_count desc limit 0, ?";
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setInt(1, postCountInPage);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
                 return resultSet.getInt(1);
