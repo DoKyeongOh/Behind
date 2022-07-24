@@ -1,7 +1,7 @@
 package org.mytoypjt.controller.post;
 
 import org.mytoypjt.controller.structure.annotations.RequestMapping;
-import org.mytoypjt.models.dto.PostsOptionDto;
+import org.mytoypjt.models.vo.PostsOptionVO;
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
@@ -18,6 +18,7 @@ import java.util.List;
 public class PostController {
 
     PostService postService;
+    String postsOptionKey = "PostsOption";
 
     public PostController (){
         postService = new PostService();
@@ -29,16 +30,16 @@ public class PostController {
         if (session.getAttribute("profile") == null)
             return "index";
 
-        PostsOptionDto postsOptionDto = new PostsOptionDto("1", "1");
+        PostsOptionVO postsOptionVO = postService.getDefaultPostsOption();
 
-        List<Post> posts = postService.getPosts(postsOptionDto);
+        List<Post> posts = postService.getPosts(postsOptionVO);
         req.setAttribute("posts", posts);
 
         req.setAttribute("realtimeChecked", "checked");
         req.setAttribute("daysChecked", "");
         req.setAttribute("weeksChecked", "");
 
-        session.setAttribute("postsOption", postsOptionDto);
+        session.setAttribute(this.postsOptionKey, postsOptionVO);
 
         return "mainPage";
     }
@@ -49,24 +50,21 @@ public class PostController {
 
         HttpSession session = req.getSession();
 
-        PostsOptionDto optionInSession =
-                (PostsOptionDto) session.getAttribute("postsOption");
+        PostsOptionVO optionInSession =
+                (PostsOptionVO) session.getAttribute(this.postsOptionKey);
 
-        PostsOptionDto optionInRequest = new PostsOptionDto(
+        PostsOptionVO optionInRequest = new PostsOptionVO(
                 req.getParameter("pageNo"),
                 req.getParameter("type")
         );
 
-        PostsOptionDto actualOption = postService.getPostsOption(optionInRequest, optionInSession);
+        PostsOptionVO actualOption = postService.getPostsOption(optionInRequest, optionInSession);
+        session.setAttribute(this.postsOptionKey, actualOption);
 
         List<Post> posts = postService.getPosts(actualOption);
-        int pageCount = postService.getPageCount();
-
         req.setAttribute("posts", posts);
-        req.setAttribute("pageCount", pageCount);
 
         PostSortType postSortType = postService.getPostSortType(actualOption.getSortType());
-
         switch (postSortType) {
             case REAL_TIME: {
                 req.setAttribute("realtimeChecked", "checked");
