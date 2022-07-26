@@ -42,7 +42,7 @@ public class CommentDao {
         return null;
     }
 
-    public boolean createComment(int postNo, Profile profile, boolean isAnonymous, String content) {
+    public void createComment(int postNo, Profile profile, boolean isAnonymous, String content) {
         String sql = "insert into comment values (null , ?, 0, ?, ?, ?, ?)";
 
         try (
@@ -55,10 +55,39 @@ public class CommentDao {
             preparedStatement.setInt(4, postNo);
             preparedStatement.setString(5, profile.getNicname());
             preparedStatement.execute();
-            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getCommentCount(int postNo) {
+        String sql = "select count(*) from comment where post_no=?";
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setInt(1, postNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                return resultSet.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return 0;
     }
+
+    public void updateCommentCount(int postNo, int count){
+        String sql = "update post set comment_count = ? where post_no = ?";
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setInt(1, count);
+            preparedStatement.setInt(2, postNo);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
