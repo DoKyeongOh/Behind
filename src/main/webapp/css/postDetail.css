@@ -11,6 +11,7 @@ body {
 }
 
 #post-wrapper {
+    margin-top: -0.6%;
     position:relative;
     overflow:auto;
 }
@@ -30,9 +31,12 @@ body {
 }
 
 #post-title {
+    width: 100%;
+    background-color: lightgray;
     font-weight: 930;
     padding-left: 1%;
-    margin-bottom: 1%;
+    padding-bottom: 1%;
+    padding-top: 1%;
 }
 
 #post-comments {

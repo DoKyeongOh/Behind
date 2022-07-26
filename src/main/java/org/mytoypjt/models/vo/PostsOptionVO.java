@@ -42,12 +42,12 @@ public class PostsOptionVO {
         if (this.pageStartNo > pageTotalCount)
             this.pageStartNo = 1;
 
+        this.pageEndNo = this.pageStartNo;
         for (int i=0 ; i<unit ; i++) {
             if (this.pageEndNo >= pageTotalCount)
                 break;
             this.pageEndNo++;
         }
-
     }
 
     public int calcStartNo(int unit){
