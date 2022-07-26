@@ -19,7 +19,7 @@
 
 <html>
 <head>
-    <title>Title</title>
+    <title>Behind</title>
     <link rel="stylesheet" type="text/css" href= "../../css/mainPage.css"/>
     <link rel="stylesheet" type="text/css" href= "../../css/common.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"/>
@@ -101,13 +101,18 @@
                 <c:set var="idx" scope="request" value="${tr * 4 + td}"/>
                 <c:if test="${empty posts[idx] eq false}">
                     <td>
-                        <div class="card" style="width: 280px;">
-                            <img src="../../pictures/mini/${posts[idx].pictureNo}.jpeg" class="card-img-top" alt="...">
+                        <div class="card" style="width: 300px;">
+                            <a href="${post}?no=${posts[idx].postNo}">
+                                <img src="../../pictures/mini/${posts[idx].pictureNo}.jpeg" class="card-img-top" alt="...">
+                            </a>
+
                             <div class="card-body">
                                 <h5 class="title-font">${posts[idx].title}</h5>
-                                <a href="${post}?no=${posts[idx].postNo}" class="btn btn-outline-primary btn-show-detail">자세히 보기</a>
+                                <label class="label-poster-name">BehindAdmin</label><br>
+                                <div class="text-right">
+                                    <label class="like-label">댓글 ${posts[idx].commentCount} 개 ・ 좋아요 ${posts[idx].likeCount} 개</label>
+                                </div>
                             </div>
-                            <label class="like-label">댓글 ${posts[idx].commentCount} 개 ・ 좋아요 ${posts[idx].likeCount} 개</label>
                         </div>
                     </td>
                 </c:if>

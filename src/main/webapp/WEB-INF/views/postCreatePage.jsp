@@ -12,7 +12,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Behind</title>
     <link rel="stylesheet" type="text/css" href= "../../css/postCreate.css"/>
     <link rel="stylesheet" type="text/css" href= "../../css/common.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"/>
@@ -69,12 +69,12 @@
     <div class="display-inline-block" id="post-wrapper">
         <div id="title-wrapper">
             <h2 id="title-text">Title</h2>
-            <input type="text" class="form-control">
+            <input name="title" type="text" class="form-control">
         </div>
 
         <div id="content-wrapper">
             <h2 id="content-text">Content</h2>
-            <textarea rows="15" class="form-control"></textarea>
+            <textarea name="content" rows="15" class="form-control"></textarea>
         </div>
     </div>
 
@@ -95,20 +95,20 @@
 
     <div id="checkbox-option" class="">
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+            <input class="form-check-input" type="checkbox" value="true" id="flexCheckDefault" name="isAnonName">
             <label class="form-check-label" for="flexCheckDefault">
-                Default checkbox
+                닉네임 공개하지 않기
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+            <input class="form-check-input" type="checkbox" value="true" id="flexCheckChecked" name="isAnonCity">
             <label class="form-check-label" for="flexCheckChecked">
-                Checked checkbox
+                지역 공개하지 않기
             </label>
         </div>
     </div>
 
-    <input type="hidden" name="imgNo" value="" id="selected-img-no">
+    <input type="hidden" name="imgNo" value="1" id="selected-img-no">
     <button id="btn-post" type="submit" class="btn btn-success">게시하기</button>
 
 </form>
