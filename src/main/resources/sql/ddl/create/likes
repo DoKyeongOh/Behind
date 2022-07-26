@@ -1,0 +1,5 @@
+CREATE TABLE `LIKES` (
+	`like_no` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`account_no` INT,
+	`post_no` BIGINT,
+);

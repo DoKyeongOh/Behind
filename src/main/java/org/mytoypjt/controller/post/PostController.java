@@ -43,6 +43,7 @@ public class PostController {
 
         return "mainPage";
     }
+
     @RequestMapping(uri = "/posts", method = "get")
     public String showPosts(HttpServletRequest req, HttpServletResponse resp){
         if (!ControllerUtils.isExistProfileSession(req))
@@ -109,7 +110,7 @@ public class PostController {
         return new ViewInfo("postDetailPage");
     }
 
-    @RequestMapping(uri = "/post/page", method = "get")
+    @RequestMapping(uri = "/post/page/1", method = "get")
     public String showPostPage(){
         return "postCreatePage";
     }
@@ -127,8 +128,13 @@ public class PostController {
 
         postService.createPost(profile, title, content, isAnonName, isAnonName, img);
 
+        return ViewInfo.getRedirectViewInfo("/post/page/2");
+    }
 
-        return null;
+    @RequestMapping(uri = "/post/page/2", method = "get")
+    public String showCreatePostCompletePage(){
+        int a = 3;
+        return "postCreateComplete";
     }
 
     @RequestMapping(uri = "/like", method = "post")
