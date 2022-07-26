@@ -64,3 +64,7 @@ tr, td {
     font-weight: 900;
 }
 
+.not-display {
+    visibility: hidden;
+}
+

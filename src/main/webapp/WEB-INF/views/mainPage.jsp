@@ -13,7 +13,7 @@
 <% request.setAttribute("daysMostPosts", request.getContextPath() + "/posts?type=2"); %>
 <% request.setAttribute("weeksMostPosts", request.getContextPath() + "/posts?type=3"); %>
 <% request.setAttribute("post", request.getContextPath() + "/post"); %>
-<% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page"); %>
+<% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page/1"); %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 

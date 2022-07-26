@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <% request.setAttribute("postCreate", request.getContextPath() + "/post"); %>
+<% request.setAttribute("mainPage", request.getContextPath() + "/main/page"); %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -63,6 +64,12 @@
 </nav>
 <!-- navbar + offcanvas -->
 
+<!--이미지-->
+<c:forEach var="index" begin="1" end="10">
+    <img src="../../pictures/origin/${index}.jpeg" class="not-display" id="img-${index}">
+</c:forEach>
+<!--이미지-->
+
 <!-- 입력 창 -->
 <h1 id="center-text">Write down what do you want to say !</h1>
 <form id="post-input-form" method="post" action="${postCreate}">
@@ -80,17 +87,17 @@
 
     <div class="display-inline-block pictures" id="before-picture">
         <img src="../../pictures/origin/1.jpeg" class="card-img-top">
-        <span class="btn btn-outline-primary btn-picture-change">◁</span>
+        <button type="button" class="btn btn-outline-primary btn-picture-change" id="btn-previous-img">◁</button>
     </div>
 
     <div class="display-inline-block pictures" id="now-picture">
         <img src="../../pictures/origin/2.jpeg" class="card-img-top">
-        <span class="btn btn-outline-primary btn-picture-change"> now</span>
+        <button type="button" class="btn btn-outline-primary btn-picture-change" id="btn-now-img"> now</button>
     </div>
 
     <div class="display-inline-block pictures" id="after-picture">
         <img src="../../pictures/origin/3.jpeg" class="card-img-top">
-        <span class="btn btn-outline-primary btn-picture-change">▷</span>
+        <button type="button" class="btn btn-outline-primary btn-picture-change" id="btn-next-img">▷</button>
     </div>
 
     <div id="checkbox-option" class="">
