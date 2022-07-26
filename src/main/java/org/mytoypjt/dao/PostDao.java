@@ -2,6 +2,7 @@ package org.mytoypjt.dao;
 
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.dto.PostSortType;
+import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.DBUtil;
 
 import java.sql.Connection;
@@ -196,36 +197,6 @@ public class PostDao {
         return false;
     }
 
-    public int getCommentCount(int postNo) {
-        String sql = "select count(*) from comment where post_no=?";
-        try (
-                Connection conn = new DBUtil().getConnection();
-                PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        ) {
-            preparedStatement.setInt(1, postNo);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next())
-                return resultSet.getInt(1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    public void updateCommentCount(int postNo, int count){
-        String sql = "update post set comment_count = ? where post_no = ?";
-        try (
-                Connection conn = new DBUtil().getConnection();
-                PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        ) {
-            preparedStatement.setInt(1, count);
-            preparedStatement.setInt(2, postNo);
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public int getPostCount() {
         String sql = "select count(*) from post";
         try (
@@ -275,5 +246,29 @@ public class PostDao {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    public void createPost(Profile profile, String title, String content, boolean isAnonymousName, boolean isAnonymousCity, int imgNo) {
+        String sql = "insert into post " +
+                "(post_no, title, content, posted_date, is_use_anonymous_city, is_use_anonymous_name, " +
+                "comment_count, like_count, account_no, picture_no, nicname) " +
+                "values " +
+                "(null , ?, ?, now(), ?, ?, 0, 0, ?, ?, ?)";
+
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setString(1, title);
+            preparedStatement.setString(2, content);
+            preparedStatement.setBoolean(3, isAnonymousName);
+            preparedStatement.setBoolean(4, isAnonymousCity);
+            preparedStatement.setInt(5, profile.getAccountNo());
+            preparedStatement.setInt(6, imgNo);
+            preparedStatement.setString(7, profile.getNicname());
+            preparedStatement.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

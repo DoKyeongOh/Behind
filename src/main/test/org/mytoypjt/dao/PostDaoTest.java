@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.dto.PostSortType;
+import org.mytoypjt.models.entity.Profile;
 
 import java.util.List;
 
@@ -51,4 +52,25 @@ class PostDaoTest {
         assertEquals(true, successed);
     }
 
+    @Test
+    void createPost() {
+
+        boolean successed = true;
+        try {
+            Profile profile = new Profile(100);
+            profile.setNicname("nice name");
+            // test content
+            this.postDao.createPost(
+                    profile,
+                    "test title",
+                    "test content",
+                    false,
+                    true,
+                    2);
+        }catch (Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(true, successed);
+    }
 }

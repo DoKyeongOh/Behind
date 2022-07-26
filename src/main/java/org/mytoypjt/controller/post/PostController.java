@@ -58,7 +58,7 @@ public class PostController {
                 req.getParameter("type")
         );
 
-        PostsOptionVO actualOption = postService.getPostsOption(optionInRequest, optionInSession);
+        PostsOptionVO actualOption = postService.getNewPostsOption(optionInRequest, optionInSession);
         session.setAttribute(this.postsOptionKey, actualOption);
 
         List<Post> posts = postService.getPosts(actualOption);
@@ -86,13 +86,13 @@ public class PostController {
     }
 
     @RequestMapping(uri = "/post", method = "get")
-    public String showPost(HttpServletRequest req, HttpServletResponse resp){
+    public ViewInfo showPost(HttpServletRequest req, HttpServletResponse resp){
 
         String no = req.getParameter("no");
         Post post = postService.getPost(no);
 
         if (post == null)
-            return "postDetailPage";
+            return ViewInfo.getRedirectViewInfo("/main/page");
 
         List<Comment> comments = postService.getComments(post.getPostNo());
         req.setAttribute("post", post);
@@ -106,7 +106,7 @@ public class PostController {
         boolean isLike = postService.isLikePost(no, accountNo);
         req.setAttribute("isLike", isLike);
 
-        return "postDetailPage";
+        return new ViewInfo("postDetailPage");
     }
 
     @RequestMapping(uri = "/post/page", method = "get")
@@ -115,7 +115,19 @@ public class PostController {
     }
 
     @RequestMapping(uri = "/post", method = "post")
-    public ViewInfo createPost(){
+    public ViewInfo createPost(HttpServletRequest req, HttpServletResponse resp){
+        String img = req.getParameter("imgNo");
+        String isAnonName = req.getParameter("isAnonName");
+        String isAnonCity = req.getParameter("isAnonCity");
+        String title = req.getParameter("title");
+        String content = req.getParameter("content");
+
+        HttpSession session = req.getSession();
+        Profile profile = (Profile) session.getAttribute("profile");
+
+        postService.createPost(profile, title, content, isAnonName, isAnonName, img);
+
+
         return null;
     }
 

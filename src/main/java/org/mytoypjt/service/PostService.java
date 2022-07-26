@@ -37,7 +37,7 @@ public class PostService {
         return postList;
     }
 
-    public PostsOptionVO getPostsOption(PostsOptionVO optionInRequest, PostsOptionVO optionInSession){
+    public PostsOptionVO getNewPostsOption(PostsOptionVO optionInRequest, PostsOptionVO optionInSession){
         String sortType = "";
         String pageNo = "";
 
@@ -60,12 +60,9 @@ public class PostService {
         int pageTotalCount = 1;
         PostSortType type = getPostSortType(sortType);
         switch (type) {
-            case REAL_TIME: pageTotalCount = getRealTimePageCount();
-                break;
-            case DAYS_FAVORITE: pageTotalCount = getDaysPageCount();
-                break;
-            case WEEKS_FAVORITE: pageTotalCount = getWeeksPageCount();
-                break;
+            case REAL_TIME: pageTotalCount = getRealTimePageCount(); break;
+            case DAYS_FAVORITE: pageTotalCount = getDaysPageCount(); break;
+            case WEEKS_FAVORITE: pageTotalCount = getWeeksPageCount(); break;
         }
 
         PostsOptionVO options = new PostsOptionVO(pageNo, sortType);
@@ -197,8 +194,8 @@ public class PostService {
             );
 
             int no = Integer.parseInt(postNo);
-            int commentCount = postDao.getCommentCount(no);
-            postDao.updateCommentCount(no, commentCount);
+            int commentCount = commentDao.getCommentCount(no);
+            commentDao.updateCommentCount(no, commentCount);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -234,5 +231,27 @@ public class PostService {
         if (postCount % POST_COUNT_IN_PAGE != 0)
             pageCount++;
         return pageCount;
+    }
+
+    public void createPost(Profile profile, String title, String content, String isAnonName, String isAnonCity, String img) {
+        if (isNull(title, content, profile)) return;
+
+        boolean isAnonymousName = false;
+        if (!isNull(isAnonName) && isAnonName.equals("true"))
+            isAnonymousName = true;
+
+        boolean isAnonymousCity = false;
+        if (!isNull(isAnonCity) && isAnonCity.equals("true"))
+            isAnonymousCity = true;
+
+        int imgNo = 1;
+
+        try {
+            imgNo = Integer.parseInt(img);
+        } catch (Exception e) {
+
+        }
+
+        postDao.createPost(profile, title, content, isAnonymousName, isAnonymousCity, imgNo);
     }
 }
