@@ -61,4 +61,8 @@
     width: 100%;
 }
 
+.not-display {
+    display: none;
+}
+
 

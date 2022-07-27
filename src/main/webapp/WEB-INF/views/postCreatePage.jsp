@@ -9,6 +9,7 @@
 
 <% request.setAttribute("postCreate", request.getContextPath() + "/post"); %>
 <% request.setAttribute("mainPage", request.getContextPath() + "/main/page"); %>
+<% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page/1"); %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -47,7 +48,7 @@
                     </li>
 
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">마이페이지</a></li>
-                    <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">글 작성하기</a></li>
+                    <li class="nav-item"><a class="nav-link text-center" href="${postCreatePage}">글 작성하기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">공지 목록 보기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">알림 확인하기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">관리자 페이지</a></li>
@@ -66,7 +67,7 @@
 
 <!--이미지-->
 <c:forEach var="index" begin="1" end="10">
-    <img src="../../pictures/origin/${index}.jpeg" class="not-display" id="img-${index}">
+    <img src="../../pictures/origin/${index}.jpeg" class="not-display sr-only" id="img-${index}">
 </c:forEach>
 <!--이미지-->
 
@@ -87,17 +88,17 @@
 
     <div class="display-inline-block pictures" id="before-picture">
         <img src="../../pictures/origin/1.jpeg" class="card-img-top">
-        <button type="button" class="btn btn-outline-primary btn-picture-change" id="btn-previous-img">◁</button>
+        <span class="btn btn-outline-primary btn-picture-change" id="btn-previous-img">◁</span>
     </div>
 
     <div class="display-inline-block pictures" id="now-picture">
         <img src="../../pictures/origin/2.jpeg" class="card-img-top">
-        <button type="button" class="btn btn-outline-primary btn-picture-change" id="btn-now-img"> now</button>
+        <span class="btn btn-outline-primary btn-picture-change" id="btn-now-img"> now</span>
     </div>
 
     <div class="display-inline-block pictures" id="after-picture">
         <img src="../../pictures/origin/3.jpeg" class="card-img-top">
-        <button type="button" class="btn btn-outline-primary btn-picture-change" id="btn-next-img">▷</button>
+        <span class="btn btn-outline-primary btn-picture-change" id="btn-next-img">▷</span>
     </div>
 
     <div id="checkbox-option" class="">
