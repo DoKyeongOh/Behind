@@ -1,0 +1,38 @@
+ul {
+    width: 80%;
+    margin-left: 10%;
+}
+
+#btn-return-post {
+    width: 15%;
+    margin-left: 2%;
+    margin-top: 7%;
+}
+
+#reply-list {
+    margin-top: 5%;
+    text-align: left;
+}
+
+#comment-text {
+    padding-top: 2%;
+}
+
+#comment-wrapper {
+    width: 100%;
+    text-align: center;
+}
+
+#info-commenter {
+    text-align: right;
+}
+
+#btn-report {
+    text-align: right;
+    margin-right: 10%;
+}
+
+.reply-item {
+    font-size: 80%;
+}
+

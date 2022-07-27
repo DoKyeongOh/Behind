@@ -60,6 +60,10 @@ html, body {
     display: inline-block;
 }
 
+.vertical-center {
+    vertical-align: center;
+}
+
 #btn-logout {
     width: 100%;
     margin-bottom: -4%;
