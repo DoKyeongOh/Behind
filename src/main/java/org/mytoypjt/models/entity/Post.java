@@ -37,4 +37,16 @@ public class Post {
         this.pictureNo = pictureNo;
         this.nicname = nicname;
     }
+
+    public boolean getIs_use_anonymous_city() {
+        return is_use_anonymous_city;
+    }
+
+    public boolean getIs_use_anonymous_name() {
+        return is_use_anonymous_name;
+    }
+
+    public Date getPostedDate() {
+        return postedDate;
+    }
 }
