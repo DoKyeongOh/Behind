@@ -167,7 +167,7 @@
                     익명
                 </c:if>
                 : ${comment.content}
-                <button class="btn btn-sm" onclick="location.href='/comment?no=${comment.commentId}'">➥</button>
+                <button class="btn btn-sm" onclick="location.href='/comment?no=${comment.commentNo}'">➥</button>
             </li>
         </c:forEach>
     </ul>
