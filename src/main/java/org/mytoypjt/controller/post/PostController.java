@@ -158,21 +158,5 @@ public class PostController {
             return ViewInfo.getRedirectViewInfo("/post?no="+post.getPostNo());
     }
 
-    @RequestMapping(uri = "/comment", method = "post")
-    public ViewInfo entryComment(HttpServletRequest req, HttpServletResponse resp){
-
-        String isUseAnonymousName = req.getParameter("isUseAnonymousName");
-        String postNo = req.getParameter("postNo");
-        String accountNo = req.getParameter("accountNo");
-        String content = req.getParameter("content");
-
-        HttpSession session = req.getSession();
-        Profile profile = (Profile) session.getAttribute("profile");
-
-        postService.createComment(postNo, profile, isUseAnonymousName, content);
-        Post post = postService.getPost(postNo);
-
-        return ViewInfo.getRedirectViewInfo("/post?no="+post.getPostNo());
-    }
 
 }
