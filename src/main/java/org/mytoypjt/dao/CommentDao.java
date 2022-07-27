@@ -90,4 +90,29 @@ public class CommentDao {
         }
     }
 
+    public Comment getComment(int commentNo) {
+        String sql = "select * from comment where comment_no = ?";
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setInt(1, commentNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return new Comment(
+                        resultSet.getInt("comment_no"),
+                        resultSet.getString("content"),
+                        resultSet.getInt("reply_count"),
+                        resultSet.getBoolean("is_use_anonymous_name"),
+                        resultSet.getInt("account_no"),
+                        resultSet.getInt("post_no"),
+                        resultSet.getString("nicname")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

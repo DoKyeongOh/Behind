@@ -3,6 +3,8 @@ package org.mytoypjt.service;
 import org.mytoypjt.dao.CommentDao;
 import org.mytoypjt.dao.PostDao;
 import org.mytoypjt.dao.ProfileDao;
+import org.mytoypjt.dao.ReplyDao;
+import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.models.vo.PostsOptionVO;
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
@@ -24,6 +26,7 @@ public class PostService {
 
     private PostDao postDao;
     private CommentDao commentDao;
+    private ReplyDao replyDao;
 
     private ProfileDao profileDao;
 
@@ -31,6 +34,7 @@ public class PostService {
         postDao = new PostDao();
         commentDao = new CommentDao();
         profileDao = new ProfileDao();
+        replyDao = new ReplyDao();
     }
 
     public List<Post> getPosts(PostsOptionVO options){
@@ -288,5 +292,21 @@ public class PostService {
         }
         return profile;
 
+    }
+
+    public Comment getComment(String no){
+        try {
+            int commentNo = Integer.parseInt(no);
+            return commentDao.getComment(commentNo);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public List<Reply> getReplies(Comment comment) {
+        int commentNo = comment.getCommentNo();
+        String nicname = comment.getNicname();
+
+        return replyDao.getReplies(commentNo);
     }
 }

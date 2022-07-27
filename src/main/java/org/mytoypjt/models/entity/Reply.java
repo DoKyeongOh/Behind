@@ -1,53 +1,42 @@
 package org.mytoypjt.models.entity;
 
-public class Comment {
-
-    public Comment() {
-    }
-    int commentNo;
+public class Reply {
+    int replyNo;
     String content;
-    int replyCount;
     boolean isUseAnonymousName;
     int accountNo;
-    int postNo;
+    int commentNo;
     String nicname;
 
-
-    public Comment(int commentNo) {
-        this.commentNo = commentNo;
+    public Reply(int replyNo){
+        this.replyNo = replyNo;
         this.content = "";
-        this.replyCount = 0;
         this.isUseAnonymousName = false;
         this.accountNo = -1;
-        this.postNo = -1;
+        this.commentNo = -1;
         this.nicname = "";
     }
 
-    public Comment(int commentNo, String content, int replyCount, boolean isUseAnonymousName, int accountNo, int postNo, String nicname) {
-        this.commentNo = commentNo;
+    public Reply(int replyNo, String content, boolean isUseAnonymousName, int accountNo, int commentNo, String nicname){
+        this.replyNo = replyNo;
         this.content = content;
-        this.replyCount = replyCount;
         this.isUseAnonymousName = isUseAnonymousName;
         this.accountNo = accountNo;
-        this.postNo = postNo;
+        this.commentNo = commentNo;
         this.nicname = nicname;
     }
 
-
-    public static boolean isCorrectComment(Comment comment){
-        if (isNull(comment, comment.getContent()))
+    public static boolean isCorrectReply(Reply reply){
+        if (isNull(reply, reply.getContent()))
             return true;
 
-        if (comment.getAccountNo() < 0)
+        if (reply.getAccountNo() < 0)
             return false;
 
-        if (comment.getPostNo() < 0)
+        if (reply.getReplyNo() < 0)
             return false;
 
-        if (comment.getCommentNo() < 0)
-            return false;
-
-        if (comment.getReplyCount() < 0)
+        if (reply.getCommentNo() < 0)
             return false;
 
         return false;
@@ -61,13 +50,12 @@ public class Comment {
         return false;
     }
 
-
-    public int getCommentNo() {
-        return commentNo;
+    public int getReplyNo() {
+        return replyNo;
     }
 
-    public void setCommentNo(int commentNo) {
-        this.commentNo = commentNo;
+    public void setReplyNo(int replyNo) {
+        this.replyNo = replyNo;
     }
 
     public String getContent() {
@@ -78,15 +66,7 @@ public class Comment {
         this.content = content;
     }
 
-    public int getReplyCount() {
-        return replyCount;
-    }
-
-    public void setReplyCount(int replyCount) {
-        this.replyCount = replyCount;
-    }
-
-    public boolean getIsUseAnonymousName() {
+    public boolean getUseAnonymousName() {
         return isUseAnonymousName;
     }
 
@@ -102,16 +82,12 @@ public class Comment {
         this.accountNo = accountNo;
     }
 
-    public int getPostNo() {
-        return postNo;
+    public int getCommentNo() {
+        return commentNo;
     }
 
-    public void setPostNo(int postNo) {
-        this.postNo = postNo;
-    }
-
-    public boolean isUseAnonymousName() {
-        return isUseAnonymousName;
+    public void setCommentNo(int commentNo) {
+        this.commentNo = commentNo;
     }
 
     public String getNicname() {
@@ -121,5 +97,4 @@ public class Comment {
     public void setNicname(String nicname) {
         this.nicname = nicname;
     }
-
 }
