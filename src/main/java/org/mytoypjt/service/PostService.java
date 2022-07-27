@@ -2,12 +2,14 @@ package org.mytoypjt.service;
 
 import org.mytoypjt.dao.CommentDao;
 import org.mytoypjt.dao.PostDao;
+import org.mytoypjt.dao.ProfileDao;
 import org.mytoypjt.models.vo.PostsOptionVO;
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.dto.PostSortType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostService {
@@ -23,9 +25,12 @@ public class PostService {
     private PostDao postDao;
     private CommentDao commentDao;
 
+    private ProfileDao profileDao;
+
     public PostService(){
         postDao = new PostDao();
         commentDao = new CommentDao();
+        profileDao = new ProfileDao();
     }
 
     public List<Post> getPosts(PostsOptionVO options){
@@ -253,5 +258,35 @@ public class PostService {
         }
 
         postDao.createPost(profile, title, content, isAnonymousName, isAnonymousCity, imgNo);
+    }
+
+    public List<String> getPostersCity(List<Post> posts) {
+        if (posts == null) return null;
+
+        List<String> cities = new ArrayList<String>();
+
+        posts.forEach((post) -> {
+            int profileNo = post.getAccountNo();
+            Profile profile = profileDao.getProfile(profileNo);
+
+            if (profile == null) profile = new Profile(profileNo);
+
+            if (post.getIs_use_anonymous_city() || profile.getCity().isEmpty())
+                cities.add("미등록 지역");
+            else
+                cities.add(profile.getCity());
+        });
+        return cities;
+    }
+
+    public Profile getPosterProfile(int accountNo) {
+        Profile profile = profileDao.getProfile(accountNo);
+        if (profile == null) {
+            profile = new Profile(accountNo);
+            profile.setNicname("익명");
+            profile.setCity("미등록 지역");
+        }
+        return profile;
+
     }
 }

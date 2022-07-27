@@ -33,7 +33,9 @@ public class PostController {
         PostsOptionVO postsOptionVO = postService.getDefaultPostsOption();
 
         List<Post> posts = postService.getPosts(postsOptionVO);
+        List<String> cities = postService.getPostersCity(posts);
         req.setAttribute("posts", posts);
+        req.setAttribute("cities", cities);
 
         req.setAttribute("realtimeChecked", "checked");
         req.setAttribute("daysChecked", "");
@@ -88,14 +90,16 @@ public class PostController {
 
     @RequestMapping(uri = "/post", method = "get")
     public ViewInfo showPost(HttpServletRequest req, HttpServletResponse resp){
-
         String no = req.getParameter("no");
         Post post = postService.getPost(no);
 
         if (post == null)
             return ViewInfo.getRedirectViewInfo("/main/page");
 
+        Profile posterProfile = postService.getPosterProfile(post.getAccountNo());
         List<Comment> comments = postService.getComments(post.getPostNo());
+
+        req.setAttribute("posterNicname", posterProfile.getNicname());
         req.setAttribute("post", post);
         req.setAttribute("comments", comments);
 

@@ -31,12 +31,26 @@ body {
 }
 
 #post-title {
-    width: 100%;
-    background-color: lightgray;
+    width: 49%;
     font-weight: 930;
     padding-left: 1%;
-    padding-bottom: 1%;
+    padding-top: 0.5%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#poster-name {
+    width: 49%;
+    text-align: right;
+    display: inline-block;
+    font-size: 80%;
+}
+
+.title-and-nicname {
     padding-top: 1%;
+    padding-bottom: 1%;
+    width: 100%;
+    background-color: lightgray;
 }
 
 #post-comments {
@@ -63,11 +77,18 @@ body {
 }
 
 #label-like-count {
-    margin-right: 3%;
+    margin-top: 3%;
 }
 
 #label-comment-count {
     margin-left: 1%;
+    margin-top: 3%;
+}
+
+#label-wrapper {
+    width: 40%;
+    padding-left: 1%;
+    display: inline-block;
 }
 
 .text-right {

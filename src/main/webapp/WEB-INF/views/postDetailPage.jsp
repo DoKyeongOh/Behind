@@ -12,6 +12,8 @@
 <% request.setAttribute("like", request.getContextPath() + "/like"); %>
 <% request.setAttribute("entryComment", request.getContextPath() + "/comment"); %>
 
+<% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page/1"); %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%--
@@ -66,7 +68,7 @@
                     </li>
 
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">마이페이지</a></li>
-                    <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">글 작성하기</a></li>
+                    <li class="nav-item"><a class="nav-link text-center" href="${postCreatePage}">글 작성하기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">공지 목록 보기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">알림 확인하기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">관리자 페이지</a></li>
@@ -83,9 +85,25 @@
 </nav>
 <!-- navbar + offcanvas -->
 
+
 <!-- 글 제목 -->
 <br><br><br><br>
-<h2 id="post-title"> ${post.title} </h2>
+<div class="title-and-nicname">
+    <h2 id="post-title"> ${post.title} </h2>
+    <h6 id="poster-name">
+        <label style="font-size: 130%">
+            <c:if test="${post.is_use_anonymous_name eq true}">${post.nicname}</c:if>
+            <c:if test="${post.is_use_anonymous_name ne true}">작성자 : 익명</c:if>
+        </label><br>
+
+        <label style="padding-top: 0.5%;">작성자 :
+            <c:if test="${post.is_use_anonymous_city eq true}">미등록 지역</c:if>
+            <c:if test="${post.is_use_anonymous_city ne true}">${posterNicname}</c:if>
+        </label><br>
+
+        <label style="padding-top: 0.5%;">작성 일시 : ${post.postedDate}</label>
+    </h6>
+</div>
 <!-- 글 제목 -->
 
 
@@ -102,10 +120,13 @@
 </div>
 <!-- 글 본문 -->
 
-<h3 id="post-comments" class="inline-block"> 댓글 </h3>
+<div id="label-wrapper">
+    <label id="label-comment-count"> 댓글 ${comments.size()}개</label> ・
+    <label id="label-like-count"> 좋아요 ${post.likeCount}개</label>
+</div>
 
 <!-- 좋아요, 신고하기 버튼 -->
-<div class="text-right inline-block" style="width: 92%;">
+<div class="text-right inline-block" style="width: 55%; padding-top: 1%">
     <form action="/report/page" method="get" id="form-report">
         <button class="btn btn-outline-danger">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-flag" viewBox="0 0 16 16">
@@ -130,8 +151,6 @@
                 좋아요
             </button>
     </form>
-    <label id="label-comment-count"> 댓글 ${comments.size()}개</label> ・
-    <label id="label-like-count"> 좋아요 ${post.likeCount}개</label>
 </div>
 <!-- 좋아요, 신고하기 버튼 -->
 
@@ -148,7 +167,7 @@
                     익명
                 </c:if>
                 : ${comment.content}
-                <button class="btn btn-outline-secondary btn-sm" onclick="location.href='/comment?no=${comment.commentId}'">자세히보기</button>
+                <button class="btn btn-sm" onclick="location.href='/comment?no=${comment.commentId}'">➥</button>
             </li>
         </c:forEach>
     </ul>

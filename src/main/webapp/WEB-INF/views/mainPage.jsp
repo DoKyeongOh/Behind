@@ -107,10 +107,19 @@
                             </a>
 
                             <div class="card-body">
+
                                 <h5 class="title-font">${posts[idx].title}</h5>
-                                <label class="label-poster-name">BehindAdmin</label><br>
+
+                                <c:if test="${posts[idx].is_use_anonymous_name eq true}">
+                                    <label class="label-poster-name">익명</label><br>
+                                </c:if>
+                                <c:if test="${posts[idx].is_use_anonymous_name ne true}">
+                                    <label class="label-poster-name">${posts[idx].nicname}</label><br>
+                                </c:if>
+
                                 <div class="text-right">
-                                    <label class="like-label">댓글 ${posts[idx].commentCount} 개 ・ 좋아요 ${posts[idx].likeCount} 개</label>
+                                    <label class="label-poster-name display-inline-block">${cities[idx]}</label><br>
+                                    <label class="like-label display-inline-block">댓글 ${posts[idx].commentCount} 개 ・ 좋아요 ${posts[idx].likeCount} 개</label>
                                 </div>
                             </div>
                         </div>
