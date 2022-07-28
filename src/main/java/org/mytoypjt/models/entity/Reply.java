@@ -1,5 +1,7 @@
 package org.mytoypjt.models.entity;
 
+import java.util.Date;
+
 public class Reply {
     int replyNo;
     String content;
@@ -8,6 +10,8 @@ public class Reply {
     int commentNo;
     String nicname;
 
+    Date repliedDate;
+
     public Reply(int replyNo){
         this.replyNo = replyNo;
         this.content = "";
@@ -15,20 +19,22 @@ public class Reply {
         this.accountNo = -1;
         this.commentNo = -1;
         this.nicname = "";
+        this.repliedDate = new Date();
     }
 
-    public Reply(int replyNo, String content, boolean isUseAnonymousName, int accountNo, int commentNo, String nicname){
+    public Reply(int replyNo, String content, boolean isUseAnonymousName, int accountNo, int commentNo, String nicname, Date repliedDate){
         this.replyNo = replyNo;
         this.content = content;
         this.isUseAnonymousName = isUseAnonymousName;
         this.accountNo = accountNo;
         this.commentNo = commentNo;
         this.nicname = nicname;
+        this.repliedDate = repliedDate;
     }
 
     public static boolean isCorrectReply(Reply reply){
         if (isNull(reply, reply.getContent()))
-            return true;
+            return false;
 
         if (reply.getAccountNo() < 0)
             return false;
@@ -39,7 +45,7 @@ public class Reply {
         if (reply.getCommentNo() < 0)
             return false;
 
-        return false;
+        return true;
     }
 
     public static boolean isNull(Object...param){
@@ -66,7 +72,7 @@ public class Reply {
         this.content = content;
     }
 
-    public boolean getUseAnonymousName() {
+    public boolean getIsUseAnonymousName() {
         return isUseAnonymousName;
     }
 

@@ -1,5 +1,7 @@
 package org.mytoypjt.models.entity;
 
+import java.util.Date;
+
 public class Comment {
 
     public Comment() {
@@ -12,6 +14,8 @@ public class Comment {
     int postNo;
     String nicname;
 
+    Date commentedDate;
+
 
     public Comment(int commentNo) {
         this.commentNo = commentNo;
@@ -21,9 +25,10 @@ public class Comment {
         this.accountNo = -1;
         this.postNo = -1;
         this.nicname = "";
+        this.commentedDate = new Date();
     }
 
-    public Comment(int commentNo, String content, int replyCount, boolean isUseAnonymousName, int accountNo, int postNo, String nicname) {
+    public Comment(int commentNo, String content, int replyCount, boolean isUseAnonymousName, int accountNo, int postNo, String nicname, Date commentedDate) {
         this.commentNo = commentNo;
         this.content = content;
         this.replyCount = replyCount;
@@ -31,6 +36,7 @@ public class Comment {
         this.accountNo = accountNo;
         this.postNo = postNo;
         this.nicname = nicname;
+        this.commentedDate = commentedDate;
     }
 
 
@@ -122,4 +128,11 @@ public class Comment {
         this.nicname = nicname;
     }
 
+    public Date getCommentedDate() {
+        return commentedDate;
+    }
+
+    public void setCommentedDate(Date commentedDate) {
+        this.commentedDate = commentedDate;
+    }
 }

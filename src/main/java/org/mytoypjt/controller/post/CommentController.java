@@ -11,13 +11,13 @@ import org.mytoypjt.service.PostService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CommentController {
 
     final String REPLIES = "replies";
     final String COMMENT = "comment";
+    final String PARENT_TITLE = "parentPost";
 
     PostService postService;
 
@@ -50,11 +50,27 @@ public class CommentController {
         if (Comment.isCorrectComment(comment))
             return ViewInfo.getRedirectViewInfo("/post?no="+no);
 
+        Post post = postService.getPost(Integer.toString(comment.getPostNo()));
+        String title = post.getTitle();
+        if (title.length() > 7)
+            title = title.substring(0,7) + "...";
+
         List<Reply> replies = postService.getReplies(comment);
         req.setAttribute(COMMENT, comment);
         req.setAttribute(REPLIES, replies);
+        req.setAttribute(PARENT_TITLE, title);
 
         return new ViewInfo("commentDetailPage");
+    }
+
+    @RequestMapping(uri = "/reply", method = "post")
+    public ViewInfo createReply(HttpServletRequest req, HttpServletResponse resp){
+        String content = req.getParameter("content");
+        String replierNo = req.getParameter("accountNo");
+        String commentNo = req.getParameter("commentNo");
+        String isAnonName = req.getParameter("isUseAnonymousName");
+        postService.createReply(content, replierNo, commentNo, isAnonName);
+        return ViewInfo.getRedirectViewInfo("/comment?no="+commentNo);
     }
 
 }

@@ -4,17 +4,16 @@ import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.DBUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommentDao {
 
     public List<Comment> getComments(int postNo) {
-        String sql = "select * from comment where post_no = ?";
+        String sql = "select " +
+                "comment_no, content, reply_count, is_use_anonymous_name, account_no, post_no, nicname, commented_date" +
+                " from comment where post_no = ?";
         try (
                 Connection conn = new DBUtil().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -31,7 +30,8 @@ public class CommentDao {
                                 resultSet.getBoolean("is_use_anonymous_name"),
                                 resultSet.getInt("account_no"),
                                 resultSet.getInt("post_no"),
-                                resultSet.getString("nicname")
+                                resultSet.getString("nicname"),
+                                resultSet.getDate("commented_date")
                         )
                 );
             }
@@ -43,7 +43,9 @@ public class CommentDao {
     }
 
     public void createComment(int postNo, Profile profile, boolean isAnonymous, String content) {
-        String sql = "insert into comment values (null , ?, 0, ?, ?, ?, ?)";
+        String sql = "insert into comment " +
+                "(comment_no, content, reply_count,is_use_anonymous_name, account_no, post_no, nicname, commented_date) " +
+                "values (null , ?, 0, ?, ?, ?, ?, now())";
 
         try (
                 Connection conn = new DBUtil().getConnection();
@@ -107,7 +109,8 @@ public class CommentDao {
                         resultSet.getBoolean("is_use_anonymous_name"),
                         resultSet.getInt("account_no"),
                         resultSet.getInt("post_no"),
-                        resultSet.getString("nicname")
+                        resultSet.getString("nicname"),
+                        resultSet.getDate("commented_date")
                 );
             }
         } catch (SQLException e) {

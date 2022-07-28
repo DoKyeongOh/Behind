@@ -1,6 +1,7 @@
 package org.mytoypjt.dao;
 
 import org.mytoypjt.models.entity.Comment;
+import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.utils.DBUtil;
 
@@ -29,7 +30,8 @@ public class ReplyDao {
                         resultSet.getBoolean("is_use_anonymous_name"),
                         resultSet.getInt("account_no"),
                         resultSet.getInt("comment_no"),
-                        resultSet.getString("nicname")
+                        resultSet.getString("nicname"),
+                        resultSet.getDate("replied_date")
                 );
 
                 if (!Reply.isCorrectReply(reply))
@@ -44,4 +46,25 @@ public class ReplyDao {
         }
     }
 
+    public void createReply(String content, Profile profile, int commentNoInt, boolean isAnonName) {
+        String sql = "insert into reply " +
+                "(reply_no, content, is_use_anonymous_name, account_no, comment_no, nicname, replied_date)" +
+                "values " +
+                "(null, ?, ?, ?, ?, ?, now())";
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setString(1, content);
+            preparedStatement.setBoolean(2, isAnonName);
+            preparedStatement.setInt(3, profile.getAccountNo());
+            preparedStatement.setInt(4, commentNoInt);
+            preparedStatement.setString(5, profile.getNicname());
+            preparedStatement.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

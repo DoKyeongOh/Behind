@@ -309,4 +309,26 @@ public class PostService {
 
         return replyDao.getReplies(commentNo);
     }
+
+    public void createReply(String content, String replierNo, String commentNo, String isAnonName) {
+
+        int accountNo = -1;
+        int commentNoInt = -1;
+        try {
+            accountNo = Integer.parseInt(replierNo);
+            commentNoInt = Integer.parseInt(commentNo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        boolean isAnonymousName = true;
+        if (isAnonName == null)
+            isAnonymousName = false;
+
+        Profile profile = profileDao.getProfile(accountNo);
+        if (profile == null) return;
+
+        replyDao.createReply(content, profile, commentNoInt, isAnonymousName);
+    }
 }
