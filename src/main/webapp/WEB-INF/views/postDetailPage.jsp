@@ -157,7 +157,7 @@
                     </c:if>
                 </span><br>
                 <span class="comment-content"> ${comment.content} </span>
-                <button class="btn btn-sm" onclick="location.href='/comment?no=${comment.commentNo}'">➥</button>
+                <button id="btn-expand-reply" class="btn btn-sm" onclick="location.href='/comment?no=${comment.commentNo}'">➥</button>
             </li>
         </c:forEach>
     </ul>
