@@ -86,17 +86,20 @@
         </div>
     </div>
 
-    <div class="display-inline-block pictures" id="before-picture">
+    <div class="display-inline-block pictures" id="before-picture"
+         oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onkeydown="return false">
         <img src="../../pictures/origin/1.jpeg" class="card-img-top">
         <span class="btn btn-outline-primary btn-picture-change" id="btn-previous-img">◁</span>
     </div>
 
-    <div class="display-inline-block pictures" id="now-picture">
+    <div class="display-inline-block pictures" id="now-picture"
+         oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onkeydown="return false">
         <img src="../../pictures/origin/2.jpeg" class="card-img-top">
         <span class="btn btn-outline-primary btn-picture-change" id="btn-now-img"> now</span>
     </div>
 
-    <div class="display-inline-block pictures" id="after-picture">
+    <div class="display-inline-block pictures" id="after-picture"
+         oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onkeydown="return false">
         <img src="../../pictures/origin/3.jpeg" class="card-img-top">
         <span class="btn btn-outline-primary btn-picture-change" id="btn-next-img">▷</span>
     </div>
