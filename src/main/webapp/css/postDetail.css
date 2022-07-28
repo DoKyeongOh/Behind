@@ -50,7 +50,6 @@ body {
     padding-top: 1%;
     padding-bottom: 1%;
     width: 100%;
-    background-color: lightgray;
 }
 
 #post-comments {
@@ -97,5 +96,13 @@ body {
 
 .inline-block {
     display: inline-block;
+}
+
+.commenter-nicname {
+    font-size: 80%;
+}
+
+.comment-content {
+    margin-left: 1%;
 }
 
