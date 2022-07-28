@@ -7,6 +7,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
+<% request.setAttribute("mainPage", request.getContextPath() + "/main/page"); %>
+<% request.setAttribute("realTimePosts", request.getContextPath() + "/posts?type=1"); %>
+<% request.setAttribute("daysMostPosts", request.getContextPath() + "/posts?type=2"); %>
+<% request.setAttribute("weeksMostPosts", request.getContextPath() + "/posts?type=3"); %>
+<% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page/1"); %>
+
 <html>
 <head>
     <title>Behind</title>
@@ -15,6 +22,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"/>
 </head>
 <body>
+
 
 <!-- navbar + offcanvas -->
 <nav class="navbar bg-light fixed-top">
@@ -60,13 +68,15 @@
 </nav>
 <!-- navbar + offcanvas -->
 
+
+
 <!-- 글 상세보기 페이지로 돌아가기 버튼 -->
 <button id="btn-return-post" class="btn btn-dark btn-sm" onclick="location.href='/post?no=${comment.postNo}'">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-square" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm11.5 5.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
     </svg>
     &nbsp
-    돌아가기
+    "${parentPost}" (으)로 돌아가기
 </button>
 <!-- 글 상세보기 페이지로 돌아가기 버튼 -->
 
@@ -95,7 +105,7 @@
                 <span class="badge rounded-pill bg-dark">
                     <c:if test="${comment.isUseAnonymousName eq true}">익명</c:if>
                     <c:if test="${comment.isUseAnonymousName ne true}">${comment.nicname}</c:if>
-                </span> /
+                </span>
                 <span class="badge rounded-pill bg-dark">${comment.commentedDate}</span>
             </div>
         </li>
@@ -104,19 +114,39 @@
 
 <!-- 댓글 본문 -->
 
-<!-- 대댓글 -->
-<ul id="reply-list" class="list-group border border-secondary border-1">
-    <li class="list-group-item">
-        <c:forEach var="reply" items="${replies}">
+<!-- 대댓글 조회 -->
+<c:if test="${replies.size() ne 0}">
+</c:if>
+<ul id="reply-list" class="list-group list-group-flush">
+    <c:forEach var="reply" items="${replies}">
+        <li class="list-group-item">
             <label class="text-secondary reply-item">
                 <c:if test="${reply.isUseAnonymousName eq true}">익명</c:if>
                 <c:if test="${reply.isUseAnonymousName ne true}">${reply.nicname}</c:if>
             </label><br>
             <span style="margin-left: 1%;">${reply.content}</span>
-        </c:forEach>
-    </li>
+        </li>
+    </c:forEach>
 </ul>
-<!-- 대댓글 -->
+<!-- 대댓글 조회 -->
+
+
+<!-- 대댓글 입력 폼 -->
+<form class="center-content margin-top" action="/reply" method="post">
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="isAnonymous" name="isUseAnonymousName">
+        <label class="form-check-label" for="isAnonymous">
+            익명으로 게시하기
+        </label>
+    </div>
+    <div class="input-group text-center" style="width: 100%">
+        <input type="hidden" name="commentNo" value="${comment.commentNo}">
+        <input type="hidden" name="accountNo" value="${sessionScope.get("profile").accountNo}">
+        <input type="text" class="form-control" placeholder="대댓글을 입력해주세요!" name="content" >
+        <button class="btn btn-outline-secondary" type="submit" id="btn-comment-submit">등록</button>
+    </div>
+</form>
+<!-- 대댓글 입력 폼 -->
 
 
 <!-- footer -->
