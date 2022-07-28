@@ -103,7 +103,8 @@
                     <td>
                         <div class="card" style="width: 300px;">
                             <a href="${post}?no=${posts[idx].postNo}">
-                                <img src="../../pictures/mini/${posts[idx].pictureNo}.jpeg" class="card-img-top" alt="...">
+                                <img src="../../pictures/mini/${posts[idx].pictureNo}.jpeg" class="card-img-top"
+                                     oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onkeydown="return false">
                             </a>
 
                             <div class="card-body">
