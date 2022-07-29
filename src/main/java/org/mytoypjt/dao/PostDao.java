@@ -14,6 +14,93 @@ import java.util.List;
 
 public class PostDao {
 
+    public List<Post> getRealTimePosts(int pageNo, int postCountInPage){
+        int startNo = (pageNo - 1) * postCountInPage;
+        if (startNo < 0) startNo = 1;
+        String sql = "select * from post order by posted_date desc limit ?, ?";
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setInt(1, startNo);
+            preparedStatement.setInt(2, postCountInPage);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Post> postList = getPosts(resultSet);
+            return postList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Post> getDaysFavoritePosts(int pageNo, int postCountInPage){
+        int startNo = (pageNo - 1) * postCountInPage;
+        if (startNo < 0) startNo = 1;
+        String sql = "select * from post " +
+                "where posted_date between date_add(now(), interval -1 day) and now() " +
+                "order by like_count desc limit ?, ?";
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setInt(1, startNo);
+            preparedStatement.setInt(2, postCountInPage);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Post> postList = getPosts(resultSet);
+            return postList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Post> getWeeksFavoritePosts(int pageNo, int postCountInPage){
+        int startNo = (pageNo - 1) * postCountInPage;
+        if (startNo < 0) startNo = 1;
+        String sql = "select * from post " +
+                "where posted_date between date_add(now(), interval -1 week) and now() " +
+                "order by like_count desc limit ?, ?";
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setInt(1, startNo);
+            preparedStatement.setInt(2, postCountInPage);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Post> postList = getPosts(resultSet);
+            return postList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Post> getPosts(ResultSet resultSet){
+        List<Post> postList = new ArrayList<Post>();
+        try {
+            while (resultSet.next()) {
+                postList.add(new Post(
+                        resultSet.getInt("post_no"),
+                        resultSet.getString("title"),
+                        resultSet.getString("content"),
+                        resultSet.getTimestamp("posted_date"),
+                        resultSet.getBoolean("is_use_anonymous_city"),
+                        resultSet.getBoolean("is_use_anonymous_name"),
+                        resultSet.getInt("comment_count"),
+                        resultSet.getInt("like_count"),
+                        resultSet.getInt("account_no"),
+                        resultSet.getInt("picture_no"),
+                        resultSet.getString("nicname")
+                        )
+                );
+            }
+
+            return postList;
+        } catch(Exception e) {
+            return null;
+        }
+    }
+
     public List<Post> getPosts(PostSortType sortType, int pageNo, int postCountInPage){
         int startNo = (pageNo - 1) * postCountInPage;
         if (startNo < 0) startNo = 1;
@@ -36,10 +123,6 @@ public class PostDao {
                         "order by like_count desc limit ?, ?";
                 break;
             }
-            case SEARCH_FROM_USER: {
-                sql = "select * from post order by posted_date desc limit ?, ?";
-                break;
-            }
             default:
                 sql = "select * from post order by posted_date desc limit ?, ?";
         }
@@ -51,25 +134,7 @@ public class PostDao {
             preparedStatement.setInt(1, startNo);
             preparedStatement.setInt(2, postCountInPage);
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<Post> postList = new ArrayList<Post>();
-
-            Post post = null;
-            while (resultSet.next()) {
-                postList.add(new Post(
-                                resultSet.getInt("post_no"),
-                                resultSet.getString("title"),
-                                resultSet.getString("content"),
-                                resultSet.getTimestamp("posted_date"),
-                                resultSet.getBoolean("is_use_anonymous_city"),
-                                resultSet.getBoolean("is_use_anonymous_name"),
-                                resultSet.getInt("comment_count"),
-                                resultSet.getInt("like_count"),
-                                resultSet.getInt("account_no"),
-                                resultSet.getInt("picture_no"),
-                                resultSet.getString("nicname")
-                        )
-                );
-            }
+            List<Post> postList = getPosts(resultSet);
             return postList;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -275,4 +340,5 @@ public class PostDao {
             e.printStackTrace();
         }
     }
+
 }

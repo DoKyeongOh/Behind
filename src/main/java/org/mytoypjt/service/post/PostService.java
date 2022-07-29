@@ -10,9 +10,12 @@ import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.dto.PostSortType;
+import org.mytoypjt.service.strategy.pagecount.PageCountStrategyContext;
+import org.mytoypjt.service.strategy.posts.PostsStrategyContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PostService {
 
@@ -27,26 +30,33 @@ public class PostService {
     private PostDao postDao;
     private CommentDao commentDao;
     private ReplyDao replyDao;
-
     private ProfileDao profileDao;
+
+    private PostsStrategyContext postsStrategyContext;
+    private PageCountStrategyContext pageCountStrategyContext;
 
     public PostService(){
         postDao = new PostDao();
         commentDao = new CommentDao();
         profileDao = new ProfileDao();
         replyDao = new ReplyDao();
+
+        postsStrategyContext = new PostsStrategyContext();
+        pageCountStrategyContext = new PageCountStrategyContext();
     }
 
-    public List<Post> getPosts(PostsOptionVO options){
-        int pageNo = getPostPage(options.getPageNo());
-        PostSortType sortType = getPostSortType(options.getSortType());
+    public Profile getPosterProfile(int accountNo) {
+        Profile profile = profileDao.getProfile(accountNo);
+        if (profile == null) {
+            profile = new Profile(accountNo);
+            profile.setNicname("익명");
+            profile.setCity("미등록 지역");
+        }
+        return profile;
 
-        List<Post> postList = postDao.getPosts(sortType, pageNo, POST_COUNT_IN_PAGE);
-
-        return postList;
     }
 
-    public PostsOptionVO getNewPostsOption(PostsOptionVO optionInRequest, PostsOptionVO optionInSession){
+    public PostsOptionVO createPostsOption(PostsOptionVO optionInRequest, PostsOptionVO optionInSession){
         String sortType = "";
         String pageNo = "";
 
@@ -87,6 +97,12 @@ public class PostService {
         return options;
     }
 
+    public List<Post> getPosts(PostsOptionVO options, Map<String, String[]> paramMap){
+        PostSortType sortType = getPostSortType(options.getSortType());
+        postsStrategyContext.setPostsStrategy(sortType);
+        return postsStrategyContext.getPosts(options, paramMap);
+    }
+
     public PostSortType getPostSortType(String sortType){
         if (sortType == null)
             return PostSortType.REAL_TIME;
@@ -95,16 +111,7 @@ public class PostService {
             case "1": return PostSortType.REAL_TIME;
             case "2": return PostSortType.DAYS_FAVORITE;
             case "3": return PostSortType.WEEKS_FAVORITE;
-            case "4": return PostSortType.SEARCH_FROM_USER;
             default: return PostSortType.REAL_TIME;
-        }
-    }
-
-    public int getPostPage(String pageNo){
-        try {
-            return Integer.parseInt(pageNo);
-        } catch (Exception e) {
-            return 1;
         }
     }
 
@@ -122,101 +129,6 @@ public class PostService {
 
         Post post = postDao.getPost(postNo);
         return post;
-    }
-
-    public List<Comment> getComments(int postNo) {
-        return commentDao.getComments(postNo);
-    }
-
-    public void toggleLike(String post, String account) {
-        if (post == null) return;
-        if (account == null) return;
-
-        int postNo = -1;
-        int accountNo = -1;
-
-        try {
-            postNo = Integer.parseInt(post);
-            accountNo = Integer.parseInt(account);
-        } catch (Exception e) {
-            return;
-        }
-
-        if (postDao.isAlreadyLikeThis(postNo, accountNo))
-            postDao.delLike(postNo, accountNo);
-        else
-            postDao.addLike(postNo, accountNo);
-
-        int likeCount = postDao.getLikeCount(postNo);
-        postDao.updateLikeCount(postNo, likeCount);
-    }
-
-    public boolean isLikePost(String postNo, String accountNo) {
-        if (postNo == null)
-            return false;
-        if (accountNo == null)
-            return false;
-
-        try {
-            return postDao.isUserLikePost(
-                    Integer.parseInt(postNo),
-                    Integer.parseInt(accountNo)
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean isLikePost(String postNo, int accountNo) {
-        if (postNo == null)
-            return false;
-
-        try {
-            return postDao.isUserLikePost(
-                    Integer.parseInt(postNo),
-                    accountNo
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-    }
-
-    public void createComment(String postNo, Profile profile, String isUseAnonymousName, String content) {
-        if (isNull(postNo, profile, content))
-            return;
-
-        if (isUseAnonymousName == null)
-            isUseAnonymousName = "off";
-
-        boolean isAnonymous = false;
-        if (isUseAnonymousName.equals("on"))
-            isAnonymous = true;
-
-        try {
-            commentDao.createComment(
-                    Integer.parseInt(postNo),
-                    profile,
-                    isAnonymous,
-                    content
-            );
-
-            int no = Integer.parseInt(postNo);
-            int commentCount = commentDao.getCommentCount(no);
-            commentDao.updateCommentCount(no, commentCount);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public boolean isNull(Object...param) {
-        for (Object str : param) {
-            if (str == null)
-                return true;
-        }
-        return false;
     }
 
     public int getRealTimePageCount() {
@@ -265,6 +177,77 @@ public class PostService {
         postDao.createPost(profile, title, content, isAnonymousName, isAnonymousCity, imgNo);
     }
 
+    public void toggleLike(String post, String account) {
+        if (post == null) return;
+        if (account == null) return;
+
+        int postNo = -1;
+        int accountNo = -1;
+
+        try {
+            postNo = Integer.parseInt(post);
+            accountNo = Integer.parseInt(account);
+        } catch (Exception e) {
+            return;
+        }
+
+        if (postDao.isAlreadyLikeThis(postNo, accountNo))
+            postDao.delLike(postNo, accountNo);
+        else
+            postDao.addLike(postNo, accountNo);
+
+        int likeCount = postDao.getLikeCount(postNo);
+        postDao.updateLikeCount(postNo, likeCount);
+    }
+
+    public boolean isLikePost(String postNo, String accountNo) {
+        if (postNo == null)
+            return false;
+        if (accountNo == null)
+            return false;
+
+        try {
+            return postDao.isUserLikePost(
+                    Integer.parseInt(postNo),
+                    Integer.parseInt(accountNo)
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<Comment> getComments(int postNo) {
+        return commentDao.getComments(postNo);
+    }
+
+    public void createComment(String postNo, Profile profile, String isUseAnonymousName, String content) {
+        if (isNull(postNo, profile, content))
+            return;
+
+        if (isUseAnonymousName == null)
+            isUseAnonymousName = "off";
+
+        boolean isAnonymous = false;
+        if (isUseAnonymousName.equals("on"))
+            isAnonymous = true;
+
+        try {
+            commentDao.createComment(
+                    Integer.parseInt(postNo),
+                    profile,
+                    isAnonymous,
+                    content
+            );
+
+            int no = Integer.parseInt(postNo);
+            int commentCount = commentDao.getCommentCount(no);
+            commentDao.updateCommentCount(no, commentCount);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<String> getPostersCity(List<Post> posts) {
         if (posts == null) return null;
 
@@ -282,17 +265,6 @@ public class PostService {
                 cities.add(profile.getCity());
         });
         return cities;
-    }
-
-    public Profile getPosterProfile(int accountNo) {
-        Profile profile = profileDao.getProfile(accountNo);
-        if (profile == null) {
-            profile = new Profile(accountNo);
-            profile.setNicname("익명");
-            profile.setCity("미등록 지역");
-        }
-        return profile;
-
     }
 
     public Comment getComment(String no){
@@ -331,5 +303,13 @@ public class PostService {
         if (profile == null) return;
 
         replyDao.createReply(content, profile, commentNoInt, isAnonymousName);
+    }
+
+    public boolean isNull(Object...param) {
+        for (Object str : param) {
+            if (str == null)
+                return true;
+        }
+        return false;
     }
 }
