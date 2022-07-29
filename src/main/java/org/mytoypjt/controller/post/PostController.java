@@ -7,7 +7,7 @@ import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.etc.ViewInfo;
-import org.mytoypjt.service.PostService;
+import org.mytoypjt.service.post.PostService;
 import org.mytoypjt.utils.ControllerUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +32,7 @@ public class PostController {
 
         PostsOptionVO postsOptionVO = postService.getDefaultPostsOption();
 
-        List<Post> posts = postService.getPosts(postsOptionVO);
+        List<Post> posts = postService.getPosts(postsOptionVO, req.getParameterMap());
         List<String> cities = postService.getPostersCity(posts);
         req.setAttribute("posts", posts);
         req.setAttribute("cities", cities);
@@ -61,10 +61,10 @@ public class PostController {
                 req.getParameter("type")
         );
 
-        PostsOptionVO actualOption = postService.getNewPostsOption(optionInRequest, optionInSession);
+        PostsOptionVO actualOption = postService.createPostsOption(optionInRequest, optionInSession);
         session.setAttribute(this.postsOptionKey, actualOption);
 
-        List<Post> posts = postService.getPosts(actualOption);
+        List<Post> posts = postService.getPosts(actualOption, req.getParameterMap());
         req.setAttribute("posts", posts);
 
         PostSortType postSortType = postService.getPostSortType(actualOption.getSortType());
@@ -99,7 +99,11 @@ public class PostController {
         Profile posterProfile = postService.getPosterProfile(post.getAccountNo());
         List<Comment> comments = postService.getComments(post.getPostNo());
 
-        req.setAttribute("posterNicname", posterProfile.getNicname());
+        if (post.getIs_use_anonymous_city())
+            req.setAttribute("posterCity", "미등록 지역");
+        else
+            req.setAttribute("posterCity", posterProfile.getCity());
+
         req.setAttribute("post", post);
         req.setAttribute("comments", comments);
 
@@ -108,7 +112,7 @@ public class PostController {
 
         int accountNo = profile.getAccountNo();
 
-        boolean isLike = postService.isLikePost(no, accountNo);
+        boolean isLike = postService.isLikePost(no, Integer.toString(accountNo));
         req.setAttribute("isLike", isLike);
 
         return new ViewInfo("postDetailPage");

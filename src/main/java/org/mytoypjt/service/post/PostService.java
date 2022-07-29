@@ -1,4 +1,4 @@
-package org.mytoypjt.service;
+package org.mytoypjt.service.post;
 
 import org.mytoypjt.dao.CommentDao;
 import org.mytoypjt.dao.PostDao;
@@ -10,8 +10,8 @@ import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.dto.PostSortType;
-import org.mytoypjt.service.strategy.pagecount.PageCountStrategyContext;
-import org.mytoypjt.service.strategy.posts.PostsStrategyContext;
+import org.mytoypjt.service.post.strategy.pagecount.PageCountStrategyContext;
+import org.mytoypjt.service.post.strategy.posts.PostsStrategyContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class PostService {
     final int SORT_DAYS_LIKE = 2;
     final int SORT_WEEKS_LIKE = 3;
 
-    final int POST_COUNT_IN_PAGE = 12;
+    final int POST_COUNT_IN_PAGE = 1;
     final int PAGE_COUNT_IN_PAGE = 5;
 
     private PostDao postDao;
@@ -41,8 +41,8 @@ public class PostService {
         profileDao = new ProfileDao();
         replyDao = new ReplyDao();
 
-        postsStrategyContext = new PostsStrategyContext();
-        pageCountStrategyContext = new PageCountStrategyContext();
+        postsStrategyContext = new PostsStrategyContext(POST_COUNT_IN_PAGE);
+        pageCountStrategyContext = new PageCountStrategyContext(POST_COUNT_IN_PAGE);
     }
 
     public Profile getPosterProfile(int accountNo) {
@@ -76,13 +76,16 @@ public class PostService {
         if (sortType.isEmpty())
             sortType = "1";
 
-        int pageTotalCount = 1;
         PostSortType type = getPostSortType(sortType);
-        switch (type) {
-            case REAL_TIME: pageTotalCount = getRealTimePageCount(); break;
-            case DAYS_FAVORITE: pageTotalCount = getDaysPageCount(); break;
-            case WEEKS_FAVORITE: pageTotalCount = getWeeksPageCount(); break;
-        }
+//        switch (type) {
+//            case REAL_TIME: pageTotalCount = getRealTimePageCount(); break;
+//            case DAYS_FAVORITE: pageTotalCount = getDaysPageCount(); break;
+//            case WEEKS_FAVORITE: pageTotalCount = getWeeksPageCount(); break;
+//        }
+
+        pageCountStrategyContext.setPageCountStrategy(type);
+        int pageTotalCount = pageCountStrategyContext.getPageCount();
+
 
         PostsOptionVO options = new PostsOptionVO(pageNo, sortType);
         options.setStartEndPageNo(pageTotalCount, 5);
