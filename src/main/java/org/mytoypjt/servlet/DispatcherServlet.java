@@ -39,7 +39,6 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        controllerAdapter = ControllerAdapterFactory.getControllerAdapter(mappingName);
         ViewInfo viewInfo = controllerAdapter.execute(req, resp);
 
         if (!viewInfo.isContainView()) {
