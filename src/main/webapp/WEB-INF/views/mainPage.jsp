@@ -146,12 +146,13 @@
     <c:set var="startNo" value="${PostsOption.pageStartNo}" />
     <c:set var="endNo" value="${PostsOption.pageEndNo}" />
     <c:set var="pageNo" value="${PostsOption.pageNo}" />
+    <c:set var="pageCount" value="${PostsOption.displayPageCount}" />
+
+    <c:if test="${startNo ne 1}">
+        <li class="page-item"><a class="page-link" href="/posts?pageNo=${pageNo-1}">Previous</a></li>
+    </c:if>
+
     <c:forEach var="pageIndex" begin="${startNo}" end="${endNo}">
-
-        <c:if test="${startNo ne 1}">
-            <li class="page-item"><a class="page-link" href="/posts?pageNo=${pageIndex-1}">Previous</a></li>
-        </c:if>
-
         <c:if test="${pageNo eq pageIndex}">
             <li class="page-item active"><a class="page-link" href="/posts?pageNo=${pageIndex}">${pageIndex}</a></li>
         </c:if>
@@ -159,11 +160,10 @@
         <c:if test="${pageNo ne pageIndex}">
             <li class="page-item"><a class="page-link" href="/posts?pageNo=${pageIndex}">${pageIndex}</a></li>
         </c:if>
-
     </c:forEach>
 
-    <c:if test="${endNo - startNo >= 4}">
-        <li class="page-item"><a class="page-link" href="/posts?pageNo=${pageIndex+1}">Next</a></li>
+    <c:if test="${endNo - startNo >= (pageCount - 1)}">
+        <li class="page-item"><a class="page-link" href="/posts?pageNo=${pageNo + 1}">Next</a></li>
     </c:if>
 </ul>
 <!-- 페이지네이션 -->

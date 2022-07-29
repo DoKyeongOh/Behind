@@ -6,6 +6,7 @@ public class PostsOptionVO {
     String sortType = "";
     int pageStartNo = 0;
     int pageEndNo = 0;
+    int displayPageCount = 5;
 
     public PostsOptionVO() {
         this.pageNo = "";
@@ -19,32 +20,39 @@ public class PostsOptionVO {
         this.sortType = sortType;
         this.pageStartNo = 1;
         this.pageEndNo = 1;
+        this.displayPageCount = 5;
         if (pageNo == null)
             this.pageNo = "";
         if (sortType == null)
             this.sortType = "";
     }
 
-    public PostsOptionVO(String pageNo, String sortType, int pageStartNo, int pageEndNo) {
+    public PostsOptionVO(String pageNo, String sortType, int pageStartNo, int pageEndNo, int displayPageCount) {
         this.pageNo = pageNo;
         this.sortType = sortType;
         this.pageStartNo = pageStartNo;
         this.pageEndNo = pageEndNo;
+        this.displayPageCount = displayPageCount;
 
         if (pageNo == null)
             this.pageNo = "";
         if (sortType == null)
             this.sortType = "";
+        if (displayPageCount < 0)
+            displayPageCount = 1;
     }
 
-    public void setStartEndPageNo(int pageTotalCount, int unit) {
-        this.pageStartNo = calcStartNo(unit);
+    public void setStartEndPageNo(int pageTotalCount, int displayPageCount) {
+        this.pageStartNo = calcStartNo(displayPageCount);
+        setDisplayPageCount(displayPageCount);
         if (this.pageStartNo > pageTotalCount)
             this.pageStartNo = 1;
 
         this.pageEndNo = this.pageStartNo;
-        for (int i=0 ; i<unit ; i++) {
+        for (int i=0 ; i<displayPageCount ; i++) {
             if (this.pageEndNo >= pageTotalCount)
+                break;
+            if (this.pageEndNo >= displayPageCount)
                 break;
             this.pageEndNo++;
         }
@@ -94,6 +102,14 @@ public class PostsOptionVO {
 
     public void setPageEndNo(int pageEndNo) {
         this.pageEndNo = pageEndNo;
+    }
+
+    public int getDisplayPageCount() {
+        return displayPageCount;
+    }
+
+    public void setDisplayPageCount(int displayPageCount) {
+        this.displayPageCount = displayPageCount;
     }
 
     @Override

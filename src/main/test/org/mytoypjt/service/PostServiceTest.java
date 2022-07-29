@@ -3,6 +3,7 @@ package org.mytoypjt.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mytoypjt.models.entity.Post;
+import org.mytoypjt.service.post.PostService;
 
 import java.util.ArrayList;
 import java.util.List;

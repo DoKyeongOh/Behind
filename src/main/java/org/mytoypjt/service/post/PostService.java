@@ -24,7 +24,7 @@ public class PostService {
     final int SORT_DAYS_LIKE = 2;
     final int SORT_WEEKS_LIKE = 3;
 
-    final int POST_COUNT_IN_PAGE = 1;
+    final int POST_COUNT_IN_PAGE = 12;
     final int PAGE_COUNT_IN_PAGE = 5;
 
     private PostDao postDao;
