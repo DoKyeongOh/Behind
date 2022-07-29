@@ -12,6 +12,8 @@
 <% request.setAttribute("realTimePosts", request.getContextPath() + "/posts?type=1"); %>
 <% request.setAttribute("daysMostPosts", request.getContextPath() + "/posts?type=2"); %>
 <% request.setAttribute("weeksMostPosts", request.getContextPath() + "/posts?type=3"); %>
+<% request.setAttribute("searchPosts", request.getContextPath() + "/posts?type=4"); %>
+
 <% request.setAttribute("post", request.getContextPath() + "/post"); %>
 <% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page/1"); %>
 
@@ -63,7 +65,7 @@
                 <input type="hidden" name="_method" value="delete">
                 <button type="submit" class="btn btn-outline-dark" data-bs-dismiss="offcanvas" id="btn-logout">로그아웃 하기</button>
             </form>
-            
+
             <button type="button" class="btn btn-dark" data-bs-dismiss="offcanvas">돌아가기</button>
         </div>
     </div>
@@ -73,7 +75,6 @@
 <div class="text-center main-text">
     <h1 class="main-text-font">Behind</h1>
 </div>
-
 
 <hr id="line-mid">
 
@@ -96,40 +97,42 @@
 <div>
     <table id="table-posts">
         <c:forEach var="tr" begin="0" end="2">
-        <tr>
-            <c:forEach var="td" begin="0" end="3">
-                <c:set var="idx" scope="request" value="${tr * 4 + td}"/>
-                <c:if test="${empty posts[idx] eq false}">
-                    <td>
-                        <div class="card" style="width: 300px;">
-                            <a href="${post}?no=${posts[idx].postNo}">
-                                <img src="../../pictures/mini/${posts[idx].pictureNo}.jpeg" class="card-img-top"
-                                     oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onkeydown="return false">
-                            </a>
+            <tr>
+                <c:forEach var="td" begin="0" end="3">
+                    <c:set var="idx" scope="request" value="${tr * 4 + td}"/>
+                    <c:if test="${empty posts[idx] eq false}">
+                        <td>
+                            <div class="card" style="width: 300px;">
+                                <a href="${post}?no=${posts[idx].postNo}">
+                                    <img src="../../pictures/mini/${posts[idx].pictureNo}.jpeg" class="card-img-top"
+                                         oncontextmenu="return false" ondragstart="return false" onkeydown="return false">
+                                </a>
 
-                            <div class="card-body">
+                                <div class="card-body">
 
-                                <h5 class="title-font">${posts[idx].title}</h5>
+                                    <h5 class="title-font">${posts[idx].title}</h5>
 
-                                <c:if test="${posts[idx].is_use_anonymous_name eq true}">
-                                    <label class="label-poster-name">익명</label><br>
-                                </c:if>
-                                <c:if test="${posts[idx].is_use_anonymous_name ne true}">
-                                    <label class="label-poster-name">${posts[idx].nicname}</label><br>
-                                </c:if>
+                                    <c:if test="${posts[idx].is_use_anonymous_name eq true}">
+                                        <label class="label-poster-name">익명</label><br>
+                                    </c:if>
+                                    <c:if test="${posts[idx].is_use_anonymous_name ne true}">
+                                        <label class="label-poster-name">${posts[idx].nicname}</label><br>
+                                    </c:if>
 
-                                <div class="text-right">
-                                    <label class="label-poster-name display-inline-block">${cities[idx]}</label><br>
-                                    <label class="like-label display-inline-block">댓글 ${posts[idx].commentCount} 개 ・ 좋아요 ${posts[idx].likeCount} 개</label>
+                                    <div class="text-right">
+                                        <label class="label-poster-name display-inline-block">
+                                                ${cities[idx]}
+                                        </label><br>
+                                        <label class="like-label display-inline-block">댓글 ${posts[idx].commentCount} 개 ・ 좋아요 ${posts[idx].likeCount} 개</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </td>
-                </c:if>
-            </c:forEach>
-        </tr>
+                        </td>
+                    </c:if>
+                </c:forEach>
+            </tr>
         </c:forEach>
-        </table>
+    </table>
 
     <c:if test="${empty posts eq true}">
         <h1 class="text-center" id="label-not-posted">글이 게시되지 않았습니다...</h1>
@@ -165,19 +168,31 @@
 </ul>
 <!-- 페이지네이션 -->
 
+<!-- 검색 창 -->
+<form method="get" action="${searchPosts}" id="search-block" class="input-group">
+    <select name="searchOption" class="form-select" style="width: 15%">
+        <option value="1" selected>제목</option>
+        <option value="2">내용</option>
+    </select>
+    <input type="text" name="searchWord" class="form-control" style="width: 60%">
+    <button type="submit" style="width: 15%" class="btn btn-outline-secondary form-control">검색하기</button>
+</form>
+<!-- 검색 창 -->
+
+
 <!-- footer -->
 <div class="container footer">
     <footer class="py-3 my-4">
-      <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Pricing</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
-      </ul>
-      <p class="text-center text-muted">© 2022 Company, Inc</p>
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Pricing</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+        </ul>
+        <p class="text-center text-muted">© 2022 Company, Inc</p>
     </footer>
-  </div>
+</div>
 <!-- footer -->
 
 

@@ -116,6 +116,8 @@
 <!-- 좋아요, 신고하기 버튼 -->
 <div class="text-right inline-block" style="width: 59%; padding-top: 1%">
     <form action="/report/page" method="get" id="form-report">
+        <input type="hidden" name="reportType" value="post">
+        <input type="hidden" name="no" value="${post.postNo}">
         <button class="btn btn-outline-danger btn-sm">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-dizzy" viewBox="0 0 16 16">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>

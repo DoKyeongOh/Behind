@@ -36,6 +36,10 @@ public class PostDao {
                         "order by like_count desc limit ?, ?";
                 break;
             }
+            case SEARCH_FROM_USER: {
+                sql = "select * from post order by posted_date desc limit ?, ?";
+                break;
+            }
             default:
                 sql = "select * from post order by posted_date desc limit ?, ?";
         }

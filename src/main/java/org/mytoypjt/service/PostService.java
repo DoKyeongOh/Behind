@@ -95,6 +95,7 @@ public class PostService {
             case "1": return PostSortType.REAL_TIME;
             case "2": return PostSortType.DAYS_FAVORITE;
             case "3": return PostSortType.WEEKS_FAVORITE;
+            case "4": return PostSortType.SEARCH_FROM_USER;
             default: return PostSortType.REAL_TIME;
         }
     }
