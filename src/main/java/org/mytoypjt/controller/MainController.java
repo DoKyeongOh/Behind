@@ -1,14 +1,7 @@
 package org.mytoypjt.controller;
 
-import org.mytoypjt.controller.structure.annotations.RequestMapping;
 import org.mytoypjt.controller.structure.properties.PropertiesControllerTemplete;
-import org.mytoypjt.models.entity.Post;
-import org.mytoypjt.service.PostService;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.List;
+import org.mytoypjt.service.post.PostService;
 
 public class MainController extends PropertiesControllerTemplete {
 

@@ -78,16 +78,12 @@
 <div class="title-and-nicname">
     <h2 id="post-title"> ${post.title} </h2>
     <h6 id="poster-name">
-        <label style="font-size: 130%">
+        <label style="font-size: 130%"> 작성자 :
             <c:if test="${post.is_use_anonymous_name eq true}">${post.nicname}</c:if>
-            <c:if test="${post.is_use_anonymous_name ne true}">작성자 : 익명</c:if>
+            <c:if test="${post.is_use_anonymous_name ne true}">익명</c:if>
         </label><br>
 
-        <label class="" style="padding-top: 0.5%;">작성자 :
-            <c:if test="${post.is_use_anonymous_city eq true}">미등록 지역</c:if>
-            <c:if test="${post.is_use_anonymous_city ne true}">${posterNicname}</c:if>
-        </label><br>
-
+        <label class="" style="padding-top: 0.5%;">지역 : ${posterCity} </label><br>
         <label class="" style="padding-top: 0.5%;">작성 일시 : ${post.postedDate}</label>
     </h6>
 </div>

@@ -6,7 +6,7 @@ import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.models.etc.ViewInfo;
-import org.mytoypjt.service.PostService;
+import org.mytoypjt.service.post.PostService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
