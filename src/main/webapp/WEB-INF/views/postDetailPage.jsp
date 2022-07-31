@@ -143,9 +143,8 @@
 
 <!-- 댓글 -->
 <div class="">
-    <ul class="list-group list-group-flush">
-        <c:set var="commentLimit" value="5"></c:set>
-        <c:forEach var="comment" items="${comments}" begin="0" end="${commentLimit-1}">
+    <ul id="ul-comments" class="list-group list-group-flush">
+        <c:forEach var="comment" items="${comments}">
             <li class="list-group-item">
                 <span class="commenter-nicname">
                     <c:if test="${comment.isUseAnonymousName ne true}">
@@ -159,6 +158,7 @@
                 <button id="btn-expand-reply" class="btn btn-sm" onclick="location.href='/comment?no=${comment.commentNo}'">➥</button>
             </li>
         </c:forEach>
+        <button type="button" id="btn-more-comment">자세히 보기</button>
     </ul>
     <form style="margin-top: 2%" action="${entryComment}" method="post">
         <div class="form-check">
