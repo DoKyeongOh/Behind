@@ -21,47 +21,6 @@ class PostServiceTest {
     }
 
     @Test
-    void getPageCount() {
-
-        boolean successed = true;
-        try {
-            // test content
-            System.out.println(postService.getRealTimePageCount());
-        }catch (Exception e) {
-            e.printStackTrace();
-            successed = false;
-        }
-        assertEquals(true, successed);
-    }
-
-    @Test
-    void getDaysPageCount() {
-        boolean successed = true;
-        try {
-            // test content
-            System.out.println(this.postService.getDaysPageCount());
-        }catch (Exception e) {
-            e.printStackTrace();
-            successed = false;
-        }
-        assertEquals(true, successed);
-    }
-
-    @Test
-    void getWeeksPageCount() {
-        boolean successed = true;
-        try {
-            // test content
-            System.out.println(this.postService.getWeeksPageCount());
-
-        }catch (Exception e) {
-            e.printStackTrace();
-            successed = false;
-        }
-        assertEquals(true, successed);
-    }
-
-    @Test
     void getPosterProfiles() {
         boolean successed = true;
         try {
