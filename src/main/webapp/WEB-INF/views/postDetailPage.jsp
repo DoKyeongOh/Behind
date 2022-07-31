@@ -144,7 +144,8 @@
 <!-- 댓글 -->
 <div class="">
     <ul class="list-group list-group-flush">
-        <c:forEach var="comment" items="${comments}">
+        <c:set var="commentLimit" value="5"></c:set>
+        <c:forEach var="comment" items="${comments}" begin="0" end="${commentLimit-1}">
             <li class="list-group-item">
                 <span class="commenter-nicname">
                     <c:if test="${comment.isUseAnonymousName ne true}">
