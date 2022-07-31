@@ -56,6 +56,25 @@ public class PostService {
 
     }
 
+    public List<String> getPostersCity(List<Post> posts) {
+        if (posts == null) return null;
+
+        List<String> cities = new ArrayList<String>();
+
+        posts.forEach((post) -> {
+            int profileNo = post.getAccountNo();
+            Profile profile = profileDao.getProfile(profileNo);
+
+            if (profile == null) profile = new Profile(profileNo);
+
+            if (post.getIs_use_anonymous_city() || profile.getCity().isEmpty())
+                cities.add("미등록 지역");
+            else
+                cities.add(profile.getCity());
+        });
+        return cities;
+    }
+
     public PostsOptionVO createPostsOption(PostsOptionVO optionInRequest, PostsOptionVO optionInSession){
         String sortType = "";
         String pageNo = "";
@@ -94,9 +113,11 @@ public class PostService {
     }
 
     public PostsOptionVO getDefaultPostsOption() {
-        int pageTotalCount = getRealTimePageCount();
+        pageCountStrategyContext.setPageCountStrategy(PostSortType.REAL_TIME);
+        int pageTotalCount = pageCountStrategyContext.getPageCount();
+
         PostsOptionVO options = new PostsOptionVO("1", "1");
-        options.setStartEndPageNo(pageTotalCount, 5);
+        options.setStartEndPageNo(pageTotalCount, PAGE_COUNT_IN_PAGE);
         return options;
     }
 
@@ -132,30 +153,6 @@ public class PostService {
 
         Post post = postDao.getPost(postNo);
         return post;
-    }
-
-    public int getRealTimePageCount() {
-        int postCount = postDao.getPostCount();
-        int pageCount = (int) postCount / POST_COUNT_IN_PAGE;
-        if (postCount % POST_COUNT_IN_PAGE != 0)
-            pageCount++;
-        return pageCount;
-    }
-
-    public int getDaysPageCount(){
-        int postCount = postDao.getDaysPostCount(POST_COUNT_IN_PAGE);
-        int pageCount = (int) postCount / POST_COUNT_IN_PAGE;
-        if (postCount % POST_COUNT_IN_PAGE != 0)
-            pageCount++;
-        return pageCount;
-    }
-
-    public int getWeeksPageCount(){
-        int postCount = postDao.getWeeksPostCount(POST_COUNT_IN_PAGE);
-        int pageCount = (int) postCount / POST_COUNT_IN_PAGE;
-        if (postCount % POST_COUNT_IN_PAGE != 0)
-            pageCount++;
-        return pageCount;
     }
 
     public void createPost(Profile profile, String title, String content, String isAnonName, String isAnonCity, String img) {
@@ -249,25 +246,6 @@ public class PostService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public List<String> getPostersCity(List<Post> posts) {
-        if (posts == null) return null;
-
-        List<String> cities = new ArrayList<String>();
-
-        posts.forEach((post) -> {
-            int profileNo = post.getAccountNo();
-            Profile profile = profileDao.getProfile(profileNo);
-
-            if (profile == null) profile = new Profile(profileNo);
-
-            if (post.getIs_use_anonymous_city() || profile.getCity().isEmpty())
-                cities.add("미등록 지역");
-            else
-                cities.add(profile.getCity());
-        });
-        return cities;
     }
 
     public Comment getComment(String no){
