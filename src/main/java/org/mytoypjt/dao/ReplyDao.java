@@ -65,6 +65,5 @@ public class ReplyDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 }

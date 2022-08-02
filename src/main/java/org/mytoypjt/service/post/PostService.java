@@ -265,7 +265,6 @@ public class PostService {
     }
 
     public void createReply(String content, String replierNo, String commentNo, String isAnonName) {
-
         int accountNo = -1;
         int commentNoInt = -1;
         try {
