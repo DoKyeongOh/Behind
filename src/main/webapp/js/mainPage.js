@@ -3,8 +3,8 @@ const btnMoreComment = document.getElementById("btn-more-comment");
 btnMoreComment.addEventListener("click", showMoreComment);
 
 window.onload = (() => {
-    console.log('onload');
     localStorage.setItem("commentCount", "0");
+    showMoreComment();
 });
 
 function showMoreComment(){
@@ -29,6 +29,4 @@ function showMoreComment(){
             lis[i].style.display = "";
         }
     }
-
-    console.log("test");
 }
