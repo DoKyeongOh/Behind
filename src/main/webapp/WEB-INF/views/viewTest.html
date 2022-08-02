@@ -1,11 +1,12 @@
 <html>
 <head>
     <title>Behind</title>
-    <link rel="stylesheet" type="text/css" href= "../../css/mainPage.css"/>
+    <link rel="stylesheet" type="text/css" href= "../../css/commentDetail.css"/>
     <link rel="stylesheet" type="text/css" href= "../../css/common.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"/>
 </head>
 <body>
+
 
 <!-- navbar + offcanvas -->
 <nav class="navbar bg-light fixed-top">
@@ -51,112 +52,93 @@
 </nav>
 <!-- navbar + offcanvas -->
 
-<div class="text-center main-text">
-    <h1 class="main-text-font">Behind</h1>
+
+
+<!-- 글 상세보기 페이지로 돌아가기 버튼 -->
+<button id="btn-return-post" class="btn btn-dark btn-sm" onclick="location.href='/post?no=${comment.postNo}'">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-square" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm11.5 5.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+    </svg>
+    &nbsp
+    "${parentPost}" (으)로 돌아가기
+</button>
+<!-- 글 상세보기 페이지로 돌아가기 버튼 -->
+
+<!-- 신고하기 버튼 -->
+<div id="btn-report">
+    <form action="/report/page" method="get" id="form-report">
+        <button class="btn btn-danger btn-sm">
+            <input type="hidden" name="reportType" value="comment">
+            <input type="hidden" name="no" value="${comment.commentNo}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-flag" viewBox="0 0 16 16">
+                <path d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12.435 12.435 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A19.626 19.626 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a19.587 19.587 0 0 0 1.349-.476l.019-.007.004-.002h.001M14 1.221c-.22.078-.48.167-.766.255-.81.252-1.872.523-2.734.523-.886 0-1.592-.286-2.203-.534l-.008-.003C7.662 1.21 7.139 1 6.5 1c-.669 0-1.606.229-2.415.478A21.294 21.294 0 0 0 3 1.845v6.433c.22-.078.48-.167.766-.255C4.576 7.77 5.638 7.5 6.5 7.5c.847 0 1.548.28 2.158.525l.028.01C9.32 8.29 9.86 8.5 10.5 8.5c.668 0 1.606-.229 2.415-.478A21.317 21.317 0 0 0 14 7.655V1.222z"/>
+            </svg>
+            댓글 신고하기
+        </button>
+    </form>
 </div>
+<!-- 신고하기 버튼 -->
 
-<hr id="line-mid">
-
-<!-- 글 목록 정렬 방식 버튼 -->
-<div class="text-center" id="posts-sort-type">
-    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" onclick="location.href='${realTimePosts}'" ${realtimeChecked}>
-        <label class="btn btn-outline-dark btn-sort-type" for="btnradio1">실시간 글</label>
-
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" onclick="location.href='${daysMostPosts}'" ${daysChecked}>
-        <label class="btn btn-outline-dark btn-sort-type" for="btnradio2">일일 인기글</label>
-
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" onclick="location.href='${weeksMostPosts}'" ${weeksChecked}>
-        <label class="btn btn-outline-dark btn-sort-type" for="btnradio3">주간 인기글</label>
-    </div>
+<!-- 댓글 본문 -->
+<div id="comment-wrapper" >
+    <ul class="list-group">
+        <li class="list-group-item border border-dark border-3">
+            <h1 id="comment-text" class="text-center">
+                ${comment.content}
+            </h1>
+            <div id="info-commenter">
+                <span class="badge rounded-pill bg-dark">
+                    <c:if test="${comment.isUseAnonymousName eq true}">익명</c:if>
+                    <c:if test="${comment.isUseAnonymousName ne true}">${comment.nicname}</c:if>
+                </span>
+                <span class="badge rounded-pill bg-dark">${comment.commentedDate}</span>
+            </div>
+        </li>
+    </ul>
 </div>
-<!-- 글 목록 정렬 방식 버튼 -->
+<!-- 댓글 본문 -->
 
-<!-- 글 목록 테이블 -->
-<div>
-    <table id="table-posts">
-        <c:forEach var="tr" begin="0" end="2">
-            <tr>
-                <c:forEach var="td" begin="0" end="3">
-                    <c:set var="idx" scope="request" value="${tr * 4 + td}"/>
-                    <c:if test="${empty posts[idx] eq false}">
-                        <td>
-                            <div class="card" style="width: 300px;">
-                                <a href="${post}?no=${posts[idx].postNo}">
-                                    <img src="../../pictures/mini/${posts[idx].pictureNo}.jpeg" class="card-img-top"
-                                         oncontextmenu="return false" ondragstart="return false" onkeydown="return false">
-                                </a>
+<!-- 대댓글 조회 -->
+<ul id="reply-list" class="list-group list-group-flush">
+    <c:forEach var="reply" items="${replies}">
+        <li class="list-group-item display-inline-block">
+            <div class="display-inline-block" style="width: 97%">
+                <label class="text-secondary reply-item">
+                    <c:if test="${reply.isUseAnonymousName eq true}">익명</c:if>
+                    <c:if test="${reply.isUseAnonymousName ne true}">${reply.nicname}</c:if>
+                </label><br>
+                <span style="margin-left: 1%;">${reply.content}</span>
+            </div>
 
-                                <div class="card-body">
-
-                                    <h5 class="title-font">${posts[idx].title}</h5>
-
-                                    <c:if test="${posts[idx].is_use_anonymous_name eq true}">
-                                        <label class="label-poster-name">익명</label><br>
-                                    </c:if>
-                                    <c:if test="${posts[idx].is_use_anonymous_name ne true}">
-                                        <label class="label-poster-name">${posts[idx].nicname}</label><br>
-                                    </c:if>
-
-                                    <div class="text-right">
-                                        <label class="label-poster-name display-inline-block">
-                                            ${cities[idx]}
-                                        </label><br>
-                                        <label class="like-label display-inline-block">댓글 ${posts[idx].commentCount} 개 ・ 좋아요 ${posts[idx].likeCount} 개</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </c:if>
-                </c:forEach>
-            </tr>
-        </c:forEach>
-    </table>
-
-    <c:if test="${empty posts eq true}">
-        <h1 class="text-center" id="label-not-posted">글이 게시되지 않았습니다...</h1>
-    </c:if>
-</div>
-<!-- 글 목록 테이블 -->
-
-<!-- 페이지네이션 -->
-<ul class="pagination" id="pagenation">
-    <c:set var="PostsOption" value="${sessionScope.get('PostsOption')}" />
-    <c:set var="startNo" value="${PostsOption.pageStartNo}" />
-    <c:set var="endNo" value="${PostsOption.pageEndNo}" />
-    <c:set var="pageNo" value="${PostsOption.pageNo}" />
-    <c:forEach var="pageIndex" begin="${startNo}" end="${endNo}">
-
-        <c:if test="${startNo ne 1}">
-            <li class="page-item"><a class="page-link" href="/posts?pageNo=${pageIndex-1}">Previous</a></li>
-        </c:if>
-
-        <c:if test="${pageNo eq pageIndex}">
-            <li class="page-item active"><a class="page-link" href="/posts?pageNo=${pageIndex}">${pageIndex}</a></li>
-        </c:if>
-
-        <c:if test="${pageNo ne pageIndex}">
-            <li class="page-item"><a class="page-link" href="/posts?pageNo=${pageIndex}">${pageIndex}</a></li>
-        </c:if>
-
+            <div class="display-inline-block" style="width: 1%">
+                <button type="button" class="btn btn-danger btn-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-flag" viewBox="0 0 16 16">
+                        <path d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12.435 12.435 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A19.626 19.626 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a19.587 19.587 0 0 0 1.349-.476l.019-.007.004-.002h.001M14 1.221c-.22.078-.48.167-.766.255-.81.252-1.872.523-2.734.523-.886 0-1.592-.286-2.203-.534l-.008-.003C7.662 1.21 7.139 1 6.5 1c-.669 0-1.606.229-2.415.478A21.294 21.294 0 0 0 3 1.845v6.433c.22-.078.48-.167.766-.255C4.576 7.77 5.638 7.5 6.5 7.5c.847 0 1.548.28 2.158.525l.028.01C9.32 8.29 9.86 8.5 10.5 8.5c.668 0 1.606-.229 2.415-.478A21.317 21.317 0 0 0 14 7.655V1.222z"/>
+                    </svg>
+                </button>
+            </div>
+        </li>
     </c:forEach>
-
-    <c:if test="${endNo - startNo >= 4}">
-        <li class="page-item"><a class="page-link" href="/posts?pageNo=${pageIndex+1}">Next</a></li>
-    </c:if>
 </ul>
-<!-- 페이지네이션 -->
+<!-- 대댓글 조회 -->
 
-<!-- 검색 창 -->
-<form method="get" action="/posts?type" id="search-block" class="input-group">
-    <select name="searchOption" class="form-select" style="width: 15%">
-        <option value="1" selected>제목</option>
-        <option value="2">내용</option>
-    </select>
-    <input type="text" name="searchWord" class="form-control" style="width: 60%">
-    <button type="submit" style="width: 15%" class="btn btn-outline-secondary form-control">검색하기</button>
+
+<!-- 대댓글 입력 폼 -->
+<form class="center-content margin-top" action="/reply" method="post">
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="isAnonymous" name="isUseAnonymousName">
+        <label class="form-check-label" for="isAnonymous">
+            익명으로 게시하기
+        </label>
+    </div>
+    <div class="input-group text-center" style="width: 100%">
+        <input type="hidden" name="commentNo" value="${comment.commentNo}">
+        <input type="hidden" name="accountNo" value="${sessionScope.get("profile").accountNo}">
+        <input type="text" class="form-control" placeholder="대댓글을 입력해주세요!" name="content" >
+        <button class="btn btn-outline-secondary" type="submit" id="btn-comment-submit">등록</button>
+    </div>
 </form>
-<!-- 검색 창 -->
+<!-- 대댓글 입력 폼 -->
 
 
 <!-- footer -->
@@ -174,8 +156,6 @@
 </div>
 <!-- footer -->
 
-
-<script src="../../js/mainPage.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
