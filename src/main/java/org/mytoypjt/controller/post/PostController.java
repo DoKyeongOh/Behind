@@ -65,7 +65,9 @@ public class PostController {
         session.setAttribute(this.postsOptionKey, actualOption);
 
         List<Post> posts = postService.getPosts(actualOption, req.getParameterMap());
+        List<String> cities = postService.getPostersCity(posts);
         req.setAttribute("posts", posts);
+        req.setAttribute("cities", cities);
 
         PostSortType postSortType = postService.getPostSortType(actualOption.getSortType());
         switch (postSortType) {
