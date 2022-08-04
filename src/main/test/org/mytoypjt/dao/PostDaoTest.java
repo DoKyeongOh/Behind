@@ -19,7 +19,6 @@ class PostDaoTest {
         postDao = new PostDao();
     }
 
-
     @Test
     void getPosts() {
         boolean successed = true;
@@ -67,6 +66,21 @@ class PostDaoTest {
                     false,
                     true,
                     2);
+        }catch (Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(true, successed);
+    }
+
+    @Test
+    void getPostsByAccountNo() {
+        boolean successed = true;
+        try {
+            // test content
+            postDao
+                    .getPostsByAccountNo(19)
+                    .forEach((post) -> System.out.println(post.getContent()));
         }catch (Exception e) {
             e.printStackTrace();
             successed = false;

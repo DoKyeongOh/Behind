@@ -28,4 +28,19 @@ class ReplyDaoTest {
         }
         assertEquals(true, successed);
     }
+
+    @Test
+    void getRepliesByAccountNo(){
+
+        boolean successed = true;
+        try {
+            // test content
+            System.out.println("총 갯수 : " + replyDao.getRepliesByAccountNo(19).size());
+            replyDao.getRepliesByAccountNo(19).forEach(reply -> System.out.println(reply.getContent()));
+        }catch (Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(true, successed);
+    }
 }
