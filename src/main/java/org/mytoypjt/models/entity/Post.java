@@ -38,6 +38,14 @@ public class Post {
         this.nicname = nicname;
     }
 
+    public static boolean isCorrectPost(Post post){
+        if (post == null) return false;
+        if (post.getAccountNo() < 1) return false;
+        if (post.getLikeCount() < 0) return false;
+        if (post.getCommentCount() < 0) return false;
+        return true;
+    }
+
     public boolean getIs_use_anonymous_city() {
         return is_use_anonymous_city;
     }
