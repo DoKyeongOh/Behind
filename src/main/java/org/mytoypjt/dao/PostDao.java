@@ -75,7 +75,7 @@ public class PostDao {
         }
     }
 
-    public List<Post> getPosts(ResultSet resultSet){
+    List<Post> getPosts(ResultSet resultSet){
         List<Post> postList = new ArrayList<Post>();
         try {
             while (resultSet.next()) {
@@ -317,7 +317,7 @@ public class PostDao {
         return -1;
     }
 
-    public void createPost(Profile profile, String title, String content, boolean isAnonymousName, boolean isAnonymousCity, int imgNo) {
+    public boolean createPost(Profile profile, String title, String content, boolean isAnonymousName, boolean isAnonymousCity, int imgNo) {
         String sql = "insert into post " +
                 "(post_no, title, content, posted_date, is_use_anonymous_city, is_use_anonymous_name, " +
                 "comment_count, like_count, account_no, picture_no, nicname) " +
@@ -336,9 +336,56 @@ public class PostDao {
             preparedStatement.setInt(6, imgNo);
             preparedStatement.setString(7, profile.getNicname());
             preparedStatement.execute();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 
+    public List<Post> getPostsByAccountNo(int accountNo) {
+        String sql = "select * from post where account_no = ?";
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setInt(1, accountNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Post> postList = getPosts(resultSet);
+            return postList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Post getLastPost(int accountNo) {
+        String sql = "select * from post order by posted_date desc limit 1";
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Post post = null;
+
+            if (resultSet.next()) {
+                return new Post(
+                        resultSet.getInt("post_no"),
+                        resultSet.getString("title"),
+                        resultSet.getString("content"),
+                        resultSet.getTimestamp("posted_date"),
+                        resultSet.getBoolean("is_use_anonymous_city"),
+                        resultSet.getBoolean("is_use_anonymous_name"),
+                        resultSet.getInt("comment_count"),
+                        resultSet.getInt("like_count"),
+                        resultSet.getInt("account_no"),
+                        resultSet.getInt("picture_no"),
+                        resultSet.getString("nicname")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

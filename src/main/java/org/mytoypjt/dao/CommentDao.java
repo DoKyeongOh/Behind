@@ -1,6 +1,7 @@
 package org.mytoypjt.dao;
 
 import org.mytoypjt.models.entity.Comment;
+import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.DBUtil;
 
@@ -117,5 +118,45 @@ public class CommentDao {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List<Comment> getCommentsByAccountNo(int accountNo) {
+        String sql = "select * from comment where account_no = ?";
+        try (
+                Connection conn = new DBUtil().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ) {
+            preparedStatement.setInt(1, accountNo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            List<Comment> comments = getComments(resultSet);
+            return comments;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Comment> getComments(ResultSet resultSet) {
+        List<Comment> comments = new ArrayList<Comment>();
+        try {
+            while (resultSet.next()) {
+                comments.add(new Comment(
+                                resultSet.getInt("comment_no"),
+                                resultSet.getString("content"),
+                                resultSet.getInt("reply_count"),
+                                resultSet.getBoolean("is_use_anonymous_name"),
+                                resultSet.getInt("account_no"),
+                                resultSet.getInt("post_no"),
+                                resultSet.getString("nicname"),
+                                resultSet.getDate("commented_date")
+                        )
+                );
+            }
+
+            return comments;
+        } catch(Exception e) {
+            return null;
+        }
     }
 }
