@@ -14,6 +14,8 @@
 <% request.setAttribute("weeksMostPosts", request.getContextPath() + "/posts?type=3"); %>
 <% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page/1"); %>
 
+<% request.setAttribute("myPage", request.getContextPath() + "/my/page"); %>
+
 <html>
 <head>
     <title>Behind</title>
@@ -50,7 +52,7 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">마이페이지</a></li>
+                    <li class="nav-item"><a class="nav-link text-center" href="${myPage}">마이페이지</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${postCreatePage}">글 작성하기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">공지 목록 보기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">알림 확인하기</a></li>
