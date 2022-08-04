@@ -9,14 +9,15 @@ public class PostLogDao {
 
 
     public void writeCreationLog(int accountNo, int postNo) {
-        String sql = "insert into post_log (post_log_no, logging_date, action_type, account_no) " +
-                "values (null, now(), ?, ?)";
+        String sql = "insert into post_log (post_log_no, logging_date, action_type, account_no, post_no) " +
+                "values (null, now(), ?, ?, ?)";
         try (
                 Connection conn = new DBUtil().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
                 ) {
             preparedStatement.setString(1, "게시");
             preparedStatement.setInt(2, accountNo);
+            preparedStatement.setInt(3, postNo);
             preparedStatement.execute();
         } catch (Exception e) {
             e.printStackTrace();

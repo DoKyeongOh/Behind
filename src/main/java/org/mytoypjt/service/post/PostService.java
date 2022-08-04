@@ -166,11 +166,12 @@ public class PostService {
             imgNo = Integer.parseInt(img);
         } catch (Exception e) {}
 
-        boolean successed = postDao.createPost(profile, title, content, isAnonymousName, isAnonymousCity, imgNo);
-        Post post = postDao.getLastPost(profile.getAccountNo());
+        postDao.createPost(profile, title, content, isAnonymousName, isAnonymousCity, imgNo);
 
-        if (successed)
-            postLogDao.writeCreationLog(profile.getAccountNo(), 1);
+        Post post = postDao.getLastPost(profile.getAccountNo());
+        if (!Post.isCorrectPost(post)) return;
+        if (!post.getTitle().equals(title)) return;
+        postLogDao.writeCreationLog(profile.getAccountNo(), post.getPostNo());
     }
 
     public void toggleLike(String post, String account) {

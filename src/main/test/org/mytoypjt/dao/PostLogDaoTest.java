@@ -22,7 +22,7 @@ class PostLogDaoTest {
         boolean successed = true;
         try {
             // test content
-            postLogDao.writeCreationLog(19, 1);
+            postLogDao.writeCreationLog(19, 25);
         }catch (Exception e) {
             e.printStackTrace();
             successed = false;

@@ -317,7 +317,7 @@ public class PostDao {
         return -1;
     }
 
-    public boolean createPost(Profile profile, String title, String content, boolean isAnonymousName, boolean isAnonymousCity, int imgNo) {
+    public void createPost(Profile profile, String title, String content, boolean isAnonymousName, boolean isAnonymousCity, int imgNo) {
         String sql = "insert into post " +
                 "(post_no, title, content, posted_date, is_use_anonymous_city, is_use_anonymous_name, " +
                 "comment_count, like_count, account_no, picture_no, nicname) " +
@@ -336,10 +336,8 @@ public class PostDao {
             preparedStatement.setInt(6, imgNo);
             preparedStatement.setString(7, profile.getNicname());
             preparedStatement.execute();
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
     }
 
