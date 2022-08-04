@@ -8,11 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 <% request.setAttribute("mainPage", request.getContextPath() + "/main/page"); %>
-<% request.setAttribute("logout", request.getContextPath() + "/login"); %>
-<% request.setAttribute("realTimePosts", request.getContextPath() + "/posts?type=1"); %>
-<% request.setAttribute("daysMostPosts", request.getContextPath() + "/posts?type=2"); %>
-<% request.setAttribute("weeksMostPosts", request.getContextPath() + "/posts?type=3"); %>
-<% request.setAttribute("searchPosts", request.getContextPath() + "/posts?type=4"); %>
+<% request.setAttribute("myPage", request.getContextPath() + "/my/page"); %>
 
 <% request.setAttribute("post", request.getContextPath() + "/post"); %>
 <% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page/1"); %>
@@ -22,7 +18,7 @@
 <html>
 <head>
     <title>Behind</title>
-    <link rel="stylesheet" type="text/css" href= "../../css/mainPage.css"/>
+    <link rel="stylesheet" type="text/css" href= "../../css/myPage.css"/>
     <link rel="stylesheet" type="text/css" href= "../../css/common.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"/>
 </head>
@@ -54,7 +50,7 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">마이페이지</a></li>
+                    <li class="nav-item"><a class="nav-link text-center" href="${myPage}">마이페이지</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${postCreatePage}">글 작성하기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">공지 목록 보기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">알림 확인하기</a></li>
@@ -72,7 +68,66 @@
 </nav>
 <!-- navbar + offcanvas -->
 
+<!-- 마이페이지 글귀 -->
+<h1 id="text-my-page">My Page</h1>
+<!-- 마이페이지 글귀 -->
 
+
+<!-- 마이페이지 내용 -->
+<div id="my-page-wrapper">
+
+    <c:set var="profile" value="${sessionScope.get('profile')}" />
+
+    <div id="block-profile">
+        <h2 class="text-center font-border border rounded-pill p-3 bg-dark text-white">내 프로필</h2>
+        <label class="profile-font mt-3">
+            <span class="badge bg-success mb-1">닉네임</span> :
+            ${profile.nicname}
+        </label><br>
+        <label class="profile-font">
+            <span class="badge bg-success mb-1">성별</span> :
+            <c:if test="${profile.gender eq 'M'}">남자</c:if>
+            <c:if test="${profile.gender ne 'M'}">여자</c:if>
+        </label><br>
+        <label class="profile-font">
+            <span class="badge bg-success mb-1">나이</span> :
+            ${profile.age}
+        </label><br>
+        <label class="profile-font">
+            <span class="badge bg-success mb-1">지역</span> :
+            ${profile.city}
+        </label><br>
+        <button id="btn-profile-change" class="btn btn-outline-dark">프로필 변경하러가기</button>
+    </div>
+
+    <div id="my-activities">
+        <h2 class="text-center font-border border rounded-pill p-3 bg-dark text-white">나의 활동</h2>
+        <ul class="list-group list-group-flush mt-3 activity-list">
+            <c:forEach var="item" items="${activities}">
+                <a class="one-activity mb-1" href=""><li class="list-group-item">${item.content}</li></a>
+            </c:forEach>
+            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 게시하였습니다!</li></a>
+            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 좋아합니다!</li></a>
+            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 에 대댓글을 게시하였습니다!</li></a>
+            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 수정하였습니다!</li></a>
+            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 삭제하였습니다!</li></a>
+            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 에 대댓글을 게시하였습니다!</li></a>
+            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 수정하였습니다!</li></a>
+            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 좋아합니다!</li></a>
+            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 에 대댓글을 게시하였습니다!</li></a>
+            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 수정하였습니다!</li></a>
+            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 삭제하였습니다!</li></a>
+            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 에 대댓글을 게시하였습니다!</li></a>
+            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 수정하였습니다!</li></a>
+            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 삭제하였습니다!</li></a>
+        </ul>
+        <label class="badge bg-dark">글 : 5 개</label>
+        <label class="badge bg-dark">댓글 : 5 개</label>
+        <label class="badge bg-dark">대댓글 : 5 개</label>
+        <label class="badge bg-dark">좋아요 : 5 개</label>
+    </div>
+</div>
+<!-- 마이페이지 내용 -->
 
 
 <!-- footer -->
@@ -91,7 +146,6 @@
 <!-- footer -->
 
 
-<script src="../../js/mainPage.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
