@@ -1,6 +1,7 @@
 CREATE TABLE `REGISTER_LOG` (
 	`register_log_no` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	`logging_date` DATE NULL,
-	`is_registerd` BOOL NULL,
+	`action_type` VARCHAR(10) NULL,
 	`account_no` INT NULL REFERENCES PROFILE(account_no)
 );
+

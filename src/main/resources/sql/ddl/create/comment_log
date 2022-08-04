@@ -1,6 +1,6 @@
 CREATE TABLE `COMMENT_LOG` (
 	`comment_log_no` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	`logging_date` DATE NULL,
-	`is_post` BOOL NULL,
+	`action_type` VARCHAR(10) NULL,
 	`account_no` INT NULL REFERENCES PROFILE(account_no)
 );
