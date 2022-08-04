@@ -1,9 +1,6 @@
 package org.mytoypjt.service.post;
 
-import org.mytoypjt.dao.CommentDao;
-import org.mytoypjt.dao.PostDao;
-import org.mytoypjt.dao.ProfileDao;
-import org.mytoypjt.dao.ReplyDao;
+import org.mytoypjt.dao.*;
 import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.models.vo.PostsOptionVO;
 import org.mytoypjt.models.entity.Comment;
@@ -31,6 +28,7 @@ public class PostService {
     private CommentDao commentDao;
     private ReplyDao replyDao;
     private ProfileDao profileDao;
+    private PostLogDao postLogDao;
 
     private PostsStrategyContext postsStrategyContext;
     private PageCountStrategyContext pageCountStrategyContext;
@@ -40,6 +38,7 @@ public class PostService {
         commentDao = new CommentDao();
         profileDao = new ProfileDao();
         replyDao = new ReplyDao();
+        postLogDao = new PostLogDao();
 
         postsStrategyContext = new PostsStrategyContext(POST_COUNT_IN_PAGE);
         pageCountStrategyContext = new PageCountStrategyContext(POST_COUNT_IN_PAGE);
@@ -96,11 +95,6 @@ public class PostService {
             sortType = "1";
 
         PostSortType type = getPostSortType(sortType);
-//        switch (type) {
-//            case REAL_TIME: pageTotalCount = getRealTimePageCount(); break;
-//            case DAYS_FAVORITE: pageTotalCount = getDaysPageCount(); break;
-//            case WEEKS_FAVORITE: pageTotalCount = getWeeksPageCount(); break;
-//        }
 
         pageCountStrategyContext.setPageCountStrategy(type);
         int pageTotalCount = pageCountStrategyContext.getPageCount();
@@ -170,11 +164,13 @@ public class PostService {
 
         try {
             imgNo = Integer.parseInt(img);
-        } catch (Exception e) {
+        } catch (Exception e) {}
 
-        }
+        boolean successed = postDao.createPost(profile, title, content, isAnonymousName, isAnonymousCity, imgNo);
+        Post post = postDao.getLastPost(profile.getAccountNo());
 
-        postDao.createPost(profile, title, content, isAnonymousName, isAnonymousCity, imgNo);
+        if (successed)
+            postLogDao.writeCreationLog(profile.getAccountNo(), 1);
     }
 
     public void toggleLike(String post, String account) {
