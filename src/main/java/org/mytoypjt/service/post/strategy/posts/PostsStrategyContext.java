@@ -26,7 +26,7 @@ public class PostsStrategyContext {
 
     public void setPostsStrategy(PostSortType sortType){
         switch (sortType) {
-            case REAL_TIME: setPostsStrategy(new RealTimeStrategy(this.postCountInPage)); break;
+            case REAL_TIME: setPostsStrategy(new RealTimeStrategy(this.postCountInPage));break;
             case DAYS_FAVORITE: setPostsStrategy(new DaysFavoriteStrategy(this.postCountInPage)); break;
             case WEEKS_FAVORITE: setPostsStrategy(new WeeksFavoriteStrategy(this.postCountInPage)); break;
             case SEARCH_TITLE_FROM_USER: setPostsStrategy(new TitleSearchStrategy(this.postCountInPage)); break;
