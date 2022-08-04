@@ -49,7 +49,7 @@ public class ProfileDao {
             preparedStatement.setString(3, profile.getNicname());
             preparedStatement.setString(4, profile.getCity());
             preparedStatement.setInt(5, profile.getAge());
-            preparedStatement.setString(6, profile.getGender());
+            preparedStatement.setString(6, profile.parseGender());
             preparedStatement.setInt(7, profile.getUserLevel());
             preparedStatement.execute();
 
@@ -70,7 +70,7 @@ public class ProfileDao {
             preparedStatement.setString(1, profile.getNicname());
             preparedStatement.setString(2, profile.getCity());
             preparedStatement.setInt(3, profile.getAge());
-            preparedStatement.setString(4, profile.getGender());
+            preparedStatement.setString(4, profile.parseGender());
             preparedStatement.setInt(5, profile.getUserLevel());
             preparedStatement.setInt(6, profile.getAccountNo());
             preparedStatement.execute();
