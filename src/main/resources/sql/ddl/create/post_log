@@ -1,6 +1,7 @@
 CREATE TABLE `POST_LOG` (
 	`post_log_no` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	`logging_date` DATE NULL,
+	`logging_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	`action_type` VARCHAR(10) NULL,
+	`post_no` bigint NULL,
 	`account_no` INT NULL REFERENCES PROFILE(account_no)
 );

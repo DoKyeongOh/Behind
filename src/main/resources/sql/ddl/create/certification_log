@@ -1,6 +1,6 @@
 CREATE TABLE `CERTIFICATION_LOG` (
 	`certification_no` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	`logging_date` DATE NULL,
+	`logging_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	`action_type` VARCHAR(10) NULL,
 	`account_no` INT NOT NULL REFERENCES PROFILE(account_no),
 	`is_completed` BOOL NOT NULL
