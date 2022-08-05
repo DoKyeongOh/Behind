@@ -1,27 +1,27 @@
-package org.mytoypjt.dao;
+package org.mytoypjt.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PostLogDaoTest {
+class LoginServiceTest {
 
-    PostLogDao postLogDao;
+    LoginService loginService;
 
     @BeforeEach
     public void init(){
         // init param
-        postLogDao = new PostLogDao();
+        loginService = new LoginService();
     }
 
     @Test
-    void writeCreationLog() {
+    void getProfile() {
 
         boolean successed = true;
         try {
             // test content
-            postLogDao.writePostActivityLog(19, 25, "삭제");
+            loginService.getProfile("dkproh", "123123");
         }catch (Exception e) {
             e.printStackTrace();
             successed = false;
