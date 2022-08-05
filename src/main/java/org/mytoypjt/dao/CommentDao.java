@@ -16,7 +16,7 @@ public class CommentDao {
                 "comment_no, content, reply_count, is_use_anonymous_name, account_no, post_no, nicname, commented_date" +
                 " from comment where post_no = ?";
         try (
-                Connection conn = new DBUtil().getConnection();
+                Connection conn = DBUtil.getInstance().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, postNo);
@@ -49,7 +49,7 @@ public class CommentDao {
                 "values (null , ?, 0, ?, ?, ?, ?, now())";
 
         try (
-                Connection conn = new DBUtil().getConnection();
+                Connection conn = DBUtil.getInstance().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setString(1, content);
@@ -66,7 +66,7 @@ public class CommentDao {
     public int getCommentCount(int postNo) {
         String sql = "select count(*) from comment where post_no=?";
         try (
-                Connection conn = new DBUtil().getConnection();
+                Connection conn = DBUtil.getInstance().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, postNo);
@@ -82,7 +82,7 @@ public class CommentDao {
     public void updateCommentCount(int postNo, int count){
         String sql = "update post set comment_count = ? where post_no = ?";
         try (
-                Connection conn = new DBUtil().getConnection();
+                Connection conn = DBUtil.getInstance().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, count);
@@ -96,7 +96,7 @@ public class CommentDao {
     public Comment getComment(int commentNo) {
         String sql = "select * from comment where comment_no = ?";
         try (
-                Connection conn = new DBUtil().getConnection();
+                Connection conn = DBUtil.getInstance().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, commentNo);
@@ -123,7 +123,7 @@ public class CommentDao {
     public List<Comment> getCommentsByAccountNo(int accountNo) {
         String sql = "select * from comment where account_no = ?";
         try (
-                Connection conn = new DBUtil().getConnection();
+                Connection conn = DBUtil.getInstance().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, accountNo);

@@ -16,7 +16,7 @@ public class ReplyDao {
     public List<Reply> getReplies(int commentNo) {
         String sql = "select * from reply where comment_no = ?";
         try (
-                Connection conn = new DBUtil().getConnection();
+                Connection conn = DBUtil.getInstance().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, commentNo);
@@ -36,7 +36,7 @@ public class ReplyDao {
                 "values " +
                 "(null, ?, ?, ?, ?, ?, now())";
         try (
-                Connection conn = new DBUtil().getConnection();
+                Connection conn = DBUtil.getInstance().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setString(1, content);
@@ -54,7 +54,7 @@ public class ReplyDao {
     public List<Reply> getRepliesByAccountNo(int accountNo) {
         String sql = "select * from reply where account_no = ?";
         try (
-                Connection conn = new DBUtil().getConnection();
+                Connection conn = DBUtil.getInstance().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, accountNo);
