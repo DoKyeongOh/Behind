@@ -171,7 +171,7 @@ public class PostService {
         Post post = postDao.getLastPost(profile.getAccountNo());
         if (!Post.isCorrectPost(post)) return;
         if (!post.getTitle().equals(title)) return;
-        postLogDao.writeCreationLog(profile.getAccountNo(), post.getPostNo());
+        postLogDao.writePostActivityLog(profile.getAccountNo(), post.getPostNo(), "게시");
     }
 
     public void toggleLike(String post, String account) {
