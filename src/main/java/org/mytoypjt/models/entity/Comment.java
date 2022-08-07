@@ -9,10 +9,10 @@ public class Comment {
     int commentNo;
     String content;
     int replyCount;
-    boolean isUseAnonymousName;
     int accountNo;
     int postNo;
     String nicname;
+    boolean isUseAnonymousName;
 
     Date commentedDate;
 
@@ -21,20 +21,20 @@ public class Comment {
         this.commentNo = commentNo;
         this.content = "";
         this.replyCount = 0;
-        this.isUseAnonymousName = false;
         this.accountNo = -1;
         this.postNo = -1;
+        this.isUseAnonymousName = false;
         this.nicname = "";
         this.commentedDate = new Date();
     }
 
-    public Comment(int commentNo, String content, int replyCount, boolean isUseAnonymousName, int accountNo, int postNo, String nicname, Date commentedDate) {
+    public Comment(int commentNo, String content, int replyCount, int accountNo, int postNo, boolean isUseAnonymousName,String nicname, Date commentedDate) {
         this.commentNo = commentNo;
         this.content = content;
         this.replyCount = replyCount;
-        this.isUseAnonymousName = isUseAnonymousName;
         this.accountNo = accountNo;
         this.postNo = postNo;
+        this.isUseAnonymousName = isUseAnonymousName;
         this.nicname = nicname;
         this.commentedDate = commentedDate;
     }
@@ -92,14 +92,6 @@ public class Comment {
         this.replyCount = replyCount;
     }
 
-    public boolean getIsUseAnonymousName() {
-        return isUseAnonymousName;
-    }
-
-    public void setUseAnonymousName(boolean useAnonymousName) {
-        isUseAnonymousName = useAnonymousName;
-    }
-
     public int getAccountNo() {
         return accountNo;
     }
@@ -114,10 +106,6 @@ public class Comment {
 
     public void setPostNo(int postNo) {
         this.postNo = postNo;
-    }
-
-    public boolean isUseAnonymousName() {
-        return isUseAnonymousName;
     }
 
     public String getNicname() {

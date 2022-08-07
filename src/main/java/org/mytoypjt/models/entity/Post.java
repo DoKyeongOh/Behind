@@ -13,29 +13,44 @@ public class Post {
     String title;
     String content;
     Date postedDate;
-    boolean is_use_anonymous_city;
-    boolean is_use_anonymous_name;
     int commentCount;
     int likeCount;
     int accountNo;
     int pictureNo;
+    boolean isUseAnonymousName;
+    boolean isUseAnonymousCity;
     String nicname;
+    String city;
 
     public Post() {
+        this.postNo = -1;
+        this.title = "title";
+        this.content = "content";
+        this.postedDate = new Date();
+        this.commentCount = 0;
+        this.likeCount = 0;
+        this.accountNo = -1;
+        this.pictureNo = 1;
+        this.isUseAnonymousName = false;
+        this.isUseAnonymousCity = false;
+        this.nicname = "nicname";
+        this.city = "city";
     }
 
-    public Post(int postNo, String title, String content, Date postedDate, boolean is_use_anonymous_city, boolean is_use_anonymous_name, int commentCount, int likeCount, int accountNo, int pictureNo, String nicname) {
+    public Post(int postNo, String title, String content, Date postedDate, int commentCount, int likeCount, int accountNo,
+                int pictureNo, boolean isUseAnonymousName, boolean isUseAnonymousCity,String nicname, String city) {
         this.postNo = postNo;
         this.title = title;
         this.content = content;
         this.postedDate = postedDate;
-        this.is_use_anonymous_city = is_use_anonymous_city;
-        this.is_use_anonymous_name = is_use_anonymous_name;
         this.commentCount = commentCount;
         this.likeCount = likeCount;
         this.accountNo = accountNo;
         this.pictureNo = pictureNo;
+        this.isUseAnonymousName = isUseAnonymousName;
+        this.isUseAnonymousCity = isUseAnonymousCity;
         this.nicname = nicname;
+        this.city = city;
     }
 
     public static boolean isCorrectPost(Post post){
@@ -46,15 +61,15 @@ public class Post {
         return true;
     }
 
-    public boolean getIs_use_anonymous_city() {
-        return is_use_anonymous_city;
-    }
-
-    public boolean getIs_use_anonymous_name() {
-        return is_use_anonymous_name;
-    }
-
     public Date getPostedDate() {
         return postedDate;
+    }
+
+    public boolean getIsUseAnonymousName() {
+        return isUseAnonymousName;
+    }
+
+    public boolean getIsUseAnonymousCity() {
+        return isUseAnonymousCity;
     }
 }

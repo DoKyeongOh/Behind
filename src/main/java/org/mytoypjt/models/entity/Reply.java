@@ -5,9 +5,9 @@ import java.util.Date;
 public class Reply {
     int replyNo;
     String content;
-    boolean isUseAnonymousName;
     int accountNo;
     int commentNo;
+    boolean isUseAnonymousName;
     String nicname;
 
     Date repliedDate;
@@ -15,19 +15,19 @@ public class Reply {
     public Reply(int replyNo){
         this.replyNo = replyNo;
         this.content = "";
-        this.isUseAnonymousName = false;
         this.accountNo = -1;
         this.commentNo = -1;
+        this.isUseAnonymousName = false;
         this.nicname = "";
         this.repliedDate = new Date();
     }
 
-    public Reply(int replyNo, String content, boolean isUseAnonymousName, int accountNo, int commentNo, String nicname, Date repliedDate){
+    public Reply(int replyNo, String content, int accountNo, int commentNo, boolean isUseAnonymousName, String nicname, Date repliedDate){
         this.replyNo = replyNo;
         this.content = content;
-        this.isUseAnonymousName = isUseAnonymousName;
         this.accountNo = accountNo;
         this.commentNo = commentNo;
+        this.isUseAnonymousName = isUseAnonymousName;
         this.nicname = nicname;
         this.repliedDate = repliedDate;
     }
@@ -72,14 +72,6 @@ public class Reply {
         this.content = content;
     }
 
-    public boolean getIsUseAnonymousName() {
-        return isUseAnonymousName;
-    }
-
-    public void setUseAnonymousName(boolean useAnonymousName) {
-        isUseAnonymousName = useAnonymousName;
-    }
-
     public int getAccountNo() {
         return accountNo;
     }
@@ -102,5 +94,21 @@ public class Reply {
 
     public void setNicname(String nicname) {
         this.nicname = nicname;
+    }
+
+    public boolean getIsUseAnonymousName() {
+        return isUseAnonymousName;
+    }
+
+    public void setUseAnonymousName(boolean useAnonymousName) {
+        isUseAnonymousName = useAnonymousName;
+    }
+
+    public Date getRepliedDate() {
+        return repliedDate;
+    }
+
+    public void setRepliedDate(Date repliedDate) {
+        this.repliedDate = repliedDate;
     }
 }
