@@ -5,6 +5,7 @@ import org.mytoypjt.controller.structure.BaseControllerAdapter;
 import org.mytoypjt.controller.structure.ControllerAdapterFactory;
 import org.mytoypjt.controller.structure.enums.MappingName;
 import org.mytoypjt.models.etc.ViewInfo;
+import org.mytoypjt.utils.DBUtil;
 import org.mytoypjt.utils.PropertiesUtil;
 import org.mytoypjt.utils.ViewResolver;
 
@@ -27,6 +28,8 @@ public class DispatcherServlet extends HttpServlet {
     public void init() throws ServletException {
         mappingName = getMappingMethod();
         controllerAdapter = ControllerAdapterFactory.getControllerAdapter(mappingName);
+
+        DBUtil.getBasicDataSource();
 
         rootPath = getServletContext().getContextPath();
         rootPath = getServletContext().getRealPath(rootPath);
