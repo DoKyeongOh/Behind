@@ -11,11 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class MyPageController {
-
-    private MemberService memberService;
-
     public MyPageController(){
-        this.memberService = new MemberService();
+
     }
 
     @RequestMapping(uri = "/my/page", method = "get")
@@ -27,7 +24,8 @@ public class MyPageController {
         if (profile == null)
             return ViewInfo.getRedirectViewInfo("/");
 
-        ActivityVO activityVO = this.memberService.getActivities(profile);
+        MemberService memberService = new MemberService();
+        ActivityVO activityVO = memberService.getActivities(profile);
 
         return new ViewInfo("myPage");
     }
