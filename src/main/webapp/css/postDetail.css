@@ -59,6 +59,10 @@ body {
     margin-top: 1%;
 }
 
+#form-modify {
+    display :inline-block;
+}
+
 #form-report {
     display :inline-block;
 }

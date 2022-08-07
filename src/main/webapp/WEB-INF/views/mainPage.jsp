@@ -111,15 +111,8 @@
                                 </a>
 
                                 <div class="card-body">
-
                                     <h5 class="title-font">${posts[idx].title}</h5>
-
-                                    <c:if test="${posts[idx].is_use_anonymous_name eq true}">
-                                        <label class="label-poster-name">익명</label><br>
-                                    </c:if>
-                                    <c:if test="${posts[idx].is_use_anonymous_name ne true}">
-                                        <label class="label-poster-name">${posts[idx].nicname}</label><br>
-                                    </c:if>
+                                    <label class="label-poster-name">${posts[idx].nicname}</label><br>
 
                                     <div class="text-right">
                                         <label class="label-poster-name display-inline-block">

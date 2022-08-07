@@ -105,10 +105,7 @@
                 ${comment.content}
             </h1>
             <div id="info-commenter">
-                <span class="badge rounded-pill bg-dark">
-                    <c:if test="${comment.isUseAnonymousName eq true}">익명</c:if>
-                    <c:if test="${comment.isUseAnonymousName ne true}">${comment.nicname}</c:if>
-                </span>
+                <span class="badge rounded-pill bg-dark">${comment.nicname}</span>
                 <span class="badge rounded-pill bg-dark">${comment.commentedDate}</span>
             </div>
         </li>
@@ -121,10 +118,7 @@
     <c:forEach var="reply" items="${replies}">
         <li class="list-group-item display-inline-block">
             <div class="display-inline-block" style="width: 97%">
-                <label class="text-secondary reply-item">
-                    <c:if test="${reply.isUseAnonymousName eq true}">익명</c:if>
-                    <c:if test="${reply.isUseAnonymousName ne true}">${reply.nicname}</c:if>
-                </label><br>
+                <label class="text-secondary reply-item">${reply.nicname}</label><br>
                 <span style="margin-left: 1%;">${reply.content}</span>
             </div>
 
