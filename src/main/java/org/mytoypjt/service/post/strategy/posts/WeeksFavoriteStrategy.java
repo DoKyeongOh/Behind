@@ -1,5 +1,6 @@
 package org.mytoypjt.service.post.strategy.posts;
 
+import org.mytoypjt.dao.PostDao;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.vo.PostsOptionVO;
 
@@ -14,8 +15,9 @@ public class WeeksFavoriteStrategy extends BasePostsStrategy{
     @Override
     public List<Post> getPosts(PostsOptionVO optionVO, Map<String, String[]> paramMap) {
         try {
+            PostDao postDao = new PostDao();
             int pageNo = Integer.parseInt(optionVO.getPageNo());
-            return this.postDao.getWeeksFavoritePosts(pageNo, this.postCountInPage);
+            return postDao.getWeeksFavoritePosts(pageNo, this.postCountInPage);
         } catch(Exception e) {
             return null;
         }
