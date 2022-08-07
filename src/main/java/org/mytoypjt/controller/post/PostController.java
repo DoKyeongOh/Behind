@@ -13,7 +13,9 @@ import org.mytoypjt.utils.ControllerUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class PostController {
 
@@ -60,7 +62,7 @@ public class PostController {
                 req.getParameter("pageNo"),
                 req.getParameter("type")
         );
-
+        
         PostsOptionVO actualOption = postService.createPostsOption(optionInRequest, optionInSession);
         session.setAttribute(this.postsOptionKey, actualOption);
 
@@ -93,6 +95,7 @@ public class PostController {
     @RequestMapping(uri = "/post", method = "get")
     public ViewInfo showPost(HttpServletRequest req, HttpServletResponse resp){
         String no = req.getParameter("no");
+        
         Post post = postService.getPost(no);
 
         if (post == null)
@@ -101,11 +104,7 @@ public class PostController {
         Profile posterProfile = postService.getPosterProfile(post.getAccountNo());
         List<Comment> comments = postService.getComments(post.getPostNo());
 
-        if (post.getIs_use_anonymous_city())
-            req.setAttribute("posterCity", "미등록 지역");
-        else
-            req.setAttribute("posterCity", posterProfile.getCity());
-
+        req.setAttribute("posterCity", post.getCity());
         req.setAttribute("post", post);
         req.setAttribute("comments", comments);
 
@@ -127,16 +126,32 @@ public class PostController {
 
     @RequestMapping(uri = "/post", method = "post")
     public ViewInfo createPost(HttpServletRequest req, HttpServletResponse resp){
-        String img = req.getParameter("imgNo");
-        String isAnonName = req.getParameter("isAnonName");
-        String isAnonCity = req.getParameter("isAnonCity");
-        String title = req.getParameter("title");
-        String content = req.getParameter("content");
-
         HttpSession session = req.getSession();
         Profile profile = (Profile) session.getAttribute("profile");
 
-        postService.createPost(profile, title, content, isAnonName, isAnonName, img);
+        String title = req.getParameter("title");
+        String content = req.getParameter("content");
+        int pictureNo = Integer.parseInt(req.getParameter("imgNo"));
+        boolean isAnonymousName = (Objects.equals(req.getParameter("isAnonName"), "true")) ? true : false;
+        boolean isAnonymousCity = (Objects.equals(req.getParameter("isAnonCity"), "true")) ? true : false;
+        int commentCount = 0;
+        int likeCount = 0;
+
+        Post post = new Post(
+                -1,
+                title,
+                content,
+                new Date(),
+                commentCount,
+                likeCount,
+                profile.getAccountNo(),
+                pictureNo,
+                isAnonymousName,
+                isAnonymousCity,
+                profile.getNicname(),
+                profile.getCity());
+        
+        postService.createPost(profile, post);
 
         return ViewInfo.getRedirectViewInfo("/post/page/2");
     }
@@ -147,11 +162,49 @@ public class PostController {
         return "postCreateComplete";
     }
 
+    @RequestMapping(uri = "/post/page/3", method = "get")
+    public String showPostModifyPage(HttpServletRequest req, HttpServletResponse resp){
+        String no = req.getParameter("postNo");
+        Post post = postService.getPost(no);
+        if (post == null) return "mainPage";
+
+        req.setAttribute("post", post);
+
+        return "postModifyPage";
+    }
+
+    @RequestMapping(uri = "/post", method = "delete")
+    public ViewInfo deletePost(){
+        return null;
+    }
+
+    @RequestMapping(uri = "/post", method = "put")
+    public ViewInfo modifyPost(HttpServletRequest req, HttpServletResponse resp){
+        HttpSession session = req.getSession();
+        Profile profile = (Profile) session.getAttribute("profile");
+
+        int postNo = Integer.parseInt(req.getParameter("postNo"));
+        String title = req.getParameter("title");
+        String content = req.getParameter("content");
+        int pictureNo = Integer.parseInt(req.getParameter("imgNo"));
+        boolean isAnonymousName = (Objects.equals(req.getParameter("isAnonName"), "true")) ? true : false;
+        boolean isAnonymousCity = (Objects.equals(req.getParameter("isAnonCity"), "true")) ? true : false;
+
+        Post post = new Post(
+                postNo, title, content, new Date(), 0, 0, profile.getAccountNo(),
+                pictureNo, isAnonymousName, isAnonymousCity, profile.getNicname(), profile.getCity());
+
+        postService.updatePost(post);
+
+        return ViewInfo.getRedirectViewInfo("/post?no="+post.getPostNo());
+    }
+
     @RequestMapping(uri = "/like", method = "post")
     public ViewInfo togglePostLike(HttpServletRequest req, HttpServletResponse resp){
         String postNo = req.getParameter("postNo");
         String accountNo = req.getParameter("accountNo");
 
+        
         postService.toggleLike(postNo, accountNo);
 
         boolean isLike = postService.isLikePost(postNo, accountNo);

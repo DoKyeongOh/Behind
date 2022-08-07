@@ -59,13 +59,6 @@ class PostDaoTest {
             Profile profile = new Profile(100);
             profile.setNicname("nice name");
             // test content
-            this.postDao.createPost(
-                    profile,
-                    "test title",
-                    "test content",
-                    false,
-                    true,
-                    2);
         }catch (Exception e) {
             e.printStackTrace();
             successed = false;
@@ -81,6 +74,20 @@ class PostDaoTest {
             postDao
                     .getPostsByAccountNo(19)
                     .forEach((post) -> System.out.println(post.getContent()));
+        }catch (Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(true, successed);
+    }
+
+    @Test
+    void updatePost() {
+
+        boolean successed = true;
+        try {
+            // test content
+            this.postDao.updatePost(new Post());
         }catch (Exception e) {
             e.printStackTrace();
             successed = false;

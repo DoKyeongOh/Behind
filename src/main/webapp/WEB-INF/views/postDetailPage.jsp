@@ -12,6 +12,7 @@
 <% request.setAttribute("daysMostPosts", request.getContextPath() + "/posts?type=2"); %>
 <% request.setAttribute("weeksMostPosts", request.getContextPath() + "/posts?type=3"); %>
 <% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page/1"); %>
+<% request.setAttribute("postModifyPage", request.getContextPath() + "/post/page/3"); %>
 
 <% request.setAttribute("myPage", request.getContextPath() + "/my/page"); %>
 
@@ -80,11 +81,7 @@
 <div class="title-and-nicname">
     <h2 id="post-title"> ${post.title} </h2>
     <h6 id="poster-name">
-        <label style="font-size: 130%"> 작성자 :
-            <c:if test="${post.is_use_anonymous_name eq true}">${post.nicname}</c:if>
-            <c:if test="${post.is_use_anonymous_name ne true}">익명</c:if>
-        </label><br>
-
+        <label style="font-size: 130%"> 작성자 : ${post.nicname}</label><br>
         <label class="" style="padding-top: 0.5%;">지역 : ${posterCity} </label><br>
         <label class="" style="padding-top: 0.5%;">작성 일시 : ${post.postedDate}</label>
     </h6>
@@ -113,6 +110,13 @@
 
 <!-- 좋아요, 신고하기 버튼 -->
 <div class="text-right inline-block" style="width: 59%; padding-top: 1%">
+    <c:set var="profile" value="${sessionScope.get('profile')}"/>
+    <form action="${postModifyPage}" method="get" id="form-modify">
+        <input type="hidden" value="${post.postNo}" name="postNo">
+        <c:if test="${post.accountNo eq profile.accountNo}">
+            <button type="submit" class="btn btn-outline-success btn-sm">수정하기</button>
+        </c:if>
+    </form>
     <form action="/report/page" method="get" id="form-report">
         <input type="hidden" name="reportType" value="post">
         <input type="hidden" name="no" value="${post.postNo}">
@@ -148,14 +152,7 @@
     <ul id="ul-comments" class="list-group list-group-flush">
         <c:forEach var="comment" items="${comments}">
             <li class="list-group-item">
-                <span class="commenter-nicname">
-                    <c:if test="${comment.isUseAnonymousName ne true}">
-                        ${comment.nicname}
-                    </c:if>
-                    <c:if test="${comment.isUseAnonymousName eq true}">
-                        익명
-                    </c:if>
-                </span><br>
+                <span class="commenter-nicname">${comment.nicname}</span><br>
                 <span class="comment-content"> ${comment.content} </span>
                 <button id="btn-expand-reply" class="btn btn-sm" onclick="location.href='/comment?no=${comment.commentNo}'">➥</button>
             </li>
@@ -196,7 +193,7 @@
 <!-- footer -->
 
 
-<script src="../../js/mainPage.js"></script>
+<script src="../../js/postDetail.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

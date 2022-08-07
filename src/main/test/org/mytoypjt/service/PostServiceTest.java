@@ -52,4 +52,18 @@ class PostServiceTest {
         }
         assertEquals(true, successed);
     }
+
+    @Test
+    void updatePost(){
+
+        boolean successed = true;
+        try {
+            // test content
+            this.postService.updatePost(new Post());
+        }catch (Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(true, successed);
+    }
 }

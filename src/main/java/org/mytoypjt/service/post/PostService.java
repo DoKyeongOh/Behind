@@ -24,27 +24,11 @@ public class PostService {
     final int POST_COUNT_IN_PAGE = 12;
     final int PAGE_COUNT_IN_PAGE = 5;
 
-    private PostDao postDao;
-    private CommentDao commentDao;
-    private ReplyDao replyDao;
-    private ProfileDao profileDao;
-    private PostLogDao postLogDao;
-
-    private PostsStrategyContext postsStrategyContext;
-    private PageCountStrategyContext pageCountStrategyContext;
-
     public PostService(){
-        postDao = new PostDao();
-        commentDao = new CommentDao();
-        profileDao = new ProfileDao();
-        replyDao = new ReplyDao();
-        postLogDao = new PostLogDao();
-
-        postsStrategyContext = new PostsStrategyContext(POST_COUNT_IN_PAGE);
-        pageCountStrategyContext = new PageCountStrategyContext(POST_COUNT_IN_PAGE);
     }
 
     public Profile getPosterProfile(int accountNo) {
+        ProfileDao profileDao = new ProfileDao();
         Profile profile = profileDao.getProfile(accountNo);
         if (profile == null) {
             profile = new Profile(accountNo);
@@ -60,16 +44,11 @@ public class PostService {
 
         List<String> cities = new ArrayList<String>();
 
+        ProfileDao profileDao = new ProfileDao();
+
         posts.forEach((post) -> {
             int profileNo = post.getAccountNo();
-            Profile profile = profileDao.getProfile(profileNo);
-
-            if (profile == null) profile = new Profile(profileNo);
-
-            if (post.getIs_use_anonymous_city() || profile.getCity().isEmpty())
-                cities.add("미등록 지역");
-            else
-                cities.add(profile.getCity());
+            cities.add(post.getCity());
         });
         return cities;
     }
@@ -96,6 +75,8 @@ public class PostService {
 
         PostSortType type = getPostSortType(sortType);
 
+        PageCountStrategyContext pageCountStrategyContext
+                = new PageCountStrategyContext(POST_COUNT_IN_PAGE);
         pageCountStrategyContext.setPageCountStrategy(type);
         int pageTotalCount = pageCountStrategyContext.getPageCount();
 
@@ -107,6 +88,10 @@ public class PostService {
     }
 
     public PostsOptionVO getDefaultPostsOption() {
+
+        PageCountStrategyContext pageCountStrategyContext
+                = new PageCountStrategyContext(POST_COUNT_IN_PAGE);
+
         pageCountStrategyContext.setPageCountStrategy(PostSortType.REAL_TIME);
         int pageTotalCount = pageCountStrategyContext.getPageCount();
 
@@ -117,6 +102,7 @@ public class PostService {
 
     public List<Post> getPosts(PostsOptionVO options, Map<String, String[]> paramMap){
         PostSortType sortType = getPostSortType(options.getSortType());
+        PostsStrategyContext postsStrategyContext = new PostsStrategyContext(POST_COUNT_IN_PAGE);
         postsStrategyContext.setPostsStrategy(sortType);
         return postsStrategyContext.getPosts(options, paramMap);
     }
@@ -145,33 +131,25 @@ public class PostService {
             return null;
         }
 
+        PostDao postDao = new PostDao();
         Post post = postDao.getPost(postNo);
         return post;
     }
 
-    public void createPost(Profile profile, String title, String content, String isAnonName, String isAnonCity, String img) {
-        if (isNull(title, content, profile)) return;
+    public void createPost(Profile profile, Post post) {
+        PostDao postDao = new PostDao();
+        if (postDao.createPost(profile, post)) {
+            Post lastPost = postDao.getLastPost(profile.getAccountNo());
+            if (!Post.isCorrectPost(post)) return;
 
-        boolean isAnonymousName = false;
-        if (!isNull(isAnonName) && isAnonName.equals("true"))
-            isAnonymousName = true;
+            PostLogDao postLogDao = new PostLogDao();
+            postLogDao.writePostActivityLog(profile.getAccountNo(), post.getPostNo(), "게시");
+        }
+    }
 
-        boolean isAnonymousCity = false;
-        if (!isNull(isAnonCity) && isAnonCity.equals("true"))
-            isAnonymousCity = true;
-
-        int imgNo = 1;
-
-        try {
-            imgNo = Integer.parseInt(img);
-        } catch (Exception e) {}
-
-        postDao.createPost(profile, title, content, isAnonymousName, isAnonymousCity, imgNo);
-
-        Post post = postDao.getLastPost(profile.getAccountNo());
-        if (!Post.isCorrectPost(post)) return;
-        if (!post.getTitle().equals(title)) return;
-        postLogDao.writePostActivityLog(profile.getAccountNo(), post.getPostNo(), "게시");
+    public void updatePost(Post post) {
+        PostDao postDao = new PostDao();
+        postDao.updatePost(post);
     }
 
     public void toggleLike(String post, String account) {
@@ -188,6 +166,7 @@ public class PostService {
             return;
         }
 
+        PostDao postDao = new PostDao();
         if (postDao.isAlreadyLikeThis(postNo, accountNo))
             postDao.delLike(postNo, accountNo);
         else
@@ -204,6 +183,8 @@ public class PostService {
             return false;
 
         try {
+
+            PostDao postDao = new PostDao();
             return postDao.isUserLikePost(
                     Integer.parseInt(postNo),
                     Integer.parseInt(accountNo)
@@ -215,6 +196,7 @@ public class PostService {
     }
 
     public List<Comment> getComments(int postNo) {
+        CommentDao commentDao = new CommentDao();
         return commentDao.getComments(postNo);
     }
 
@@ -230,6 +212,8 @@ public class PostService {
             isAnonymous = true;
 
         try {
+
+            CommentDao commentDao = new CommentDao();
             commentDao.createComment(
                     Integer.parseInt(postNo),
                     profile,
@@ -248,7 +232,9 @@ public class PostService {
     public Comment getComment(String no){
         try {
             int commentNo = Integer.parseInt(no);
-            return commentDao.getComment(commentNo);
+
+            CommentDao commentDao = new CommentDao();
+            return commentDao.getCommentByCommentNo(commentNo);
         } catch (Exception e) {
             return null;
         }
@@ -258,6 +244,7 @@ public class PostService {
         int commentNo = comment.getCommentNo();
         String nicname = comment.getNicname();
 
+        ReplyDao replyDao = new ReplyDao();
         return replyDao.getReplies(commentNo);
     }
 
@@ -276,9 +263,11 @@ public class PostService {
         if (isAnonName == null)
             isAnonymousName = false;
 
+        ProfileDao profileDao = new ProfileDao();
         Profile profile = profileDao.getProfile(accountNo);
         if (profile == null) return;
 
+        ReplyDao replyDao = new ReplyDao();
         replyDao.createReply(content, profile, commentNoInt, isAnonymousName);
     }
 
@@ -289,4 +278,5 @@ public class PostService {
         }
         return false;
     }
+
 }

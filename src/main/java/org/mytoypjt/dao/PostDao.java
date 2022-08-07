@@ -1,10 +1,12 @@
 package org.mytoypjt.dao;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.DBUtil;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +21,8 @@ public class PostDao {
         if (startNo < 0) startNo = 1;
         String sql = "select * from post order by posted_date desc limit ?, ?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, startNo);
@@ -40,7 +43,8 @@ public class PostDao {
                 "where posted_date between date_add(now(), interval -1 day) and now() " +
                 "order by like_count desc limit ?, ?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, startNo);
@@ -61,7 +65,8 @@ public class PostDao {
                 "where posted_date between date_add(now(), interval -1 week) and now() " +
                 "order by like_count desc limit ?, ?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                
+Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, startNo);
@@ -84,13 +89,14 @@ public class PostDao {
                         resultSet.getString("title"),
                         resultSet.getString("content"),
                         resultSet.getTimestamp("posted_date"),
-                        resultSet.getBoolean("is_use_anonymous_city"),
-                        resultSet.getBoolean("is_use_anonymous_name"),
                         resultSet.getInt("comment_count"),
                         resultSet.getInt("like_count"),
                         resultSet.getInt("account_no"),
                         resultSet.getInt("picture_no"),
-                        resultSet.getString("nicname")
+                        resultSet.getBoolean("is_use_anonymous_name"),
+                        resultSet.getBoolean("is_use_anonymous_city"),
+                        resultSet.getString("nicname"),
+                        resultSet.getString("city")
                         )
                 );
             }
@@ -128,7 +134,8 @@ public class PostDao {
         }
 
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                
+Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, startNo);
@@ -145,7 +152,7 @@ public class PostDao {
     public Post getPost(int postNo) {
         String sql = "select * from post where post_no = ?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, postNo);
@@ -158,13 +165,14 @@ public class PostDao {
                         resultSet.getString("title"),
                         resultSet.getString("content"),
                         resultSet.getTimestamp("posted_date"),
-                        resultSet.getBoolean("is_use_anonymous_city"),
-                        resultSet.getBoolean("is_use_anonymous_name"),
                         resultSet.getInt("comment_count"),
                         resultSet.getInt("like_count"),
                         resultSet.getInt("account_no"),
                         resultSet.getInt("picture_no"),
-                        resultSet.getString("nicname")
+                        resultSet.getBoolean("is_use_anonymous_name"),
+                        resultSet.getBoolean("is_use_anonymous_city"),
+                        resultSet.getString("nicname"),
+                        resultSet.getString("city")
                 );
             }
 
@@ -178,7 +186,8 @@ public class PostDao {
     public boolean isAlreadyLikeThis(int postNo, int accountNo) {
         String sql = "select * from likes where post_no = ? and account_no = ?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                
+Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, postNo);
@@ -208,7 +217,8 @@ public class PostDao {
             sql = "insert into likes (like_no, post_no, account_no) values (null, ?, ?)";
 
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                
+Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, postNo);
@@ -222,7 +232,8 @@ public class PostDao {
     public int getLikeCount(int postNo) {
         String sql = "select count(*) from likes where post_no=?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                
+Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, postNo);
@@ -238,7 +249,8 @@ public class PostDao {
     public void updateLikeCount(int postNo, int count){
         String sql = "update post set like_count = ? where post_no = ?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                
+Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, count);
@@ -252,7 +264,8 @@ public class PostDao {
     public boolean isUserLikePost(int postNo, int accountNo){
         String sql = "select * from likes where post_no=? and account_no=?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                
+Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, postNo);
@@ -269,7 +282,7 @@ public class PostDao {
     public int getPostCount() {
         String sql = "select count(*) from post";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -286,7 +299,7 @@ public class PostDao {
                 "where posted_date between date_add(now(), interval -1 day) and now() " +
                 "order by like_count desc limit 0, ?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, postCountInPage);
@@ -304,7 +317,8 @@ public class PostDao {
                 "where posted_date between date_add(now(), interval -1 week) and now() " +
                 "order by like_count desc limit 0, ?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                
+Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, postCountInPage);
@@ -317,24 +331,55 @@ public class PostDao {
         return -1;
     }
 
-    public void createPost(Profile profile, String title, String content, boolean isAnonymousName, boolean isAnonymousCity, int imgNo) {
+    public boolean createPost(Profile profile, Post post) {
         String sql = "insert into post " +
-                "(post_no, title, content, posted_date, is_use_anonymous_city, is_use_anonymous_name, " +
-                "comment_count, like_count, account_no, picture_no, nicname) " +
+                "(post_no, title, content, posted_date, comment_count, like_count, account_no, picture_no, is_use_anonymous_name, is_use_anonymous_city, nicname, city) " +
                 "values " +
-                "(null , ?, ?, now(), ?, ?, 0, 0, ?, ?, ?)";
+                "(null , ?, ?, now(), 0, 0, ?, ?, ?, ?, ?, ?)";
 
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        ) {
-            preparedStatement.setString(1, title);
-            preparedStatement.setString(2, content);
-            preparedStatement.setBoolean(3, isAnonymousName);
-            preparedStatement.setBoolean(4, isAnonymousCity);
-            preparedStatement.setInt(5, profile.getAccountNo());
-            preparedStatement.setInt(6, imgNo);
-            preparedStatement.setString(7, profile.getNicname());
+                ) {
+            String nicname = (post.getIsUseAnonymousName()) ? "누군가" : post.getNicname();
+            String city = (post.getIsUseAnonymousCity()) ? "어딘가" : post.getCity();
+
+            preparedStatement.setString(1, post.getTitle());
+            preparedStatement.setString(2, post.getContent());
+            preparedStatement.setInt(3, profile.getAccountNo());
+            preparedStatement.setInt(4, post.getPictureNo());
+            preparedStatement.setBoolean(5, post.getIsUseAnonymousName());
+            preparedStatement.setBoolean(6, post.getIsUseAnonymousCity());
+            preparedStatement.setString(7, nicname);
+            preparedStatement.setString(8, city);
+            preparedStatement.execute();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void updatePost(Post post) {
+        String sql = "update post set title=?, content=?, picture_no=?, " +
+                "is_use_anonymous_name=?, is_use_anonymous_city=?, nicname=?, city=?" +
+                "where post_no=?";
+        try (
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql);
+                ) {
+
+            String nicname = (post.getIsUseAnonymousName()) ? "누군가" : post.getNicname();
+            String city = (post.getIsUseAnonymousCity()) ? "어딘가" : post.getCity();
+
+            preparedStatement.setString(1, post.getTitle());
+            preparedStatement.setString(2, post.getContent());
+            preparedStatement.setInt(3, post.getPictureNo());
+            preparedStatement.setBoolean(4, post.getIsUseAnonymousName());
+            preparedStatement.setBoolean(5, post.getIsUseAnonymousCity());
+            preparedStatement.setString(6, nicname);
+            preparedStatement.setString(7, city);
+            preparedStatement.setInt(8, post.getPostNo());
             preparedStatement.execute();
         } catch (Exception e) {
             e.printStackTrace();
@@ -344,7 +389,8 @@ public class PostDao {
     public List<Post> getPostsByAccountNo(int accountNo) {
         String sql = "select * from post where account_no = ?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                
+Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, accountNo);
@@ -360,7 +406,7 @@ public class PostDao {
     public Post getLastPost(int accountNo) {
         String sql = "select * from post order by posted_date desc limit 1";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -372,13 +418,14 @@ public class PostDao {
                         resultSet.getString("title"),
                         resultSet.getString("content"),
                         resultSet.getTimestamp("posted_date"),
-                        resultSet.getBoolean("is_use_anonymous_city"),
-                        resultSet.getBoolean("is_use_anonymous_name"),
                         resultSet.getInt("comment_count"),
                         resultSet.getInt("like_count"),
                         resultSet.getInt("account_no"),
                         resultSet.getInt("picture_no"),
-                        resultSet.getString("nicname")
+                        resultSet.getBoolean("is_use_anonymous_name"),
+                        resultSet.getBoolean("is_use_anonymous_city"),
+                        resultSet.getString("nicname"),
+                        resultSet.getString("city")
                 );
             }
         } catch (SQLException e) {
@@ -386,4 +433,5 @@ public class PostDao {
         }
         return null;
     }
+
 }
