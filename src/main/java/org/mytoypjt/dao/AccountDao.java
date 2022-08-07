@@ -1,5 +1,6 @@
 package org.mytoypjt.dao;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.mytoypjt.models.entity.Account;
 import org.mytoypjt.utils.DBUtil;
 
@@ -19,7 +20,7 @@ public class AccountDao {
         String sql = "select account_no from account where id=? and password=?";
         int accountNo = NOT_CORRECTED_ACCOUNT_NO;
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setString(1, id);
@@ -42,7 +43,7 @@ public class AccountDao {
         List<String> idList = new ArrayList<String>();
 
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setString(1, email);
@@ -62,7 +63,7 @@ public class AccountDao {
         String sql = "select account_no from account where id=? and email=?";
         int accountNo = NOT_CORRECTED_ACCOUNT_NO;
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setString(1, id);
@@ -83,7 +84,7 @@ public class AccountDao {
         String sql = "select account_no from account where id=? and password=? and email=?";
         int accountNo = NOT_CORRECTED_ACCOUNT_NO;
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setString(1, id);
@@ -113,7 +114,7 @@ public class AccountDao {
     public boolean setAccountPw(int accountNo, String password){
         String sql = "update account set password = ? where account_no = ?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setString(1, password);
@@ -129,7 +130,7 @@ public class AccountDao {
     public boolean isExistId(String id){
         String sql = "select account_no from account where id=?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setString(1, id);
@@ -155,7 +156,7 @@ public class AccountDao {
                 "values " +
                 "(null, ?, ?, ?)";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setString(1, id);
@@ -173,7 +174,7 @@ public class AccountDao {
     public void deleteAccount(int accountNo){
         String sql = "delete from account where account_no=?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, accountNo);
@@ -187,7 +188,7 @@ public class AccountDao {
     public boolean isRegisteredEmail(String email) {
         String sql = "select id from account where email=?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setString(1, email);

@@ -1,7 +1,6 @@
 package org.mytoypjt.dao;
 
 import org.mytoypjt.models.entity.Comment;
-import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.DBUtil;
 
@@ -13,10 +12,11 @@ public class CommentDao {
 
     public List<Comment> getComments(int postNo) {
         String sql = "select " +
-                "comment_no, content, reply_count, is_use_anonymous_name, account_no, post_no, nicname, commented_date" +
+                "comment_no, content, reply_count, account_no, post_no, is_use_anonymous_name, nicname, commented_date" +
                 " from comment where post_no = ?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, postNo);
@@ -28,9 +28,9 @@ public class CommentDao {
                                 resultSet.getInt("comment_no"),
                                 resultSet.getString("content"),
                                 resultSet.getInt("reply_count"),
-                                resultSet.getBoolean("is_use_anonymous_name"),
                                 resultSet.getInt("account_no"),
                                 resultSet.getInt("post_no"),
+                                resultSet.getBoolean("is_use_anonymous_name"),
                                 resultSet.getString("nicname"),
                                 resultSet.getDate("commented_date")
                         )
@@ -45,18 +45,21 @@ public class CommentDao {
 
     public void createComment(int postNo, Profile profile, boolean isAnonymous, String content) {
         String sql = "insert into comment " +
-                "(comment_no, content, reply_count,is_use_anonymous_name, account_no, post_no, nicname, commented_date) " +
+                "(comment_no, content, reply_count, account_no, post_no, is_use_anonymous_name, nicname, commented_date) " +
                 "values (null , ?, 0, ?, ?, ?, ?, now())";
 
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
+            String nicname = profile.getNicname();
+            if (isAnonymous) nicname = "누군가";
+
             preparedStatement.setString(1, content);
-            preparedStatement.setBoolean(2, isAnonymous);
-            preparedStatement.setInt(3, profile.getAccountNo());
-            preparedStatement.setInt(4, postNo);
-            preparedStatement.setString(5, profile.getNicname());
+            preparedStatement.setInt(2, profile.getAccountNo());
+            preparedStatement.setInt(3, postNo);
+            preparedStatement.setBoolean(4, isAnonymous);
+            preparedStatement.setString(5, nicname);
             preparedStatement.execute();
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,7 +69,8 @@ public class CommentDao {
     public int getCommentCount(int postNo) {
         String sql = "select count(*) from comment where post_no=?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                
+Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, postNo);
@@ -82,7 +86,8 @@ public class CommentDao {
     public void updateCommentCount(int postNo, int count){
         String sql = "update post set comment_count = ? where post_no = ?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                
+Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, count);
@@ -93,10 +98,10 @@ public class CommentDao {
         }
     }
 
-    public Comment getComment(int commentNo) {
+    public Comment getCommentByCommentNo(int commentNo) {
         String sql = "select * from comment where comment_no = ?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, commentNo);
@@ -107,9 +112,9 @@ public class CommentDao {
                         resultSet.getInt("comment_no"),
                         resultSet.getString("content"),
                         resultSet.getInt("reply_count"),
-                        resultSet.getBoolean("is_use_anonymous_name"),
                         resultSet.getInt("account_no"),
                         resultSet.getInt("post_no"),
+                        resultSet.getBoolean("is_use_anonymous_name"),
                         resultSet.getString("nicname"),
                         resultSet.getDate("commented_date")
                 );
@@ -123,7 +128,8 @@ public class CommentDao {
     public List<Comment> getCommentsByAccountNo(int accountNo) {
         String sql = "select * from comment where account_no = ?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                
+Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, accountNo);
@@ -145,9 +151,9 @@ public class CommentDao {
                                 resultSet.getInt("comment_no"),
                                 resultSet.getString("content"),
                                 resultSet.getInt("reply_count"),
-                                resultSet.getBoolean("is_use_anonymous_name"),
                                 resultSet.getInt("account_no"),
                                 resultSet.getInt("post_no"),
+                                resultSet.getBoolean("is_use_anonymous_name"),
                                 resultSet.getString("nicname"),
                                 resultSet.getDate("commented_date")
                         )

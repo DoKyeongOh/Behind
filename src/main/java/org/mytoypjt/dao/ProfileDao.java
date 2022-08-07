@@ -1,5 +1,7 @@
 package org.mytoypjt.dao;
 
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.mytoypjt.dao.structure.BaseDao;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.DBUtil;
 
@@ -10,7 +12,7 @@ public class ProfileDao {
         String sql = "select * from profile where account_no=?";
         Profile profile = null;
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, accountNo);
@@ -38,7 +40,8 @@ public class ProfileDao {
                 "account_no, register_date, nicname, city, age, gender, user_level) " +
                 "values (?, ?, ?, ?, ?, ?, ?)";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             long timeInMilliSeconds = profile.getJoinDate().getTime();
@@ -64,7 +67,8 @@ public class ProfileDao {
         String sql = "update profile set nicname=?, city=?, age=?, gender=?, user_level=? " +
                 "where account_no=?";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                
+Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ) {
             preparedStatement.setString(1, profile.getNicname());

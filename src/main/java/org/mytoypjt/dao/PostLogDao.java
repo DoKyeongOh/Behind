@@ -1,5 +1,6 @@
 package org.mytoypjt.dao;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.mytoypjt.utils.DBUtil;
 
 import java.sql.Connection;
@@ -10,7 +11,8 @@ public class PostLogDao {
         String sql = "insert into post_log (post_log_no, logging_date, action_type, account_no, post_no) " +
                 "values (null, now(), ?, ?, ?)";
         try (
-                Connection conn = DBUtil.getInstance().getConnection();
+                
+                Connection conn = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);
                 ) {
             preparedStatement.setString(1, action);
