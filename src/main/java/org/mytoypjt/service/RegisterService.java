@@ -9,19 +9,15 @@ import org.mytoypjt.utils.MailUtil;
 
 public class RegisterService {
 
-    AccountDao accountDao;
-    ProfileDao profileDao;
-
     public enum CertErrorType {
         isNull, notInput, notSame, good
     }
 
     public RegisterService() {
-        accountDao = new AccountDao();
-        profileDao = new ProfileDao();
     }
 
     public boolean isUsableAccountNo(String no){
+        AccountDao accountDao = new AccountDao();
         boolean isExistId = accountDao.isExistId(no);
         return !isExistId;
     }
@@ -41,6 +37,7 @@ public class RegisterService {
 
     public boolean createAccount(AccountCertDTO certDTO){
         Account account = certDTO.getAccount();
+        AccountDao accountDao = new AccountDao();
         boolean accountOk = accountDao.createAccount(account);
         boolean profileOk = true;
         if (accountOk)
@@ -55,17 +52,22 @@ public class RegisterService {
     }
 
     public boolean createDefaultProfile(Account account){
+        AccountDao accountDao = new AccountDao();
         int accountNo = accountDao.findAccountNo(account);
+
         Profile profile = new Profile(accountNo);
+        ProfileDao profileDao = new ProfileDao();
         boolean successed = profileDao.createProfile(profile);
         return successed;
     }
 
     public int getCreatedAccountNo(AccountCertDTO certDTO){
+        AccountDao accountDao = new AccountDao();
         return accountDao.findAccountNo(certDTO.getAccount());
     }
 
     public boolean updateProfile(Profile profile) {
+        ProfileDao profileDao = new ProfileDao();
         return profileDao.updateProfile(profile);
     }
 

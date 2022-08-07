@@ -12,10 +12,7 @@ import javax.servlet.http.HttpSession;
 
 public class PwResolveController {
 
-    FindAccountService findAccountService;
-
     public PwResolveController(){
-        findAccountService = new FindAccountService();
     }
 
     @RequestMapping(uri = "/pw/page/1", method = "get")
@@ -55,6 +52,7 @@ public class PwResolveController {
         String domain = (String) req.getParameter("domain");
         String emailAddress = email + "@" + domain;
 
+        FindAccountService findAccountService = new FindAccountService();
         PwCertificationInfo certificationInfo = findAccountService.getPwCertification(id, emailAddress);
         if (certificationInfo == null) {
             req.setAttribute("noticeMessage", "입력 정보가 잘못되었습니다 !!");
@@ -113,8 +111,9 @@ public class PwResolveController {
         PwCertificationInfo certificationInfo =
                 (PwCertificationInfo) session.getAttribute("pwCertificationInfo");
 
+        FindAccountService findAccountService = new FindAccountService();
         int accountNo = certificationInfo.getAccountNo();
-        boolean success = this.findAccountService.resetPassword(accountNo, pwInput);
+        boolean success = findAccountService.resetPassword(accountNo, pwInput);
 
         if (!success) {
             req.setAttribute("noticeMessage", "오류입니다. 관리자에게 문의하세요..");

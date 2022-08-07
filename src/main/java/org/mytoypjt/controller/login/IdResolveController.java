@@ -14,10 +14,7 @@ import java.util.List;
 
 public class IdResolveController {
 
-    FindAccountService findAccountService;
-
     public IdResolveController(){
-        findAccountService = new FindAccountService();
     }
 
     @RequestMapping(uri = "/id/page", method = "get")
@@ -38,6 +35,7 @@ public class IdResolveController {
         String domain = (String) req.getParameter("domain");
         String mailAddress = email + "@" + domain;
 
+        FindAccountService findAccountService = new FindAccountService();
         IdCertificationInfo certificationInfo = findAccountService.getIdCertification(mailAddress);
 
         if (certificationInfo == null) {
@@ -75,6 +73,7 @@ public class IdResolveController {
             return "findIdPage";
         }
 
+        FindAccountService findAccountService = new FindAccountService();
         List<String> idList = findAccountService.getAccountListByEmail(certificationInfo.getEmailAddress());
         if (idList == null){
             req.setAttribute("noticeMessage", "오류가 발생했습니다 관리자에게 문의해주세요 !!");

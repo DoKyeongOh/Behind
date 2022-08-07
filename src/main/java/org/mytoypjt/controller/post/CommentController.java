@@ -19,10 +19,7 @@ public class CommentController {
     final String COMMENT = "comment";
     final String PARENT_TITLE = "parentPost";
 
-    PostService postService;
-
     public CommentController() {
-        postService = new PostService();
     }
 
     @RequestMapping(uri = "/comment", method = "post")
@@ -36,6 +33,7 @@ public class CommentController {
         HttpSession session = req.getSession();
         Profile profile = (Profile) session.getAttribute("profile");
 
+        PostService postService = new PostService();
         postService.createComment(postNo, profile, isUseAnonymousName, content);
         Post post = postService.getPost(postNo);
 
@@ -46,6 +44,7 @@ public class CommentController {
     public ViewInfo showCommentPage(HttpServletRequest req, HttpServletResponse resp){
         String no = req.getParameter("no");
 
+        PostService postService = new PostService();
         Comment comment = postService.getComment(no);
         if (Comment.isCorrectComment(comment))
             return ViewInfo.getRedirectViewInfo("/post?no="+no);
@@ -69,6 +68,8 @@ public class CommentController {
         String replierNo = req.getParameter("accountNo");
         String commentNo = req.getParameter("commentNo");
         String isAnonName = req.getParameter("isUseAnonymousName");
+
+        PostService postService = new PostService();
         postService.createReply(content, replierNo, commentNo, isAnonName);
         return ViewInfo.getRedirectViewInfo("/comment?no="+commentNo);
     }

@@ -9,9 +9,8 @@ import java.util.List;
 
 public class FindAccountService {
 
-    AccountDao accountDao;
     public FindAccountService(){
-        accountDao = new AccountDao();
+
     }
 
     public IdCertificationInfo getIdCertification(String email){
@@ -41,14 +40,17 @@ public class FindAccountService {
     }
 
     public boolean isRegisteredEmail(String email){
+        AccountDao accountDao = new AccountDao();
         return accountDao.isRegisteredEmail(email);
     }
 
     public List<String> getAccountListByEmail(String email){
+        AccountDao accountDao = new AccountDao();
         return accountDao.getAccountListByEmail(email);
     }
 
     public int getAccountNo(String id, String email){
+        AccountDao accountDao = new AccountDao();
         int accountNo = accountDao.findAccountNo(id, email);
         return accountNo;
     }
@@ -59,6 +61,7 @@ public class FindAccountService {
     }
 
     public boolean resetPassword(int accountNo, String password){
+        AccountDao accountDao = new AccountDao();
         return accountDao.setAccountPw(accountNo, password);
     }
 }

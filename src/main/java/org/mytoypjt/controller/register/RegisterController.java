@@ -20,11 +20,8 @@ public class RegisterController {
     final String ACCOUNT_CERT_KEY = "accountCert";
     final String ACCOUNT_NO = "accountNo";
 
-
-    RegisterService registerService;
-
     public RegisterController(){
-        registerService = new RegisterService();
+
     }
 
     @RequestMapping(uri = "/register/page/1", method = "get")
@@ -68,6 +65,7 @@ public class RegisterController {
         String email = (String) req.getParameter("email");
         String domain = (String) req.getParameter("domain");
 
+        RegisterService registerService = new RegisterService();
         boolean isUsableId = registerService.isUsableAccountNo(id);
         if (!isUsableId) {
             req.setAttribute("noticeMessage", "아이디를 이미 사용중입니다 !!");
@@ -102,6 +100,7 @@ public class RegisterController {
         }
 
         JSONObject respJsonObject = new JSONObject();
+        RegisterService registerService = new RegisterService();
 
         boolean isUsable = registerService.isUsableAccountNo(newId);
         respJsonObject.put("isUsable", isUsable);
@@ -124,6 +123,7 @@ public class RegisterController {
         AccountCertDTO dto = (AccountCertDTO) session.getAttribute(ACCOUNT_CERT_KEY);
         String inputValue = req.getParameter("accountCertInput");
 
+        RegisterService registerService = new RegisterService();
         RegisterService.CertErrorType type = registerService.getCertErrorType(dto, inputValue);
         String errorMessage = registerService.getCertErrorMessage(type);
 
@@ -168,6 +168,7 @@ public class RegisterController {
             return ViewInfo.getRedirectViewInfo("index");
         }
 
+        RegisterService registerService = new RegisterService();
         Profile profile = new Profile(accountNo, nicname, new Date(), city, Integer.parseInt(age), gender, 1);
         boolean successed = registerService.updateProfile(profile);
 

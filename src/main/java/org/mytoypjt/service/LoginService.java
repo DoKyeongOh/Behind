@@ -5,7 +5,6 @@ import org.mytoypjt.dao.ProfileDao;
 import org.mytoypjt.models.entity.Profile;
 
 public class LoginService {
-    private AccountDao loginDao;
 
     public LoginService() {
 
