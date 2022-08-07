@@ -1,4 +1,3 @@
-
 const previousImage = document.querySelector("#before-picture img");
 const nowImage = document.querySelector("#now-picture img");
 const nextImage = document.querySelector("#after-picture img");
@@ -10,7 +9,7 @@ const imgCount = 10;
 const imgIndexKey = "imgIndexArr";
 
 window.onload = new function(){
-    const arr = [1,2,3];
+    const arr = [0,1,2];
     localStorage.setItem(imgIndexKey, arr.toString());
 }
 
@@ -20,10 +19,10 @@ function modifyImgIndex(isAdd){
     for (let i=0 ; i<3 ; i++) {
         if (isAdd) {
             arr[i]++;
-            if (arr[i] >= imgCount) arr[i] = 0;
+            if (arr[i] == imgCount) arr[i] = 0;
         } else {
             arr[i]--;
-            if (arr[i] <= 1) arr[i] = imgCount;
+            if (arr[i] < 0) arr[i] = imgCount-1;
         }
     }
 

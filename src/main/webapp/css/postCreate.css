@@ -1,11 +1,14 @@
 #before-picture {
     margin-left: 5%;
+    height: 30%;
 }
 
 #now-picture {
+    height: 30%;
 }
 
 #after-picture {
+    height: 30%;
 }
 
 #center-text {
