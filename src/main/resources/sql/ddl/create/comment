@@ -1,9 +1,10 @@
 CREATE TABLE `COMMENT` (
-	`comment_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`comment_no` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	`content` TEXT NULL,
+	`commented_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	`reply_count` INT UNSIGNED NULL,
 	`is_use_anonymous_name`	BOOL NULL,
 	`account_no` INT NULL REFERENCES PROFILE(account_no),
-	`post_id` BIGINT NULL REFERENCES POST(post_id),
+	`post_no` BIGINT NULL REFERENCES POST(post_no),
     `nicname` VARCHAR(15)
 );
