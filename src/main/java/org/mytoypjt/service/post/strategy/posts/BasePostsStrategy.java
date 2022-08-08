@@ -10,7 +10,7 @@ import java.util.Map;
 public abstract class BasePostsStrategy {
 
     int postCountInPage = 12;
-    
+
     public BasePostsStrategy(int postCountInPage) {
         this.postCountInPage = postCountInPage;
     }

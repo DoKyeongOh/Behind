@@ -23,34 +23,6 @@ class DBUtilTest {
                 BasicDataSource basicDataSource = (BasicDataSource) DBUtil.getBasicDataSource();
                 ){
 
-            long start;
-            long end;
-            int loofCount = 40;
-
-            List<Integer> dsList = new ArrayList<>();
-            for (int i=0 ; i<loofCount ; i++) {
-                start = System.currentTimeMillis();
-                Connection conn1 = basicDataSource.getConnection();
-                end = System.currentTimeMillis() - start;
-                dsList.add((int)end);
-            }
-            int sum = dsList.stream().mapToInt(i -> i).sum();
-            System.out.println((float) sum/dsList.size());
-
-            System.out.println();
-            System.out.println("========================================");
-            System.out.println();
-
-            List<Integer> ncList = new ArrayList<>();
-            DBUtil dbUtil = new DBUtil();
-            for (int i=0 ; i<loofCount ; i++) {
-                start = System.currentTimeMillis();
-                Connection conn4 = dbUtil.getConnection();
-                end = System.currentTimeMillis() - start;
-                ncList.add((int)end);
-            }
-            sum = ncList.stream().mapToInt(i -> i).sum();
-            System.out.println((float) sum/ncList.size());
 
         }catch (Exception e) {
             e.printStackTrace();

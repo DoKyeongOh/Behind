@@ -9,7 +9,9 @@ import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.service.post.strategy.pagecount.PageCountStrategyContext;
 import org.mytoypjt.service.post.strategy.posts.PostsStrategyContext;
+import org.mytoypjt.utils.DBUtil;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -137,13 +139,25 @@ public class PostService {
     }
 
     public void createPost(Profile profile, Post post) {
-        PostDao postDao = new PostDao();
-        if (postDao.createPost(profile, post)) {
-            Post lastPost = postDao.getLastPost(profile.getAccountNo());
-            if (!Post.isCorrectPost(post)) return;
+        Connection connection = DBUtil.getInstance().getConnection();
+        try (connection) {
+            connection.setAutoCommit(false);
 
-            PostLogDao postLogDao = new PostLogDao();
-            postLogDao.writePostActivityLog(profile.getAccountNo(), post.getPostNo(), "게시");
+            PostDao.setConnection(connection);
+            PostDao.getInstance().createPost(profile, post);
+
+            PostLogDao.setConnection(connection);
+            PostLogDao.getInstance().writePostActivityLog(profile.getAccountNo(), post.getPostNo(), "게시");
+
+            connection.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+                return;
+            }
         }
     }
 

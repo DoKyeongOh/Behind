@@ -16,6 +16,22 @@ import java.util.List;
 
 public class PostDao {
 
+    private static PostDao postDao;
+    private static Connection connection;
+
+    public static synchronized PostDao getInstance() {
+        if (postDao == null)
+            postDao = new PostDao();
+
+        return postDao;
+    }
+
+    public static synchronized void setConnection(Connection conn){
+        connection = conn;
+    }
+
+
+
     public List<Post> getRealTimePosts(int pageNo, int postCountInPage){
         int startNo = (pageNo - 1) * postCountInPage;
         if (startNo < 0) startNo = 1;
@@ -337,10 +353,9 @@ Connection conn = DBUtil.getBasicDataSource().getConnection();
                 "values " +
                 "(null , ?, ?, now(), 0, 0, ?, ?, ?, ?, ?, ?)";
 
-        try (
-                Connection conn = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = conn.prepareStatement(sql);
-                ) {
+        Connection conn = connection;
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+
             String nicname = (post.getIsUseAnonymousName()) ? "누군가" : post.getNicname();
             String city = (post.getIsUseAnonymousCity()) ? "어딘가" : post.getCity();
 

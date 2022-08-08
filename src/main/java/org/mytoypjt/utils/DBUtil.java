@@ -13,9 +13,16 @@ public class DBUtil {
     private static String id="behind_admin";
     private static String pw="1234";
     private static BasicDataSource dataSource = null;
+    private static DBUtil dbUtil = null;
 
-    public DBUtil(){
+    private DBUtil(){
         createConnectionPool();
+    }
+
+    public static DBUtil getInstance(){
+        if (dbUtil == null)
+            dbUtil = new DBUtil();
+        return dbUtil;
     }
 
     public Connection getConnection() {
@@ -71,7 +78,7 @@ public class DBUtil {
         return null;
     }
 
-    public static DataSource getBasicDataSource(){
+    public static synchronized DataSource getBasicDataSource(){
         if (dataSource != null) {
             return dataSource;
         }
