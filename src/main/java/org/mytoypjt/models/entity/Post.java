@@ -2,11 +2,11 @@ package org.mytoypjt.models.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mytoypjt.service.annotation.Transaction;
 
+import java.sql.Connection;
 import java.util.Date;
 
-@Getter
-@Setter
 public class Post {
 
     int postNo;
@@ -50,6 +50,102 @@ public class Post {
         this.isUseAnonymousName = isUseAnonymousName;
         this.isUseAnonymousCity = isUseAnonymousCity;
         this.nicname = nicname;
+        this.city = city;
+    }
+
+    public int getPostNo() {
+        return postNo;
+    }
+
+    public void setPostNo(int postNo) {
+        this.postNo = postNo;
+    }
+
+    Connection testConn = null;
+
+    @Transaction
+    public String getTitle() {
+        System.out.println(this.testConn);
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setPostedDate(Date postedDate) {
+        this.postedDate = postedDate;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public int getAccountNo() {
+        return accountNo;
+    }
+
+    public void setAccountNo(int accountNo) {
+        this.accountNo = accountNo;
+    }
+
+    public int getPictureNo() {
+        return pictureNo;
+    }
+
+    public void setPictureNo(int pictureNo) {
+        this.pictureNo = pictureNo;
+    }
+
+    public boolean isUseAnonymousName() {
+        return isUseAnonymousName;
+    }
+
+    public void setUseAnonymousName(boolean useAnonymousName) {
+        isUseAnonymousName = useAnonymousName;
+    }
+
+    public boolean isUseAnonymousCity() {
+        return isUseAnonymousCity;
+    }
+
+    public void setUseAnonymousCity(boolean useAnonymousCity) {
+        isUseAnonymousCity = useAnonymousCity;
+    }
+
+    public String getNicname() {
+        return nicname;
+    }
+
+    public void setNicname(String nicname) {
+        this.nicname = nicname;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
         this.city = city;
     }
 
