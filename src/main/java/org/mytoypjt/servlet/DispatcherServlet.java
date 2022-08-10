@@ -7,6 +7,7 @@ import org.mytoypjt.controller.structure.enums.MappingName;
 import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.utils.DBUtil;
 import org.mytoypjt.utils.PropertiesUtil;
+import org.mytoypjt.utils.TransactionManager;
 import org.mytoypjt.utils.ViewResolver;
 
 import javax.servlet.RequestDispatcher;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 
 public class DispatcherServlet extends HttpServlet {
     private BaseControllerAdapter controllerAdapter;
+    private TransactionManager transactionManager;
     String rootPath = "";
     ViewResolver viewResolver;
     MappingName mappingName;
