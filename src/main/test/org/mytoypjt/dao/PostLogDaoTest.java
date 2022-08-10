@@ -12,7 +12,7 @@ class PostLogDaoTest {
     @BeforeEach
     public void init(){
         // init param
-        postLogDao = new PostLogDao();
+//        postLogDao = new PostLogDao();
     }
 
     @Test

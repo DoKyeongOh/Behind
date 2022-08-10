@@ -20,25 +20,6 @@ class PostDaoTest {
     }
 
     @Test
-    void getPosts() {
-        boolean successed = true;
-
-        try {
-            List<Post> postList = postDao.getPosts(PostSortType.WEEKS_FAVORITE,1, 12);
-            for (Post p : postList) {
-                System.out.println(p.getPostNo() + ") : " + p.getPictureNo());
-            }
-        }catch (Exception e) {
-            e.printStackTrace();
-            successed = false;
-        }
-
-
-
-        assertEquals(true, successed);
-    }
-
-    @Test
     void modifyLike() {
         boolean successed = true;
         try {

@@ -18,6 +18,8 @@ import java.util.Map;
 
 public class PostService {
 
+    private Connection connection;
+
     final int PICTURE_COUNT = 10;
     final int SORT_REALTIME = 1;
     final int SORT_DAYS_LIKE = 2;
@@ -139,15 +141,13 @@ public class PostService {
     }
 
     public void createPost(Profile profile, Post post) {
-        Connection connection = DBUtil.getInstance().getConnection();
+        Connection connection = DBUtil.getConnection();
         try (connection) {
             connection.setAutoCommit(false);
+            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
-            PostDao.setConnection(connection);
-            PostDao.getInstance().createPost(profile, post);
-
-            PostLogDao.setConnection(connection);
-            PostLogDao.getInstance().writePostActivityLog(profile.getAccountNo(), post.getPostNo(), "게시");
+            new PostDao(connection).createPost(profile, post);
+            new PostLogDao(connection).writePostActivityLog(profile.getAccountNo(), post.getPostNo(), "게시");
 
             connection.commit();
         } catch (Exception e) {
