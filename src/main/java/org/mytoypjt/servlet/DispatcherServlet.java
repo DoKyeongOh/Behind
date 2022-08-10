@@ -21,7 +21,6 @@ import java.util.HashMap;
 
 public class DispatcherServlet extends HttpServlet {
     private BaseControllerAdapter controllerAdapter;
-    private TransactionManager transactionManager;
     String rootPath = "";
     ViewResolver viewResolver;
     MappingName mappingName;

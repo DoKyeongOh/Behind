@@ -6,11 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,10 +17,9 @@ class DBUtilTest {
     @Test
     void getConnection(){
         boolean successed = true;
-        try (
-                BasicDataSource basicDataSource = (BasicDataSource) DBUtil.getBasicDataSource();
-                ){
-
+        try {
+            DBUtil dbUtil = DBUtil.getInstance();
+            Connection connection = dbUtil.getConnection();
 
         }catch (Exception e) {
             e.printStackTrace();

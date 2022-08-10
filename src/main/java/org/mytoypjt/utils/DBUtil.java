@@ -25,12 +25,9 @@ public class DBUtil {
         return dbUtil;
     }
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
         try {
-//            return this.dbUtil.getConnectionByDataSource();
-            return DriverManager.getConnection("jdbc:apache:commons:dbcp:cp");
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//            return DriverManager.getConnection(url, id, pw);
+            return getBasicDataSource().getConnection();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -66,18 +63,6 @@ public class DBUtil {
         }
     }
 
-    public Connection getConnectionByDataSource(){
-        DataSource ds = getBasicDataSource();
-
-        try {
-            return ds.getConnection();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
     public static synchronized DataSource getBasicDataSource(){
         if (dataSource != null) {
             return dataSource;
@@ -101,4 +86,5 @@ public class DBUtil {
         dataSource.setTimeBetweenEvictionRunsMillis(1000L * 60L * 1L);
         return dataSource;
     }
+
 }
