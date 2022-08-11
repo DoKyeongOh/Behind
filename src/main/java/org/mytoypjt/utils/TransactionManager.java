@@ -28,8 +28,9 @@ public class TransactionManager {
                     return methodProxy.invokeSuper(object, args);
 
 
+
+                Connection connection = null;
                 try {
-                    // 커넥션 풀에서 커넥션 받아오기
                     Field[] fields = method.getDeclaringClass().getDeclaredFields();
                     Field connectionField = Arrays.stream(fields)
                             .filter(field -> field.getType() == Connection.class)
@@ -38,18 +39,27 @@ public class TransactionManager {
                     connectionField.setAccessible(true);
                     connectionField.set(object, DBUtil.getConnection());
 
-                    Connection connection = (Connection) connectionField.get(object);
+                    connection = (Connection) connectionField.get(object);
+                    connection.setAutoCommit(false);
 
                     Object returnValue = methodProxy.invokeSuper(object, args);
 
-                    // 커밋하기
+                    connection.commit();
+                    connection.close();
 
                     return returnValue;
                 } catch (Exception e) {
-                    // 롤백하기
                     e.printStackTrace();
+
+                    connection.rollback();
+
+                    if (connection != null)
+                        connection.close();
+
                     return methodProxy.invokeSuper(object, args);
                 }
+
+
             }
         };
 
