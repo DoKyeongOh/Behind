@@ -9,6 +9,7 @@ import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.service.post.PostService;
 import org.mytoypjt.utils.ControllerUtils;
+import org.mytoypjt.utils.TransactionManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +24,8 @@ public class PostController {
     String postsOptionKey = "PostsOption";
 
     public PostController (){
-        postService = new PostService();
+//        postService = new PostService();
+        postService = (PostService) TransactionManager.getInstance(PostService.class);
     }
 
     @RequestMapping(uri = "/main/page", method = "get")

@@ -7,6 +7,7 @@ import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.dto.PostSortType;
+import org.mytoypjt.service.annotation.Transaction;
 import org.mytoypjt.service.post.strategy.pagecount.PageCountStrategyContext;
 import org.mytoypjt.service.post.strategy.posts.PostsStrategyContext;
 import org.mytoypjt.utils.DBUtil;
@@ -91,8 +92,8 @@ public class PostService {
         return options;
     }
 
+    @Transaction
     public PostsOptionVO getDefaultPostsOption() {
-
         PageCountStrategyContext pageCountStrategyContext
                 = new PageCountStrategyContext(POST_COUNT_IN_PAGE);
 
