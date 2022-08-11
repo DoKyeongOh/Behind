@@ -61,11 +61,7 @@ public class Post {
         this.postNo = postNo;
     }
 
-    Connection testConn = null;
-
-    @Transaction
     public String getTitle() {
-        System.out.println(this.testConn);
         return title;
     }
 
