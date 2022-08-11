@@ -11,18 +11,30 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountDao {
+public class AccountDao extends BaseTransactionDao {
     final int NOT_CORRECTED_ACCOUNT_NO = -1;
     final int DUPLICATION_ACCOUNT = -2;
     final String NOT_FOUND_ACCOUNT_ID = "";
 
+    public AccountDao() {
+        super();
+    }
+
+    public AccountDao(Connection connection) {
+        super(connection);
+    }
+
+    @Override
+    public void setConnection(Connection connection) {
+        super.setConnection(connection);
+    }
+
     public int getAccountNo(String id, String pw) {
         String sql = "select account_no from account where id=? and password=?";
         int accountNo = NOT_CORRECTED_ACCOUNT_NO;
-        try (
-                Connection conn = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        ) {
+
+        Connection conn = this.connection;
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, id);
             preparedStatement.setString(2, pw);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -42,10 +54,8 @@ public class AccountDao {
         String sql = "select id from account where email=?";
         List<String> idList = new ArrayList<String>();
 
-        try (
-                Connection conn = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        ) {
+        Connection conn = this.connection;
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -62,10 +72,9 @@ public class AccountDao {
     public int findAccountNo(String id, String email){
         String sql = "select account_no from account where id=? and email=?";
         int accountNo = NOT_CORRECTED_ACCOUNT_NO;
-        try (
-                Connection conn = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        ) {
+
+        Connection conn = this.connection;
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, id);
             preparedStatement.setString(2, email);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -83,10 +92,9 @@ public class AccountDao {
     public int findAccountNo(String id, String password, String email){
         String sql = "select account_no from account where id=? and password=? and email=?";
         int accountNo = NOT_CORRECTED_ACCOUNT_NO;
-        try (
-                Connection conn = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        ) {
+
+        Connection conn = this.connection;
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, id);
             preparedStatement.setString(2, password);
             preparedStatement.setString(3, email);
@@ -113,10 +121,8 @@ public class AccountDao {
 
     public boolean setAccountPw(int accountNo, String password){
         String sql = "update account set password = ? where account_no = ?";
-        try (
-                Connection conn = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        ) {
+        Connection conn = this.connection;
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, password);
             preparedStatement.setInt(2, accountNo);
             preparedStatement.execute();
@@ -129,10 +135,9 @@ public class AccountDao {
 
     public boolean isExistId(String id){
         String sql = "select account_no from account where id=?";
-        try (
-                Connection conn = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        ) {
+        Connection conn = this.connection;
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+
             preparedStatement.setString(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -155,10 +160,8 @@ public class AccountDao {
         String sql = "insert into account(account_no, id, password, email) " +
                 "values " +
                 "(null, ?, ?, ?)";
-        try (
-                Connection conn = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        ) {
+        Connection conn = this.connection;
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, id);
             preparedStatement.setString(2, password);
             preparedStatement.setString(3, email);
@@ -173,10 +176,10 @@ public class AccountDao {
 
     public void deleteAccount(int accountNo){
         String sql = "delete from account where account_no=?";
-        try (
-                Connection conn = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        ) {
+
+        Connection conn = this.connection;
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+
             preparedStatement.setInt(1, accountNo);
             preparedStatement.execute();
 
@@ -187,10 +190,9 @@ public class AccountDao {
 
     public boolean isRegisteredEmail(String email) {
         String sql = "select id from account where email=?";
-        try (
-                Connection conn = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        ) {
+
+        Connection conn = this.connection;
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) return true;

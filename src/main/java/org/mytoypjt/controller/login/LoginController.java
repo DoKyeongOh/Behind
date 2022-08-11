@@ -5,7 +5,9 @@ import org.mytoypjt.controller.structure.properties.PropertiesControllerTemplete
 import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.service.LoginService;
+import org.mytoypjt.service.annotation.Transaction;
 import org.mytoypjt.utils.ControllerUtils;
+import org.mytoypjt.utils.TransactionManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +29,8 @@ public class LoginController extends PropertiesControllerTemplete {
         String id = req.getParameter("accountId");
         String pw = req.getParameter("accountPw");
 
-        LoginService loginService = new LoginService();
+//        LoginService loginService = new LoginService();
+        LoginService loginService = (LoginService) TransactionManager.getInstance(LoginService.class);
         Profile profile = loginService.getProfile(id, pw);
 
         if (profile == null) {
