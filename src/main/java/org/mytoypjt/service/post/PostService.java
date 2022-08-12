@@ -11,6 +11,7 @@ import org.mytoypjt.service.annotation.Transaction;
 import org.mytoypjt.service.post.strategy.pagecount.PageCountStrategyContext;
 import org.mytoypjt.service.post.strategy.posts.PostsStrategyContext;
 import org.mytoypjt.utils.DBUtil;
+import org.mytoypjt.utils.TransactionManager;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -21,6 +22,9 @@ public class PostService {
 
     private Connection connection;
 
+    private PageCountStrategyContext pageCountStrategyContext;
+    private PostsStrategyContext postsStrategyContext;
+
     final int PICTURE_COUNT = 10;
     final int SORT_REALTIME = 1;
     final int SORT_DAYS_LIKE = 2;
@@ -30,26 +34,30 @@ public class PostService {
     final int PAGE_COUNT_IN_PAGE = 5;
 
     public PostService(){
+        this.pageCountStrategyContext = (PageCountStrategyContext)
+                TransactionManager.getInstance(PageCountStrategyContext.class);
+        pageCountStrategyContext.setPostCountInPage(POST_COUNT_IN_PAGE);
+
+        this.postsStrategyContext = (PostsStrategyContext)
+                TransactionManager.getInstance(PostsStrategyContext.class);
+        postsStrategyContext.setPostCountInPage(POST_COUNT_IN_PAGE);
     }
 
+    @Transaction
     public Profile getPosterProfile(int accountNo) {
-        ProfileDao profileDao = new ProfileDao();
-        Profile profile = profileDao.getProfile(accountNo);
+        Profile profile = new ProfileDao(this.connection).getProfile(accountNo);
         if (profile == null) {
             profile = new Profile(accountNo);
             profile.setNicname("익명");
             profile.setCity("미등록 지역");
         }
         return profile;
-
     }
 
     public List<String> getPostersCity(List<Post> posts) {
         if (posts == null) return null;
 
         List<String> cities = new ArrayList<String>();
-
-        ProfileDao profileDao = new ProfileDao();
 
         posts.forEach((post) -> {
             int profileNo = post.getAccountNo();
@@ -80,11 +88,8 @@ public class PostService {
 
         PostSortType type = getPostSortType(sortType);
 
-        PageCountStrategyContext pageCountStrategyContext
-                = new PageCountStrategyContext(POST_COUNT_IN_PAGE);
         pageCountStrategyContext.setPageCountStrategy(type);
         int pageTotalCount = pageCountStrategyContext.getPageCount();
-
 
         PostsOptionVO options = new PostsOptionVO(pageNo, sortType);
         options.setStartEndPageNo(pageTotalCount, 5);
@@ -94,9 +99,6 @@ public class PostService {
 
     @Transaction
     public PostsOptionVO getDefaultPostsOption() {
-        PageCountStrategyContext pageCountStrategyContext
-                = new PageCountStrategyContext(POST_COUNT_IN_PAGE);
-
         pageCountStrategyContext.setPageCountStrategy(PostSortType.REAL_TIME);
         int pageTotalCount = pageCountStrategyContext.getPageCount();
 
@@ -107,23 +109,11 @@ public class PostService {
 
     public List<Post> getPosts(PostsOptionVO options, Map<String, String[]> paramMap){
         PostSortType sortType = getPostSortType(options.getSortType());
-        PostsStrategyContext postsStrategyContext = new PostsStrategyContext(POST_COUNT_IN_PAGE);
         postsStrategyContext.setPostsStrategy(sortType);
         return postsStrategyContext.getPosts(options, paramMap);
     }
 
-    public PostSortType getPostSortType(String sortType){
-        if (sortType == null)
-            return PostSortType.REAL_TIME;
-
-        switch (sortType) {
-            case "1": return PostSortType.REAL_TIME;
-            case "2": return PostSortType.DAYS_FAVORITE;
-            case "3": return PostSortType.WEEKS_FAVORITE;
-            default: return PostSortType.REAL_TIME;
-        }
-    }
-
+    @Transaction
     public Post getPost(String no) {
         if (no == null)
             return null;
@@ -136,52 +126,31 @@ public class PostService {
             return null;
         }
 
-        PostDao postDao = new PostDao();
+        PostDao postDao = new PostDao(this.connection);
         Post post = postDao.getPost(postNo);
         return post;
     }
 
+    @Transaction
     public void createPost(Profile profile, Post post) {
-        Connection connection = DBUtil.getConnection();
-        try (connection) {
-            connection.setAutoCommit(false);
-            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
-
-            new PostDao(connection).createPost(profile, post);
-            new PostLogDao(connection).writePostActivityLog(profile.getAccountNo(), post.getPostNo(), "게시");
-
-            connection.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            try {
-                connection.rollback();
-            } catch (Exception e2) {
-                e2.printStackTrace();
-                return;
-            }
-        }
+        new PostDao(connection).createPost(profile, post);
+        new PostLogDao(connection).writePostActivityLog(profile.getAccountNo(), post.getPostNo(), "게시");
     }
 
+    @Transaction
     public void updatePost(Post post) {
-        PostDao postDao = new PostDao();
-        postDao.updatePost(post);
+        new PostDao(this.connection).updatePost(post);
     }
 
+    @Transaction
     public void toggleLike(String post, String account) {
         if (post == null) return;
         if (account == null) return;
 
-        int postNo = -1;
-        int accountNo = -1;
+        int postNo = Integer.parseInt(post);
+        int accountNo = Integer.parseInt(account);
 
-        try {
-            postNo = Integer.parseInt(post);
-            accountNo = Integer.parseInt(account);
-        } catch (Exception e) {
-            return;
-        }
-
-        PostDao postDao = new PostDao();
+        PostDao postDao = new PostDao(this.connection);
         if (postDao.isAlreadyLikeThis(postNo, accountNo))
             postDao.delLike(postNo, accountNo);
         else
@@ -191,16 +160,14 @@ public class PostService {
         postDao.updateLikeCount(postNo, likeCount);
     }
 
+    @Transaction
     public boolean isLikePost(String postNo, String accountNo) {
         if (postNo == null)
             return false;
         if (accountNo == null)
             return false;
-
         try {
-
-            PostDao postDao = new PostDao();
-            return postDao.isUserLikePost(
+            return new PostDao(this.connection).isUserLikePost(
                     Integer.parseInt(postNo),
                     Integer.parseInt(accountNo)
             );
@@ -210,11 +177,12 @@ public class PostService {
         }
     }
 
+    @Transaction
     public List<Comment> getComments(int postNo) {
-        CommentDao commentDao = new CommentDao();
-        return commentDao.getComments(postNo);
+        return new CommentDao(this.connection).getComments(postNo);
     }
 
+    @Transaction
     public void createComment(String postNo, Profile profile, String isUseAnonymousName, String content) {
         if (isNull(postNo, profile, content))
             return;
@@ -227,8 +195,7 @@ public class PostService {
             isAnonymous = true;
 
         try {
-
-            CommentDao commentDao = new CommentDao();
+            CommentDao commentDao = new CommentDao(this.connection);
             commentDao.createComment(
                     Integer.parseInt(postNo),
                     profile,
@@ -244,46 +211,38 @@ public class PostService {
         }
     }
 
+    @Transaction
     public Comment getComment(String no){
         try {
             int commentNo = Integer.parseInt(no);
-
-            CommentDao commentDao = new CommentDao();
+            CommentDao commentDao = new CommentDao(this.connection);
             return commentDao.getCommentByCommentNo(commentNo);
         } catch (Exception e) {
             return null;
         }
     }
 
+    @Transaction
     public List<Reply> getReplies(Comment comment) {
         int commentNo = comment.getCommentNo();
         String nicname = comment.getNicname();
 
-        ReplyDao replyDao = new ReplyDao();
+        ReplyDao replyDao = new ReplyDao(this.connection);
         return replyDao.getReplies(commentNo);
     }
 
+    @Transaction
     public void createReply(String content, String replierNo, String commentNo, String isAnonName) {
-        int accountNo = -1;
-        int commentNoInt = -1;
-        try {
-            accountNo = Integer.parseInt(replierNo);
-            commentNoInt = Integer.parseInt(commentNo);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
+        int accountNo = Integer.parseInt(replierNo);
+        int commentNoInt = Integer.parseInt(commentNo);
 
         boolean isAnonymousName = true;
         if (isAnonName == null)
             isAnonymousName = false;
 
-        ProfileDao profileDao = new ProfileDao();
+        ProfileDao profileDao = new ProfileDao(this.connection);
         Profile profile = profileDao.getProfile(accountNo);
-        if (profile == null) return;
-
-        ReplyDao replyDao = new ReplyDao();
-        replyDao.createReply(content, profile, commentNoInt, isAnonymousName);
+        new ReplyDao(this.connection).createReply(content, profile, commentNoInt, isAnonymousName);
     }
 
     public boolean isNull(Object...param) {
@@ -292,6 +251,18 @@ public class PostService {
                 return true;
         }
         return false;
+    }
+
+    public PostSortType getPostSortType(String sortType){
+        if (sortType == null)
+            return PostSortType.REAL_TIME;
+
+        switch (sortType) {
+            case "1": return PostSortType.REAL_TIME;
+            case "2": return PostSortType.DAYS_FAVORITE;
+            case "3": return PostSortType.WEEKS_FAVORITE;
+            default: return PostSortType.REAL_TIME;
+        }
     }
 
 }

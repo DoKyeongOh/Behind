@@ -7,6 +7,7 @@ import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.service.post.PostService;
+import org.mytoypjt.utils.TransactionManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,11 +16,14 @@ import java.util.List;
 
 public class CommentController {
 
+    private PostService postService;
+
     final String REPLIES = "replies";
     final String COMMENT = "comment";
     final String PARENT_TITLE = "parentPost";
 
     public CommentController() {
+        postService = (PostService) TransactionManager.getInstance(PostService.class);
     }
 
     @RequestMapping(uri = "/comment", method = "post")
@@ -33,7 +37,6 @@ public class CommentController {
         HttpSession session = req.getSession();
         Profile profile = (Profile) session.getAttribute("profile");
 
-        PostService postService = new PostService();
         postService.createComment(postNo, profile, isUseAnonymousName, content);
         Post post = postService.getPost(postNo);
 
@@ -44,7 +47,6 @@ public class CommentController {
     public ViewInfo showCommentPage(HttpServletRequest req, HttpServletResponse resp){
         String no = req.getParameter("no");
 
-        PostService postService = new PostService();
         Comment comment = postService.getComment(no);
         if (Comment.isCorrectComment(comment))
             return ViewInfo.getRedirectViewInfo("/post?no="+no);
@@ -69,7 +71,6 @@ public class CommentController {
         String commentNo = req.getParameter("commentNo");
         String isAnonName = req.getParameter("isUseAnonymousName");
 
-        PostService postService = new PostService();
         postService.createReply(content, replierNo, commentNo, isAnonName);
         return ViewInfo.getRedirectViewInfo("/comment?no="+commentNo);
     }

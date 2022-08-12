@@ -24,7 +24,6 @@ public class PostController {
     String postsOptionKey = "PostsOption";
 
     public PostController (){
-//        postService = new PostService();
         postService = (PostService) TransactionManager.getInstance(PostService.class);
     }
 
@@ -97,13 +96,11 @@ public class PostController {
     @RequestMapping(uri = "/post", method = "get")
     public ViewInfo showPost(HttpServletRequest req, HttpServletResponse resp){
         String no = req.getParameter("no");
-        
         Post post = postService.getPost(no);
 
         if (post == null)
             return ViewInfo.getRedirectViewInfo("/main/page");
 
-        Profile posterProfile = postService.getPosterProfile(post.getAccountNo());
         List<Comment> comments = postService.getComments(post.getPostNo());
 
         req.setAttribute("posterCity", post.getCity());
