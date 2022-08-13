@@ -2,6 +2,7 @@ package org.mytoypjt.utils;
 
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
+import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.service.annotation.Transaction;
 
 import java.lang.reflect.Field;
@@ -26,8 +27,6 @@ public class TransactionManager {
 
                 if (annotationCount < 1)
                     return methodProxy.invokeSuper(object, args);
-
-
 
                 Connection connection = null;
                 try {
@@ -62,9 +61,9 @@ public class TransactionManager {
 
             }
         };
-
         return ProxyUtil.getProxyInstance(aClass, methodInterceptor);
     }
+
 
 
 

@@ -15,9 +15,13 @@ import javax.servlet.http.HttpSession;
 
 public class LoginController extends PropertiesControllerTemplete {
 
+    LoginService loginService;
+    public LoginController() {
+        loginService = (LoginService) TransactionManager.getInstance(LoginService.class);
+    }
+
     @RequestMapping(uri = "/login/page", method = "GET")
     public ViewInfo getLoginPage(HttpServletRequest req, HttpServletResponse resp){
-
         if (ControllerUtils.isExistProfileSession(req))
             return ViewInfo.getRedirectViewInfo("/main/page");
 
@@ -29,13 +33,10 @@ public class LoginController extends PropertiesControllerTemplete {
         String id = req.getParameter("accountId");
         String pw = req.getParameter("accountPw");
 
-//        LoginService loginService = new LoginService();
-        LoginService loginService = (LoginService) TransactionManager.getInstance(LoginService.class);
         Profile profile = loginService.getProfile(id, pw);
 
-        if (profile == null) {
+        if (profile == null)
             return new ViewInfo("loginPage");
-        }
 
         ViewInfo viewInfo = new ViewInfo();
         viewInfo.setRedirectTo("/main/page");
@@ -69,7 +70,6 @@ public class LoginController extends PropertiesControllerTemplete {
         String id = req.getParameter("accountId");
         String pw = req.getParameter("accountPw");
 
-        LoginService loginService = new LoginService();
         Profile profile = loginService.getProfile(id, pw);
 
         ViewInfo viewInfo = new ViewInfo("mainPage");

@@ -5,6 +5,7 @@ import org.mytoypjt.models.dto.IdCertificationInfo;
 import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.service.FindAccountService;
 import org.mytoypjt.utils.ControllerUtils;
+import org.mytoypjt.utils.TransactionManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +15,11 @@ import java.util.List;
 
 public class IdResolveController {
 
+    private FindAccountService findAccountService;
+
     public IdResolveController(){
+        findAccountService =
+                (FindAccountService) TransactionManager.getInstance(FindAccountService.class);
     }
 
     @RequestMapping(uri = "/id/page", method = "get")
@@ -35,7 +40,6 @@ public class IdResolveController {
         String domain = (String) req.getParameter("domain");
         String mailAddress = email + "@" + domain;
 
-        FindAccountService findAccountService = new FindAccountService();
         IdCertificationInfo certificationInfo = findAccountService.getIdCertification(mailAddress);
 
         if (certificationInfo == null) {
@@ -73,7 +77,6 @@ public class IdResolveController {
             return "findIdPage";
         }
 
-        FindAccountService findAccountService = new FindAccountService();
         List<String> idList = findAccountService.getAccountListByEmail(certificationInfo.getEmailAddress());
         if (idList == null){
             req.setAttribute("noticeMessage", "오류가 발생했습니다 관리자에게 문의해주세요 !!");

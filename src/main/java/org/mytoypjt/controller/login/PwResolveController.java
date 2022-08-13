@@ -5,14 +5,18 @@ import org.mytoypjt.models.dto.PwCertificationInfo;
 import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.service.FindAccountService;
 import org.mytoypjt.utils.ControllerUtils;
+import org.mytoypjt.utils.TransactionManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class PwResolveController {
+    private FindAccountService findAccountService;
 
     public PwResolveController(){
+        findAccountService =
+                (FindAccountService) TransactionManager.getInstance(FindAccountService.class);
     }
 
     @RequestMapping(uri = "/pw/page/1", method = "get")
@@ -52,7 +56,6 @@ public class PwResolveController {
         String domain = (String) req.getParameter("domain");
         String emailAddress = email + "@" + domain;
 
-        FindAccountService findAccountService = new FindAccountService();
         PwCertificationInfo certificationInfo = findAccountService.getPwCertification(id, emailAddress);
         if (certificationInfo == null) {
             req.setAttribute("noticeMessage", "입력 정보가 잘못되었습니다 !!");
@@ -111,7 +114,6 @@ public class PwResolveController {
         PwCertificationInfo certificationInfo =
                 (PwCertificationInfo) session.getAttribute("pwCertificationInfo");
 
-        FindAccountService findAccountService = new FindAccountService();
         int accountNo = certificationInfo.getAccountNo();
         boolean success = findAccountService.resetPassword(accountNo, pwInput);
 
