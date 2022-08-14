@@ -22,6 +22,12 @@ public class PostService {
 
     private Connection connection;
 
+    PostDao postDao;
+    CommentDao commentDao;
+    ReplyDao replyDao;
+    ProfileDao profileDao;
+    PostLogDao postLogDao;
+
     private PageCountStrategyContext pageCountStrategyContext;
     private PostsStrategyContext postsStrategyContext;
 
@@ -41,11 +47,17 @@ public class PostService {
         this.postsStrategyContext = (PostsStrategyContext)
                 TransactionManager.getInstance(PostsStrategyContext.class);
         postsStrategyContext.setPostCountInPage(POST_COUNT_IN_PAGE);
+
+        this.postDao = new PostDao(this.connection);
+        this.commentDao = new CommentDao(this.connection);
+        this.replyDao = new ReplyDao(this.connection);
+        this.profileDao = new ProfileDao(this.connection);
+        this.postLogDao = new PostLogDao(this.connection);
     }
 
     @Transaction
     public Profile getPosterProfile(int accountNo) {
-        Profile profile = new ProfileDao(this.connection).getProfile(accountNo);
+        Profile profile = profileDao.getProfile(accountNo);
         if (profile == null) {
             profile = new Profile(accountNo);
             profile.setNicname("익명");
@@ -97,7 +109,6 @@ public class PostService {
         return options;
     }
 
-    @Transaction
     public PostsOptionVO getDefaultPostsOption() {
         pageCountStrategyContext.setPageCountStrategy(PostSortType.REAL_TIME);
         int pageTotalCount = pageCountStrategyContext.getPageCount();
@@ -115,31 +126,19 @@ public class PostService {
 
     @Transaction
     public Post getPost(String no) {
-        if (no == null)
-            return null;
-
-        int postNo = -1;
-        try {
-            postNo = Integer.parseInt(no);
-        }catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        PostDao postDao = new PostDao(this.connection);
-        Post post = postDao.getPost(postNo);
-        return post;
+        int postNo = Integer.parseInt(no);
+        return postDao.getPost(postNo);
     }
 
     @Transaction
     public void createPost(Profile profile, Post post) {
-        new PostDao(connection).createPost(profile, post);
-        new PostLogDao(connection).writePostActivityLog(profile.getAccountNo(), post.getPostNo(), "게시");
+        postDao.createPost(profile, post);
+        postLogDao.writePostActivityLog(profile.getAccountNo(), post.getPostNo(), "게시");
     }
 
     @Transaction
     public void updatePost(Post post) {
-        new PostDao(this.connection).updatePost(post);
+        postDao.updatePost(post);
     }
 
     @Transaction
@@ -150,7 +149,6 @@ public class PostService {
         int postNo = Integer.parseInt(post);
         int accountNo = Integer.parseInt(account);
 
-        PostDao postDao = new PostDao(this.connection);
         if (postDao.isAlreadyLikeThis(postNo, accountNo))
             postDao.delLike(postNo, accountNo);
         else
@@ -167,7 +165,7 @@ public class PostService {
         if (accountNo == null)
             return false;
         try {
-            return new PostDao(this.connection).isUserLikePost(
+            return postDao.isUserLikePost(
                     Integer.parseInt(postNo),
                     Integer.parseInt(accountNo)
             );
@@ -179,7 +177,7 @@ public class PostService {
 
     @Transaction
     public List<Comment> getComments(int postNo) {
-        return new CommentDao(this.connection).getComments(postNo);
+        return commentDao.getComments(postNo);
     }
 
     @Transaction
@@ -195,7 +193,6 @@ public class PostService {
             isAnonymous = true;
 
         try {
-            CommentDao commentDao = new CommentDao(this.connection);
             commentDao.createComment(
                     Integer.parseInt(postNo),
                     profile,
@@ -215,7 +212,6 @@ public class PostService {
     public Comment getComment(String no){
         try {
             int commentNo = Integer.parseInt(no);
-            CommentDao commentDao = new CommentDao(this.connection);
             return commentDao.getCommentByCommentNo(commentNo);
         } catch (Exception e) {
             return null;
@@ -225,9 +221,6 @@ public class PostService {
     @Transaction
     public List<Reply> getReplies(Comment comment) {
         int commentNo = comment.getCommentNo();
-        String nicname = comment.getNicname();
-
-        ReplyDao replyDao = new ReplyDao(this.connection);
         return replyDao.getReplies(commentNo);
     }
 
@@ -240,9 +233,8 @@ public class PostService {
         if (isAnonName == null)
             isAnonymousName = false;
 
-        ProfileDao profileDao = new ProfileDao(this.connection);
         Profile profile = profileDao.getProfile(accountNo);
-        new ReplyDao(this.connection).createReply(content, profile, commentNoInt, isAnonymousName);
+        replyDao.createReply(content, profile, commentNoInt, isAnonymousName);
     }
 
     public boolean isNull(Object...param) {
