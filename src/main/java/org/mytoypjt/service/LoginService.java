@@ -17,12 +17,12 @@ public class LoginService {
 
     @Transaction
     public Profile getProfile(String accountId, String accountPw){
-        AccountDao accountDao = new AccountDao(this.connection);
+        AccountDao accountDao = new AccountDao();
         int accountNo = accountDao.getAccountNo(accountId, accountPw);
 
         if (!Profile.isCorrectProfileNo(accountNo)) return null;
 
-        ProfileDao profileDao = new ProfileDao(this.connection);
+        ProfileDao profileDao = new ProfileDao();
         Profile profile = profileDao.getProfile(accountNo);
 
         return profile;

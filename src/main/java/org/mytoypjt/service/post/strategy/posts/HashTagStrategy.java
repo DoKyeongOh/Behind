@@ -12,7 +12,6 @@ public class HashTagStrategy extends BasePostsStrategy {
     }
 
     @Override
-    @Transaction
     public List<Post> getPosts(PostsOptionVO optionVO, Map<String, String[]> paramMap) {
         return null;
     }

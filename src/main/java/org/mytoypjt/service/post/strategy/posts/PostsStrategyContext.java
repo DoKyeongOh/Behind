@@ -6,15 +6,12 @@ import org.mytoypjt.models.vo.PostsOptionVO;
 import org.mytoypjt.service.annotation.Transaction;
 import org.mytoypjt.utils.TransactionManager;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
 public class PostsStrategyContext {
 
     private BasePostsStrategy postsStrategy;
-
-    private Connection connection;
 
     public PostsStrategyContext() {
     }
@@ -31,14 +28,6 @@ public class PostsStrategyContext {
 
     public void setPostCountInPage(int postCountInPage) {
         this.postCountInPage = postCountInPage;
-    }
-
-    public Connection getConnection() {
-        return connection;
-    }
-
-    public void setConnection(Connection connection) {
-        this.connection = connection;
     }
 
     public void setPostsStrategy(BasePostsStrategy postsStrategy){
@@ -76,7 +65,6 @@ public class PostsStrategyContext {
 
     @Transaction
     public List<Post> getPosts(PostsOptionVO postsOptionVO, Map<String, String[]> paramMap){
-        this.postsStrategy.setConnection(getConnection());
         this.postsStrategy.setPostCountInPage(this.postCountInPage);
         return this.postsStrategy.getPosts(postsOptionVO, paramMap);
     }

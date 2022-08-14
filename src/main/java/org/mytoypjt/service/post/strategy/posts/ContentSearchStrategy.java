@@ -13,7 +13,6 @@ public class ContentSearchStrategy extends BasePostsStrategy {
     }
 
     @Override
-    @Transaction
     public List<Post> getPosts(PostsOptionVO optionVO, Map<String, String[]> paramMap) {
         return null;
     }

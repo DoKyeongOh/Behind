@@ -16,7 +16,7 @@ public class WeeksFavoriteStrategy extends BasePostsStrategy {
     @Override
     public List<Post> getPosts(PostsOptionVO optionVO, Map<String, String[]> paramMap) {
         try {
-            PostDao postDao = new PostDao(getConnection());
+            PostDao postDao = new PostDao();
             int pageNo = Integer.parseInt(optionVO.getPageNo());
             return postDao.getWeeksFavoritePosts(pageNo, this.postCountInPage);
         } catch(Exception e) {

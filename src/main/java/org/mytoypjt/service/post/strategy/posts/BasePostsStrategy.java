@@ -11,8 +11,6 @@ public abstract class BasePostsStrategy {
 
     int postCountInPage = 12;
 
-    protected Connection connection;
-
     public BasePostsStrategy() {
     }
 
@@ -22,13 +20,6 @@ public abstract class BasePostsStrategy {
 
     public void setPostCountInPage(int postCountInPage) {
         this.postCountInPage = postCountInPage;
-    }
-
-    public Connection getConnection() {
-        return connection;
-    }
-    public void setConnection(Connection connection){
-        this.connection = connection;
     }
 
     public abstract List<Post> getPosts(PostsOptionVO optionVO, Map<String, String[]> paramMap);

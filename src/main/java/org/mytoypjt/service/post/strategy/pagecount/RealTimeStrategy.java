@@ -13,7 +13,7 @@ public class RealTimeStrategy extends BasePageCountStrategy{
 
     @Override
     public int getPageCount() {
-        PostDao postDao = new PostDao(getConnection());
+        PostDao postDao = new PostDao();
         int postCount = postDao.getTotalPostCount();
         int pageCount = (int) postCount / this.postCountInPage;
         if (postCount % this.postCountInPage != 0)

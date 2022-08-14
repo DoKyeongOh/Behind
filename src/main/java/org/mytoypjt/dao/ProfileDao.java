@@ -3,26 +3,18 @@ package org.mytoypjt.dao;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.DBUtil;
+import org.mytoypjt.utils.TransactionManager;
 
 import java.sql.*;
 
-public class ProfileDao extends BaseTransactionDao {
+public class ProfileDao {
 
     public ProfileDao() {
     }
 
-    public ProfileDao(Connection connection) {
-        super(connection);
-    }
-
-    @Override
-    public void setConnection(Connection connection) {
-        super.setConnection(connection);
-    }
-
     public Profile getProfile(int accountNo) {
         String sql = "select * from profile where account_no=?";
-        Connection conn = this.connection;
+        Connection conn = TransactionManager.getConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, accountNo);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -50,7 +42,7 @@ public class ProfileDao extends BaseTransactionDao {
         String sql = "insert into profile(" +
                 "account_no, register_date, nicname, city, age, gender, user_level) " +
                 "values (?, ?, ?, ?, ?, ?, ?)";
-        Connection conn = this.connection;
+        Connection conn = TransactionManager.getConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             long timeInMilliSeconds = profile.getJoinDate().getTime();
             Date sqlDate = new Date(timeInMilliSeconds);
@@ -75,7 +67,7 @@ public class ProfileDao extends BaseTransactionDao {
         String sql = "update profile set nicname=?, city=?, age=?, gender=?, user_level=? " +
                 "where account_no=?";
 
-        Connection conn = this.connection;
+        Connection conn = TransactionManager.getConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, profile.getNicname());
             preparedStatement.setString(2, profile.getCity());

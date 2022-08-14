@@ -2,20 +2,21 @@ package org.mytoypjt.utils;
 
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
-import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.service.annotation.Transaction;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Stream;
 
 public class TransactionManager {
 
+    private static Connection connection;
+
     private TransactionManager() {
+    }
+
+    public static Connection getConnection(){
+        return connection;
     }
 
     public static Object getInstance(Class aClass){
@@ -28,17 +29,8 @@ public class TransactionManager {
                 if (annotationCount < 1)
                     return methodProxy.invokeSuper(object, args);
 
-                Connection connection = null;
                 try {
-                    Field[] fields = method.getDeclaringClass().getDeclaredFields();
-                    Field connectionField = Arrays.stream(fields)
-                            .filter(field -> field.getType() == Connection.class)
-                            .findFirst().get();
-
-                    connectionField.setAccessible(true);
-                    connectionField.set(object, DBUtil.getConnection());
-
-                    connection = (Connection) connectionField.get(object);
+                    connection = DBUtil.getBasicDataSource().getConnection();
                     connection.setAutoCommit(false);
 
                     Object returnValue = methodProxy.invokeSuper(object, args);
