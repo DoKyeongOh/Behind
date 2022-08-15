@@ -7,14 +7,23 @@ import org.mytoypjt.utils.TransactionManager;
 
 import java.sql.*;
 
-public class ProfileDao {
+public class ProfileDao extends BaseTransactionDao {
 
     public ProfileDao() {
     }
 
+    public ProfileDao(Connection connection) {
+        super(connection);
+    }
+
+    @Override
+    public void setConnection(Connection connection) {
+        super.setConnection(connection);
+    }
+
     public Profile getProfile(int accountNo) {
         String sql = "select * from profile where account_no=?";
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, accountNo);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -42,7 +51,7 @@ public class ProfileDao {
         String sql = "insert into profile(" +
                 "account_no, register_date, nicname, city, age, gender, user_level) " +
                 "values (?, ?, ?, ?, ?, ?, ?)";
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             long timeInMilliSeconds = profile.getJoinDate().getTime();
             Date sqlDate = new Date(timeInMilliSeconds);
@@ -67,7 +76,7 @@ public class ProfileDao {
         String sql = "update profile set nicname=?, city=?, age=?, gender=?, user_level=? " +
                 "where account_no=?";
 
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, profile.getNicname());
             preparedStatement.setString(2, profile.getCity());

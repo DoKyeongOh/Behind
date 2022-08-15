@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostDao {
+public class PostDao extends BaseTransactionDao {
 
     public PostDao() {
     }
@@ -30,7 +30,7 @@ public class PostDao {
         int startNo = (pageNo - 1) * postCountInPage;
         if (startNo < 0) startNo = 1;
         String sql = "select * from post order by posted_date desc limit ?, ?";
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, startNo);
             preparedStatement.setInt(2, postCountInPage);
@@ -49,7 +49,7 @@ public class PostDao {
         String sql = "select * from post " +
                 "where posted_date between date_add(now(), interval -1 day) and now() " +
                 "order by like_count desc limit ?, ?";
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, startNo);
             preparedStatement.setInt(2, postCountInPage);
@@ -68,7 +68,7 @@ public class PostDao {
         String sql = "select * from post " +
                 "where posted_date between date_add(now(), interval -1 week) and now() " +
                 "order by like_count desc limit ?, ?";
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, startNo);
             preparedStatement.setInt(2, postCountInPage);
@@ -110,7 +110,7 @@ public class PostDao {
 
     public Post getPost(int postNo) {
         String sql = "select * from post where post_no = ?";
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, postNo);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -143,7 +143,7 @@ public class PostDao {
     public boolean isAlreadyLikeThis(int postNo, int accountNo) {
         String sql = "select * from likes where post_no = ? and account_no = ?";
 
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, postNo);
             preparedStatement.setInt(2, accountNo);
@@ -171,7 +171,7 @@ public class PostDao {
         if (isAdd)
             sql = "insert into likes (like_no, post_no, account_no) values (null, ?, ?)";
 
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, postNo);
             preparedStatement.setInt(2, accountNo);
@@ -184,7 +184,7 @@ public class PostDao {
     public int getLikeCount(int postNo) {
         String sql = "select count(*) from likes where post_no=?";
 
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, postNo);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -199,7 +199,7 @@ public class PostDao {
     public void updateLikeCount(int postNo, int count){
         String sql = "update post set like_count = ? where post_no = ?";
 
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, count);
             preparedStatement.setInt(2, postNo);
@@ -212,7 +212,7 @@ public class PostDao {
     public boolean isUserLikePost(int postNo, int accountNo){
         String sql = "select * from likes where post_no=? and account_no=?";
 
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, postNo);
             preparedStatement.setInt(2, accountNo);
@@ -228,7 +228,7 @@ public class PostDao {
     public int getTotalPostCount() {
         String sql = "select count(*) from post";
 
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
@@ -243,7 +243,7 @@ public class PostDao {
         String sql = "select count(*) from post " +
                 "where posted_date between date_add(now(), interval -1 day) and now() " +
                 "order by like_count desc limit 0, ?";
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, postCountInPage);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -280,12 +280,7 @@ Connection conn = DBUtil.getBasicDataSource().getConnection();
                 "values " +
                 "(null , ?, ?, now(), 0, 0, ?, ?, ?, ?, ?, ?)";
 
-<<<<<<< HEAD
-        Connection conn = TransactionManager.getConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
-=======
         try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
->>>>>>> transaction_test
 
             String nicname = (post.getIsUseAnonymousName()) ? "누군가" : post.getNicname();
             String city = (post.getIsUseAnonymousCity()) ? "어딘가" : post.getCity();
@@ -311,7 +306,7 @@ Connection conn = DBUtil.getBasicDataSource().getConnection();
                 "is_use_anonymous_name=?, is_use_anonymous_city=?, nicname=?, city=?" +
                 "where post_no=?";
 
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
 
             String nicname = (post.getIsUseAnonymousName()) ? "누군가" : post.getNicname();
@@ -334,7 +329,7 @@ Connection conn = DBUtil.getBasicDataSource().getConnection();
     public List<Post> getPostsByAccountNo(int accountNo) {
         String sql = "select * from post where account_no = ?";
 
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, accountNo);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -349,7 +344,7 @@ Connection conn = DBUtil.getBasicDataSource().getConnection();
     public Post getLastPost(int accountNo) {
         String sql = "select * from post order by posted_date desc limit 1";
 
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             Post post = null;

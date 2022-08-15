@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountDao {
+public class AccountDao extends BaseTransactionDao {
     final int NOT_CORRECTED_ACCOUNT_NO = -1;
     final int DUPLICATION_ACCOUNT = -2;
     final String NOT_FOUND_ACCOUNT_ID = "";
@@ -21,11 +21,20 @@ public class AccountDao {
         super();
     }
 
+    public AccountDao(Connection connection) {
+        super(connection);
+    }
+
+    @Override
+    public void setConnection(Connection connection) {
+        super.setConnection(connection);
+    }
+
     public int getAccountNo(String id, String pw) {
         String sql = "select account_no from account where id=? and password=?";
         int accountNo = NOT_CORRECTED_ACCOUNT_NO;
 
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, id);
             preparedStatement.setString(2, pw);
@@ -46,7 +55,7 @@ public class AccountDao {
         String sql = "select id from account where email=?";
         List<String> idList = new ArrayList<String>();
 
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -65,7 +74,7 @@ public class AccountDao {
         String sql = "select account_no from account where id=? and email=?";
         int accountNo = NOT_CORRECTED_ACCOUNT_NO;
 
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, id);
             preparedStatement.setString(2, email);
@@ -85,7 +94,7 @@ public class AccountDao {
         String sql = "select account_no from account where id=? and password=? and email=?";
         int accountNo = NOT_CORRECTED_ACCOUNT_NO;
 
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, id);
             preparedStatement.setString(2, password);
@@ -113,7 +122,7 @@ public class AccountDao {
 
     public boolean setAccountPw(int accountNo, String password){
         String sql = "update account set password = ? where account_no = ?";
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, password);
             preparedStatement.setInt(2, accountNo);
@@ -127,7 +136,7 @@ public class AccountDao {
 
     public boolean isExistId(String id){
         String sql = "select account_no from account where id=?";
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
 
             preparedStatement.setString(1, id);
@@ -152,7 +161,7 @@ public class AccountDao {
         String sql = "insert into account(account_no, id, password, email) " +
                 "values " +
                 "(null, ?, ?, ?)";
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, id);
             preparedStatement.setString(2, password);
@@ -169,7 +178,7 @@ public class AccountDao {
     public void deleteAccount(int accountNo){
         String sql = "delete from account where account_no=?";
 
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, accountNo);
@@ -183,7 +192,7 @@ public class AccountDao {
     public boolean isRegisteredEmail(String email) {
         String sql = "select id from account where email=?";
 
-        Connection conn = TransactionManager.getConnection();
+        Connection conn = this.connection;
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();

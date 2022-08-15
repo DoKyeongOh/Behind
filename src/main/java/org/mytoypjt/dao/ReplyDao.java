@@ -14,15 +14,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReplyDao {
+public class ReplyDao extends BaseTransactionDao {
 
     public ReplyDao() {
         super();
     }
 
+    public ReplyDao(Connection connection) {
+        super(connection);
+    }
+
+    @Override
+    public void setConnection(Connection connection) {
+        super.setConnection(connection);
+    }
+
     public List<Reply> getReplies(int commentNo) {
         String sql = "select * from reply where comment_no = ?";
-        try (PreparedStatement preparedStatement = TransactionManager.getConnection().prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, commentNo);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -39,7 +48,7 @@ public class ReplyDao {
                 "(reply_no, content, account_no, comment_no, is_use_anonymous_name, nicname, replied_date)" +
                 "values " +
                 "(null, ?, ?, ?, ?, ?, now())";
-        try (PreparedStatement preparedStatement = TransactionManager.getConnection().prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
             String nicname = profile.getNicname();
             if (isAnonName) nicname = "누군가";
 
@@ -58,7 +67,7 @@ public class ReplyDao {
     public List<Reply> getRepliesByAccountNo(int accountNo) {
         String sql = "select * from reply where account_no = ?";
 
-        try (PreparedStatement preparedStatement = TransactionManager.getConnection().prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, accountNo);
             ResultSet resultSet = preparedStatement.executeQuery();
 
