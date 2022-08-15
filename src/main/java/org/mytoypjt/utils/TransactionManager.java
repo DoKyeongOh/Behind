@@ -42,10 +42,13 @@ public class TransactionManager {
                 } catch (Exception e) {
                     e.printStackTrace();
 
-                    connection.rollback();
 
-                    if (connection != null)
+                    try {
+                        connection.rollback();
                         connection.close();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
 
                     return methodProxy.invokeSuper(object, args);
                 }
@@ -53,10 +56,7 @@ public class TransactionManager {
 
             }
         };
+
         return ProxyUtil.getProxyInstance(aClass, methodInterceptor);
     }
-
-
-
-
 }

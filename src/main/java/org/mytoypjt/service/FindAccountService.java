@@ -1,13 +1,19 @@
 package org.mytoypjt.service;
 
 import org.mytoypjt.dao.AccountDao;
+import org.mytoypjt.dao.ProfileDao;
 import org.mytoypjt.models.dto.IdCertificationInfo;
 import org.mytoypjt.models.dto.PwCertificationInfo;
 import org.mytoypjt.utils.MailUtil;
 
+import java.sql.Connection;
 import java.util.List;
 
 public class FindAccountService {
+
+    private Connection connection;
+
+    private AccountDao accountDao;
 
     public FindAccountService(){
 
