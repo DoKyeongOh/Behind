@@ -1,15 +1,16 @@
 package org.mytoypjt.service.post;
 
 import org.mytoypjt.dao.*;
-import org.mytoypjt.models.dto.PostSortType;
+import org.mytoypjt.models.entity.Reply;
+import org.mytoypjt.models.vo.PostsOptionVO;
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
-import org.mytoypjt.models.entity.Reply;
-import org.mytoypjt.models.vo.PostsOptionVO;
+import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.service.annotation.Transaction;
 import org.mytoypjt.service.post.strategy.pagecount.PageCountStrategyContext;
 import org.mytoypjt.service.post.strategy.posts.PostsStrategyContext;
+import org.mytoypjt.utils.DBUtil;
 import org.mytoypjt.utils.TransactionManager;
 
 import java.sql.Connection;
@@ -19,8 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 public class PostService {
-<<<<<<< HEAD
-=======
 
     private Connection connection;
 
@@ -30,7 +29,6 @@ public class PostService {
     ProfileDao profileDao;
     PostLogDao postLogDao;
 
->>>>>>> transaction_test
     private PageCountStrategyContext pageCountStrategyContext;
     private PostsStrategyContext postsStrategyContext;
 
@@ -60,11 +58,7 @@ public class PostService {
 
     @Transaction
     public Profile getPosterProfile(int accountNo) {
-<<<<<<< HEAD
-        Profile profile = new ProfileDao().getProfile(accountNo);
-=======
         Profile profile = profileDao.getProfile(accountNo);
->>>>>>> transaction_test
         if (profile == null) {
             profile = new Profile(accountNo);
             profile.setNicname("익명");
@@ -133,36 +127,19 @@ public class PostService {
 
     @Transaction
     public Post getPost(String no) {
-<<<<<<< HEAD
-        if (no == null)
-            return null;
-
-        int postNo = Integer.parseInt(no);
-        return new PostDao().getPost(postNo);
-=======
         int postNo = Integer.parseInt(no);
         return postDao.getPost(postNo);
->>>>>>> transaction_test
     }
 
     @Transaction
     public void createPost(Profile profile, Post post) {
-<<<<<<< HEAD
-        new PostDao().createPost(profile, post);
-        new PostLogDao().writePostActivityLog(profile.getAccountNo(), post.getPostNo(), "게시");
-=======
         postDao.createPost(profile, post);
         postLogDao.writePostActivityLog(profile.getAccountNo(), post.getPostNo(), "게시");
->>>>>>> transaction_test
     }
 
     @Transaction
     public void updatePost(Post post) {
-<<<<<<< HEAD
-        new PostDao().updatePost(post);
-=======
         postDao.updatePost(post);
->>>>>>> transaction_test
     }
 
     @Transaction
@@ -173,10 +150,6 @@ public class PostService {
         int postNo = Integer.parseInt(post);
         int accountNo = Integer.parseInt(account);
 
-<<<<<<< HEAD
-        PostDao postDao = new PostDao();
-=======
->>>>>>> transaction_test
         if (postDao.isAlreadyLikeThis(postNo, accountNo))
             postDao.delLike(postNo, accountNo);
         else
@@ -193,11 +166,7 @@ public class PostService {
         if (accountNo == null)
             return false;
         try {
-<<<<<<< HEAD
-            return new PostDao().isUserLikePost(
-=======
             return postDao.isUserLikePost(
->>>>>>> transaction_test
                     Integer.parseInt(postNo),
                     Integer.parseInt(accountNo)
             );
@@ -209,11 +178,7 @@ public class PostService {
 
     @Transaction
     public List<Comment> getComments(int postNo) {
-<<<<<<< HEAD
-        return new CommentDao().getComments(postNo);
-=======
         return commentDao.getComments(postNo);
->>>>>>> transaction_test
     }
 
     @Transaction
@@ -229,10 +194,6 @@ public class PostService {
             isAnonymous = true;
 
         try {
-<<<<<<< HEAD
-            CommentDao commentDao = new CommentDao();
-=======
->>>>>>> transaction_test
             commentDao.createComment(
                     Integer.parseInt(postNo),
                     profile,
@@ -252,10 +213,6 @@ public class PostService {
     public Comment getComment(String no){
         try {
             int commentNo = Integer.parseInt(no);
-<<<<<<< HEAD
-            CommentDao commentDao = new CommentDao();
-=======
->>>>>>> transaction_test
             return commentDao.getCommentByCommentNo(commentNo);
         } catch (Exception e) {
             return null;
@@ -265,12 +222,6 @@ public class PostService {
     @Transaction
     public List<Reply> getReplies(Comment comment) {
         int commentNo = comment.getCommentNo();
-<<<<<<< HEAD
-        String nicname = comment.getNicname();
-
-        ReplyDao replyDao = new ReplyDao();
-=======
->>>>>>> transaction_test
         return replyDao.getReplies(commentNo);
     }
 
@@ -283,14 +234,8 @@ public class PostService {
         if (isAnonName == null)
             isAnonymousName = false;
 
-<<<<<<< HEAD
-        ProfileDao profileDao = new ProfileDao();
-        Profile profile = profileDao.getProfile(accountNo);
-        new ReplyDao().createReply(content, profile, commentNoInt, isAnonymousName);
-=======
         Profile profile = profileDao.getProfile(accountNo);
         replyDao.createReply(content, profile, commentNoInt, isAnonymousName);
->>>>>>> transaction_test
     }
 
     public boolean isNull(Object...param) {

@@ -17,8 +17,6 @@ public class PostDao {
     public PostDao() {
     }
 
-<<<<<<< HEAD
-=======
     public PostDao(Connection connection) {
         super(connection);
     }
@@ -28,7 +26,6 @@ public class PostDao {
         super.setConnection(connection);
     }
 
->>>>>>> transaction_test
     public List<Post> getRealTimePosts(int pageNo, int postCountInPage){
         int startNo = (pageNo - 1) * postCountInPage;
         if (startNo < 0) startNo = 1;
