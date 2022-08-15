@@ -20,6 +20,11 @@ public class PostDao extends BaseTransactionDao {
         super(connection);
     }
 
+    @Override
+    public void setConnection(Connection connection) {
+        super.setConnection(connection);
+    }
+
     public List<Post> getRealTimePosts(int pageNo, int postCountInPage){
         int startNo = (pageNo - 1) * postCountInPage;
         if (startNo < 0) startNo = 1;
@@ -274,8 +279,7 @@ Connection conn = DBUtil.getBasicDataSource().getConnection();
                 "values " +
                 "(null , ?, ?, now(), 0, 0, ?, ?, ?, ?, ?, ?)";
 
-        Connection conn = this.connection;
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
 
             String nicname = (post.getIsUseAnonymousName()) ? "누군가" : post.getNicname();
             String city = (post.getIsUseAnonymousCity()) ? "어딘가" : post.getCity();

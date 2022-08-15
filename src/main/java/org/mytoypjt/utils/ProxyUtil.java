@@ -4,7 +4,6 @@ import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 
 public class ProxyUtil {
-
     public ProxyUtil() {
     }
 
@@ -14,5 +13,4 @@ public class ProxyUtil {
         enhancer.setCallback(methodInterceptor);
         return enhancer.create();
     }
-
 }
