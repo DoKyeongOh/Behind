@@ -5,3 +5,6 @@ Behind/*.*
 target/*
 target/*.*
 */*/*/mail*.*
+lib/**
+lib/**.*
+lib/*.*
