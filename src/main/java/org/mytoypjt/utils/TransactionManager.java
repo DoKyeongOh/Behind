@@ -4,19 +4,14 @@ import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 import org.mytoypjt.service.annotation.Transaction;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.util.Arrays;
 
 public class TransactionManager {
 
-    private static Connection connection;
-
     private TransactionManager() {
-    }
-
-    public static Connection getConnection(){
-        return connection;
     }
 
     public static Object getInstance(Class aClass){
@@ -29,8 +24,22 @@ public class TransactionManager {
                 if (annotationCount < 1)
                     return methodProxy.invokeSuper(object, args);
 
+                Connection connection = null;
                 try {
-                    connection = DBUtil.getBasicDataSource().getConnection();
+//                    object.setAccessible(true);
+                    Field[] fields = method.getDeclaringClass().getDeclaredFields();
+                    Field connField = Arrays.stream(fields)
+                            .filter(field -> field.getType() == Connection.class)
+                            .findFirst().get();
+
+                    if (connField == null)
+                        return methodProxy.invokeSuper(object, args);
+
+                    connField.setAccessible(true);
+                    connField.set(object, DBUtil.getBasicDataSource().getConnection());
+
+
+                    connection = (Connection) connField.get(object);
                     connection.setAutoCommit(false);
 
                     Object returnValue = methodProxy.invokeSuper(object, args);
@@ -41,7 +50,6 @@ public class TransactionManager {
                     return returnValue;
                 } catch (Exception e) {
                     e.printStackTrace();
-
 
                     try {
                         connection.rollback();

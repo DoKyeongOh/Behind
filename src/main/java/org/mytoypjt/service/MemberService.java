@@ -10,10 +10,13 @@ import org.mytoypjt.models.vo.ActivityVO;
 import org.mytoypjt.service.post.strategy.pagecount.PageCountStrategyContext;
 import org.mytoypjt.service.post.strategy.posts.PostsStrategyContext;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MemberService {
+
+    private Connection connection;
 
     private PostDao postDao;
     private ProfileDao profileDao;

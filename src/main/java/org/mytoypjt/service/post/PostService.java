@@ -10,24 +10,21 @@ import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.service.annotation.Transaction;
 import org.mytoypjt.service.post.strategy.pagecount.PageCountStrategyContext;
 import org.mytoypjt.service.post.strategy.posts.PostsStrategyContext;
-import org.mytoypjt.utils.DBUtil;
 import org.mytoypjt.utils.TransactionManager;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class PostService {
-
     private Connection connection;
 
-    PostDao postDao;
-    CommentDao commentDao;
-    ReplyDao replyDao;
-    ProfileDao profileDao;
-    PostLogDao postLogDao;
+    private PostDao postDao;
+    private CommentDao commentDao;
+    private ReplyDao replyDao;
+    private ProfileDao profileDao;
+    private PostLogDao postLogDao;
 
     private PageCountStrategyContext pageCountStrategyContext;
     private PostsStrategyContext postsStrategyContext;
@@ -52,7 +49,7 @@ public class PostService {
         this.postDao = new PostDao(this.connection);
         this.commentDao = new CommentDao(this.connection);
         this.replyDao = new ReplyDao(this.connection);
-        this.profileDao = new ProfileDao(this.connection);
+//        this.profileDao = new ProfileDao(this.connection);
         this.postLogDao = new PostLogDao(this.connection);
     }
 

@@ -4,7 +4,5 @@ Behind/*
 Behind/*.*
 target/*
 target/*.*
-*/*/*/mail*.*
-lib/**
-lib/**.*
-lib/*.*
+*/*/*/mail*
+**/*.jar
