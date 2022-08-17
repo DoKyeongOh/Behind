@@ -1,102 +1,99 @@
 package org.mytoypjt.controller.register;
 
 import org.json.simple.JSONObject;
-import org.mytoypjt.controller.structure.annotations.RequestMapping;
 import org.mytoypjt.models.dto.AccountCertDTO;
 import org.mytoypjt.models.entity.Account;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.etc.ViewInfo;
+import org.mytoypjt.models.vo.RegistVO;
 import org.mytoypjt.service.RegisterService;
 import org.mytoypjt.utils.ControllerUtils;
+import org.mytoypjt.utils.TransactionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 
+@Controller
 public class RegisterController {
+
+    @Autowired
+    private RegisterService registerService;
 
     final String ACCOUNT_CERT_KEY = "accountCert";
     final String ACCOUNT_NO = "accountNo";
 
-    public RegisterController(){
+    public RegisterController(){}
 
-    }
-
-    @RequestMapping(uri = "/register/page/1", method = "get")
-    public String showRegisterPage(HttpServletRequest req, HttpServletResponse resp){
-        if (ControllerUtils.isExistProfileSession(req))
-            return "mainPage";
-
+    @GetMapping(path = "/register/page/1")
+    public String showRegisterPage(){
         return "registerPage";
     }
 
-    @RequestMapping(uri = "/register/page/2", method = "get")
-    public String showAccountInputPage(HttpServletRequest req, HttpServletResponse resp){
-        String agreement = req.getParameter("isAgree");
-        if (agreement == null) {
-            req.setAttribute("noticeMessage", "약관에 동의해주세요!!");
+    @GetMapping(path = "/register/page/2")
+    public String showAccountInputPage(@RequestParam(name = "isAgree") String agree, Model model, HttpSession session){
+        if (agree == null) {
+            model.addAttribute("noticeMessage", "약관에 동의해주세요!!");
             return "registerPage";
         }
-        if (!agreement.equals("agree")) {
-            req.setAttribute("noticeMessage", "약관에 동의해주세요!!");
+        if (!agree.equals("agree")) {
+            model.addAttribute("noticeMessage", "약관에 동의해주세요!!");
             return "registerPage";
         }
 
-        HttpSession session = req.getSession();
         session.setAttribute(ACCOUNT_CERT_KEY, null);
 
         return "accountInputPage";
     }
 
-    @RequestMapping(uri = "/register/page/3", method = "get")
-    public String showProfileInputPage(HttpServletRequest req, HttpServletResponse resp){
+    @GetMapping(path = "/register/page/3")
+    public String showProfileInputPage(){
         return "profileInputPage";
     }
 
-    @RequestMapping(uri = "/account", method = "post")
-    public ViewInfo entryAccount(HttpServletRequest req, HttpServletResponse resp){
+    @PostMapping(path = "/account")
+    public ViewInfo entryAccount(Model model, HttpSession session, RegistVO registVO){
         ViewInfo viewInfo = new ViewInfo("accountInputPage");
 
-        String id = (String) req.getParameter("id");
-        String pw = (String) req.getParameter("pw");
-        String pwCheck = (String) req.getParameter("pwCheck");
-        String email = (String) req.getParameter("email");
-        String domain = (String) req.getParameter("domain");
-
-        RegisterService registerService = new RegisterService();
-        boolean isUsableId = registerService.isUsableAccountNo(id);
+        boolean isUsableId = registerService.isUsableAccountNo(registVO.getId());
         if (!isUsableId) {
-            req.setAttribute("noticeMessage", "아이디를 이미 사용중입니다 !!");
+            model.addAttribute("noticeMessage", "아이디를 이미 사용중입니다 !!");
             return viewInfo;
         }
 
-        if (!registerService.isCorrectPw(pw, pwCheck)) {
-            req.setAttribute("noticeMessage", "비밀번호를 확인해주세요 !!");
+        if (!registerService.isCorrectPw(registVO.getPw(), registVO.getPwCheck())) {
+            model.addAttribute("noticeMessage", "비밀번호를 확인해주세요 !!");
             return viewInfo;
         }
 
-        String rcvMailAddress = email + "@" + domain;
-        Account account = new Account(id, pw, rcvMailAddress);
+        String rcvMailAddress = registVO.getEmailAddress();
+        Account account = new Account(registVO.getId(), registVO.getPw(), rcvMailAddress);
 
         AccountCertDTO dto = registerService.sendAccountCert(account);
         dto.setAccount(account);
 
-        HttpSession session = req.getSession();
         session.setAttribute(ACCOUNT_CERT_KEY, dto);
 
-        req.setAttribute("noticeMessage", "이메일에서 인증번호 확인 후 인증번호를 입력해주세요");
+        model.addAttribute("noticeMessage", "이메일에서 인증번호 확인 후 인증번호를 입력해주세요");
         return viewInfo;
     }
 
-    @RequestMapping(uri = "/id-usage", method = "post")
-    public ViewInfo checkSameId(HttpServletRequest req, HttpServletResponse resp){
-        JSONObject jsonObject = ControllerUtils.getJsonObject(req);
 
+    @PostMapping(path = "/id-usage")
+    public JSONObject checkSameId(@RequestBody Map<String, String> paramMap){
         String newId = "";
-        if (jsonObject.containsKey("id")) {
-            newId = (String) jsonObject.get("id");
+        if (paramMap.containsKey("id")) {
+            newId = paramMap.get("id");
         }
 
         JSONObject respJsonObject = new JSONObject();
@@ -105,67 +102,58 @@ public class RegisterController {
         boolean isUsable = registerService.isUsableAccountNo(newId);
         respJsonObject.put("isUsable", isUsable);
 
-        try {
-            resp.getWriter().print(respJsonObject);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        ViewInfo viewInfo = new ViewInfo();
-        viewInfo.setContainView(false);
-
-        return viewInfo;
+        return respJsonObject;
     }
 
-    @RequestMapping(uri = "/account/cert", method = "post")
-    public ViewInfo checkAccountCert(HttpServletRequest req, HttpServletResponse resp){
-        HttpSession session = req.getSession();
+    @PostMapping(path = "/account/cert")
+    public ModelAndView checkAccountCert(HttpSession session, Model model){
         AccountCertDTO dto = (AccountCertDTO) session.getAttribute(ACCOUNT_CERT_KEY);
-        String inputValue = req.getParameter("accountCertInput");
+        String inputValue = (String) model.getAttribute("accountCertInput");
 
-        RegisterService registerService = new RegisterService();
         RegisterService.CertErrorType type = registerService.getCertErrorType(dto, inputValue);
         String errorMessage = registerService.getCertErrorMessage(type);
 
         if (!errorMessage.equals("")) {
-            req.setAttribute("noticeMessage", errorMessage);
-            return new ViewInfo("accountInputPage");
+            model.addAttribute("noticeMessage", errorMessage);
+            return new ModelAndView("accountInputPage");
         }
 
         boolean successed = registerService.createAccount(dto);
         if (!successed) {
-            req.setAttribute("noticeMessage", "예상치 못한 오류가 발생했습니다 다시 시도해주세요.");
-            return new ViewInfo("accountInputPage");
+            model.addAttribute("noticeMessage", "예상치 못한 오류가 발생했습니다 다시 시도해주세요.");
+            return new ModelAndView("accountInputPage");
         }
 
         int accountNo = registerService.getCreatedAccountNo(dto);
         if (!registerService.isUsableAccountNo(Integer.toString(accountNo))) {
-            req.setAttribute("noticeMessage", "예상치 못한 오류가 발생했습니다 다시 시도해주세요.");
-            return new ViewInfo("accountInputPage");
+            model.addAttribute("noticeMessage", "예상치 못한 오류가 발생했습니다 다시 시도해주세요.");
+            return new ModelAndView("accountInputPage");
         }
 
         session.setAttribute(ACCOUNT_CERT_KEY, null);
         session.setAttribute(ACCOUNT_NO, accountNo);
 
-        ViewInfo viewInfo = new ViewInfo();
-        viewInfo.setRedirectTo("/register/page/3");
-        return viewInfo;
+        ModelAndView mv = new ModelAndView();
+        mv.setView(new RedirectView("/register/page/3"));
+        return mv;
     }
 
-    @RequestMapping(uri = "/profile", method = "post")
-    public ViewInfo updateProfile(HttpServletRequest req, HttpServletResponse resp){
-        String nicname = req.getParameter("nicname");
-        String age = req.getParameter("age");
-        String city = req.getParameter("city");
-        String gender = req.getParameter("genderSelector");
+    @PostMapping(path = "/profile")
+    public ModelAndView updateProfile(Model model, HttpSession session){
+        String nicname = (String) model.getAttribute("nicname");
+        String age = (String) model.getAttribute("age");
+        String city = (String) model.getAttribute("city");
+        String gender = (String) model.getAttribute("genderSelector");
+
+        ModelAndView mv = new ModelAndView();
+        mv.setView(new RedirectView("/"));
 
         int accountNo = 0;
-        HttpSession session = req.getSession();
         try {
             accountNo = (int) session.getAttribute(ACCOUNT_NO);
             session.setAttribute(ACCOUNT_NO, null);
         } catch (Exception e) {
-            return ViewInfo.getRedirectViewInfo("index");
+            return mv;
         }
 
         RegisterService registerService = new RegisterService();
@@ -173,12 +161,10 @@ public class RegisterController {
         boolean successed = registerService.updateProfile(profile);
 
         if (!successed) {
-            req.setAttribute("noticeMessage", "예상치 못한 문제가 발생했습니다. 관리자에게 문의하세요!");
-            return new ViewInfo("profileInputPage");
+            model.addAttribute("noticeMessage", "예상치 못한 문제가 발생했습니다. 관리자에게 문의하세요!");
+            return mv;
         }
 
-        ViewInfo viewInfo = new ViewInfo();
-        viewInfo.setRedirectTo("/");
-        return viewInfo;
+        return mv;
     }
 }

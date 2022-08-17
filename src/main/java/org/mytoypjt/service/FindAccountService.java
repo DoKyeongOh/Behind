@@ -1,14 +1,16 @@
 package org.mytoypjt.service;
 
 import org.mytoypjt.dao.AccountDao;
-import org.mytoypjt.dao.ProfileDao;
 import org.mytoypjt.models.dto.IdCertificationInfo;
 import org.mytoypjt.models.dto.PwCertificationInfo;
+import org.mytoypjt.service.annotation.Transaction;
 import org.mytoypjt.utils.MailUtil;
+import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.util.List;
 
+@Service
 public class FindAccountService {
 
     private Connection connection;
@@ -45,18 +47,18 @@ public class FindAccountService {
         return value;
     }
 
+    @Transaction
     public boolean isRegisteredEmail(String email){
-        AccountDao accountDao = new AccountDao();
         return accountDao.isRegisteredEmail(email);
     }
 
+    @Transaction
     public List<String> getAccountListByEmail(String email){
-        AccountDao accountDao = new AccountDao();
         return accountDao.getAccountListByEmail(email);
     }
 
+    @Transaction
     public int getAccountNo(String id, String email){
-        AccountDao accountDao = new AccountDao();
         int accountNo = accountDao.findAccountNo(id, email);
         return accountNo;
     }
@@ -66,8 +68,8 @@ public class FindAccountService {
         return true;
     }
 
+    @Transaction
     public boolean resetPassword(int accountNo, String password){
-        AccountDao accountDao = new AccountDao();
         return accountDao.setAccountPw(accountNo, password);
     }
 }

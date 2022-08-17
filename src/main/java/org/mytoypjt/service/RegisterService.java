@@ -5,9 +5,19 @@ import org.mytoypjt.dao.ProfileDao;
 import org.mytoypjt.models.dto.AccountCertDTO;
 import org.mytoypjt.models.entity.Account;
 import org.mytoypjt.models.entity.Profile;
+import org.mytoypjt.service.annotation.Transaction;
 import org.mytoypjt.utils.MailUtil;
+import org.springframework.stereotype.Service;
 
+import java.sql.Connection;
+
+@Service
 public class RegisterService {
+
+    private Connection connection;
+
+    private AccountDao accountDao;
+    private ProfileDao profileDao;
 
     public enum CertErrorType {
         isNull, notInput, notSame, good
@@ -16,8 +26,8 @@ public class RegisterService {
     public RegisterService() {
     }
 
+    @Transaction
     public boolean isUsableAccountNo(String no){
-        AccountDao accountDao = new AccountDao();
         boolean isExistId = accountDao.isExistId(no);
         return !isExistId;
     }
@@ -35,9 +45,9 @@ public class RegisterService {
         return value;
     }
 
+    @Transaction
     public boolean createAccount(AccountCertDTO certDTO){
         Account account = certDTO.getAccount();
-        AccountDao accountDao = new AccountDao();
         boolean accountOk = accountDao.createAccount(account);
         boolean profileOk = true;
         if (accountOk)
@@ -51,8 +61,8 @@ public class RegisterService {
         return profileOk;
     }
 
+    @Transaction
     public boolean createDefaultProfile(Account account){
-        AccountDao accountDao = new AccountDao();
         int accountNo = accountDao.findAccountNo(account);
 
         Profile profile = new Profile(accountNo);
@@ -61,13 +71,13 @@ public class RegisterService {
         return successed;
     }
 
+    @Transaction
     public int getCreatedAccountNo(AccountCertDTO certDTO){
-        AccountDao accountDao = new AccountDao();
         return accountDao.findAccountNo(certDTO.getAccount());
     }
 
+    @Transaction
     public boolean updateProfile(Profile profile) {
-        ProfileDao profileDao = new ProfileDao();
         return profileDao.updateProfile(profile);
     }
 
