@@ -7,6 +7,7 @@ import org.mytoypjt.models.entity.Account;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.service.annotation.Transaction;
 import org.mytoypjt.utils.MailUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
@@ -16,7 +17,9 @@ public class RegisterService {
 
     private Connection connection;
 
+    @Autowired
     private AccountDao accountDao;
+    @Autowired
     private ProfileDao profileDao;
 
     public enum CertErrorType {
