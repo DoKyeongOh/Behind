@@ -55,7 +55,14 @@ function getXmlHttpRequest(method, url, postData){
 
     xhr.open(method.toUpperCase(), url, true);
 
-    xhr.setRequestHeader("Content-Type", "application/json");
+    const contentType = {
+        name : "content-type",
+        value : "application/json"
+    }
+
+    xhr.setRequestHeader(contentType.name, contentType.value);
+
+    console.log(contentType);
 
     xhr.send(JSON.stringify(postData));
     return xhr;
