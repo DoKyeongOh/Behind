@@ -1,7 +1,5 @@
 package org.mytoypjt.utils;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.mytoypjt.models.entity.Profile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +18,7 @@ public class ControllerUtils {
             return false;
         return true;
     }
-
+/*
     public static JSONObject getJsonObject(HttpServletRequest req){
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = null;
@@ -31,6 +29,6 @@ public class ControllerUtils {
             e.printStackTrace();
         }
         return jsonObject;
-    }
+    }*/
 
 }

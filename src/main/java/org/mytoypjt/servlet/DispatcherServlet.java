@@ -1,13 +1,11 @@
 package org.mytoypjt.servlet;
 
-import org.json.simple.JSONObject;
 import org.mytoypjt.controller.structure.BaseControllerAdapter;
 import org.mytoypjt.controller.structure.ControllerAdapterFactory;
 import org.mytoypjt.controller.structure.enums.MappingName;
 import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.utils.DBUtil;
 import org.mytoypjt.utils.PropertiesUtil;
-import org.mytoypjt.utils.TransactionManager;
 import org.mytoypjt.utils.ViewResolver;
 
 import javax.servlet.RequestDispatcher;
