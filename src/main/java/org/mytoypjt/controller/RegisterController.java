@@ -34,31 +34,29 @@ public class RegisterController {
 
     public RegisterController(){}
 
-    @GetMapping(path = "/register/page/1")
-    public String showRegisterPage(){
-        return "registerPage";
-    }
-
-    @GetMapping(path = "/register/page/2")
-    public String showAccountInputPage(@RequestParam(name = "isAgree") String agree, Model model, HttpSession session){
-        if (agree == null) {
-            model.addAttribute("noticeMessage", "약관에 동의해주세요!!");
-            return "registerPage";
+    @GetMapping(path = "/register/page/{pageNo}")
+    public ModelAndView ShowRegisterPages(@PathVariable(name = "pageNo")int pageNo,
+                                          @RequestParam Map<String, String> param){
+        ModelAndView mv = new ModelAndView("registerPage");
+        switch (pageNo) {
+            case 1:
+                return mv;
+            case 2: {
+                String agree = param.get("isAgree");
+                if (agree == null || !agree.equals("agree")) {
+                    mv.addObject("noticeMessage", "약관에 동의해주세요!!");
+                    return mv;
+                }
+                mv.setViewName("accountInputPage");
+                return mv;
+            }
+            case 3: {
+                mv.setViewName("profileInputPage");
+            }
+            default: return mv;
         }
-        if (!agree.equals("agree")) {
-            model.addAttribute("noticeMessage", "약관에 동의해주세요!!");
-            return "registerPage";
-        }
-
-        session.setAttribute(ACCOUNT_CERT_KEY, null);
-
-        return "accountInputPage";
     }
 
-    @GetMapping(path = "/register/page/3")
-    public String showProfileInputPage(){
-        return "profileInputPage";
-    }
 
     @PostMapping(path = "/account")
     public ModelAndView entryAccount(Model model, HttpSession session, RegistVO registVO){
