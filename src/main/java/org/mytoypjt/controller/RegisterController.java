@@ -59,7 +59,7 @@ public class RegisterController {
 
 
     @PostMapping(path = "/account")
-    public ModelAndView entryAccount(Model model, HttpSession session, RegistVO registVO){
+    public ModelAndView entryAccount(Model model, HttpSession session, @ModelAttribute RegistVO registVO){
         ModelAndView modelAndView = new ModelAndView("accountInputPage");
 
         boolean isUsableId = registerService.isUsableAccountNo(registVO.getId());
