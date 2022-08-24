@@ -3,7 +3,6 @@ package org.mytoypjt.service.post.strategy.posts;
 import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.vo.PostsOptionVO;
-import org.mytoypjt.service.annotation.Transaction;
 import org.mytoypjt.utils.TransactionManager;
 
 import java.util.List;
@@ -63,8 +62,7 @@ public class PostsStrategyContext {
         }
     }
 
-    @Transaction
-    public List<Post> getPosts(PostsOptionVO postsOptionVO, Map<String, String[]> paramMap){
+    public List<Post> getPosts(PostsOptionVO postsOptionVO, Map<String, String> paramMap){
         this.postsStrategy.setPostCountInPage(this.postCountInPage);
         return this.postsStrategy.getPosts(postsOptionVO, paramMap);
     }

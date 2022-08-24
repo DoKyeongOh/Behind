@@ -1,9 +1,6 @@
 package org.mytoypjt.service.post.strategy.pagecount;
 
 import org.mytoypjt.models.dto.PostSortType;
-import org.mytoypjt.service.annotation.Transaction;
-import org.mytoypjt.service.post.strategy.posts.BasePostsStrategy;
-import org.mytoypjt.utils.TransactionManager;
 
 import java.sql.Connection;
 

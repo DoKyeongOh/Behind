@@ -1,22 +1,23 @@
 package org.mytoypjt.service.post;
 
 import org.mytoypjt.dao.*;
-import org.mytoypjt.models.entity.Reply;
-import org.mytoypjt.models.vo.PostsOptionVO;
+import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
-import org.mytoypjt.models.dto.PostSortType;
-import org.mytoypjt.service.annotation.Transaction;
+import org.mytoypjt.models.entity.Reply;
+import org.mytoypjt.models.vo.PostsOptionVO;
 import org.mytoypjt.service.post.strategy.pagecount.PageCountStrategyContext;
 import org.mytoypjt.service.post.strategy.posts.PostsStrategyContext;
 import org.mytoypjt.utils.TransactionManager;
+import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class PostService {
     private Connection connection;
 
@@ -116,7 +117,7 @@ public class PostService {
         return options;
     }
 
-    public List<Post> getPosts(PostsOptionVO options, Map<String, String[]> paramMap){
+    public List<Post> getPosts(PostsOptionVO options, Map<String, String> paramMap){
         PostSortType sortType = getPostSortType(options.getSortType());
         postsStrategyContext.setPostsStrategy(sortType);
         return postsStrategyContext.getPosts(options, paramMap);

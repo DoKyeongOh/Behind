@@ -1,10 +1,5 @@
 package org.mytoypjt.models.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.mytoypjt.service.annotation.Transaction;
-
-import java.sql.Connection;
 import java.util.Date;
 
 public class Post {

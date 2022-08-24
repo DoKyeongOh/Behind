@@ -22,6 +22,6 @@ public abstract class BasePostsStrategy {
         this.postCountInPage = postCountInPage;
     }
 
-    public abstract List<Post> getPosts(PostsOptionVO optionVO, Map<String, String[]> paramMap);
+    public abstract List<Post> getPosts(PostsOptionVO optionVO, Map<String, String> paramMap);
 
 }
