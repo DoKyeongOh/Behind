@@ -157,21 +157,20 @@ public class PostController {
     }
 
     @DeleteMapping(path = "/post")
-    public ViewInfo deletePost(){
+    public String deletePost(){
         return null;
     }
 
     @PutMapping(path = "/post")
-    public ViewInfo modifyPost(HttpServletRequest req, HttpServletResponse resp){
-        HttpSession session = req.getSession();
-        Profile profile = (Profile) session.getAttribute("profile");
+    public ModelAndView modifyPost(@SessionAttribute(name = "profile")Profile profile,
+                               Map<String, String> param){
 
-        int postNo = Integer.parseInt(req.getParameter("postNo"));
-        String title = req.getParameter("title");
-        String content = req.getParameter("content");
-        int pictureNo = Integer.parseInt(req.getParameter("imgNo"));
-        boolean isAnonymousName = (Objects.equals(req.getParameter("isAnonName"), "true")) ? true : false;
-        boolean isAnonymousCity = (Objects.equals(req.getParameter("isAnonCity"), "true")) ? true : false;
+        int postNo = Integer.parseInt(param.get("postNo"));
+        String title = param.get("title");
+        String content = param.get("content");
+        int pictureNo = Integer.parseInt(param.get("imgNo"));
+        boolean isAnonymousName = (Objects.equals(param.get("isAnonName"), "true")) ? true : false;
+        boolean isAnonymousCity = (Objects.equals(param.get("isAnonCity"), "true")) ? true : false;
 
         Post post = new Post(
                 postNo, title, content, new Date(), 0, 0, profile.getAccountNo(),
@@ -179,25 +178,24 @@ public class PostController {
 
         postService.updatePost(post);
 
-        return ViewInfo.getRedirectViewInfo("/post?no="+post.getPostNo());
+        return new ModelAndView(new RedirectView("/post?no="+post.getPostNo()));
     }
 
     @PostMapping(path = "/like")
-    public ViewInfo togglePostLike(HttpServletRequest req, HttpServletResponse resp){
-        String postNo = req.getParameter("postNo");
-        String accountNo = req.getParameter("accountNo");
-
+    public ModelAndView togglePostLike(Map<String, String> param, Model model){
+        String postNo = param.get("postNo");
+        String accountNo = param.get("accountNo");
         
         postService.toggleLike(postNo, accountNo);
 
         boolean isLike = postService.isLikePost(postNo, accountNo);
-        req.setAttribute("isLike", isLike);
+        model.addAttribute("isLike", isLike);
 
         Post post = postService.getPost(postNo);
         if (post == null)
-            return ViewInfo.getRedirectViewInfo("/posts?type=1");
+            return new ModelAndView(new RedirectView("/posts?type=1"));
         else
-            return ViewInfo.getRedirectViewInfo("/post?no="+post.getPostNo());
+            return new ModelAndView(new RedirectView("/post?no="+post.getPostNo()));
     }
 
 
