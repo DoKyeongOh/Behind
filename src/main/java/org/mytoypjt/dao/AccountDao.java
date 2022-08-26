@@ -1,11 +1,13 @@
 package org.mytoypjt.dao;
 
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.mytoypjt.models.entity.Account;
 import org.mytoypjt.utils.DBUtil;
-import org.mytoypjt.utils.TransactionManager;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,17 +19,24 @@ import java.util.List;
 public class AccountDao {
     final int NOT_CORRECTED_ACCOUNT_NO = -1;
     final int DUPLICATION_ACCOUNT = -2;
-    final String NOT_FOUND_ACCOUNT_ID = "";
 
-    public AccountDao() {
-        super();
+    NamedParameterJdbcTemplate jdbcTemplate;
+    SimpleJdbcInsert jdbcInsert;
+    RowMapper<Account> accountRowMapper;
+
+    public AccountDao(DataSource dataSource) {
+        jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("account");
     }
 
     public int getAccountNo(String id, String pw) {
         String sql = "select account_no from account where id=? and password=?";
         int accountNo = NOT_CORRECTED_ACCOUNT_NO;
 
-        try (
+        List<Account> accountList = jdbcTemplate.query(sql, accountRowMapper);
+        return accountList.get(0).getAccountNo();
+
+        /*try (
                 Connection connection = DBUtil.getBasicDataSource().getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 ) {
@@ -43,7 +52,7 @@ public class AccountDao {
         } catch (SQLException e) {
             e.printStackTrace();
             return NOT_CORRECTED_ACCOUNT_NO;
-        }
+        }*/
     }
 
     public List<String> getAccountListByEmail(String email){
