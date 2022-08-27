@@ -1,9 +1,7 @@
 package org.mytoypjt.dao;
 
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.DBUtil;
-import org.mytoypjt.utils.TransactionManager;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;

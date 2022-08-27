@@ -1,11 +1,9 @@
 package org.mytoypjt.dao;
 
-import org.apache.commons.dbcp2.BasicDataSource;
-import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.utils.DBUtil;
-import org.mytoypjt.utils.TransactionManager;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,24 +12,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReplyDao extends BaseTransactionDao {
+@Repository
+public class ReplyDao {
 
     public ReplyDao() {
-        super();
-    }
-
-    public ReplyDao(Connection connection) {
-        super(connection);
-    }
-
-    @Override
-    public void setConnection(Connection connection) {
-        super.setConnection(connection);
     }
 
     public List<Reply> getReplies(int commentNo) {
         String sql = "select * from reply where comment_no = ?";
-        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatement.setInt(1, commentNo);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -48,7 +40,10 @@ public class ReplyDao extends BaseTransactionDao {
                 "(reply_no, content, account_no, comment_no, is_use_anonymous_name, nicname, replied_date)" +
                 "values " +
                 "(null, ?, ?, ?, ?, ?, now())";
-        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             String nicname = profile.getNicname();
             if (isAnonName) nicname = "누군가";
 
@@ -67,7 +62,10 @@ public class ReplyDao extends BaseTransactionDao {
     public List<Reply> getRepliesByAccountNo(int accountNo) {
         String sql = "select * from reply where account_no = ?";
 
-        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatement.setInt(1, accountNo);
             ResultSet resultSet = preparedStatement.executeQuery();
 

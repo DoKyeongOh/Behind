@@ -3,7 +3,7 @@ package org.mytoypjt.dao;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.DBUtil;
-import org.mytoypjt.utils.TransactionManager;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,26 +12,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostDao extends BaseTransactionDao {
+@Repository
+public class PostDao {
 
     public PostDao() {
-    }
-
-    public PostDao(Connection connection) {
-        super(connection);
-    }
-
-    @Override
-    public void setConnection(Connection connection) {
-        super.setConnection(connection);
     }
 
     public List<Post> getRealTimePosts(int pageNo, int postCountInPage){
         int startNo = (pageNo - 1) * postCountInPage;
         if (startNo < 0) startNo = 1;
         String sql = "select * from post order by posted_date desc limit ?, ?";
-        Connection conn = this.connection;
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatement.setInt(1, startNo);
             preparedStatement.setInt(2, postCountInPage);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -49,8 +43,10 @@ public class PostDao extends BaseTransactionDao {
         String sql = "select * from post " +
                 "where posted_date between date_add(now(), interval -1 day) and now() " +
                 "order by like_count desc limit ?, ?";
-        Connection conn = this.connection;
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatement.setInt(1, startNo);
             preparedStatement.setInt(2, postCountInPage);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -68,8 +64,10 @@ public class PostDao extends BaseTransactionDao {
         String sql = "select * from post " +
                 "where posted_date between date_add(now(), interval -1 week) and now() " +
                 "order by like_count desc limit ?, ?";
-        Connection conn = this.connection;
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatement.setInt(1, startNo);
             preparedStatement.setInt(2, postCountInPage);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -110,8 +108,10 @@ public class PostDao extends BaseTransactionDao {
 
     public Post getPost(int postNo) {
         String sql = "select * from post where post_no = ?";
-        Connection conn = this.connection;
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatement.setInt(1, postNo);
             ResultSet resultSet = preparedStatement.executeQuery();
             Post post = null;
@@ -143,8 +143,10 @@ public class PostDao extends BaseTransactionDao {
     public boolean isAlreadyLikeThis(int postNo, int accountNo) {
         String sql = "select * from likes where post_no = ? and account_no = ?";
 
-        Connection conn = this.connection;
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatement.setInt(1, postNo);
             preparedStatement.setInt(2, accountNo);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -171,8 +173,10 @@ public class PostDao extends BaseTransactionDao {
         if (isAdd)
             sql = "insert into likes (like_no, post_no, account_no) values (null, ?, ?)";
 
-        Connection conn = this.connection;
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatement.setInt(1, postNo);
             preparedStatement.setInt(2, accountNo);
             preparedStatement.execute();
@@ -184,8 +188,10 @@ public class PostDao extends BaseTransactionDao {
     public int getLikeCount(int postNo) {
         String sql = "select count(*) from likes where post_no=?";
 
-        Connection conn = this.connection;
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatement.setInt(1, postNo);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
@@ -199,8 +205,10 @@ public class PostDao extends BaseTransactionDao {
     public void updateLikeCount(int postNo, int count){
         String sql = "update post set like_count = ? where post_no = ?";
 
-        Connection conn = this.connection;
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatement.setInt(1, count);
             preparedStatement.setInt(2, postNo);
             preparedStatement.execute();
@@ -212,8 +220,10 @@ public class PostDao extends BaseTransactionDao {
     public boolean isUserLikePost(int postNo, int accountNo){
         String sql = "select * from likes where post_no=? and account_no=?";
 
-        Connection conn = this.connection;
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatement.setInt(1, postNo);
             preparedStatement.setInt(2, accountNo);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -228,8 +238,10 @@ public class PostDao extends BaseTransactionDao {
     public int getTotalPostCount() {
         String sql = "select count(*) from post";
 
-        Connection conn = this.connection;
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
                 return resultSet.getInt(1);
@@ -243,8 +255,10 @@ public class PostDao extends BaseTransactionDao {
         String sql = "select count(*) from post " +
                 "where posted_date between date_add(now(), interval -1 day) and now() " +
                 "order by like_count desc limit 0, ?";
-        Connection conn = this.connection;
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatement.setInt(1, postCountInPage);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
@@ -280,7 +294,10 @@ Connection conn = DBUtil.getBasicDataSource().getConnection();
                 "values " +
                 "(null , ?, ?, now(), 0, 0, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
 
             String nicname = (post.getIsUseAnonymousName()) ? "누군가" : post.getNicname();
             String city = (post.getIsUseAnonymousCity()) ? "어딘가" : post.getCity();
@@ -306,8 +323,10 @@ Connection conn = DBUtil.getBasicDataSource().getConnection();
                 "is_use_anonymous_name=?, is_use_anonymous_city=?, nicname=?, city=?" +
                 "where post_no=?";
 
-        Connection conn = this.connection;
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
 
             String nicname = (post.getIsUseAnonymousName()) ? "누군가" : post.getNicname();
             String city = (post.getIsUseAnonymousCity()) ? "어딘가" : post.getCity();
@@ -329,8 +348,10 @@ Connection conn = DBUtil.getBasicDataSource().getConnection();
     public List<Post> getPostsByAccountNo(int accountNo) {
         String sql = "select * from post where account_no = ?";
 
-        Connection conn = this.connection;
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatement.setInt(1, accountNo);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Post> postList = getPosts(resultSet);
@@ -344,8 +365,10 @@ Connection conn = DBUtil.getBasicDataSource().getConnection();
     public Post getLastPost(int accountNo) {
         String sql = "select * from post order by posted_date desc limit 1";
 
-        Connection conn = this.connection;
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             ResultSet resultSet = preparedStatement.executeQuery();
             Post post = null;
 

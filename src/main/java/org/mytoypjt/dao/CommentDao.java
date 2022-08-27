@@ -3,32 +3,27 @@ package org.mytoypjt.dao;
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.DBUtil;
-import org.mytoypjt.utils.TransactionManager;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommentDao extends BaseTransactionDao {
+@Repository
+public class CommentDao {
 
     public CommentDao() {
         super();
-    }
-
-    public CommentDao(Connection connection) {
-        super(connection);
-    }
-
-    @Override
-    public void setConnection(Connection connection) {
-        super.setConnection(connection);
     }
 
     public List<Comment> getComments(int postNo) {
         String sql = "select " +
                 "comment_no, content, reply_count, account_no, post_no, is_use_anonymous_name, nicname, commented_date" +
                 " from comment where post_no = ?";
-        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatement.setInt(1, postNo);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -58,7 +53,10 @@ public class CommentDao extends BaseTransactionDao {
                 "(comment_no, content, reply_count, account_no, post_no, is_use_anonymous_name, nicname, commented_date) " +
                 "values (null , ?, 0, ?, ?, ?, ?, now())";
 
-        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             String nicname = profile.getNicname();
             if (isAnonymous) nicname = "누군가";
 
@@ -76,7 +74,10 @@ public class CommentDao extends BaseTransactionDao {
     public int getCommentCount(int postNo) {
         String sql = "select count(*) from comment where post_no=?";
 
-        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatement.setInt(1, postNo);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
@@ -90,7 +91,10 @@ public class CommentDao extends BaseTransactionDao {
     public void updateCommentCount(int postNo, int count){
         String sql = "update post set comment_count = ? where post_no = ?";
 
-        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatement.setInt(1, count);
             preparedStatement.setInt(2, postNo);
             preparedStatement.execute();
@@ -102,7 +106,10 @@ public class CommentDao extends BaseTransactionDao {
     public Comment getCommentByCommentNo(int commentNo) {
         String sql = "select * from comment where comment_no = ?";
 
-        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatement.setInt(1, commentNo);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -127,7 +134,10 @@ public class CommentDao extends BaseTransactionDao {
     public List<Comment> getCommentsByAccountNo(int accountNo) {
         String sql = "select * from comment where account_no = ?";
 
-        try (PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
+        try (
+                Connection connection = DBUtil.getBasicDataSource().getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
             preparedStatement.setInt(1, accountNo);
             ResultSet resultSet = preparedStatement.executeQuery();
 
