@@ -16,6 +16,7 @@ import java.util.List;
 @ComponentScan(basePackages = {"org.mytoypjt"})
 @Import(DBConfig.class)
 public class WebMvcConfiguration implements WebMvcConfigurer {
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/css/**").addResourceLocations("/css/").setCachePeriod(31556926);
