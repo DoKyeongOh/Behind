@@ -9,25 +9,29 @@ import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.models.vo.PostsOptionVO;
 import org.mytoypjt.service.post.strategy.pagecount.PageCountStrategyContext;
 import org.mytoypjt.service.post.strategy.posts.PostsStrategyContext;
-import org.mytoypjt.utils.TransactionManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class PostService {
-    private Connection connection;
 
+    @Autowired
     private PostDao postDao;
+    @Autowired
     private CommentDao commentDao;
+    @Autowired
     private ReplyDao replyDao;
+    @Autowired
     private ProfileDao profileDao;
+    @Autowired
     private PostLogDao postLogDao;
-
+    @Autowired
     private PageCountStrategyContext pageCountStrategyContext;
+    @Autowired
     private PostsStrategyContext postsStrategyContext;
 
     final int PICTURE_COUNT = 10;
@@ -39,22 +43,9 @@ public class PostService {
     final int PAGE_COUNT_IN_PAGE = 5;
 
     public PostService(){
-        this.pageCountStrategyContext = (PageCountStrategyContext)
-                TransactionManager.getInstance(PageCountStrategyContext.class);
-        pageCountStrategyContext.setPostCountInPage(POST_COUNT_IN_PAGE);
-
-        this.postsStrategyContext = (PostsStrategyContext)
-                TransactionManager.getInstance(PostsStrategyContext.class);
-        postsStrategyContext.setPostCountInPage(POST_COUNT_IN_PAGE);
-
-        this.postDao = new PostDao(this.connection);
-        this.commentDao = new CommentDao(this.connection);
-        this.replyDao = new ReplyDao(this.connection);
-//        this.profileDao = new ProfileDao(this.connection);
-        this.postLogDao = new PostLogDao(this.connection);
+        int a = 2;
     }
 
-    @Transaction
     public Profile getPosterProfile(int accountNo) {
         Profile profile = profileDao.getProfile(accountNo);
         if (profile == null) {
@@ -99,6 +90,7 @@ public class PostService {
 
         PostSortType type = getPostSortType(sortType);
 
+        pageCountStrategyContext.setPostCountInPage(POST_COUNT_IN_PAGE);
         pageCountStrategyContext.setPageCountStrategy(type);
         int pageTotalCount = pageCountStrategyContext.getPageCount();
 
@@ -109,6 +101,7 @@ public class PostService {
     }
 
     public PostsOptionVO getDefaultPostsOption() {
+        pageCountStrategyContext.setPostCountInPage(POST_COUNT_IN_PAGE);
         pageCountStrategyContext.setPageCountStrategy(PostSortType.REAL_TIME);
         int pageTotalCount = pageCountStrategyContext.getPageCount();
 
@@ -119,28 +112,25 @@ public class PostService {
 
     public List<Post> getPosts(PostsOptionVO options, Map<String, String> paramMap){
         PostSortType sortType = getPostSortType(options.getSortType());
+        postsStrategyContext.setPostCountInPage(POST_COUNT_IN_PAGE);
         postsStrategyContext.setPostsStrategy(sortType);
         return postsStrategyContext.getPosts(options, paramMap);
     }
 
-    @Transaction
     public Post getPost(String no) {
         int postNo = Integer.parseInt(no);
         return postDao.getPost(postNo);
     }
 
-    @Transaction
     public void createPost(Profile profile, Post post) {
         postDao.createPost(profile, post);
         postLogDao.writePostActivityLog(profile.getAccountNo(), post.getPostNo(), "게시");
     }
 
-    @Transaction
     public void updatePost(Post post) {
         postDao.updatePost(post);
     }
 
-    @Transaction
     public void toggleLike(String post, String account) {
         if (post == null) return;
         if (account == null) return;
@@ -157,7 +147,6 @@ public class PostService {
         postDao.updateLikeCount(postNo, likeCount);
     }
 
-    @Transaction
     public boolean isLikePost(String postNo, String accountNo) {
         if (postNo == null)
             return false;
@@ -174,12 +163,10 @@ public class PostService {
         }
     }
 
-    @Transaction
     public List<Comment> getComments(int postNo) {
         return commentDao.getComments(postNo);
     }
 
-    @Transaction
     public void createComment(String postNo, Profile profile, String isUseAnonymousName, String content) {
         if (isNull(postNo, profile, content))
             return;
@@ -207,7 +194,6 @@ public class PostService {
         }
     }
 
-    @Transaction
     public Comment getComment(String no){
         try {
             int commentNo = Integer.parseInt(no);
@@ -217,13 +203,11 @@ public class PostService {
         }
     }
 
-    @Transaction
     public List<Reply> getReplies(Comment comment) {
         int commentNo = comment.getCommentNo();
         return replyDao.getReplies(commentNo);
     }
 
-    @Transaction
     public void createReply(String content, String replierNo, String commentNo, String isAnonName) {
         int accountNo = Integer.parseInt(replierNo);
         int commentNoInt = Integer.parseInt(commentNo);

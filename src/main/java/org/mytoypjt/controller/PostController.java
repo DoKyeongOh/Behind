@@ -1,14 +1,11 @@
 package org.mytoypjt.controller;
 
-import org.mytoypjt.models.vo.PostsOptionVO;
+import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
-import org.mytoypjt.models.dto.PostSortType;
-import org.mytoypjt.models.etc.ViewInfo;
+import org.mytoypjt.models.vo.PostsOptionVO;
 import org.mytoypjt.service.post.PostService;
-import org.mytoypjt.utils.ControllerUtils;
-import org.mytoypjt.utils.TransactionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
@@ -185,7 +180,7 @@ public class PostController {
     public ModelAndView togglePostLike(Map<String, String> param, Model model){
         String postNo = param.get("postNo");
         String accountNo = param.get("accountNo");
-        
+
         postService.toggleLike(postNo, accountNo);
 
         boolean isLike = postService.isLikePost(postNo, accountNo);

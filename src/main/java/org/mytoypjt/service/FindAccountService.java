@@ -3,12 +3,10 @@ package org.mytoypjt.service;
 import org.mytoypjt.dao.AccountDao;
 import org.mytoypjt.models.dto.IdCertificationInfo;
 import org.mytoypjt.models.dto.PwCertificationInfo;
-import org.mytoypjt.service.annotation.Transaction;
 import org.mytoypjt.utils.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Connection;
 import java.util.List;
 
 @Service

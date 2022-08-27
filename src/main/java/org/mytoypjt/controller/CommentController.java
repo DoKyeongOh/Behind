@@ -7,24 +7,24 @@ import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.service.post.PostService;
-import org.mytoypjt.utils.TransactionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+@Controller
 public class CommentController {
-
-    private PostService postService;
+    @Autowired
+    PostService postService;
 
     final String REPLIES = "replies";
     final String COMMENT = "comment";
     final String PARENT_TITLE = "parentPost";
 
-    public CommentController() {
-        postService = (PostService) TransactionManager.getInstance(PostService.class);
-    }
+    public CommentController() {}
 
     @RequestMapping(uri = "/comment", method = "post")
     public ViewInfo entryComment(HttpServletRequest req, HttpServletResponse resp){

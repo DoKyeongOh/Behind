@@ -3,20 +3,18 @@ package org.mytoypjt.service.post.strategy.posts;
 import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.vo.PostsOptionVO;
-import org.mytoypjt.utils.TransactionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class PostsStrategyContext {
 
     private BasePostsStrategy postsStrategy;
 
     public PostsStrategyContext() {
-    }
-
-    public PostsStrategyContext(int postCountInPage) {
-        this.postCountInPage = postCountInPage;
     }
 
     private int postCountInPage = 12;
@@ -36,27 +34,27 @@ public class PostsStrategyContext {
     public void setPostsStrategy(PostSortType sortType){
         switch (sortType) {
             case REAL_TIME: {
-                setPostsStrategy((BasePostsStrategy) TransactionManager.getInstance(RealTimeStrategy.class));
+                setPostsStrategy(new RealTimeStrategy());
                 break;
             }
             case DAYS_FAVORITE: {
-                setPostsStrategy((BasePostsStrategy) TransactionManager.getInstance(DaysFavoriteStrategy.class));
+                setPostsStrategy(new DaysFavoriteStrategy());
                 break;
             }
             case WEEKS_FAVORITE: {
-                setPostsStrategy((BasePostsStrategy) TransactionManager.getInstance(WeeksFavoriteStrategy.class));
+                setPostsStrategy(new WeeksFavoriteStrategy());
                 break;
             }
             case SEARCH_TITLE_FROM_USER: {
-                setPostsStrategy((BasePostsStrategy) TransactionManager.getInstance(TitleSearchStrategy.class));
+                setPostsStrategy(new TitleSearchStrategy());
                 break;
             }
             case SEARCH_CONTENT_FROM_USER: {
-                setPostsStrategy((BasePostsStrategy) TransactionManager.getInstance(ContentSearchStrategy.class));
+                setPostsStrategy(new ContentSearchStrategy());
                 break;
             }
             case HASH_TAG: {
-                setPostsStrategy((BasePostsStrategy) TransactionManager.getInstance(HashTagStrategy.class));
+                setPostsStrategy(new HashTagStrategy());
                 break;
             }
         }

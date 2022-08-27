@@ -17,7 +17,7 @@ class PostServiceTest {
     @BeforeEach
     public void init(){
         // init param
-        postService = new PostService();
+//        postService = new PostService();
     }
 
     @Test

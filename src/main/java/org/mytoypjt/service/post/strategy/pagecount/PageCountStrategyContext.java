@@ -1,14 +1,18 @@
 package org.mytoypjt.service.post.strategy.pagecount;
 
 import org.mytoypjt.models.dto.PostSortType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 
+@Component
 public class PageCountStrategyContext {
 
     private BasePageCountStrategy pageCountStrategy;
 
-    private Connection connection;
+    public PageCountStrategyContext() {
+    }
 
     private int postCountInPage = 12;
 
@@ -19,22 +23,7 @@ public class PageCountStrategyContext {
     public void setPostCountInPage(int postCountInPage) {
         this.postCountInPage = postCountInPage;
     }
-
-    public Connection getConnection() {
-        return connection;
-    }
-
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
-
-
-    public PageCountStrategyContext() {
-    }
-
-    public PageCountStrategyContext(int postCountInPage) {
-        this.postCountInPage = postCountInPage;
-    }
+    
 
     public void setPageCountStrategy(BasePageCountStrategy pageCountStrategy){
         this.pageCountStrategy = pageCountStrategy;
@@ -69,9 +58,7 @@ public class PageCountStrategyContext {
         }
     }
 
-    @Transaction
     public int getPageCount(){
-        this.pageCountStrategy.setConnection(getConnection());
         this.pageCountStrategy.setPostCountInPage(this.postCountInPage);
         return this.pageCountStrategy.getPageCount();
     }

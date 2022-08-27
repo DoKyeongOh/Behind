@@ -1,8 +1,6 @@
 package org.mytoypjt.service.post.strategy.pagecount;
 
 import org.mytoypjt.dao.PostDao;
-import org.mytoypjt.service.annotation.Transaction;
-import org.mytoypjt.utils.TransactionManager;
 
 public class WeeksFavoriteStrategy extends BasePageCountStrategy{
     WeeksFavoriteStrategy() {

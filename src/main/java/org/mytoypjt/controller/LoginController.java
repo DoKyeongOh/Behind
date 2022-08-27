@@ -1,12 +1,7 @@
 package org.mytoypjt.controller;
 
-import org.mytoypjt.controller.structure.properties.PropertiesControllerTemplete;
-import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.service.LoginService;
-import org.mytoypjt.service.annotation.Transaction;
-import org.mytoypjt.utils.ControllerUtils;
-import org.mytoypjt.utils.TransactionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +11,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
