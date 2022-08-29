@@ -40,7 +40,7 @@ class PostServiceTest {
             profile.setNicname("테스트");
             profile.setCity("도시");
 
-            this.postService.createPost(new Profile(19), new Post());
+            this.postService.createPost(new Post());
         }catch (Exception e) {
             e.printStackTrace();
             successed = false;

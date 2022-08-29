@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.Profile;
+import org.mytoypjt.utils.DBUtil;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,7 +18,7 @@ class PostDaoTest {
 
     @BeforeEach
     public void init(){
-        postDao = new PostDao();
+        postDao = new PostDao(DBUtil.getBasicDataSource());
     }
 
     @Test
@@ -34,12 +36,22 @@ class PostDaoTest {
 
     @Test
     void createPost() {
-
         boolean successed = true;
         try {
-            Profile profile = new Profile(100);
-            profile.setNicname("nice name");
             // test content
+            Post post = new Post(
+                    "test title333",
+                    "test content",
+                    new Date(),
+                    0,
+                    0,
+                    19,
+                    1,
+                    true,
+                    true,
+                    "admin",
+                    "천안시");
+            this.postDao.createPost(post);
         }catch (Exception e) {
             e.printStackTrace();
             successed = false;
@@ -68,7 +80,22 @@ class PostDaoTest {
         boolean successed = true;
         try {
             // test content
-            this.postDao.updatePost(new Post());
+            Post post = postDao.getPost(40);
+            post.setContent(post.getContent() + ", 2회 수정됨");
+            this.postDao.updatePost(post);
+        }catch (Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(true, successed);
+    }
+
+    @Test
+    void getTotalPostCount() {
+        boolean successed = true;
+        try {
+            // test content
+            System.out.println(this.postDao.getTotalPostCount());
         }catch (Exception e) {
             e.printStackTrace();
             successed = false;

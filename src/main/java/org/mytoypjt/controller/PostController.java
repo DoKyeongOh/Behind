@@ -129,7 +129,7 @@ public class PostController {
                 -1, title, content, new Date(), commentCount, likeCount, profile.getAccountNo(),
                 pictureNo, isAnonymousName, isAnonymousCity, profile.getNicname(), profile.getCity());
         
-        postService.createPost(profile, post);
+        postService.createPost(post);
 
         return new ModelAndView(new RedirectView("/post/page/2"));
     }

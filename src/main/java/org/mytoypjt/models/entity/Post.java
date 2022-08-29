@@ -48,6 +48,20 @@ public class Post {
         this.city = city;
     }
 
+    public Post(String title, String content, Date postedDate, int commentCount, int likeCount, int accountNo, int pictureNo, boolean isUseAnonymousName, boolean isUseAnonymousCity, String nicname, String city) {
+        this.title = title;
+        this.content = content;
+        this.postedDate = postedDate;
+        this.commentCount = commentCount;
+        this.likeCount = likeCount;
+        this.accountNo = accountNo;
+        this.pictureNo = pictureNo;
+        this.isUseAnonymousName = isUseAnonymousName;
+        this.isUseAnonymousCity = isUseAnonymousCity;
+        this.nicname = nicname;
+        this.city = city;
+    }
+
     public int getPostNo() {
         return postNo;
     }

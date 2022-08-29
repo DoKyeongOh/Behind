@@ -29,6 +29,9 @@ public class PostService {
     private ProfileDao profileDao;
     @Autowired
     private PostLogDao postLogDao;
+
+    @Autowired
+    private LikeDao likeDao;
     @Autowired
     private PageCountStrategyContext pageCountStrategyContext;
     @Autowired
@@ -122,9 +125,15 @@ public class PostService {
         return postDao.getPost(postNo);
     }
 
-    public void createPost(Profile profile, Post post) {
-        postDao.createPost(profile, post);
-        postLogDao.writePostActivityLog(profile.getAccountNo(), post.getPostNo(), "게시");
+    public void createPost(Post post) {
+        String nicname = post.getIsUseAnonymousName() ? "누군가" : post.getNicname();
+        post.setNicname(nicname);
+
+        String city = post.getIsUseAnonymousCity() ? "어딘가" : post.getCity();
+        post.setCity(city);
+
+        postDao.createPost(post);
+        postLogDao.writePostActivityLog(post.getAccountNo(), post.getPostNo(), "게시");
     }
 
     public void updatePost(Post post) {
@@ -138,12 +147,12 @@ public class PostService {
         int postNo = Integer.parseInt(post);
         int accountNo = Integer.parseInt(account);
 
-        if (postDao.isAlreadyLikeThis(postNo, accountNo))
-            postDao.delLike(postNo, accountNo);
+        if (likeDao.isAlreadyLikeThis(postNo, accountNo))
+            likeDao.delLike(postNo, accountNo);
         else
-            postDao.addLike(postNo, accountNo);
+            likeDao.addLike(postNo, accountNo);
 
-        int likeCount = postDao.getLikeCount(postNo);
+        int likeCount = likeDao.getLikeCount(postNo);
         postDao.updateLikeCount(postNo, likeCount);
     }
 
@@ -153,7 +162,7 @@ public class PostService {
         if (accountNo == null)
             return false;
         try {
-            return postDao.isUserLikePost(
+            return likeDao.isUserLikePost(
                     Integer.parseInt(postNo),
                     Integer.parseInt(accountNo)
             );
