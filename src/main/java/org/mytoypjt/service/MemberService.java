@@ -24,7 +24,7 @@ public class MemberService {
     private ReplyDao replyDao;
 
     public MemberService() {
-        this.postDao = new PostDao();
+//        this.postDao = new PostDao();
         this.profileDao = new ProfileDao();
 //        this.commentDao = new CommentDao();
         this.replyDao = new ReplyDao();
