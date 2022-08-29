@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mytoypjt.config.WebMvcConfiguration;
+import org.mytoypjt.models.entity.Account;
 import org.mytoypjt.utils.DBUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -52,6 +53,33 @@ class AccountDaoTest {
         try {
             // test content
             this.accountDao.getAccountListByEmail("dkproh@gmail.com").forEach(System.out::println);
+        }catch (Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(true, successed);
+    }
+
+    @Test
+    void setAccountPw() {
+        boolean successed = true;
+        try {
+            // test content
+            this.accountDao.setAccountPw(19, "1234");
+        }catch (Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(true, successed);
+    }
+
+    @Test
+    void createAccount() {
+
+        boolean successed = true;
+        try {
+            // test content
+            this.accountDao.createAccount(null);
         }catch (Exception e) {
             e.printStackTrace();
             successed = false;

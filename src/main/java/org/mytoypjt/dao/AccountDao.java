@@ -3,6 +3,7 @@ package org.mytoypjt.dao;
 import org.mytoypjt.models.entity.Account;
 import org.mytoypjt.utils.DBUtil;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -62,76 +63,37 @@ public class AccountDao {
 
     public List<String> getAccountListByEmail(String email){
         String sql = "select id from account where email=:email";
-
-        MapSqlParameterSource msps = new MapSqlParameterSource("email", email);
-
-        return jdbcTemplate.query(sql, msps, new RowMapper<String>() {
-            @Override
-            public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return rs.getString("id");
-            }
-        });
-
-        /*try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-            preparedStatement.setString(1, email);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                idList.add(resultSet.getString("id"));
-            }
-            return idList;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }*/
+        MapSqlParameterSource param = new MapSqlParameterSource("email", email);
+        return jdbcTemplate.query(sql, param, (rs, rowNum) -> rs.getString("id"));
     }
 
     public int findAccountNo(String id, String email){
-        String sql = "select account_no from account where id=? and email=?";
-        int accountNo = NOT_CORRECTED_ACCOUNT_NO;
+        String sql = "select account_no from account where id=:id and email=:email";
 
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-            preparedStatement.setString(1, id);
-            preparedStatement.setString(2, email);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        MapSqlParameterSource param = new MapSqlParameterSource();
+        param.addValue("id", id);
+        param.addValue("email", email);
 
-            while (resultSet.next()) {
-                if (accountNo != NOT_CORRECTED_ACCOUNT_NO) return DUPLICATION_ACCOUNT;
-                accountNo = resultSet.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return accountNo;
+        List<Account> accounts = jdbcTemplate.query(sql, param, accountRowMapper);
+        if (accounts.size() > 2 || accounts.size() < 1)
+            return -1;
+
+        return accounts.get(0).getAccountNo();
     }
 
     public int findAccountNo(String id, String password, String email){
-        String sql = "select account_no from account where id=? and password=? and email=?";
-        int accountNo = NOT_CORRECTED_ACCOUNT_NO;
+        String sql = "select account_no from account where id=:id and password=:password and email=:email";
 
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-            preparedStatement.setString(1, id);
-            preparedStatement.setString(2, password);
-            preparedStatement.setString(3, email);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        MapSqlParameterSource param = new MapSqlParameterSource();
+        param.addValue("id", id);
+        param.addValue("password", password);
+        param.addValue("email", email);
 
-            while (resultSet.next()) {
-                if (accountNo != NOT_CORRECTED_ACCOUNT_NO) return DUPLICATION_ACCOUNT;
-                accountNo = resultSet.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return accountNo;
+        List<Account> accounts = jdbcTemplate.query(sql, param, accountRowMapper);
+        if (accounts.size() > 2 || accounts.size() < 1)
+            return -1;
+
+        return accounts.get(0).getAccountNo();
     }
 
     public int findAccountNo(Account account){
@@ -144,96 +106,50 @@ public class AccountDao {
     }
 
     public boolean setAccountPw(int accountNo, String password){
-        String sql = "update account set password = ? where account_no = ?";
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-            preparedStatement.setString(1, password);
-            preparedStatement.setInt(2, accountNo);
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        String sql = "update account set password = :password where account_no = :accountNo";
+        MapSqlParameterSource param = new MapSqlParameterSource();
+        param.addValue("password", password);
+        param.addValue("accountNo", accountNo);
+        if (jdbcTemplate.update(sql, param) == 1) return true;
+        return false;
     }
 
     public boolean isExistId(String id){
-        String sql = "select account_no from account where id=?";
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-
-            preparedStatement.setString(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                return true;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+        String sql = "select account_no from account where id=:id";
+        Map<String, String> param = new HashMap<>();
+        param.put("id", id);
+        if (jdbcTemplate.query(sql, param, accountRowMapper).size() > 0)
             return true;
-        }
         return false;
     }
 
     public boolean createAccount(Account account){
-        String id = account.getId();
-        String password = account.getPassword();
-        String email = account.getEmail();
-
-        String sql = "insert into account(account_no, id, password, email) " +
-                "values " +
-                "(null, ?, ?, ?)";
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-            preparedStatement.setString(1, id);
-            preparedStatement.setString(2, password);
-            preparedStatement.setString(3, email);
-            preparedStatement.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        SqlParameterSource param = new BeanPropertySqlParameterSource(account);
+        int returnValue = jdbcInsert.execute(param);
+        if (returnValue == 1)
+            return true;
+        return false;
     }
 
     public void deleteAccount(int accountNo){
-        String sql = "delete from account where account_no=?";
+        String sql = "delete from account where account_no=:accountNo";
 
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-
-            preparedStatement.setInt(1, accountNo);
-            preparedStatement.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Map<String, Integer> param = new HashMap<>();
+        param.put("accountNo", accountNo);
+        jdbcTemplate.update(sql, param);
     }
 
     public boolean isRegisteredEmail(String email) {
-        String sql = "select id from account where email=?";
+        String sql = "select id from account where email=:email";
+        MapSqlParameterSource param = new MapSqlParameterSource("email", email);
+        int size = jdbcTemplate.query(sql, param, new RowMapper<String>() {
+            @Override
+            public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return rs.getString("id");
+            }
+        }).size();
 
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-            preparedStatement.setString(1, email);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) return true;
-            else return false;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        if (size > 0) return true;
+        return false;
     }
 }
