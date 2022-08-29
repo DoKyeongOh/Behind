@@ -1,7 +1,6 @@
 package org.mytoypjt.dao;
 
 import org.mytoypjt.models.entity.Account;
-import org.mytoypjt.utils.DBUtil;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -11,20 +10,14 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Repository
 public class AccountDao {
-    final int NOT_CORRECTED_ACCOUNT_NO = -1;
-    final int DUPLICATION_ACCOUNT = -2;
-
     NamedParameterJdbcTemplate jdbcTemplate;
     SimpleJdbcInsert jdbcInsert;
     RowMapper<Account> accountRowMapper;
@@ -33,17 +26,14 @@ public class AccountDao {
     public AccountDao(DataSource dataSource) {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("account");
-        accountRowMapper = new RowMapper<Account>() {
-            @Override
-            public Account mapRow(ResultSet rs, int rowNum) throws SQLException {
-                Account account = new Account(
-                        rs.getInt("account_no"),
-                        rs.getString("id"),
-                        rs.getString("password"),
-                        rs.getString("email")
-                );
-                return account;
-            }
+        accountRowMapper = (rs, rowNum) -> {
+            Account account = new Account(
+                    rs.getInt("account_no"),
+                    rs.getString("id"),
+                    rs.getString("password"),
+                    rs.getString("email")
+            );
+            return account;
         };
     }
 
