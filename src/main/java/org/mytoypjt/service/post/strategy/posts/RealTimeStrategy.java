@@ -14,7 +14,7 @@ public class RealTimeStrategy extends BasePostsStrategy {
     @Override
     public List<Post> getPosts(PostsOptionVO optionVO, Map<String, String> paramMap) {
         try {
-            PostDao postDao = new PostDao();
+            PostDao postDao = new PostDao(null);
             int pageNo = Integer.parseInt(optionVO.getPageNo());
             return postDao.getRealTimePosts(pageNo, this.postCountInPage);
         } catch(Exception e) {

@@ -8,7 +8,7 @@ public class DaysFavoriteStrategy extends BasePageCountStrategy{
 
     @Override
     public int getPageCount() {
-        PostDao postDao = new PostDao();
+        PostDao postDao = new PostDao(null);
         int postCount = postDao.getDaysPostCount(this.postCountInPage);
         int pageCount = (int) postCount / this.postCountInPage;
         if (postCount % this.postCountInPage != 0)
