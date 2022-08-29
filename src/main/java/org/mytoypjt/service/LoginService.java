@@ -17,7 +17,6 @@ public class LoginService {
 
     public LoginService() {}
 
-    @Transactional
     public Profile getProfile(String accountId, String accountPw){
         int accountNo = accountDao.getAccountNo(accountId, accountPw);
 

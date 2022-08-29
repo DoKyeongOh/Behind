@@ -3,8 +3,6 @@ package org.mytoypjt.models.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
 public class Account {
     int accountNo;
     String id;
@@ -21,6 +19,38 @@ public class Account {
     public Account(String id, String password, String email) {
         this.id = id;
         this.password = password;
+        this.email = email;
+    }
+
+    public int getAccountNo() {
+        return accountNo;
+    }
+
+    public void setAccountNo(int accountNo) {
+        this.accountNo = accountNo;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
         this.email = email;
     }
 }
