@@ -13,7 +13,7 @@ class CommentDaoTest {
     @BeforeEach
     public void init(){
         // init param
-        commentDao = new CommentDao();
+//        commentDao = new CommentDao();
     }
 
     @Test

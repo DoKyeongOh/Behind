@@ -39,6 +39,15 @@ public class Comment {
         this.commentedDate = commentedDate;
     }
 
+    public Comment(String content, int replyCount, int accountNo, int postNo, String nicname, boolean isUseAnonymousName, Date commentedDate) {
+        this.content = content;
+        this.replyCount = replyCount;
+        this.accountNo = accountNo;
+        this.postNo = postNo;
+        this.nicname = nicname;
+        this.isUseAnonymousName = isUseAnonymousName;
+        this.commentedDate = commentedDate;
+    }
 
     public static boolean isCorrectComment(Comment comment){
         if (isNull(comment, comment.getContent()))

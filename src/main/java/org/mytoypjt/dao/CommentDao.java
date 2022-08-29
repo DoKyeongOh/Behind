@@ -1,51 +1,58 @@
 package org.mytoypjt.dao;
 
+import org.mytoypjt.models.entity.Account;
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.DBUtil;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Repository
 public class CommentDao {
 
-    public CommentDao() {
-        super();
+    NamedParameterJdbcTemplate jdbcTemplate;
+    SimpleJdbcInsert jdbcInsert;
+    RowMapper<Comment> commentRowMapper;
+
+    public CommentDao(DataSource dataSource) {
+        jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("comment");
+        commentRowMapper = (rs, rowNum) -> {
+            Comment comment = new Comment(
+                    rs.getInt("comment_no"),
+                    rs.getString("content"),
+                    rs.getInt("reply_count"),
+                    rs.getInt("account_no"),
+                    rs.getInt("post_no"),
+                    rs.getBoolean("is_use_anonymous_name"),
+                    rs.getString("nicname"),
+                    rs.getDate("commented_date")
+            );
+            return comment;
+        };
+
     }
 
     public List<Comment> getComments(int postNo) {
         String sql = "select " +
                 "comment_no, content, reply_count, account_no, post_no, is_use_anonymous_name, nicname, commented_date" +
-                " from comment where post_no = ?";
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-            preparedStatement.setInt(1, postNo);
-            ResultSet resultSet = preparedStatement.executeQuery();
+                " from comment where post_no = :postNo";
 
-            List<Comment> comments = new ArrayList<Comment>();
-            while (resultSet.next()) {
-                comments.add(new Comment(
-                                resultSet.getInt("comment_no"),
-                                resultSet.getString("content"),
-                                resultSet.getInt("reply_count"),
-                                resultSet.getInt("account_no"),
-                                resultSet.getInt("post_no"),
-                                resultSet.getBoolean("is_use_anonymous_name"),
-                                resultSet.getString("nicname"),
-                                resultSet.getDate("commented_date")
-                        )
-                );
-            }
-            return comments;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+        List<Comment> comments =
+                jdbcTemplate.query(sql, new MapSqlParameterSource("postNo", postNo), commentRowMapper);
+
+        return comments;
     }
 
     public void createComment(int postNo, Profile profile, boolean isAnonymous, String content) {
@@ -53,122 +60,43 @@ public class CommentDao {
                 "(comment_no, content, reply_count, account_no, post_no, is_use_anonymous_name, nicname, commented_date) " +
                 "values (null , ?, 0, ?, ?, ?, ?, now())";
 
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-            String nicname = profile.getNicname();
-            if (isAnonymous) nicname = "누군가";
+        SqlParameterSource param = new BeanPropertySqlParameterSource(new Comment(
+                content, 0, profile.getAccountNo(), postNo, profile.getNicname(), isAnonymous, new Date()
+        ));
 
-            preparedStatement.setString(1, content);
-            preparedStatement.setInt(2, profile.getAccountNo());
-            preparedStatement.setInt(3, postNo);
-            preparedStatement.setBoolean(4, isAnonymous);
-            preparedStatement.setString(5, nicname);
-            preparedStatement.execute();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        jdbcInsert.execute(param);
     }
 
     public int getCommentCount(int postNo) {
-        String sql = "select count(*) from comment where post_no=?";
+        String sql = "select count(*) from comment where post_no=:postNo";
 
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-            preparedStatement.setInt(1, postNo);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next())
-                return resultSet.getInt(1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
+        int count = jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("postNo", postNo),
+                (rs, rowNum) -> rs.getInt(1));
+        return count;
     }
 
     public void updateCommentCount(int postNo, int count){
-        String sql = "update post set comment_count = ? where post_no = ?";
+        String sql = "update post set comment_count = :commentCount where post_no = :postNo";
 
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-            preparedStatement.setInt(1, count);
-            preparedStatement.setInt(2, postNo);
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        MapSqlParameterSource param = new MapSqlParameterSource();
+        param.addValue("commentCount", count);
+        param.addValue("postNo", postNo);
+
+        jdbcTemplate.update(sql, param);
     }
 
     public Comment getCommentByCommentNo(int commentNo) {
-        String sql = "select * from comment where comment_no = ?";
+        String sql = "select * from comment where comment_no = :commentNo";
 
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-            preparedStatement.setInt(1, commentNo);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        MapSqlParameterSource param = new MapSqlParameterSource("commentNo", commentNo);
 
-            if (resultSet.next()) {
-                return new Comment(
-                        resultSet.getInt("comment_no"),
-                        resultSet.getString("content"),
-                        resultSet.getInt("reply_count"),
-                        resultSet.getInt("account_no"),
-                        resultSet.getInt("post_no"),
-                        resultSet.getBoolean("is_use_anonymous_name"),
-                        resultSet.getString("nicname"),
-                        resultSet.getDate("commented_date")
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return jdbcTemplate.query(sql, param, commentRowMapper).get(0);
     }
 
     public List<Comment> getCommentsByAccountNo(int accountNo) {
-        String sql = "select * from comment where account_no = ?";
+        String sql = "select * from comment where account_no = :accountNo";
 
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-            preparedStatement.setInt(1, accountNo);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            List<Comment> comments = getComments(resultSet);
-            return comments;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public List<Comment> getComments(ResultSet resultSet) {
-        List<Comment> comments = new ArrayList<Comment>();
-        try {
-            while (resultSet.next()) {
-                comments.add(new Comment(
-                                resultSet.getInt("comment_no"),
-                                resultSet.getString("content"),
-                                resultSet.getInt("reply_count"),
-                                resultSet.getInt("account_no"),
-                                resultSet.getInt("post_no"),
-                                resultSet.getBoolean("is_use_anonymous_name"),
-                                resultSet.getString("nicname"),
-                                resultSet.getDate("commented_date")
-                        )
-                );
-            }
-
-            return comments;
-        } catch(Exception e) {
-            return null;
-        }
+        MapSqlParameterSource param = new MapSqlParameterSource("accountNo", accountNo);
+        return jdbcTemplate.query(sql, param, commentRowMapper);
     }
 }
