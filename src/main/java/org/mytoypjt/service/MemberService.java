@@ -5,10 +5,7 @@ import org.mytoypjt.dao.PostDao;
 import org.mytoypjt.dao.ProfileDao;
 import org.mytoypjt.dao.ReplyDao;
 import org.mytoypjt.models.entity.Profile;
-import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.models.vo.ActivityVO;
-import org.mytoypjt.service.post.strategy.pagecount.PageCountStrategyContext;
-import org.mytoypjt.service.post.strategy.posts.PostsStrategyContext;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -24,10 +21,6 @@ public class MemberService {
     private ReplyDao replyDao;
 
     public MemberService() {
-//        this.postDao = new PostDao();
-        this.profileDao = new ProfileDao();
-//        this.commentDao = new CommentDao();
-        this.replyDao = new ReplyDao();
     }
 
     public ActivityVO getActivities(Profile profile) {

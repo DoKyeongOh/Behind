@@ -23,9 +23,7 @@ public class IdResolveController {
 
     @GetMapping(path = "/id/page")
     public String showFindIdPage(HttpSession session){
-
         session.setAttribute("idCertificationInfo", null);
-
         return "findIdPage";
     }
 

@@ -2,6 +2,7 @@ package org.mytoypjt.dao;
 
 import org.junit.jupiter.api.Test;
 import org.mytoypjt.models.entity.Profile;
+import org.mytoypjt.utils.DBUtil;
 
 import java.sql.Date;
 
@@ -9,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserDaoTest {
 
-    ProfileDao profileDao = new ProfileDao();
+    ProfileDao profileDao = new ProfileDao(DBUtil.getBasicDataSource());
 
 
     @Test

@@ -3,6 +3,7 @@ package org.mytoypjt.dao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mytoypjt.models.entity.Profile;
+import org.mytoypjt.utils.DBUtil;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,7 +14,7 @@ class ReplyDaoTest {
     @BeforeEach
     public void init(){
         // init param
-        replyDao = new ReplyDao();
+        replyDao = new ReplyDao(DBUtil.getBasicDataSource());
     }
 
     @Test

@@ -30,7 +30,7 @@ public class FindAccountService {
     }
 
     public PwCertificationInfo getPwCertification(String id, String email){
-        int accountNo = getAccountNo(id, email);
+        int accountNo = accountDao.findAccountNo(id, email);
         if (!isCorrectAccountNo(accountNo))
             return null;
 
@@ -51,11 +51,6 @@ public class FindAccountService {
 
     public List<String> getAccountListByEmail(String email){
         return accountDao.getAccountListByEmail(email);
-    }
-
-    public int getAccountNo(String id, String email){
-        int accountNo = accountDao.findAccountNo(id, email);
-        return accountNo;
     }
 
     public boolean isCorrectAccountNo(int no){

@@ -26,8 +26,8 @@ public class Profile {
         this.userLevel = 1;
     }
 
-    public Profile(int profileNo, String nicName, Date joinDate, String city, int age, String gender, int userLevel) {
-        this.accountNo = profileNo;
+    public Profile(int accountNo, String nicName, Date joinDate, String city, int age, String gender, int userLevel) {
+        this.accountNo = accountNo;
         this.nicname = nicName;
         this.joinDate = joinDate;
         this.city = city;
