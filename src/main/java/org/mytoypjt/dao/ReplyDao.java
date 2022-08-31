@@ -3,8 +3,15 @@ package org.mytoypjt.dao;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.utils.DBUtil;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,91 +22,54 @@ import java.util.List;
 @Repository
 public class ReplyDao {
 
-    public ReplyDao() {
+    NamedParameterJdbcTemplate jdbcTemplate;
+    SimpleJdbcInsert jdbcInsert;
+    RowMapper<Reply> replyRowMapper;
+
+    public ReplyDao(DataSource dataSource) {
+        jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("profile");
+        replyRowMapper = (rs, rowNum) -> {
+            Reply reply = new Reply(
+                    rs.getInt("reply_no"),
+                    rs.getString("content"),
+                    rs.getInt("account_no"),
+                    rs.getInt("comment_no"),
+                    rs.getBoolean("is_use_anonymous_name"),
+                    rs.getString("nicname"),
+                    rs.getDate("replied_date")
+            );
+            return reply;
+        };
+
     }
 
     public List<Reply> getReplies(int commentNo) {
-        String sql = "select * from reply where comment_no = ?";
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-            preparedStatement.setInt(1, commentNo);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        String sql = "select * from reply where comment_no = :commentNo";
 
-            List<Reply> replies = getReplies(resultSet);
-            return replies;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+        MapSqlParameterSource param = new MapSqlParameterSource("commentNo", commentNo);
+        return jdbcTemplate.query(sql, param, replyRowMapper);
     }
 
     public void createReply(String content, Profile profile, int commentNoInt, boolean isAnonName) {
         String sql = "insert into reply " +
                 "(reply_no, content, account_no, comment_no, is_use_anonymous_name, nicname, replied_date)" +
-                "values " +
-                "(null, ?, ?, ?, ?, ?, now())";
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-            String nicname = profile.getNicname();
-            if (isAnonName) nicname = "누군가";
+                "values (null, :content, :accountNo, :commentNo, :isUseAnonymousName, :nicname, now())";
 
-            preparedStatement.setString(1, content);
-            preparedStatement.setInt(2, profile.getAccountNo());
-            preparedStatement.setInt(3, commentNoInt);
-            preparedStatement.setBoolean(4,isAnonName);
-            preparedStatement.setString(5, nicname);
-            preparedStatement.execute();
+        MapSqlParameterSource param = new MapSqlParameterSource();
+        param.addValue("content", content);
+        param.addValue("accountNo", profile.getAccountNo());
+        param.addValue("commentNo", commentNoInt);
+        param.addValue("isUseAnonymousName", isAnonName);
+        param.addValue("nicname", profile.getNicname());
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        jdbcTemplate.update(sql, param);
     }
 
     public List<Reply> getRepliesByAccountNo(int accountNo) {
-        String sql = "select * from reply where account_no = ?";
+        String sql = "select * from reply where account_no = :accountNo";
 
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-            preparedStatement.setInt(1, accountNo);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            List<Reply> replies = getReplies(resultSet);
-            return replies;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    List<Reply> getReplies(ResultSet resultSet) {
-
-        List<Reply> replies = new ArrayList<Reply>();
-        try {
-            while (resultSet.next()) {
-                Reply reply = new Reply(
-                        resultSet.getInt("reply_no"),
-                        resultSet.getString("content"),
-                        resultSet.getInt("account_no"),
-                        resultSet.getInt("comment_no"),
-                        resultSet.getBoolean("is_use_anonymous_name"),
-                        resultSet.getString("nicname"),
-                        resultSet.getDate("replied_date")
-                );
-
-                if (!Reply.isCorrectReply(reply))
-                    continue;
-
-                replies.add(reply);
-            }
-            return replies;
-        } catch(Exception e) {
-            return null;
-        }
+        MapSqlParameterSource param = new MapSqlParameterSource("accountNo", accountNo);
+        return jdbcTemplate.query(sql, param, replyRowMapper);
     }
 }

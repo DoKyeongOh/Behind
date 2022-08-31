@@ -2,94 +2,67 @@ package org.mytoypjt.dao;
 
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.DBUtil;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.*;
+import java.util.List;
 
 @Repository
 public class ProfileDao {
 
-    public ProfileDao() {
+    NamedParameterJdbcTemplate jdbcTemplate;
+    SimpleJdbcInsert jdbcInsert;
+    RowMapper<Profile> profileRowMapper;
+
+    public ProfileDao(DataSource dataSource) {
+        jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("profile");
+        profileRowMapper = (rs, rowNum) -> {
+            Profile profile = new Profile(
+                    rs.getInt("account_no"),
+                    rs.getString("nicname"),
+                    rs.getDate("register_date"),
+                    rs.getString("city"),
+                    rs.getInt("age"),
+                    rs.getString("gender"),
+                    rs.getInt("user_level")
+            );
+            return profile;
+        };
     }
 
     public Profile getProfile(int accountNo) {
-        String sql = "select * from profile where account_no=?";
-        
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-            preparedStatement.setInt(1, accountNo);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            Profile profile = null;
+        String sql = "select * from profile where account_no = :accountNo";
 
-            while (resultSet.next()) {
-                profile = new Profile(
-                        resultSet.getInt("account_no"),
-                        resultSet.getString("nicname"),
-                        resultSet.getDate("register_date"),
-                        resultSet.getString("city"),
-                        resultSet.getInt("age"),
-                        resultSet.getString("gender"),
-                        resultSet.getInt("user_level")
-                );
-            }
-            return profile;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+        MapSqlParameterSource param = new MapSqlParameterSource("accountNo", accountNo);
+
+        List<Profile> profileList = jdbcTemplate.query(sql, param, profileRowMapper);
+        return profileList.size() != 0 ? profileList.get(0) : null;
     }
 
     public boolean createProfile(Profile profile){
         String sql = "insert into profile(" +
                 "account_no, register_date, nicname, city, age, gender, user_level) " +
-                "values (?, ?, ?, ?, ?, ?, ?)";
-        
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-            long timeInMilliSeconds = profile.getJoinDate().getTime();
-            Date sqlDate = new Date(timeInMilliSeconds);
+                "values (:accountNo, :registerDate, :nicname, :city, :age, :gender, :userLevel)";
 
-            preparedStatement.setInt(1, profile.getAccountNo());
-            preparedStatement.setDate(2, sqlDate);
-            preparedStatement.setString(3, profile.getNicname());
-            preparedStatement.setString(4, profile.getCity());
-            preparedStatement.setInt(5, profile.getAge());
-            preparedStatement.setString(6, profile.parseGender());
-            preparedStatement.setInt(7, profile.getUserLevel());
-            preparedStatement.execute();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        SqlParameterSource param = new BeanPropertySqlParameterSource(profile);
+        int returnCode = jdbcTemplate.update(sql, param);
+        return returnCode == 1 ? true : false;
     }
 
     public boolean updateProfile(Profile profile){
-        String sql = "update profile set nicname=?, city=?, age=?, gender=?, user_level=? " +
-                "where account_no=?";
+        String sql = "update profile set nicname=:nicname, city=:city, age=:age, gender=:gender, user_level=:userLevel " +
+                "where account_no=:accountNo";
 
-        
-        try (
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
-            preparedStatement.setString(1, profile.getNicname());
-            preparedStatement.setString(2, profile.getCity());
-            preparedStatement.setInt(3, profile.getAge());
-            preparedStatement.setString(4, profile.parseGender());
-            preparedStatement.setInt(5, profile.getUserLevel());
-            preparedStatement.setInt(6, profile.getAccountNo());
-            preparedStatement.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        SqlParameterSource param = new BeanPropertySqlParameterSource(profile);
+        int returnCode = jdbcTemplate.update(sql, param);
+        return returnCode == 1 ? true : false;
     }
 }
