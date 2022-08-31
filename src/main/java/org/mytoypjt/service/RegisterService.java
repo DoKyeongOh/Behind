@@ -8,6 +8,7 @@ import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Connection;
 
@@ -44,26 +45,25 @@ public class RegisterService {
         return value;
     }
 
+    @Transactional
     public boolean createAccount(AccountCertDTO certDTO){
         Account account = certDTO.getAccount();
-        boolean accountOk = accountDao.createAccount(account);
-        boolean profileOk = true;
-        if (accountOk)
-            profileOk = createDefaultProfile(account);
-
-        if (!profileOk) {
+        try {
+            accountDao.createAccount(account);
             int accountNo = accountDao.findAccountNo(account);
-            accountDao.deleteAccount(accountNo);
+            Profile profile = new Profile(accountNo);
+            profileDao.createProfile(profile);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-
-        return profileOk;
     }
 
     public boolean createDefaultProfile(Account account){
         int accountNo = accountDao.findAccountNo(account);
 
         Profile profile = new Profile(accountNo);
-        ProfileDao profileDao = new ProfileDao();
         boolean successed = profileDao.createProfile(profile);
         return successed;
     }

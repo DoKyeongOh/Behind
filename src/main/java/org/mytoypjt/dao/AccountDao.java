@@ -44,31 +44,45 @@ public class AccountDao {
         sqlParameterSource.addValue("id", id);
         sqlParameterSource.addValue("password", pw);
 
-        List<Account> accountList = jdbcTemplate.query(sql, sqlParameterSource, accountRowMapper);
-        if (accountList.size() > 1)
-            return -1;
+        try {
+            List<Account> accountList = jdbcTemplate.query(sql, sqlParameterSource, accountRowMapper);
+            if (accountList.size() > 1)
+                return -1;
 
-        return accountList.get(0).getAccountNo();
+            return accountList.get(0).getAccountNo();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     public List<String> getAccountListByEmail(String email){
         String sql = "select id from account where email=:email";
         MapSqlParameterSource param = new MapSqlParameterSource("email", email);
-        return jdbcTemplate.query(sql, param, (rs, rowNum) -> rs.getString("id"));
+        try {
+            return jdbcTemplate.query(sql, param, (rs, rowNum) -> rs.getString("id"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public int findAccountNo(String id, String email){
-        String sql = "select account_no from account where id=:id and email=:email";
+        String sql = "select * from account where id=:id and email=:email";
 
         MapSqlParameterSource param = new MapSqlParameterSource();
         param.addValue("id", id);
         param.addValue("email", email);
 
-        List<Account> accounts = jdbcTemplate.query(sql, param, accountRowMapper);
-        if (accounts.size() > 2 || accounts.size() < 1)
+        try {
+            List<Account> accounts = jdbcTemplate.query(sql, param, accountRowMapper);
+            if (accounts.size() > 2 || accounts.size() < 1)
+                return -1;
+            return accounts.get(0).getAccountNo();
+        } catch (Exception e) {
+            e.printStackTrace();
             return -1;
-
-        return accounts.get(0).getAccountNo();
+        }
     }
 
     public int findAccountNo(String id, String password, String email){
@@ -79,11 +93,15 @@ public class AccountDao {
         param.addValue("password", password);
         param.addValue("email", email);
 
-        List<Account> accounts = jdbcTemplate.query(sql, param, accountRowMapper);
-        if (accounts.size() > 2 || accounts.size() < 1)
+        try {
+            List<Account> accounts = jdbcTemplate.query(sql, param, accountRowMapper);
+            if (accounts.size() > 2 || accounts.size() < 1)
+                return -1;
+            return accounts.get(0).getAccountNo();
+        } catch (Exception e) {
+            e.printStackTrace();
             return -1;
-
-        return accounts.get(0).getAccountNo();
+        }
     }
 
     public int findAccountNo(Account account){
@@ -100,25 +118,33 @@ public class AccountDao {
         MapSqlParameterSource param = new MapSqlParameterSource();
         param.addValue("password", password);
         param.addValue("accountNo", accountNo);
-        if (jdbcTemplate.update(sql, param) == 1) return true;
-        return false;
+        try {
+            return jdbcTemplate.update(sql, param) == 1;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public boolean isExistId(String id){
         String sql = "select account_no from account where id=:id";
         Map<String, String> param = new HashMap<>();
         param.put("id", id);
-        if (jdbcTemplate.query(sql, param, accountRowMapper).size() > 0)
+        try {
+            return jdbcTemplate.query(sql, param, accountRowMapper).size() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
             return true;
-        return false;
+        }
     }
 
     public boolean createAccount(Account account){
         SqlParameterSource param = new BeanPropertySqlParameterSource(account);
-        int returnValue = jdbcInsert.execute(param);
-        if (returnValue == 1)
-            return true;
-        return false;
+        try {
+            return jdbcInsert.execute(param) == 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public void deleteAccount(int accountNo){
@@ -126,20 +152,26 @@ public class AccountDao {
 
         Map<String, Integer> param = new HashMap<>();
         param.put("accountNo", accountNo);
-        jdbcTemplate.update(sql, param);
+        try {
+            jdbcTemplate.update(sql, param);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean isRegisteredEmail(String email) {
         String sql = "select id from account where email=:email";
         MapSqlParameterSource param = new MapSqlParameterSource("email", email);
-        int size = jdbcTemplate.query(sql, param, new RowMapper<String>() {
-            @Override
-            public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return rs.getString("id");
-            }
-        }).size();
+        try {
+            return jdbcTemplate.query(sql, param, new RowMapper<String>() {
+                @Override
+                public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    return rs.getString("id");
+                }
+            }).size() > 0;
+        } catch (Exception e) {
+            return true;
+        }
 
-        if (size > 0) return true;
-        return false;
     }
 }
