@@ -5,10 +5,20 @@ import java.util.Date;
 public class PostLog {
     int postLogNo;
     Date loggingDate;
-    boolean isPost;
+    String actionType;
+
+    int postNo;
     int accountNo;
 
     public PostLog() {
+    }
+
+    public PostLog(int postLogNo, Date loggingDate, String actionType, int postNo, int accountNo) {
+        this.postLogNo = postLogNo;
+        this.loggingDate = loggingDate;
+        this.actionType = actionType;
+        this.postNo = postNo;
+        this.accountNo = accountNo;
     }
 
     public int getPostLogNo() {
@@ -27,12 +37,20 @@ public class PostLog {
         this.loggingDate = loggingDate;
     }
 
-    public boolean isPost() {
-        return isPost;
+    public String getActionType() {
+        return actionType;
     }
 
-    public void setPost(boolean post) {
-        isPost = post;
+    public void setActionType(String actionType) {
+        this.actionType = actionType;
+    }
+
+    public int getPostNo() {
+        return postNo;
+    }
+
+    public void setPostNo(int postNo) {
+        this.postNo = postNo;
     }
 
     public int getAccountNo() {
