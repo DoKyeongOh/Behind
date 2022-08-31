@@ -14,7 +14,7 @@ import java.util.List;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {"org.mytoypjt"})
-@Import(DBConfig.class)
+@Import({DBConfig.class, PostConfig.class})
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
     @Override
@@ -39,9 +39,17 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginCheckInterceptor())
-                .excludePathPatterns("/login/page")
                 .excludePathPatterns("/register/page/{pageNo}")
+                .excludePathPatterns("/account")
+                .excludePathPatterns("/account/cert")
+                .excludePathPatterns("/profile")
+                .excludePathPatterns("/login/page")
                 .excludePathPatterns("/login")
+                .excludePathPatterns("/id/page")
+                .excludePathPatterns("/id/cert")
+                .excludePathPatterns("/pw/page/{pageNo}")
+                .excludePathPatterns("/pw/cert")
+                .excludePathPatterns("/pw")
                 .excludePathPatterns("/");
         WebMvcConfigurer.super.addInterceptors(registry);
     }
