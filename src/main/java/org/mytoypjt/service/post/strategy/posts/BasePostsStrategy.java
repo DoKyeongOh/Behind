@@ -1,5 +1,6 @@
 package org.mytoypjt.service.post.strategy.posts;
 
+import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.vo.PostsOptionVO;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,8 @@ public abstract class BasePostsStrategy {
     public void setPostCountInPage(int postCountInPage) {
         this.postCountInPage = postCountInPage;
     }
+
+    public abstract PostSortType getSortType();
 
     public abstract List<Post> getPosts(PostsOptionVO optionVO, Map<String, String> paramMap);
 
