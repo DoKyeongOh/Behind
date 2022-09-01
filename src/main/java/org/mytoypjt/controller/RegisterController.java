@@ -98,44 +98,45 @@ public class RegisterController {
     }
 
     @RequestMapping(path = "/account/cert", method = RequestMethod.POST)
-    public ModelAndView checkAccountCert(HttpSession session, Model model){
+    public ModelAndView checkAccountCert(HttpSession session, @RequestParam Map<String, String> param){
         AccountCertDTO dto = (AccountCertDTO) session.getAttribute(ACCOUNT_CERT_KEY);
-        String inputValue = (String) model.getAttribute("accountCertInput");
+        String inputValue = param.get("accountCertInput");
 
         RegisterService.CertErrorType type = registerService.getCertErrorType(dto, inputValue);
         String errorMessage = registerService.getCertErrorMessage(type);
 
+        ModelAndView mv = new ModelAndView("accountInputPage");
+
         if (!errorMessage.equals("")) {
-            model.addAttribute("noticeMessage", errorMessage);
-            return new ModelAndView("accountInputPage");
+            mv.addObject("noticeMessage", errorMessage);
+            return mv;
         }
 
         boolean successed = registerService.createAccount(dto);
         if (!successed) {
-            model.addAttribute("noticeMessage", "예상치 못한 오류가 발생했습니다 다시 시도해주세요.");
-            return new ModelAndView("accountInputPage");
+            mv.addObject("noticeMessage", "예상치 못한 오류가 발생했습니다 다시 시도해주세요.");
+            return mv;
         }
 
         int accountNo = registerService.getCreatedAccountNo(dto);
         if (!registerService.isUsableAccountNo(Integer.toString(accountNo))) {
-            model.addAttribute("noticeMessage", "예상치 못한 오류가 발생했습니다 다시 시도해주세요.");
-            return new ModelAndView("accountInputPage");
+            mv.addObject("noticeMessage", "예상치 못한 오류가 발생했습니다 다시 시도해주세요.");
+            return mv;
         }
 
         session.setAttribute(ACCOUNT_CERT_KEY, null);
         session.setAttribute(ACCOUNT_NO, accountNo);
 
-        ModelAndView mv = new ModelAndView();
         mv.setView(new RedirectView("/register/page/3"));
         return mv;
     }
 
     @PostMapping(path = "/profile")
-    public ModelAndView updateProfile(Model model, HttpSession session){
-        String nicname = (String) model.getAttribute("nicname");
-        String age = (String) model.getAttribute("age");
-        String city = (String) model.getAttribute("city");
-        String gender = (String) model.getAttribute("genderSelector");
+    public ModelAndView updateProfile(@RequestParam Map<String, String> param, HttpSession session){
+        String nicname = param.get("nicname");
+        String age = param.get("age");
+        String city = param.get("city");
+        String gender = param.get("genderSelector");
 
         ModelAndView mv = new ModelAndView();
         mv.setView(new RedirectView("/"));
@@ -153,7 +154,7 @@ public class RegisterController {
         boolean successed = registerService.updateProfile(profile);
 
         if (!successed) {
-            model.addAttribute("noticeMessage", "예상치 못한 문제가 발생했습니다. 관리자에게 문의하세요!");
+            mv.addObject("noticeMessage", "예상치 못한 문제가 발생했습니다. 관리자에게 문의하세요!");
             return mv;
         }
 
