@@ -49,10 +49,13 @@ public class CommentDao {
                 "comment_no, content, reply_count, account_no, post_no, is_use_anonymous_name, nicname, commented_date" +
                 " from comment where post_no = :postNo";
 
-        List<Comment> comments =
-                jdbcTemplate.query(sql, new MapSqlParameterSource("postNo", postNo), commentRowMapper);
+        try {
+            return jdbcTemplate.query(sql, new MapSqlParameterSource("postNo", postNo), commentRowMapper);
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
 
-        return comments;
     }
 
     public void createComment(int postNo, Profile profile, boolean isAnonymous, String content) {
