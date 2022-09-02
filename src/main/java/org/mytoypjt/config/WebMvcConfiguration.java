@@ -14,7 +14,7 @@ import java.util.List;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {"org.mytoypjt"})
-@Import({DBConfig.class, PostConfig.class})
+@Import({DBConfig.class})
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
     @Override

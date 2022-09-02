@@ -30,7 +30,7 @@ public class PostController {
 
     @GetMapping(path = "/main/page")
     public ModelAndView showMainPage(Map<String, String> param, HttpSession session){
-        ModelAndView mv = new ModelAndView("/main/page");
+        ModelAndView mv = new ModelAndView("mainPage");
 
         PostsOptionVO postsOptionVO = postService.getDefaultPostsOption();
         List<Post> posts = postService.getPosts(postsOptionVO, param);
