@@ -1,6 +1,5 @@
 package org.mytoypjt.controller;
 
-import org.mytoypjt.controller.structure.annotations.RequestMapping;
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
@@ -9,11 +8,18 @@ import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.service.post.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class CommentController {
@@ -24,52 +30,58 @@ public class CommentController {
     final String COMMENT = "comment";
     final String PARENT_TITLE = "parentPost";
 
-    public CommentController() {}
-
-    @RequestMapping(uri = "/comment", method = "post")
-    public ViewInfo entryComment(HttpServletRequest req, HttpServletResponse resp){
-
-        String isUseAnonymousName = req.getParameter("isUseAnonymousName");
-        String postNo = req.getParameter("postNo");
-        String accountNo = req.getParameter("accountNo");
-        String content = req.getParameter("content");
-
-        HttpSession session = req.getSession();
-        Profile profile = (Profile) session.getAttribute("profile");
-
-        postService.createComment(postNo, profile, isUseAnonymousName, content);
-        Post post = postService.getPost(postNo);
-
-        return ViewInfo.getRedirectViewInfo("/post?no="+post.getPostNo());
+    public CommentController() {
+        int a = 32;
     }
 
-    @RequestMapping(uri = "/comment", method = "get")
-    public ViewInfo showCommentPage(HttpServletRequest req, HttpServletResponse resp){
-        String no = req.getParameter("no");
+    @PostMapping(path = "/comment")
+    public ModelAndView entryComment(@RequestParam Map<String, String> param, HttpSession session){
+
+        String nameAnonymous = param.get("nameAnonymous");
+        String postNo = param.get("postNo");
+        String accountNo = param.get("accountNo");
+        String content = param.get("content");
+
+        Profile profile = (Profile) session.getAttribute("profile");
+
+        postService.createComment(postNo, profile, nameAnonymous, content);
+        Post post = postService.getPost(Integer.parseInt(postNo));
+
+        return new ModelAndView(new RedirectView("/post?no="+post.getPostNo()));
+    }
+
+    @GetMapping(path = "/comment")
+    public ModelAndView showCommentPage(@RequestParam Map<String, String> param){
+        String no = param.get("no");
+
+        ModelAndView mv = new ModelAndView();
 
         Comment comment = postService.getComment(no);
-        if (Comment.isCorrectComment(comment))
-            return ViewInfo.getRedirectViewInfo("/post?no="+no);
+        if (Comment.isCorrectComment(comment)) {
+            mv.setView(new RedirectView("/post?no=" + no));
+            return mv;
+        }
 
-        Post post = postService.getPost(Integer.toString(comment.getPostNo()));
+        Post post = postService.getPost(comment.getPostNo());
         String title = post.getTitle();
         if (title.length() > 7)
             title = title.substring(0,7) + "...";
 
         List<Reply> replies = postService.getReplies(comment);
-        req.setAttribute(COMMENT, comment);
-        req.setAttribute(REPLIES, replies);
-        req.setAttribute(PARENT_TITLE, title);
+        mv.addObject(COMMENT, comment);
+        mv.addObject(REPLIES, replies);
+        mv.addObject(PARENT_TITLE, title);
+        mv.setViewName("commentDetailPage");
 
-        return new ViewInfo("commentDetailPage");
+        return mv;
     }
 
-    @RequestMapping(uri = "/reply", method = "post")
-    public ViewInfo createReply(HttpServletRequest req, HttpServletResponse resp){
-        String content = req.getParameter("content");
-        String replierNo = req.getParameter("accountNo");
-        String commentNo = req.getParameter("commentNo");
-        String isAnonName = req.getParameter("isUseAnonymousName");
+    @PostMapping(path = "/reply")
+    public ViewInfo createReply(@RequestParam Map<String, String> param){
+        String content = param.get("content");
+        String replierNo = param.get("accountNo");
+        String commentNo = param.get("commentNo");
+        String isAnonName = param.get("nameAnonymous");
 
         postService.createReply(content, replierNo, commentNo, isAnonName);
         return ViewInfo.getRedirectViewInfo("/comment?no="+commentNo);

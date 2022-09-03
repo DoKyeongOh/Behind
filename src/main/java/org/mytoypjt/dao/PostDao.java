@@ -42,8 +42,8 @@ public class PostDao {
                     rs.getInt("like_count"),
                     rs.getInt("account_no"),
                     rs.getInt("picture_no"),
-                    rs.getBoolean("is_use_anonymous_name"),
-                    rs.getBoolean("is_use_anonymous_city"),
+                    rs.getBoolean("name_anonymous"),
+                    rs.getBoolean("city_anonymous"),
                     rs.getString("nicname"),
                     rs.getString("city"));
             return post;
@@ -137,13 +137,11 @@ public class PostDao {
 
     public void updatePost(Post post) {
         String sql = "update post set title=:title, content=:content, picture_no=:pictureNo, " +
-                "is_use_anonymous_name=:isUseAnonymousName, is_use_anonymous_city=:isUseAnonymousCity, " +
+                "name_anonymous=:nameAnonymous, city_anonymous=:cityAnonymous, " +
                 "nicname=:nicname, city=:city where post_no=:postNo";
 
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(post);
-
-        int returnCode = jdbcTemplate.update(sql, param);
-        System.out.println(returnCode);
+        jdbcTemplate.update(sql, param);
     }
 
     public List<Post> getPostsByAccountNo(int accountNo) {

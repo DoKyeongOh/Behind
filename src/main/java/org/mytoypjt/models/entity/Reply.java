@@ -7,7 +7,7 @@ public class Reply {
     String content;
     int accountNo;
     int commentNo;
-    boolean isUseAnonymousName;
+    boolean nameAnonymous;
     String nicname;
 
     Date repliedDate;
@@ -17,17 +17,17 @@ public class Reply {
         this.content = "";
         this.accountNo = -1;
         this.commentNo = -1;
-        this.isUseAnonymousName = false;
+        this.nameAnonymous = false;
         this.nicname = "";
         this.repliedDate = new Date();
     }
 
-    public Reply(int replyNo, String content, int accountNo, int commentNo, boolean isUseAnonymousName, String nicname, Date repliedDate){
+    public Reply(int replyNo, String content, int accountNo, int commentNo, boolean nameAnonymous, String nicname, Date repliedDate){
         this.replyNo = replyNo;
         this.content = content;
         this.accountNo = accountNo;
         this.commentNo = commentNo;
-        this.isUseAnonymousName = isUseAnonymousName;
+        this.nameAnonymous = nameAnonymous;
         this.nicname = nicname;
         this.repliedDate = repliedDate;
     }
@@ -96,12 +96,12 @@ public class Reply {
         this.nicname = nicname;
     }
 
-    public boolean getIsUseAnonymousName() {
-        return isUseAnonymousName;
+    public boolean getnameAnonymous() {
+        return nameAnonymous;
     }
 
     public void setUseAnonymousName(boolean useAnonymousName) {
-        isUseAnonymousName = useAnonymousName;
+        nameAnonymous = useAnonymousName;
     }
 
     public Date getRepliedDate() {

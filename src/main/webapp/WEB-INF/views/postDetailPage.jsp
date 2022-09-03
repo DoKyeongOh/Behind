@@ -161,7 +161,7 @@
     </ul>
     <form style="margin-top: 2%" action="${entryComment}" method="post">
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="isAnonymous" name="isUseAnonymousName">
+            <input class="form-check-input" type="checkbox" id="isAnonymous" name="nameAnonymous">
             <label class="form-check-label" for="isAnonymous">
                 익명으로 게시하기
             </label>

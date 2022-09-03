@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 public class PostController {
@@ -29,7 +27,7 @@ public class PostController {
     public PostController (){}
 
     @GetMapping(path = "/main/page")
-    public ModelAndView showMainPage(Map<String, String> param, HttpSession session){
+    public ModelAndView showMainPage(@RequestParam Map<String, String> param, HttpSession session){
         ModelAndView mv = new ModelAndView("mainPage");
 
         PostsOptionVO postsOptionVO = postService.getDefaultPostsOption();
@@ -49,7 +47,7 @@ public class PostController {
     }
 
     @GetMapping(path = "/posts")
-    public ModelAndView showPosts(HttpSession session, Map<String, String> param){
+    public ModelAndView showPosts(HttpSession session, @RequestParam Map<String, String> param){
         PostsOptionVO optionInSession =
                 (PostsOptionVO) session.getAttribute(this.postsOptionKey);
 
@@ -90,9 +88,9 @@ public class PostController {
     }
 
     @GetMapping(path = "/post")
-    public ModelAndView showPost(HttpSession session, Map<String, String> param){
-        String no = param.get("no");
-        Post post = postService.getPost(no);
+    public ModelAndView showPost(HttpSession session, @RequestParam Map<String, Object> param){
+        String no = (String) param.get("no");
+        Post post = postService.getPost(Integer.parseInt(no));
 
         if (post == null)
             return new ModelAndView(new RedirectView("/main/page"));
@@ -115,7 +113,7 @@ public class PostController {
 
     @PostMapping(path = "/post")
     public ModelAndView createPost(@SessionAttribute(name = "profile")Profile profile,
-                               Map<String, String> param){
+                                   @RequestParam Map<String, String> param){
 
         String title = param.get("title");
         String content = param.get("content");
@@ -136,12 +134,13 @@ public class PostController {
 
     @GetMapping(path = "/post/page/{pageNo}")
     public String showPostCreatePage(@PathVariable(value = "pageNo")int pageNo,
-                                     Map<String, String> param, Model model){
+                                     @RequestParam Map<String, String> param, Model model){
         switch (pageNo) {
             case 1 : return "postCreatePage";
             case 2 : return "postCreateComplete";
             case 3 : {
-                Post post = postService.getPost(Integer.toString(pageNo));
+                int postNo = Integer.parseInt(param.get("postNo"));
+                Post post = postService.getPost(postNo);
                 if (post == null) return "mainPage";
 
                 model.addAttribute("post", post);
@@ -158,7 +157,7 @@ public class PostController {
 
     @PutMapping(path = "/post")
     public ModelAndView modifyPost(@SessionAttribute(name = "profile")Profile profile,
-                               Map<String, String> param){
+                               @RequestParam Map<String, String> param){
 
         int postNo = Integer.parseInt(param.get("postNo"));
         String title = param.get("title");
@@ -166,10 +165,12 @@ public class PostController {
         int pictureNo = Integer.parseInt(param.get("imgNo"));
         boolean isAnonymousName = (Objects.equals(param.get("isAnonName"), "true")) ? true : false;
         boolean isAnonymousCity = (Objects.equals(param.get("isAnonCity"), "true")) ? true : false;
+        String nicname = isAnonymousName ? "누군가" : profile.getNicname();
+        String city = isAnonymousCity ? "어딘가" : profile.getCity();
 
         Post post = new Post(
                 postNo, title, content, new Date(), 0, 0, profile.getAccountNo(),
-                pictureNo, isAnonymousName, isAnonymousCity, profile.getNicname(), profile.getCity());
+                pictureNo, isAnonymousName, isAnonymousCity, nicname, city);
 
         postService.updatePost(post);
 
@@ -177,7 +178,7 @@ public class PostController {
     }
 
     @PostMapping(path = "/like")
-    public ModelAndView togglePostLike(Map<String, String> param, Model model){
+    public ModelAndView togglePostLike(@RequestParam Map<String, String> param, Model model){
         String postNo = param.get("postNo");
         String accountNo = param.get("accountNo");
 
@@ -186,7 +187,7 @@ public class PostController {
         boolean isLike = postService.isLikePost(postNo, accountNo);
         model.addAttribute("isLike", isLike);
 
-        Post post = postService.getPost(postNo);
+        Post post = postService.getPost(Integer.parseInt(postNo));
         if (post == null)
             return new ModelAndView(new RedirectView("/posts?type=1"));
         else

@@ -108,7 +108,7 @@
     </div>
 
     <div id="checkbox-option" class="">
-        <c:if test="${post.isUseAnonymousName}">
+        <c:if test="${post.nameAnonymous}">
             <c:set var="nameChecked" value="checked"/>
         </c:if>
         <div class="form-check">
@@ -118,7 +118,7 @@
             </label>
         </div>
 
-        <c:if test="${post.isUseAnonymousCity}">
+        <c:if test="${post.cityAnonymous}">
             <c:set var="cityChecked" value="checked"/>
         </c:if>
         <div class="form-check">

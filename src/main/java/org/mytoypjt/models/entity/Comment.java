@@ -12,7 +12,7 @@ public class Comment {
     int accountNo;
     int postNo;
     String nicname;
-    boolean isUseAnonymousName;
+    boolean nameAnonymous;
 
     Date commentedDate;
 
@@ -23,29 +23,29 @@ public class Comment {
         this.replyCount = 0;
         this.accountNo = -1;
         this.postNo = -1;
-        this.isUseAnonymousName = false;
+        this.nameAnonymous = false;
         this.nicname = "";
         this.commentedDate = new Date();
     }
 
-    public Comment(int commentNo, String content, int replyCount, int accountNo, int postNo, boolean isUseAnonymousName,String nicname, Date commentedDate) {
+    public Comment(int commentNo, String content, int replyCount, int accountNo, int postNo, boolean nameAnonymous,String nicname, Date commentedDate) {
         this.commentNo = commentNo;
         this.content = content;
         this.replyCount = replyCount;
         this.accountNo = accountNo;
         this.postNo = postNo;
-        this.isUseAnonymousName = isUseAnonymousName;
+        this.nameAnonymous = nameAnonymous;
         this.nicname = nicname;
         this.commentedDate = commentedDate;
     }
 
-    public Comment(String content, int replyCount, int accountNo, int postNo, String nicname, boolean isUseAnonymousName, Date commentedDate) {
+    public Comment(String content, int replyCount, int accountNo, int postNo, String nicname, boolean nameAnonymous, Date commentedDate) {
         this.content = content;
         this.replyCount = replyCount;
         this.accountNo = accountNo;
         this.postNo = postNo;
         this.nicname = nicname;
-        this.isUseAnonymousName = isUseAnonymousName;
+        this.nameAnonymous = nameAnonymous;
         this.commentedDate = commentedDate;
     }
 

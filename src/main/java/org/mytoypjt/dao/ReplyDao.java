@@ -35,7 +35,7 @@ public class ReplyDao {
                     rs.getString("content"),
                     rs.getInt("account_no"),
                     rs.getInt("comment_no"),
-                    rs.getBoolean("is_use_anonymous_name"),
+                    rs.getBoolean("name_anonymous"),
                     rs.getString("nicname"),
                     rs.getDate("replied_date")
             );
@@ -54,13 +54,13 @@ public class ReplyDao {
     public void createReply(String content, Profile profile, int commentNoInt, boolean isAnonName) {
         String sql = "insert into reply " +
                 "(reply_no, content, account_no, comment_no, is_use_anonymous_name, nicname, replied_date)" +
-                "values (null, :content, :accountNo, :commentNo, :isUseAnonymousName, :nicname, now())";
+                "values (null, :content, :accountNo, :commentNo, :nameAnonymous, :nicname, now())";
 
         MapSqlParameterSource param = new MapSqlParameterSource();
         param.addValue("content", content);
         param.addValue("accountNo", profile.getAccountNo());
         param.addValue("commentNo", commentNoInt);
-        param.addValue("isUseAnonymousName", isAnonName);
+        param.addValue("nameAnonymous", isAnonName);
         param.addValue("nicname", profile.getNicname());
 
         jdbcTemplate.update(sql, param);

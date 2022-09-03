@@ -119,16 +119,15 @@ public class PostService {
         return strategy.getPosts(options, paramMap);
     }
 
-    public Post getPost(String no) {
-        int postNo = Integer.parseInt(no);
+    public Post getPost(int postNo) {
         return postDao.getPost(postNo);
     }
 
     public void createPost(Post post) {
-        String nicname = post.getIsUseAnonymousName() ? "누군가" : post.getNicname();
+        String nicname = post.getnameAnonymous() ? "누군가" : post.getNicname();
         post.setNicname(nicname);
 
-        String city = post.getIsUseAnonymousCity() ? "어딘가" : post.getCity();
+        String city = post.getcityAnonymous() ? "어딘가" : post.getCity();
         post.setCity(city);
 
         postDao.createPost(post);
@@ -175,15 +174,15 @@ public class PostService {
         return commentDao.getComments(postNo);
     }
 
-    public void createComment(String postNo, Profile profile, String isUseAnonymousName, String content) {
+    public void createComment(String postNo, Profile profile, String nameAnonymous, String content) {
         if (isNull(postNo, profile, content))
             return;
 
-        if (isUseAnonymousName == null)
-            isUseAnonymousName = "off";
+        if (nameAnonymous == null)
+            nameAnonymous = "off";
 
         boolean isAnonymous = false;
-        if (isUseAnonymousName.equals("on"))
+        if (nameAnonymous.equals("on"))
             isAnonymous = true;
 
         try {

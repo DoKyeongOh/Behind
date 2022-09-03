@@ -35,7 +35,7 @@ public class CommentDao {
                     rs.getInt("reply_count"),
                     rs.getInt("account_no"),
                     rs.getInt("post_no"),
-                    rs.getBoolean("is_use_anonymous_name"),
+                    rs.getBoolean("name_anonymous"),
                     rs.getString("nicname"),
                     rs.getDate("commented_date")
             );
@@ -46,7 +46,7 @@ public class CommentDao {
 
     public List<Comment> getComments(int postNo) {
         String sql = "select " +
-                "comment_no, content, reply_count, account_no, post_no, is_use_anonymous_name, nicname, commented_date" +
+                "comment_no, content, reply_count, account_no, post_no, name_anonymous, nicname, commented_date" +
                 " from comment where post_no = :postNo";
 
         try {
@@ -59,10 +59,6 @@ public class CommentDao {
     }
 
     public void createComment(int postNo, Profile profile, boolean isAnonymous, String content) {
-        String sql = "insert into comment " +
-                "(comment_no, content, reply_count, account_no, post_no, is_use_anonymous_name, nicname, commented_date) " +
-                "values (null , ?, 0, ?, ?, ?, ?, now())";
-
         SqlParameterSource param = new BeanPropertySqlParameterSource(new Comment(
                 content, 0, profile.getAccountNo(), postNo, profile.getNicname(), isAnonymous, new Date()
         ));

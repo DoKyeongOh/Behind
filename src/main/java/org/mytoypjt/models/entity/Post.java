@@ -12,8 +12,8 @@ public class Post {
     int likeCount;
     int accountNo;
     int pictureNo;
-    boolean isUseAnonymousName;
-    boolean isUseAnonymousCity;
+    boolean nameAnonymous;
+    boolean cityAnonymous;
     String nicname;
     String city;
 
@@ -26,14 +26,14 @@ public class Post {
         this.likeCount = 0;
         this.accountNo = -1;
         this.pictureNo = 1;
-        this.isUseAnonymousName = false;
-        this.isUseAnonymousCity = false;
+        this.nameAnonymous = false;
+        this.cityAnonymous = false;
         this.nicname = "nicname";
         this.city = "city";
     }
 
     public Post(int postNo, String title, String content, Date postedDate, int commentCount, int likeCount, int accountNo,
-                int pictureNo, boolean isUseAnonymousName, boolean isUseAnonymousCity,String nicname, String city) {
+                int pictureNo, boolean nameAnonymous, boolean cityAnonymous, String nicname, String city) {
         this.postNo = postNo;
         this.title = title;
         this.content = content;
@@ -42,13 +42,13 @@ public class Post {
         this.likeCount = likeCount;
         this.accountNo = accountNo;
         this.pictureNo = pictureNo;
-        this.isUseAnonymousName = isUseAnonymousName;
-        this.isUseAnonymousCity = isUseAnonymousCity;
+        this.nameAnonymous = nameAnonymous;
+        this.cityAnonymous = cityAnonymous;
         this.nicname = nicname;
         this.city = city;
     }
 
-    public Post(String title, String content, Date postedDate, int commentCount, int likeCount, int accountNo, int pictureNo, boolean isUseAnonymousName, boolean isUseAnonymousCity, String nicname, String city) {
+    public Post(String title, String content, Date postedDate, int commentCount, int likeCount, int accountNo, int pictureNo, boolean nameAnonymous, boolean cityAnonymous, String nicname, String city) {
         this.title = title;
         this.content = content;
         this.postedDate = postedDate;
@@ -56,8 +56,8 @@ public class Post {
         this.likeCount = likeCount;
         this.accountNo = accountNo;
         this.pictureNo = pictureNo;
-        this.isUseAnonymousName = isUseAnonymousName;
-        this.isUseAnonymousCity = isUseAnonymousCity;
+        this.nameAnonymous = nameAnonymous;
+        this.cityAnonymous = cityAnonymous;
         this.nicname = nicname;
         this.city = city;
     }
@@ -122,20 +122,20 @@ public class Post {
         this.pictureNo = pictureNo;
     }
 
-    public boolean isUseAnonymousName() {
-        return isUseAnonymousName;
+    public boolean isNameAnonymous() {
+        return nameAnonymous;
     }
 
-    public void setUseAnonymousName(boolean useAnonymousName) {
-        isUseAnonymousName = useAnonymousName;
+    public void setNameAnonymous(boolean nameAnonymous) {
+        this.nameAnonymous = nameAnonymous;
     }
 
-    public boolean isUseAnonymousCity() {
-        return isUseAnonymousCity;
+    public boolean isCityAnonymous() {
+        return cityAnonymous;
     }
 
-    public void setUseAnonymousCity(boolean useAnonymousCity) {
-        isUseAnonymousCity = useAnonymousCity;
+    public void setCityAnonymous(boolean cityAnonymous) {
+        this.cityAnonymous = cityAnonymous;
     }
 
     public String getNicname() {
@@ -166,11 +166,11 @@ public class Post {
         return postedDate;
     }
 
-    public boolean getIsUseAnonymousName() {
-        return isUseAnonymousName;
+    public boolean getnameAnonymous() {
+        return nameAnonymous;
     }
 
-    public boolean getIsUseAnonymousCity() {
-        return isUseAnonymousCity;
+    public boolean getcityAnonymous() {
+        return cityAnonymous;
     }
 }
