@@ -15,12 +15,8 @@ public class DBConfig {
     private static String pw="1234";
 
     @Bean
-    public BasicDataSource dataSource(){
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public BasicDataSource dataSource() throws ClassNotFoundException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
         BasicDataSource dataSource = new BasicDataSource();
 
         dataSource.setUsername(id);

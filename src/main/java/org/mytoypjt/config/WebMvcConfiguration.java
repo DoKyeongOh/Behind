@@ -34,6 +34,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         System.out.println("test 성공");
+        System.out.println("한글??");
         registry.addViewController("/test").setViewName("test");
     }
 
