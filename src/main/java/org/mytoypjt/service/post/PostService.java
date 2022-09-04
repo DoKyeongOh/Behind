@@ -116,7 +116,13 @@ public class PostService {
         PostSortType sortType = getPostSortType(options.getSortType());
         BasePostsStrategy strategy = postsStrategyFactory.getInstance(sortType);
         strategy.setPostCountInPage(POST_COUNT_IN_PAGE);
-        return strategy.getPosts(options, paramMap);
+
+        List<Post> posts =strategy.getPosts(options, paramMap);
+        posts.forEach(post -> {
+            if (post.getTitle().length() > 15)
+                post.setTitle(post.getTitle().substring(0,11) + "...");
+        });
+        return posts;
     }
 
     public Post getPost(int postNo) {
