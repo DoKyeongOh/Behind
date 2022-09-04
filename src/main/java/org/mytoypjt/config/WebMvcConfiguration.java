@@ -19,10 +19,11 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/css/**").addResourceLocations("/css/").setCachePeriod(31556926);
-        registry.addResourceHandler("/js/**").addResourceLocations("/js/").setCachePeriod(31556926);
-        registry.addResourceHandler("/icons/**").addResourceLocations("/icons/").setCachePeriod(31556926);
-        registry.addResourceHandler("/pictures/**").addResourceLocations("/pictures/").setCachePeriod(31556926);
+        registry.addResourceHandler("*/css/**").addResourceLocations("/css/").setCachePeriod(31556926);
+        registry.addResourceHandler("*/js/**").addResourceLocations("/js/").setCachePeriod(31556926);
+        registry.addResourceHandler("*/icons/**").addResourceLocations("/icons/").setCachePeriod(31556926);
+        registry.addResourceHandler("*/pictures/**").addResourceLocations("/pictures/").setCachePeriod(31556926);
+
     }
 
     @Override
@@ -64,7 +65,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setPrefix("/WEB-INF/views/");
         viewResolver.setSuffix(".jsp");
-//        viewResolver.setContentType("text/html; charset=UTF-8");
         return viewResolver;
     }
 
