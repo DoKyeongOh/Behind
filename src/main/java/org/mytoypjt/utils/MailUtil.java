@@ -16,10 +16,11 @@ public class MailUtil {
     String connectPort = "465";
     String senderName = "behindsender@gmail.com";
     String hostEmail = "behindsender@gmail.com";
+    String password = "";
 
     public MailUtil () {
         PropertiesUtil propertiesUtil = new PropertiesUtil("/mail_properties.properties");
-        String password = (String) propertiesUtil.getProperty("gmail.password");
+        password = (String) propertiesUtil.getProperty("gmail.password");
         setMailProperties();
         mailSession = Session.getDefaultInstance(mailProperties, new Authenticator() {
             @Override
