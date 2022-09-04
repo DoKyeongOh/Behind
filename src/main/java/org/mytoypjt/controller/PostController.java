@@ -124,7 +124,7 @@ public class PostController {
         int likeCount = 0;
 
         Post post = new Post(
-                -1, title, content, new Date(), commentCount, likeCount, profile.getAccountNo(),
+                title, content, new Date(), commentCount, likeCount, profile.getAccountNo(),
                 pictureNo, isAnonymousName, isAnonymousCity, profile.getNicname(), profile.getCity());
         
         postService.createPost(post);
