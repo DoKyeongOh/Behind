@@ -38,45 +38,32 @@ public class LikeDao {
     }
     public boolean isAlreadyLikeThis(int postNo, int accountNo) {
         String sql = "select * from likes where post_no = :postNo and account_no = :accountNo";
-
         MapSqlParameterSource param = new MapSqlParameterSource();
         param.addValue("postNo", postNo);
         param.addValue("accountNo", accountNo);
-
-        List<Like> likes = jdbcTemplate.query(sql, param, likeRowMapper);
-        if (likes.size() > 0)
-            return true;
-        return false;
+        return jdbcTemplate.query(sql, param, likeRowMapper).size() > 0;
     }
     public void addLike(int postNo, int accountNo) {
         String sql = "insert into likes (like_no, post_no, account_no) values (null, :postNo, :accountNo)";
-
         MapSqlParameterSource param = new MapSqlParameterSource();
         param.addValue("postNo", postNo);
         param.addValue("accountNo", accountNo);
-
         jdbcTemplate.update(sql, param);
     }
     public void delLike(int postNo, int accountNo) {
         String sql = "delete from likes where post_no=:postNo and account_no=:accountNo";
-
         MapSqlParameterSource param = new MapSqlParameterSource();
         param.addValue("postNo", postNo);
         param.addValue("accountNo", accountNo);
-
         jdbcTemplate.update(sql, param);
     }
     public int getLikeCount(int postNo) {
         String sql = "select count(*) from likes where post_no=:postNo";
-
         Map<String, Integer> param = new HashMap<>();
         param.put("postNo", postNo);
-
-        int count = jdbcTemplate.queryForObject(sql, param, (rs, rowNum) -> {
+        return jdbcTemplate.queryForObject(sql, param, (rs, rowNum) -> {
             return rs.getInt(1);
         });
-
-        return count;
     }
     public boolean isUserLikePost(int postNo, int accountNo){
         String sql = "select * from likes where post_no=:postNo and account_no=:accountNo";
@@ -85,7 +72,6 @@ public class LikeDao {
         param.addValue("postNo", postNo);
         param.addValue("accountNo", accountNo);
 
-        boolean likeExist = jdbcTemplate.query(sql, param, likeRowMapper).size() != 0;
-        return likeExist;
+        return jdbcTemplate.query(sql, param, likeRowMapper).size() != 0;
     }
 }

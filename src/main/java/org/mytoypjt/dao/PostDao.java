@@ -65,7 +65,9 @@ public class PostDao {
     public List<Post> getDaysFavoritePosts(int pageNo, int postCountInPage) {
         int startNo = (pageNo - 1) * postCountInPage;
         if (startNo < 0) startNo = 1;
-        String sql = "select * from post " + "where posted_date between date_add(now(), interval -1 day) and now() " + "order by like_count desc limit ?, ?";
+        String sql = "select * from post " +
+                "where posted_date between date_add(now(), interval -1 day) and now() " +
+                "order by like_count desc limit :startNo, :count";
 
         MapSqlParameterSource param = new MapSqlParameterSource();
         param.addValue("startNo", startNo);
@@ -77,7 +79,9 @@ public class PostDao {
     public List<Post> getWeeksFavoritePosts(int pageNo, int postCountInPage) {
         int startNo = (pageNo - 1) * postCountInPage;
         if (startNo < 0) startNo = 1;
-        String sql = "select * from post " + "where posted_date between date_add(now(), interval -1 week) and now() " + "order by like_count desc limit ?, ?";
+        String sql = "select * from post " +
+                "where posted_date between date_add(now(), interval -1 week) and now() " +
+                "order by like_count desc limit :startNo, :count";
 
         MapSqlParameterSource param = new MapSqlParameterSource();
         param.addValue("startNo", startNo);
@@ -105,34 +109,30 @@ public class PostDao {
 
     public int getTotalPostCount() {
         String sql = "select count(*) from post";
-        int count = jdbcTemplate.queryForObject(sql, (SqlParameterSource) null, (rs, rowNum) -> {
+        return jdbcTemplate.queryForObject(sql, (SqlParameterSource) null, (rs, rowNum) -> {
             return rs.getInt(1);
         });
-
-        return count;
     }
 
     public int getDaysPostCount(int postCountInPage) {
-        String sql = "select count(*) from post " + "where posted_date between date_add(now(), interval -1 day) and now() " + "order by like_count desc limit 0, ?";
+        String sql = "select count(*) from post " +
+                "where posted_date between date_add(now(), interval -1 day) and now() " +
+                "order by like_count desc limit 0, :count";
 
-        int count = jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("count", postCountInPage), (rs, rowNum) -> rs.getInt(1));
-
-        return count;
+        return jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("count", postCountInPage), (rs, rowNum) -> rs.getInt(1));
     }
 
     public int getWeeksPostCount(int postCountInPage) {
-        String sql = "select count(*) from post " + "where posted_date between date_add(now(), interval -1 week) and now() " + "order by like_count desc limit 0, ?";
+        String sql = "select count(*) from post " +
+                "where posted_date between date_add(now(), interval -1 week) and now() " +
+                "order by like_count desc limit 0, :count";
 
-        int count = jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("count", postCountInPage), (rs, rowNum) -> rs.getInt(1));
-
-        return count;
+        return jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("count", postCountInPage), (rs, rowNum) -> rs.getInt(1));
     }
 
     public boolean createPost(Post post) {
         SqlParameterSource param = new BeanPropertySqlParameterSource(post);
-        int returnCode = jdbcInsert.execute(param);
-        if (returnCode == 1) return true;
-        return false;
+        return jdbcInsert.execute(param) == 1;
     }
 
     public void updatePost(Post post) {

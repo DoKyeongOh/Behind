@@ -44,16 +44,11 @@ public class AccountDao {
         sqlParameterSource.addValue("id", id);
         sqlParameterSource.addValue("password", pw);
 
-        try {
-            List<Account> accountList = jdbcTemplate.query(sql, sqlParameterSource, accountRowMapper);
-            if (accountList.size() > 1)
-                return -1;
-
-            return accountList.get(0).getAccountNo();
-        } catch (Exception e) {
-            e.printStackTrace();
+        List<Account> accountList = jdbcTemplate.query(sql, sqlParameterSource, accountRowMapper);
+        if (accountList.size() > 1)
             return -1;
-        }
+
+        return accountList.get(0).getAccountNo();
     }
 
     public List<String> getAccountListByEmail(String email){

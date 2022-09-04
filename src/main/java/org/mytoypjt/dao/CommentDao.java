@@ -48,53 +48,38 @@ public class CommentDao {
         String sql = "select " +
                 "comment_no, content, reply_count, account_no, post_no, name_anonymous, nicname, commented_date" +
                 " from comment where post_no = :postNo";
-
-        try {
-            return jdbcTemplate.query(sql, new MapSqlParameterSource("postNo", postNo), commentRowMapper);
-        } catch(Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-
+        return jdbcTemplate.query(sql, new MapSqlParameterSource("postNo", postNo), commentRowMapper);
     }
 
     public void createComment(int postNo, Profile profile, boolean isAnonymous, String content) {
         SqlParameterSource param = new BeanPropertySqlParameterSource(new Comment(
                 content, 0, profile.getAccountNo(), postNo, profile.getNicname(), isAnonymous, new Date()
         ));
-
         jdbcInsert.execute(param);
     }
 
     public int getCommentCount(int postNo) {
         String sql = "select count(*) from comment where post_no=:postNo";
-
-        int count = jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("postNo", postNo),
+        return jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("postNo", postNo),
                 (rs, rowNum) -> rs.getInt(1));
-        return count;
     }
 
     public void updateCommentCount(int postNo, int count){
         String sql = "update post set comment_count = :commentCount where post_no = :postNo";
-
         MapSqlParameterSource param = new MapSqlParameterSource();
         param.addValue("commentCount", count);
         param.addValue("postNo", postNo);
-
         jdbcTemplate.update(sql, param);
     }
 
     public Comment getCommentByCommentNo(int commentNo) {
         String sql = "select * from comment where comment_no = :commentNo";
-
         MapSqlParameterSource param = new MapSqlParameterSource("commentNo", commentNo);
-
         return jdbcTemplate.query(sql, param, commentRowMapper).get(0);
     }
 
     public List<Comment> getCommentsByAccountNo(int accountNo) {
         String sql = "select * from comment where account_no = :accountNo";
-
         MapSqlParameterSource param = new MapSqlParameterSource("accountNo", accountNo);
         return jdbcTemplate.query(sql, param, commentRowMapper);
     }
