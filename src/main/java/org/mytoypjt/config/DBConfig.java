@@ -1,11 +1,20 @@
 package org.mytoypjt.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.mytoypjt.models.entity.Post;
+import org.mytoypjt.utils.DBUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @Configuration
 @EnableTransactionManagement
@@ -34,7 +43,8 @@ public class DBConfig {
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager() {
-        return new DataSourceTransactionManager(dataSource());
+    public PlatformTransactionManager transactionManager(ApplicationContext ac) {
+        return new DataSourceTransactionManager(ac.getBean(BasicDataSource.class));
     }
+
 }
