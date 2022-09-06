@@ -102,4 +102,32 @@ class PostDaoTest {
         }
         assertEquals(true, successed);
     }
+
+    @Test
+    void getPostNoListOfAllPost() {
+        boolean successed = true;
+
+        try {
+            // test content
+            postDao.getPostNoListOfAllPost().forEach(System.out::println);
+        } catch(Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(successed, true);
+    }
+
+    @Test
+    void saveCommentCount() {
+        boolean successed = true;
+
+        try {
+            // test content
+            postDao.saveCommentCount(12, 7);
+        } catch(Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(successed, true);
+    }
 }

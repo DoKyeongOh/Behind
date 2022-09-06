@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,16 +48,6 @@ public class PostService {
     final int PAGE_COUNT_IN_PAGE = 5;
 
     public PostService(){
-    }
-
-    public Profile getPosterProfile(int accountNo) {
-        Profile profile = profileDao.getProfile(accountNo);
-        if (profile == null) {
-            profile = new Profile(accountNo);
-            profile.setNicname("익명");
-            profile.setCity("미등록 지역");
-        }
-        return profile;
     }
 
     public List<String> getPostersCity(List<Post> posts) {
@@ -174,6 +165,15 @@ public class PostService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public void refreshCommentCountOfAllPost(){
+        List<Integer> allPostNoList = postDao.getPostNoListOfAllPost();
+        allPostNoList.forEach(postNo -> {
+            int commentCount = commentDao.getCommentCount(postNo);
+            postDao.saveCommentCount(postNo, commentCount);
+        });
+
     }
 
     public List<Comment> getComments(int postNo) {

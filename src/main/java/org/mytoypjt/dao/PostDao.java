@@ -1,10 +1,6 @@
 package org.mytoypjt.dao;
 
-import org.mytoypjt.models.entity.Comment;
-import org.mytoypjt.models.entity.Like;
 import org.mytoypjt.models.entity.Post;
-import org.mytoypjt.models.entity.Profile;
-import org.mytoypjt.utils.DBUtil;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -14,13 +10,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class PostDao {
@@ -150,5 +140,25 @@ public class PostDao {
         MapSqlParameterSource param = new MapSqlParameterSource("accountNo", accountNo);
 
         return jdbcTemplate.query(sql, param, postRowMapper);
+    }
+
+    public List<Integer> getPostNoListOfAllPost() {
+        String sql = "SELECT * FROM POST";
+        List<Integer> postNoList = new ArrayList<>();
+
+        jdbcTemplate
+                .query(sql, (SqlParameterSource) null, postRowMapper)
+                .forEach(post -> {
+                    postNoList.add(post.getPostNo());
+                });
+        return postNoList;
+    }
+
+    public void saveCommentCount(Integer postNo, int commentCount) {
+        String sql = "UPDATE post SET comment_count=:commentCount WHERE post_no=:postNo";
+        MapSqlParameterSource param = new MapSqlParameterSource();
+        param.addValue("commentCount", commentCount);
+        param.addValue("postNo", postNo);
+        jdbcTemplate.update(sql, param);
     }
 }

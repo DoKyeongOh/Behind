@@ -30,6 +30,7 @@ public class PostController {
     public ModelAndView showMainPage(@RequestParam Map<String, String> param, HttpSession session){
         ModelAndView mv = new ModelAndView("mainPage");
 
+        postService.refreshCommentCountOfAllPost();
         PostsOptionVO postsOptionVO = postService.getDefaultPostsOption();
         List<Post> posts = postService.getPosts(postsOptionVO, param);
         List<String> cities = postService.getPostersCity(posts);

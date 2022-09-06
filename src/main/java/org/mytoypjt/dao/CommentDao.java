@@ -17,6 +17,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class CommentDao {
@@ -83,4 +84,5 @@ public class CommentDao {
         MapSqlParameterSource param = new MapSqlParameterSource("accountNo", accountNo);
         return jdbcTemplate.query(sql, param, commentRowMapper);
     }
+
 }
