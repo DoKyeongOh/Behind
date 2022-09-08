@@ -10,7 +10,7 @@ import java.util.Date;
 public class Profile {
     int accountNo;
     String nicname;
-    Date joinDate;
+    Date registerDate;
     String city;
     int age;
     String gender;
@@ -18,18 +18,18 @@ public class Profile {
 
     public Profile(int accountNo) {
         this.accountNo = accountNo;
-        this.nicname = "";
-        this.joinDate = new Date();
-        this.city = "";
+        this.nicname = "누군가";
+        this.registerDate = new Date();
+        this.city = "어딘가";
         this.age = 0;
         this.gender = "";
         this.userLevel = 1;
     }
 
-    public Profile(int accountNo, String nicName, Date joinDate, String city, int age, String gender, int userLevel) {
+    public Profile(int accountNo, String nicName, Date registerDate, String city, int age, String gender, int userLevel) {
         this.accountNo = accountNo;
         this.nicname = nicName;
-        this.joinDate = joinDate;
+        this.registerDate = registerDate;
         this.city = city;
         this.age = age;
         this.gender = parseGender(gender);
@@ -73,12 +73,12 @@ public class Profile {
         this.nicname = nicname;
     }
 
-    public Date getJoinDate() {
-        return joinDate;
+    public Date getRegisterDate() {
+        return registerDate;
     }
 
-    public void setJoinDate(Date joinDate) {
-        this.joinDate = joinDate;
+    public void setRegisterDate(Date registerDate) {
+        this.registerDate = registerDate;
     }
 
     public String getCity() {
