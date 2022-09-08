@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -25,7 +26,8 @@ public class AccountDao {
 
     public AccountDao(DataSource dataSource) {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("account");
+        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("account")
+                .usingGeneratedKeyColumns("account_no");
         accountRowMapper = (rs, rowNum) -> {
             Account account = new Account(
                     rs.getInt("account_no"),
@@ -132,13 +134,18 @@ public class AccountDao {
         }
     }
 
-    public boolean createAccount(Account account){
-        SqlParameterSource param = new BeanPropertySqlParameterSource(account);
+    public int createAccount(Account account){
         try {
-            return jdbcInsert.execute(param) == 1;
+            SqlParameterSource param = new MapSqlParameterSource()
+                    .addValue("account_no", account.getAccountNo())
+                    .addValue("id", account.getId())
+                    .addValue("password", account.getPassword())
+                    .addValue("email", account.getEmail());
+            BigInteger bigInteger = (BigInteger) jdbcInsert.executeAndReturnKey(param);
+            return bigInteger.intValue();
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return -1;
         }
     }
 
