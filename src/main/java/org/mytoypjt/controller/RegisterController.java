@@ -13,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 import java.util.Map;
 
 @Controller
@@ -23,7 +22,6 @@ public class RegisterController {
     private RegisterService registerService;
 
     final String ACCOUNT_CERT_KEY = "accountCert";
-    final String ACCOUNT_NO = "accountNo";
 
     public RegisterController(){}
 
@@ -55,7 +53,7 @@ public class RegisterController {
     public ModelAndView entryAccount(Model model, HttpSession session, @ModelAttribute RegistVO registVO){
         ModelAndView modelAndView = new ModelAndView("accountInputPage");
 
-        boolean isUsableId = registerService.isUsableAccountNo(registVO.getId());
+        boolean isUsableId = registerService.isUsableAccountId(registVO.getId());
         if (!isUsableId) {
             model.addAttribute("noticeMessage", "아이디를 이미 사용중입니다 !!");
             return modelAndView;
@@ -112,20 +110,14 @@ public class RegisterController {
             return mv;
         }
 
-        boolean successed = registerService.createAccount(dto);
-        if (!successed) {
-            mv.addObject("noticeMessage", "예상치 못한 오류가 발생했습니다 다시 시도해주세요.");
-            return mv;
-        }
-
-        int accountNo = registerService.getCreatedAccountNo(dto);
-        if (!registerService.isUsableAccountNo(Integer.toString(accountNo))) {
+        Profile profile = registerService.createAccount(dto);
+        if (profile == null) {
             mv.addObject("noticeMessage", "예상치 못한 오류가 발생했습니다 다시 시도해주세요.");
             return mv;
         }
 
         session.setAttribute(ACCOUNT_CERT_KEY, null);
-        session.setAttribute(ACCOUNT_NO, accountNo);
+        session.setAttribute("profile", profile);
 
         mv.setView(new RedirectView("/register/page/3"));
         return mv;
@@ -141,16 +133,14 @@ public class RegisterController {
         ModelAndView mv = new ModelAndView();
         mv.setView(new RedirectView("/"));
 
-        int accountNo = 0;
-        try {
-            accountNo = (int) session.getAttribute(ACCOUNT_NO);
-            session.setAttribute(ACCOUNT_NO, null);
-        } catch (Exception e) {
-            return mv;
-        }
+        Profile profile = (Profile) session.getAttribute("profile");
 
-        RegisterService registerService = new RegisterService();
-        Profile profile = new Profile(accountNo, nicname, new Date(), city, Integer.parseInt(age), gender, 1);
+        profile.setNicname(nicname);
+        profile.setAge(Integer.parseInt(age));
+        profile.setCity(city);
+        profile.setGender(gender);
+
+        session.setAttribute("profile", profile);
         boolean successed = registerService.updateProfile(profile);
 
         if (!successed) {
