@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Connection;
-
 @Service
 public class RegisterService {
 
@@ -27,8 +25,8 @@ public class RegisterService {
     public RegisterService() {
     }
 
-    public boolean isUsableAccountNo(String no){
-        boolean isExistId = accountDao.isExistId(no);
+    public boolean isUsableAccountId(String id){
+        boolean isExistId = accountDao.isExistId(id);
         return !isExistId;
     }
 
@@ -45,18 +43,17 @@ public class RegisterService {
         return value;
     }
 
-    @Transactional
-    public boolean createAccount(AccountCertDTO certDTO){
+    @Transactional(rollbackFor = Exception.class)
+    public Profile createAccount(AccountCertDTO certDTO){
         Account account = certDTO.getAccount();
         try {
-            accountDao.createAccount(account);
-            int accountNo = accountDao.findAccountNo(account);
+            int accountNo = accountDao.createAccount(account);
             Profile profile = new Profile(accountNo);
             profileDao.createProfile(profile);
-            return true;
+            return profile;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
