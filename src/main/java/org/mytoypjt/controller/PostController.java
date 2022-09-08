@@ -31,6 +31,7 @@ public class PostController {
         ModelAndView mv = new ModelAndView("mainPage");
 
         postService.refreshCommentCountOfAllPost();
+
         PostsOptionVO postsOptionVO = postService.getDefaultPostsOption();
         List<Post> posts = postService.getPosts(postsOptionVO, param);
         List<String> cities = postService.getPostersCity(posts);
