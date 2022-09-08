@@ -4,10 +4,7 @@ import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -44,15 +41,10 @@ public class LoginController {
         return mv;
     }
 
-    @RequestMapping(path = "/login", method = RequestMethod.DELETE)
+    @DeleteMapping(path = "/login")
     public ModelAndView deleteLoginSession(HttpSession session){
-        ModelAndView mv = new ModelAndView("/");
-        Profile profile = (Profile) session.getAttribute("profile");
-        if (profile == null) {
-            session.setAttribute("profile", null);
-            mv.setView(new RedirectView("/"));
-            return mv;
-        }
+        ModelAndView mv = new ModelAndView(new RedirectView("/"));
+        session.setAttribute("profile", null);
         return mv;
     }
 
