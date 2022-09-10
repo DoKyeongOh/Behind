@@ -161,4 +161,12 @@ public class PostDao {
         param.addValue("postNo", postNo);
         jdbcTemplate.update(sql, param);
     }
+
+    public void updateCommentCount(int postNo, int count){
+        String sql = "update post set comment_count = :commentCount where post_no = :postNo";
+        MapSqlParameterSource param = new MapSqlParameterSource();
+        param.addValue("commentCount", count);
+        param.addValue("postNo", postNo);
+        jdbcTemplate.update(sql, param);
+    }
 }
