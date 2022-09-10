@@ -2,6 +2,7 @@ package org.mytoypjt.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.DBUtil;
 
@@ -38,7 +39,9 @@ class CommentDaoTest {
             // test content
             Profile profile = new Profile(100);
             profile.setNicname("hhhh");
-            commentDao.createComment(40, profile, false, "test");
+            Comment comment = new Comment("test - 1", 15, "testName", true);
+            comment.setAccountNo(5);
+            commentDao.createComment(comment);
         }catch (Exception e) {
             e.printStackTrace();
             successed = false;
