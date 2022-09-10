@@ -26,8 +26,6 @@ public class PageCountStrategyFactory {
     }
 
     public void setStrategyMap() {
-
-
     }
     
     public BasePageCountStrategy getInstance(PostSortType postSortType) {
