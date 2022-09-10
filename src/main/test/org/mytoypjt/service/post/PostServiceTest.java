@@ -11,11 +11,12 @@ import org.mytoypjt.config.WebMvcConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebMvcConfiguration.class})
+@ContextConfiguration(classes = WebMvcConfiguration.class)
 class PostServiceTest {
 
     @Autowired
@@ -24,6 +25,13 @@ class PostServiceTest {
     @BeforeEach
     public void init(){
         // init param
+        int a=3;
+    }
+
+    @Test
+    void voidTest(){
+        int b=3;
+        System.out.println(postService);
     }
 
     @Test
