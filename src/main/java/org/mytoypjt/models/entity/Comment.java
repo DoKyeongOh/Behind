@@ -13,7 +13,6 @@ public class Comment {
     int postNo;
     String nicname;
     boolean nameAnonymous;
-
     Date commentedDate;
 
 
@@ -47,6 +46,16 @@ public class Comment {
         this.nicname = nicname;
         this.nameAnonymous = nameAnonymous;
         this.commentedDate = commentedDate;
+    }
+
+    public Comment(String content, int postNo, String nicname, boolean nameAnonymous) {
+        this.content = content;
+        this.postNo = postNo;
+        this.nicname = nicname;
+        this.nameAnonymous = nameAnonymous;
+        this.replyCount = 0;
+        this.accountNo = 0;
+        this.commentedDate = new Date();
     }
 
     public static boolean isCorrectComment(Comment comment){
@@ -123,6 +132,14 @@ public class Comment {
 
     public void setNicname(String nicname) {
         this.nicname = nicname;
+    }
+
+    public boolean isNameAnonymous() {
+        return nameAnonymous;
+    }
+
+    public void setNameAnonymous(boolean nameAnonymous) {
+        this.nameAnonymous = nameAnonymous;
     }
 
     public Date getCommentedDate() {
