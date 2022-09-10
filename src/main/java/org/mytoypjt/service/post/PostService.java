@@ -180,8 +180,8 @@ public class PostService {
         return commentDao.getComments(postNo);
     }
 
-    public void createComment(String postNo, Profile profile, String nameAnonymous, String content) {
-        if (isNull(postNo, profile, content))
+    public void createComment(String no, Profile profile, String nameAnonymous, String content) {
+        if (isNull(no, profile, content))
             return;
 
         if (nameAnonymous == null)
@@ -191,17 +191,16 @@ public class PostService {
         if (nameAnonymous.equals("on"))
             isAnonymous = true;
 
-        try {
-            commentDao.createComment(
-                    Integer.parseInt(postNo),
-                    profile,
-                    isAnonymous,
-                    content
-            );
+        int postNo = Integer.parseInt(no);
+        String nicname = isAnonymous ? "누군가" : profile.getNicname();
 
-            int no = Integer.parseInt(postNo);
-            int commentCount = commentDao.getCommentCount(no);
-            commentDao.updateCommentCount(no, commentCount);
+        Comment comment = new Comment(content, postNo, nicname, isAnonymous);
+
+        try {
+            commentDao.createComment(comment);
+
+            int commentCount = commentDao.getCommentCount(postNo);
+            postDao.updateCommentCount(postNo, commentCount);
         } catch (Exception e) {
             e.printStackTrace();
         }

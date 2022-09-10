@@ -52,10 +52,8 @@ public class CommentDao {
         return jdbcTemplate.query(sql, new MapSqlParameterSource("postNo", postNo), commentRowMapper);
     }
 
-    public void createComment(int postNo, Profile profile, boolean isAnonymous, String content) {
-        SqlParameterSource param = new BeanPropertySqlParameterSource(new Comment(
-                content, 0, profile.getAccountNo(), postNo, profile.getNicname(), isAnonymous, new Date()
-        ));
+    public void createComment(Comment comment) {
+        SqlParameterSource param = new BeanPropertySqlParameterSource(comment);
         jdbcInsert.execute(param);
     }
 
@@ -63,14 +61,6 @@ public class CommentDao {
         String sql = "select count(*) from comment where post_no=:postNo";
         return jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("postNo", postNo),
                 (rs, rowNum) -> rs.getInt(1));
-    }
-
-    public void updateCommentCount(int postNo, int count){
-        String sql = "update post set comment_count = :commentCount where post_no = :postNo";
-        MapSqlParameterSource param = new MapSqlParameterSource();
-        param.addValue("commentCount", count);
-        param.addValue("postNo", postNo);
-        jdbcTemplate.update(sql, param);
     }
 
     public Comment getCommentByCommentNo(int commentNo) {
