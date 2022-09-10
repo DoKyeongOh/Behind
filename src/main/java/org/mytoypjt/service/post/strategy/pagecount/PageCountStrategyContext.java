@@ -1,20 +1,18 @@
 package org.mytoypjt.service.post.strategy.pagecount;
 
 import org.mytoypjt.models.dto.PostSortType;
-import org.mytoypjt.service.post.strategy.posts.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Component
-public class PageCountStrategyFactory {
+public class PageCountStrategyContext {
     private Map<PostSortType, BasePageCountStrategy> strategyMap;
 
-    public PageCountStrategyFactory(@Autowired ApplicationContext ac) {
+    public PageCountStrategyContext(@Autowired ApplicationContext ac) {
         strategyMap = new HashMap<>();
         strategyMap.put(PostSortType.REAL_TIME, ac.getBean(RealTimePageCountStrategy.class));
         strategyMap.put(PostSortType.DAYS_FAVORITE, ac.getBean(DaysFavoritePageCountStrategy.class));
@@ -28,7 +26,7 @@ public class PageCountStrategyFactory {
     public void setStrategyMap() {
     }
     
-    public BasePageCountStrategy getInstance(PostSortType postSortType) {
+    public BasePageCountStrategy getStrategy(PostSortType postSortType) {
         return this.strategyMap.get(postSortType);
     }
 }
