@@ -1,18 +1,24 @@
 package org.mytoypjt.models.vo;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PostsOptionVO {
 
     String pageNo = "";
     String sortType = "";
     int pageStartNo = 0;
     int pageEndNo = 0;
-    int displayPageCount = 5;
+    int pageCount = 5;
+    int postCountInPage = 12;
+    Map<String, String> optionMap;
 
     public PostsOptionVO() {
         this.pageNo = "";
         this.sortType = "";
         this.pageStartNo = 1;
         this.pageEndNo = 1;
+        optionMap = new HashMap<>();
     }
 
     public PostsOptionVO(String pageNo, String sortType) {
@@ -20,31 +26,37 @@ public class PostsOptionVO {
         this.sortType = sortType;
         this.pageStartNo = 1;
         this.pageEndNo = 1;
-        this.displayPageCount = 5;
+        this.pageCount = 5;
+        this.postCountInPage = 12;
+
         if (pageNo == null)
             this.pageNo = "";
         if (sortType == null)
             this.sortType = "";
+        optionMap = new HashMap<>();
     }
 
-    public PostsOptionVO(String pageNo, String sortType, int pageStartNo, int pageEndNo, int displayPageCount) {
+    public PostsOptionVO(String pageNo, String sortType, int pageStartNo, int pageEndNo, int pageCount, int postCountInPage) {
         this.pageNo = pageNo;
         this.sortType = sortType;
         this.pageStartNo = pageStartNo;
         this.pageEndNo = pageEndNo;
-        this.displayPageCount = displayPageCount;
+        this.pageCount = pageCount;
+        this.postCountInPage = postCountInPage;
 
         if (pageNo == null)
             this.pageNo = "";
         if (sortType == null)
             this.sortType = "";
-        if (displayPageCount < 0)
-            displayPageCount = 1;
+        if (pageCount < 0)
+            pageCount = 1;
+
+        optionMap = new HashMap<>();
     }
 
     public void setStartEndPageNo(int pageTotalCount, int displayPageCount) {
         this.pageStartNo = calcStartNo(displayPageCount);
-        setDisplayPageCount(displayPageCount);
+        setPageCount(displayPageCount);
         if (this.pageStartNo > pageTotalCount)
             this.pageStartNo = 1;
 
@@ -104,12 +116,28 @@ public class PostsOptionVO {
         this.pageEndNo = pageEndNo;
     }
 
-    public int getDisplayPageCount() {
-        return displayPageCount;
+    public int getPageCount() {
+        return pageCount;
     }
 
-    public void setDisplayPageCount(int displayPageCount) {
-        this.displayPageCount = displayPageCount;
+    public void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
+    }
+
+    public int getPostCountInPage() {
+        return postCountInPage;
+    }
+
+    public void setPostCountInPage(int postCountInPage) {
+        this.postCountInPage = postCountInPage;
+    }
+
+    public Map<String, String> getOptionMap() {
+        return optionMap;
+    }
+
+    public void setOptionMap(Map<String, String> optionMap) {
+        this.optionMap = optionMap;
     }
 
     @Override

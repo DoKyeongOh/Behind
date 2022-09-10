@@ -7,15 +7,13 @@ import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.models.vo.PostsOptionVO;
-import org.mytoypjt.service.post.strategy.pagecount.BasePageCountStrategy;
-import org.mytoypjt.service.post.strategy.pagecount.PageCountStrategyFactory;
+import org.mytoypjt.service.post.strategy.pagecount.PageCountStrategyContext;
 import org.mytoypjt.service.post.strategy.posts.BasePostsStrategy;
-import org.mytoypjt.service.post.strategy.posts.PostsStrategyFactory;
+import org.mytoypjt.service.post.strategy.posts.PostsStrategyContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,9 +33,9 @@ public class PostService {
     @Autowired
     private LikeDao likeDao;
     @Autowired
-    private PageCountStrategyFactory pageCountStrategyFactory;
+    private PageCountStrategyContext pageCountStrategyContext;
     @Autowired
-    private PostsStrategyFactory postsStrategyFactory;
+    private PostsStrategyContext postsStrategyContext;
 
     final int PICTURE_COUNT = 10;
     final int SORT_REALTIME = 1;
@@ -83,21 +81,19 @@ public class PostService {
             sortType = "1";
 
         PostSortType type = getPostSortType(sortType);
-        BasePageCountStrategy strategy = pageCountStrategyFactory.getInstance(type);
-        strategy.setPostCountInPage(POST_COUNT_IN_PAGE);
-        int pageTotalCount = strategy.getPageCount();
-
         PostsOptionVO options = new PostsOptionVO(pageNo, sortType);
+        options.setPostCountInPage(POST_COUNT_IN_PAGE);
+        options.setPageCount(PAGE_COUNT_IN_PAGE);
+
+        int pageTotalCount = pageCountStrategyContext.getStrategy(type).getPageCount(options);
+
         options.setStartEndPageNo(pageTotalCount, 5);
 
         return options;
     }
 
     public PostsOptionVO getDefaultPostsOption() {
-        BasePageCountStrategy strategy = pageCountStrategyFactory.getInstance(PostSortType.REAL_TIME);
-        strategy.setPostCountInPage(POST_COUNT_IN_PAGE);
-        int pageTotalCount = strategy.getPageCount();
-
+        int pageTotalCount = postDao.getTotalPostCount();
         PostsOptionVO options = new PostsOptionVO("1", "1");
         options.setStartEndPageNo(pageTotalCount, PAGE_COUNT_IN_PAGE);
         return options;
@@ -105,10 +101,10 @@ public class PostService {
 
     public List<Post> getPosts(PostsOptionVO options, Map<String, String> paramMap){
         PostSortType sortType = getPostSortType(options.getSortType());
-        BasePostsStrategy strategy = postsStrategyFactory.getInstance(sortType);
+        BasePostsStrategy strategy = postsStrategyContext.getInstance(sortType);
         strategy.setPostCountInPage(POST_COUNT_IN_PAGE);
 
-        List<Post> posts =strategy.getPosts(options, paramMap);
+        List<Post> posts = strategy.getPosts(options, paramMap);
         posts.forEach(post -> {
             if (post.getTitle().length() > 15)
                 post.setTitle(post.getTitle().substring(0,11) + "...");

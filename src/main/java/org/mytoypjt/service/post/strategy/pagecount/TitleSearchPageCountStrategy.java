@@ -2,6 +2,7 @@ package org.mytoypjt.service.post.strategy.pagecount;
 
 import org.mytoypjt.dao.PostDao;
 import org.mytoypjt.models.dto.PostSortType;
+import org.mytoypjt.models.vo.PostsOptionVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,7 @@ public class TitleSearchPageCountStrategy extends BasePageCountStrategy{
     }
 
     @Override
-    public int getPageCount() {
+    public int getPageCount(PostsOptionVO postsOptionVO) {
         return 0;
     }
 }

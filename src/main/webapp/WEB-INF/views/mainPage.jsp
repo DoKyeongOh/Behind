@@ -142,7 +142,7 @@
     <c:set var="startNo" value="${PostsOption.pageStartNo}" />
     <c:set var="endNo" value="${PostsOption.pageEndNo}" />
     <c:set var="pageNo" value="${PostsOption.pageNo}" />
-    <c:set var="pageCount" value="${PostsOption.displayPageCount}" />
+    <c:set var="pageCount" value="${PostsOption.pageCount}" />
 
     <c:if test="${startNo ne 1}">
         <li class="page-item"><a class="page-link" href="/posts?pageNo=${pageNo-1}">Previous</a></li>
