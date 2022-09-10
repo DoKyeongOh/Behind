@@ -121,7 +121,7 @@
         </div>
     </div>
 
-    <input type="hidden" name="imgNo" value="1" id="selected-img-no">
+    <input type="hidden" name="imgNo" value="2" id="selected-img-no">
     <button id="btn-post" type="submit" class="btn btn-success">게시하기</button>
 
 </form>
