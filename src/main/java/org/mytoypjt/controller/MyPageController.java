@@ -25,9 +25,10 @@ public class MyPageController {
             return new ModelAndView(new RedirectView("/"));
 
 //        ActivityVO activityVO = memberService.getActivities(profile);
-
         return new ModelAndView("myPage");
     }
+
+
 
 
 }
