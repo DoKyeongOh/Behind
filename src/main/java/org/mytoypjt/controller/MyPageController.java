@@ -1,33 +1,32 @@
 package org.mytoypjt.controller;
 
-import org.mytoypjt.controller.structure.annotations.RequestMapping;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.models.vo.ActivityVO;
 import org.mytoypjt.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+@Controller
 public class MyPageController {
-    public MyPageController(){
 
-    }
+    @Autowired
+    MemberService memberService;
 
-    @RequestMapping(uri = "/my/page", method = "get")
-    public ViewInfo showMyPage(HttpServletRequest req, HttpServletResponse resp){
+    public MyPageController(){}
 
-        HttpSession session = req.getSession();
-        Profile profile = (Profile) session.getAttribute("profile");
-
+    @GetMapping(path = "/my/page")
+    public ModelAndView showMyPage(@SessionAttribute(name = "profile", required = false) Profile profile){
         if (profile == null)
-            return ViewInfo.getRedirectViewInfo("/");
+            return new ModelAndView(new RedirectView("/"));
 
-        MemberService memberService = new MemberService();
-        ActivityVO activityVO = memberService.getActivities(profile);
+//        ActivityVO activityVO = memberService.getActivities(profile);
 
-        return new ViewInfo("myPage");
+        return new ModelAndView("myPage");
     }
 
 

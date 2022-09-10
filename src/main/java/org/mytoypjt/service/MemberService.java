@@ -6,11 +6,13 @@ import org.mytoypjt.dao.ProfileDao;
 import org.mytoypjt.dao.ReplyDao;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.vo.ActivityVO;
+import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class MemberService {
 
     private Connection connection;
