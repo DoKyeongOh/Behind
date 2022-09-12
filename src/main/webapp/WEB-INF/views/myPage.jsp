@@ -9,6 +9,7 @@
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 <% request.setAttribute("mainPage", request.getContextPath() + "/main/page"); %>
 <% request.setAttribute("myPage", request.getContextPath() + "/my/page"); %>
+<% request.setAttribute("logout", request.getContextPath() + "/login"); %>
 
 <% request.setAttribute("post", request.getContextPath() + "/post"); %>
 <% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page/1"); %>

@@ -29,7 +29,11 @@ public class LoginController {
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public ModelAndView getLoginSession(@RequestParam(name = "accountId")String id, @RequestParam(name = "accountPw")String pw, HttpSession session){
+    public ModelAndView getLoginSession(
+            @RequestParam(name = "accountId")String id,
+            @RequestParam(name = "accountPw")String pw,
+            HttpSession session){
+
         Profile profile = loginService.getProfile(id, pw);
 
         if (profile == null)
