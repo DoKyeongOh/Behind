@@ -4,7 +4,7 @@ import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
-import org.mytoypjt.models.vo.PostsOptionVO;
+import org.mytoypjt.models.vo.PostOption;
 import org.mytoypjt.service.post.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
@@ -22,7 +21,7 @@ public class PostController {
 
     @Autowired
     PostService postService;
-    String postsOptionKey = "PostsOption";
+    String postsOptionKey = "PostOption";
 
     public PostController (){}
 
@@ -32,41 +31,37 @@ public class PostController {
 
         postService.refreshCommentCountOfAllPost();
 
-        PostsOptionVO postsOptionVO = postService.getDefaultPostsOption();
-        List<Post> posts = postService.getPosts(postsOptionVO, param);
-        List<String> cities = postService.getPostersCity(posts);
-
+        PostOption postOption = postService.getDefaultPostsOption();
+        List<Post> posts = postService.getPosts(postOption);
         mv.addObject("posts", posts);
-        mv.addObject("cities", cities);
 
         mv.addObject("realtimeChecked", "checked");
         mv.addObject("daysChecked", "");
         mv.addObject("weeksChecked", "");
 
-        session.setAttribute(this.postsOptionKey, postsOptionVO);
+        session.setAttribute(this.postsOptionKey, postOption);
 
         return mv;
     }
 
     @GetMapping(path = "/posts")
     public ModelAndView showPosts(HttpSession session, @RequestParam Map<String, String> param){
-        PostsOptionVO optionInSession =
-                (PostsOptionVO) session.getAttribute(this.postsOptionKey);
+        PostOption optionInSession =
+                (PostOption) session.getAttribute(this.postsOptionKey);
 
-        PostsOptionVO optionInRequest = new PostsOptionVO(
+        PostOption optionInRequest = new PostOption(
                 param.get("pageNo"),
                 param.get("type")
         );
         
-        PostsOptionVO actualOption = postService.createPostsOption(optionInRequest, optionInSession);
+        PostOption actualOption = postService.createPostsOption(optionInRequest, optionInSession);
+        actualOption.setOptionMap(param);
         session.setAttribute(this.postsOptionKey, actualOption);
 
-        List<Post> posts = postService.getPosts(actualOption, param);
-        List<String> cities = postService.getPostersCity(posts);
-
         ModelAndView mv = new ModelAndView("mainPage");
+
+        List<Post> posts = postService.getPosts(actualOption);
         mv.addObject("posts", posts);
-        mv.addObject("cities", cities);
 
         PostSortType postSortType = postService.getPostSortType(actualOption.getSortType());
         switch (postSortType) {

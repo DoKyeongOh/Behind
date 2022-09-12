@@ -6,16 +6,14 @@ import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.entity.Reply;
-import org.mytoypjt.models.vo.PostsOptionVO;
-import org.mytoypjt.service.post.strategy.pagecount.PageCountStrategyContext;
-import org.mytoypjt.service.post.strategy.posts.BasePostsStrategy;
+import org.mytoypjt.models.vo.PostOption;
+import org.mytoypjt.service.post.strategy.pagecount.PostCountStrategyContext;
 import org.mytoypjt.service.post.strategy.posts.PostsStrategyContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class PostService {
@@ -33,7 +31,7 @@ public class PostService {
     @Autowired
     private LikeDao likeDao;
     @Autowired
-    private PageCountStrategyContext pageCountStrategyContext;
+    private PostCountStrategyContext postCountStrategyContext;
     @Autowired
     private PostsStrategyContext postsStrategyContext;
 
@@ -48,63 +46,47 @@ public class PostService {
     public PostService(){
     }
 
-    public List<String> getPostersCity(List<Post> posts) {
-        if (posts == null) return null;
-
-        List<String> cities = new ArrayList<String>();
-
-        posts.forEach((post) -> {
-            int profileNo = post.getAccountNo();
-            cities.add(post.getCity());
-        });
-        return cities;
-    }
-
-    public PostsOptionVO createPostsOption(PostsOptionVO optionInRequest, PostsOptionVO optionInSession){
+    public PostOption createPostsOption(PostOption reqOp, PostOption sessOp){
         String sortType = "";
         String pageNo = "";
 
-        if (!optionInRequest.getSortType().isEmpty() && !optionInSession.getSortType().isEmpty()) {
-            sortType = optionInRequest.getSortType();
-            pageNo = optionInRequest.getPageNo();
-        } else if (optionInRequest.getSortType().isEmpty() && !optionInSession.getSortType().isEmpty()) {
-            sortType = optionInSession.getSortType();
-            pageNo = optionInRequest.getPageNo();
-        } else if (!optionInRequest.getSortType().isEmpty() && optionInSession.getSortType().isEmpty()) {
-            sortType = optionInRequest.getSortType();
-            pageNo = optionInSession.getPageNo();
+        if (!reqOp.getSortType().isEmpty() && !sessOp.getSortType().isEmpty()) {
+            sortType = reqOp.getSortType();
+            pageNo = reqOp.getPageNo();
+        } else if (reqOp.getSortType().isEmpty() && !sessOp.getSortType().isEmpty()) {
+            sortType = sessOp.getSortType();
+            pageNo = reqOp.getPageNo();
+        } else if (!reqOp.getSortType().isEmpty() && sessOp.getSortType().isEmpty()) {
+            sortType = reqOp.getSortType();
+            pageNo = sessOp.getPageNo();
         }
 
-        if (pageNo.isEmpty())
-            pageNo = "1";
-        if (sortType.isEmpty())
-            sortType = "1";
+        pageNo = pageNo.isEmpty() ? "1" : pageNo;
+        sortType = sortType.isEmpty() ? "1" : sortType;
 
         PostSortType type = getPostSortType(sortType);
-        PostsOptionVO options = new PostsOptionVO(pageNo, sortType);
-        options.setPostCountInPage(POST_COUNT_IN_PAGE);
-        options.setPageCount(PAGE_COUNT_IN_PAGE);
+        PostOption options = new PostOption(pageNo, sortType);
+        options.setPostLimitInMainPage();
 
-        int pageTotalCount = pageCountStrategyContext.getStrategy(type).getPageCount(options);
-
-        options.setStartEndPageNo(pageTotalCount, 5);
+        int postCount = postCountStrategyContext.getStrategy(type).getPostCount();
+        options.setStartEndPageNo(postCount);
 
         return options;
     }
 
-    public PostsOptionVO getDefaultPostsOption() {
+    public PostOption getDefaultPostsOption() {
         int pageTotalCount = postDao.getTotalPostCount();
-        PostsOptionVO options = new PostsOptionVO("1", "1");
-        options.setStartEndPageNo(pageTotalCount, PAGE_COUNT_IN_PAGE);
+        PostOption options = new PostOption("1", "1");
+        options.setStartEndPageNo(pageTotalCount);
         return options;
     }
 
-    public List<Post> getPosts(PostsOptionVO options, Map<String, String> paramMap){
+    public List<Post> getPosts(PostOption options){
         PostSortType sortType = getPostSortType(options.getSortType());
-        BasePostsStrategy strategy = postsStrategyContext.getInstance(sortType);
-        strategy.setPostCountInPage(POST_COUNT_IN_PAGE);
 
-        List<Post> posts = strategy.getPosts(options, paramMap);
+        List<Post> posts =
+                postsStrategyContext.getStrategy(sortType).getPosts(options);
+
         posts.forEach(post -> {
             if (post.getTitle().length() > 15)
                 post.setTitle(post.getTitle().substring(0,11) + "...");
