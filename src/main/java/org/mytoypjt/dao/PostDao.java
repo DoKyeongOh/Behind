@@ -104,20 +104,18 @@ public class PostDao {
         });
     }
 
-    public int getDaysPostCount(int postCountInPage) {
+    public int getDaysPostCount() {
         String sql = "select count(*) from post " +
-                "where posted_date between date_add(now(), interval -1 day) and now() " +
-                "order by like_count desc limit 0, :count";
+                "where posted_date between date_add(now(), interval -1 day) and now() ";
 
-        return jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("count", postCountInPage), (rs, rowNum) -> rs.getInt(1));
+        return jdbcTemplate.queryForObject(sql, (SqlParameterSource) null, (rs, rowNum) -> rs.getInt(1));
     }
 
-    public int getWeeksPostCount(int postCountInPage) {
+    public int getWeeksPostCount() {
         String sql = "select count(*) from post " +
-                "where posted_date between date_add(now(), interval -1 week) and now() " +
-                "order by like_count desc limit 0, :count";
+                "where posted_date between date_add(now(), interval -1 week) and now() ";
 
-        return jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("count", postCountInPage), (rs, rowNum) -> rs.getInt(1));
+        return jdbcTemplate.queryForObject(sql, (SqlParameterSource) null, (rs, rowNum) -> rs.getInt(1));
     }
 
     public boolean createPost(Post post) {
