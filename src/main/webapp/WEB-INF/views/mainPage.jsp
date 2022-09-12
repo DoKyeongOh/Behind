@@ -117,7 +117,7 @@
 
                                     <div class="text-right">
                                         <label class="label-poster-name display-inline-block">
-                                                ${cities[idx]}
+                                                ${posts[idx].city}
                                         </label><br>
                                         <label class="like-label display-inline-block">댓글 ${posts[idx].commentCount} 개 ・ 좋아요 ${posts[idx].likeCount} 개</label>
                                     </div>
@@ -138,7 +138,7 @@
 
 <!-- 페이지네이션 -->
 <ul class="pagination" id="pagenation">
-    <c:set var="PostsOption" value="${sessionScope.get('PostsOption')}" />
+    <c:set var="PostsOption" value="${sessionScope.get('PostOption')}" />
     <c:set var="startNo" value="${PostsOption.pageStartNo}" />
     <c:set var="endNo" value="${PostsOption.pageEndNo}" />
     <c:set var="pageNo" value="${PostsOption.pageNo}" />

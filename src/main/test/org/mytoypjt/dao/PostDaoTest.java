@@ -22,6 +22,20 @@ class PostDaoTest {
     }
 
     @Test
+    void getDaysPostCount(){
+
+        boolean successed = true;
+        try {
+            // test content
+            System.out.println(this.postDao.getDaysPostCount());
+        }catch (Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(true, successed);
+    }
+
+    @Test
     void modifyLike() {
         boolean successed = true;
         try {
