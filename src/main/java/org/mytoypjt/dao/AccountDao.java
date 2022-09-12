@@ -50,7 +50,7 @@ public class AccountDao {
         if (accountList.size() > 1)
             return -1;
 
-        return accountList.get(0).getAccountNo();
+        return accountList.isEmpty() ? -1 : accountList.get(0).getAccountNo();
     }
 
     public List<String> getAccountListByEmail(String email){
