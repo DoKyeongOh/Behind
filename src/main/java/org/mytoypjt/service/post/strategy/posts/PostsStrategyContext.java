@@ -23,7 +23,7 @@ public class PostsStrategyContext {
         strategyMap.put(PostSortType.HASH_TAG, ac.getBean(HashTagPostsStrategy.class));
     }
 
-    public BasePostsStrategy getInstance(PostSortType postSortType){
+    public BasePostsStrategy getStrategy(PostSortType postSortType){
         return this.strategyMap.get(postSortType);
     }
 

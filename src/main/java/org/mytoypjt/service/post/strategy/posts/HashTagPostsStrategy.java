@@ -3,12 +3,11 @@ package org.mytoypjt.service.post.strategy.posts;
 import org.mytoypjt.dao.PostDao;
 import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.Post;
-import org.mytoypjt.models.vo.PostsOptionVO;
+import org.mytoypjt.models.vo.PostOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class HashTagPostsStrategy extends BasePostsStrategy {
@@ -25,7 +24,7 @@ public class HashTagPostsStrategy extends BasePostsStrategy {
     }
 
     @Override
-    public List<Post> getPosts(PostsOptionVO optionVO, Map<String, String> paramMap) {
+    public List<Post> getPosts(PostOption optionVO) {
         return null;
     }
 }

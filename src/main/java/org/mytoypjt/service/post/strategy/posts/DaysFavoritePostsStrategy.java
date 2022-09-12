@@ -3,12 +3,11 @@ package org.mytoypjt.service.post.strategy.posts;
 import org.mytoypjt.dao.PostDao;
 import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.Post;
-import org.mytoypjt.models.vo.PostsOptionVO;
+import org.mytoypjt.models.vo.PostOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class DaysFavoritePostsStrategy extends BasePostsStrategy {
@@ -26,12 +25,8 @@ public class DaysFavoritePostsStrategy extends BasePostsStrategy {
     }
 
     @Override
-    public List<Post> getPosts(PostsOptionVO optionVO, Map<String, String> paramMap) {
-        try {
-            int pageNo = Integer.parseInt(optionVO.getPageNo());
-            return postDao.getDaysFavoritePosts(pageNo, this.postCountInPage);
-        } catch(Exception e) {
-            return null;
-        }
+    public List<Post> getPosts(PostOption optionVO) {
+        int pageNo = Integer.parseInt(optionVO.getPageNo());
+        return postDao.getDaysFavoritePosts(pageNo, optionVO.getPostCountLimitInPage());
     }
 }
