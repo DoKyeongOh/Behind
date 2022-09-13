@@ -44,10 +44,13 @@ public class CommentController {
 
         Profile profile = (Profile) session.getAttribute("profile");
 
-        postService.createComment(postNo, profile, nameAnonymous, content);
-        Post post = postService.getPost(Integer.parseInt(postNo));
+        try {
+            postService.createComment(postNo, profile, nameAnonymous, content);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        return new ModelAndView(new RedirectView("/post?no="+post.getPostNo()));
+        return new ModelAndView(new RedirectView("/post?no="+postNo));
     }
 
     @GetMapping(path = "/comment")
@@ -83,7 +86,11 @@ public class CommentController {
         String commentNo = param.get("commentNo");
         String isAnonName = param.get("nameAnonymous");
 
-        postService.createReply(content, replierNo, commentNo, isAnonName);
+        try {
+            postService.createReply(content, replierNo, commentNo, isAnonName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return ViewInfo.getRedirectViewInfo("/comment?no="+commentNo);
     }
 

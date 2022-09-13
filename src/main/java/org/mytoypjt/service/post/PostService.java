@@ -11,7 +11,9 @@ import org.mytoypjt.service.post.strategy.pagecount.PostCountStrategyContext;
 import org.mytoypjt.service.post.strategy.posts.PostsStrategyContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,7 +100,8 @@ public class PostService {
         return postDao.getPost(postNo);
     }
 
-    public void createPost(Post post) {
+    @Transactional
+    public void createPost(Post post) throws Exception{
         String nicname = post.getnameAnonymous() ? "누군가" : post.getNicname();
         post.setNicname(nicname);
 
@@ -106,14 +109,17 @@ public class PostService {
         post.setCity(city);
 
         postDao.createPost(post);
-        postLogDao.writePostActivityLog(post.getAccountNo(), post.getPostNo(), "게시");
+        postLogDao.writePostActivityLog(post, "게시");
     }
 
-    public void updatePost(Post post) {
+    @Transactional
+    public void updatePost(Post post) throws Exception {
         postDao.updatePost(post);
+        postLogDao.writePostActivityLog(post, "수정");
     }
 
-    public void toggleLike(String post, String account) {
+    @Transactional
+    public void toggleLike(String post, String account) throws Exception {
         if (post == null) return;
         if (account == null) return;
 
@@ -145,7 +151,8 @@ public class PostService {
         }
     }
 
-    public void refreshCommentCountOfAllPost(){
+    @Transactional
+    public void refreshCommentCountOfAllPost() throws Exception {
         List<Integer> allPostNoList = postDao.getPostNoListOfAllPost();
         allPostNoList.forEach(postNo -> {
             int commentCount = commentDao.getCommentCount(postNo);
@@ -158,7 +165,8 @@ public class PostService {
         return commentDao.getComments(postNo);
     }
 
-    public void createComment(String no, Profile profile, String nameAnonymous, String content) {
+    @Transactional
+    public void createComment(String no, Profile profile, String nameAnonymous, String content) throws Exception {
         if (isNull(no, profile, content))
             return;
 
@@ -174,14 +182,10 @@ public class PostService {
 
         Comment comment = new Comment(content, postNo, nicname, isAnonymous);
 
-        try {
-            commentDao.createComment(comment);
+        commentDao.createComment(comment);
 
-            int commentCount = commentDao.getCommentCount(postNo);
-            postDao.updateCommentCount(postNo, commentCount);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        int commentCount = commentDao.getCommentCount(postNo);
+        postDao.updateCommentCount(postNo, commentCount);
     }
 
     public Comment getComment(String no){
@@ -198,7 +202,8 @@ public class PostService {
         return replyDao.getReplies(commentNo);
     }
 
-    public void createReply(String content, String replierNo, String commentNo, String isAnonName) {
+    @Transactional
+    public void createReply(String content, String replierNo, String commentNo, String isAnonName) throws Exception {
         int accountNo = Integer.parseInt(replierNo);
         int commentNoInt = Integer.parseInt(commentNo);
 

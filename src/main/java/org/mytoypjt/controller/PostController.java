@@ -29,7 +29,11 @@ public class PostController {
     public ModelAndView showMainPage(@RequestParam Map<String, String> param, HttpSession session){
         ModelAndView mv = new ModelAndView("mainPage");
 
-        postService.refreshCommentCountOfAllPost();
+        try {
+            postService.refreshCommentCountOfAllPost();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         PostOption postOption = postService.getDefaultPostsOption();
         List<Post> posts = postService.getPosts(postOption);
@@ -123,8 +127,12 @@ public class PostController {
         Post post = new Post(
                 title, content, new Date(), commentCount, likeCount, profile.getAccountNo(),
                 pictureNo, isAnonymousName, isAnonymousCity, profile.getNicname(), profile.getCity());
-        
-        postService.createPost(post);
+
+        try {
+            postService.createPost(post);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return new ModelAndView(new RedirectView("/post/page/2"));
     }
@@ -165,11 +173,14 @@ public class PostController {
         String nicname = isAnonymousName ? "누군가" : profile.getNicname();
         String city = isAnonymousCity ? "어딘가" : profile.getCity();
 
-        Post post = new Post(
-                postNo, title, content, new Date(), 0, 0, profile.getAccountNo(),
-                pictureNo, isAnonymousName, isAnonymousCity, nicname, city);
+        Post post = new Post(postNo, title, content, new Date(), 0, 0,
+                profile.getAccountNo(), pictureNo, isAnonymousName, isAnonymousCity, nicname, city);
 
-        postService.updatePost(post);
+        try {
+            postService.updatePost(post);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return new ModelAndView(new RedirectView("/post?no="+post.getPostNo()));
     }
@@ -179,7 +190,11 @@ public class PostController {
         String postNo = param.get("postNo");
         String accountNo = param.get("accountNo");
 
-        postService.toggleLike(postNo, accountNo);
+        try {
+            postService.toggleLike(postNo, accountNo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         boolean isLike = postService.isLikePost(postNo, accountNo);
         model.addAttribute("isLike", isLike);
