@@ -34,7 +34,12 @@ public class LoginController {
             @RequestParam(name = "accountPw")String pw,
             HttpSession session){
 
-        Profile profile = loginService.getProfile(id, pw);
+        Profile profile = null;
+        try {
+            profile = loginService.getProfile(id, pw);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (profile == null)
             return new ModelAndView("loginPage");

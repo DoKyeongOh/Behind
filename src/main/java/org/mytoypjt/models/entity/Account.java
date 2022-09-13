@@ -53,4 +53,9 @@ public class Account {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public static boolean isCorrectAccountNo(int accountNo) {
+        if (accountNo < 0) return false;
+        return true;
+    }
 }

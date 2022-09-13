@@ -135,18 +135,13 @@ public class AccountDao {
     }
 
     public int createAccount(Account account){
-        try {
-            SqlParameterSource param = new MapSqlParameterSource()
-                    .addValue("account_no", account.getAccountNo())
-                    .addValue("id", account.getId())
-                    .addValue("password", account.getPassword())
-                    .addValue("email", account.getEmail());
-            BigInteger bigInteger = (BigInteger) jdbcInsert.executeAndReturnKey(param);
-            return bigInteger.intValue();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("account_no", account.getAccountNo())
+                .addValue("id", account.getId())
+                .addValue("password", account.getPassword())
+                .addValue("email", account.getEmail());
+        BigInteger bigInteger = (BigInteger) jdbcInsert.executeAndReturnKey(param);
+        return bigInteger.intValue();
     }
 
     public void deleteAccount(int accountNo){

@@ -17,7 +17,8 @@ public class LoginService {
 
     public LoginService() {}
 
-    public Profile getProfile(String accountId, String accountPw){
+    @Transactional
+    public Profile getProfile(String accountId, String accountPw) throws Exception {
         int accountNo = accountDao.getAccountNo(accountId, accountPw);
 
         if (!Profile.isCorrectProfileNo(accountNo)) return null;

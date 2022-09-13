@@ -6,6 +6,7 @@ import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.vo.RegistVO;
 import org.mytoypjt.service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -95,7 +96,7 @@ public class RegisterController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/account/cert", method = RequestMethod.POST)
+    @PostMapping(path = "/account/cert")
     public ModelAndView checkAccountCert(HttpSession session, @RequestParam Map<String, String> param){
         AccountCertDTO dto = (AccountCertDTO) session.getAttribute(ACCOUNT_CERT_KEY);
         String inputValue = param.get("accountCertInput");
@@ -110,9 +111,17 @@ public class RegisterController {
             return mv;
         }
 
-        Profile profile = registerService.createAccount(dto);
+        Profile profile = null;
+        try {
+            profile = registerService.createAccount(dto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         if (profile == null) {
-            mv.addObject("noticeMessage", "예상치 못한 오류가 발생했습니다 다시 시도해주세요.");
+            String errorKey = "noticeMessage";
+            String errorValue = "예상치 못한 오류가 발생했습니다 다시 시도해주세요.";
+            mv.addObject(errorKey, errorValue);
             return mv;
         }
 
@@ -121,6 +130,8 @@ public class RegisterController {
 
         mv.setView(new RedirectView("/register/page/3"));
         return mv;
+
+
     }
 
     @PostMapping(path = "/profile")

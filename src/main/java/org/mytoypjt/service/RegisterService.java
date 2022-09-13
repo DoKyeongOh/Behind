@@ -43,30 +43,16 @@ public class RegisterService {
         return value;
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public Profile createAccount(AccountCertDTO certDTO){
+    @Transactional
+    public Profile createAccount(AccountCertDTO certDTO) throws Exception {
         Account account = certDTO.getAccount();
-        try {
-            int accountNo = accountDao.createAccount(account);
-            Profile profile = new Profile(accountNo);
-            profileDao.createProfile(profile);
-            return profile;
-        } catch (Exception e) {
-            e.printStackTrace();
+        int accountNo = accountDao.createAccount(account);
+        if (!Account.isCorrectAccountNo(accountNo))
             return null;
-        }
-    }
-
-    public boolean createDefaultProfile(Account account){
-        int accountNo = accountDao.findAccountNo(account);
 
         Profile profile = new Profile(accountNo);
-        boolean successed = profileDao.createProfile(profile);
-        return successed;
-    }
-
-    public int getCreatedAccountNo(AccountCertDTO certDTO){
-        return accountDao.findAccountNo(certDTO.getAccount());
+        profileDao.createProfile(profile);
+        return profile;
     }
 
     public boolean updateProfile(Profile profile) {
