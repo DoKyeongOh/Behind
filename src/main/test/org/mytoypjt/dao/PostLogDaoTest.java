@@ -2,6 +2,7 @@ package org.mytoypjt.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.utils.DBUtil;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,7 +23,11 @@ class PostLogDaoTest {
         boolean successed = true;
         try {
             // test content
-//            postLogDao.writePostActivityLog(19, 25, "삭제");
+            Post post = new Post();
+            post.setAccountNo(19);
+            post.setPostNo(101);
+
+            postLogDao.writePostActivityLog(post, "테스트");
         }catch (Exception e) {
             e.printStackTrace();
             successed = false;
