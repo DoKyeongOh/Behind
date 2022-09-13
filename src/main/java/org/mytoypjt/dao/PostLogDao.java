@@ -3,7 +3,9 @@ package org.mytoypjt.dao;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.PostLog;
 import org.mytoypjt.utils.DBUtil;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 @Repository
 public class PostLogDao {
@@ -35,21 +38,15 @@ public class PostLogDao {
     }
 
 
-    public void writePostActivityLog(int accountNo, int postNo, String action) {
+    public void writePostActivityLog(Post post, String action) {
         String sql = "insert into post_log (post_log_no, logging_date, action_type, account_no, post_no) " +
-                "values (null, now(), ?, ?, ?)";
+                "values (null, now(), :actionType, :accountNo, :postNo)";
 
-        try(
-                Connection connection = DBUtil.getBasicDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ){
+        MapSqlParameterSource param = new MapSqlParameterSource()
+                .addValue("actionType", action)
+                .addValue("accountNo", post.getAccountNo())
+                .addValue("postNo", post.getPostNo());
 
-            preparedStatement.setString(1, action);
-            preparedStatement.setInt(2, accountNo);
-            preparedStatement.setInt(3, postNo);
-            preparedStatement.execute();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        jdbcTemplate.update(sql, param);
     }
 }
