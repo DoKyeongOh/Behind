@@ -2,7 +2,7 @@ package org.mytoypjt.models.entity;
 
 import java.util.Date;
 
-public class PostLog extends AbsEntityLog {
+public class PostLog extends AbstractEntityLog {
     int postLogNo;
     int postNo;
 

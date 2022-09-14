@@ -89,7 +89,7 @@ public class PostOption {
         }
     }
 
-    public void setPostLimitInMainPage(){
+    public void setPostCountLimitInMainPage(){
         this.pageCountLimit = 5;
         this.postCountLimitInPage = 12;
     }

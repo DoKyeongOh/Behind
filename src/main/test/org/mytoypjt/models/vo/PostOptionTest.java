@@ -13,7 +13,7 @@ class PostOptionTest {
     public void init(){
         // init param
         postOption = new PostOption("1", "1");
-        postOption.setPostLimitInMainPage();
+        postOption.setPostCountLimitInMainPage();
     }
 
     @Test
