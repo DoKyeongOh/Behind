@@ -5,7 +5,26 @@ import java.util.Date;
 public abstract class AbstractEntityLog {
     protected Date loggingDate;
     protected String actionType;
+
     protected int accountNo;
+    protected int entityNo = -1;
+    protected String logMsg = "";
+
+    public AbstractEntityLog(Date loggingDate, String actionType, int accountNo, int entityNo){
+        this.loggingDate = loggingDate;
+        this.actionType = actionType;
+        this.accountNo = accountNo;
+        this.entityNo = entityNo;
+    }
+
+    protected AbstractEntityLog() {
+    }
+
+    public String getLogMsg() {
+        return logMsg;
+    }
+
+    public abstract void setLogMsg(String logMsg);
 
     public Date getLoggingDate() {
         return loggingDate;
@@ -29,5 +48,13 @@ public abstract class AbstractEntityLog {
 
     public void setAccountNo(int accountNo) {
         this.accountNo = accountNo;
+    }
+
+    public int getEntityNo() {
+        return entityNo;
+    }
+
+    public void setEntityNo(int entityNo) {
+        this.entityNo = entityNo;
     }
 }

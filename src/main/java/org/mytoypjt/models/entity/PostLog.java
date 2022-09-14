@@ -4,17 +4,22 @@ import java.util.Date;
 
 public class PostLog extends AbstractEntityLog {
     int postLogNo;
-    int postNo;
 
-    public PostLog() {
+    public PostLog(Date loggingDate, String actionType, int accountNo, int targetNo) {
+        super(loggingDate, actionType, accountNo, targetNo);
     }
 
-    public PostLog(int postLogNo, Date loggingDate, String actionType, int postNo, int accountNo) {
+    public PostLog(int postLogNo, Date loggingDate, String actionType, int accountNo, int entityNo){
         this.postLogNo = postLogNo;
         this.loggingDate = loggingDate;
         this.actionType = actionType;
-        this.postNo = postNo;
         this.accountNo = accountNo;
+        this.entityNo = entityNo;
+    }
+
+    @Override
+    public void setLogMsg(String logMsg) {
+        this.logMsg = "당신이 게시글을 "+ actionType +"하였습니다.";
     }
 
     public int getPostLogNo() {
@@ -25,11 +30,4 @@ public class PostLog extends AbstractEntityLog {
         this.postLogNo = postLogNo;
     }
 
-    public int getPostNo() {
-        return postNo;
-    }
-
-    public void setPostNo(int postNo) {
-        this.postNo = postNo;
-    }
 }
