@@ -69,10 +69,5 @@ public class CommentDao {
         return jdbcTemplate.query(sql, param, commentRowMapper).get(0);
     }
 
-    public List<Comment> getCommentsByAccountNo(int accountNo) {
-        String sql = "select * from comment where account_no = :accountNo";
-        MapSqlParameterSource param = new MapSqlParameterSource("accountNo", accountNo);
-        return jdbcTemplate.query(sql, param, commentRowMapper);
-    }
 
 }

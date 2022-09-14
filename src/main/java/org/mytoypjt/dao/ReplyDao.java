@@ -66,10 +66,4 @@ public class ReplyDao {
         jdbcTemplate.update(sql, param);
     }
 
-    public List<Reply> getRepliesByAccountNo(int accountNo) {
-        String sql = "select * from reply where account_no = :accountNo";
-
-        MapSqlParameterSource param = new MapSqlParameterSource("accountNo", accountNo);
-        return jdbcTemplate.query(sql, param, replyRowMapper);
-    }
 }

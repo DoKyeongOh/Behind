@@ -132,14 +132,6 @@ public class PostDao {
         jdbcTemplate.update(sql, param);
     }
 
-    public List<Post> getPostsByAccountNo(int accountNo) {
-        String sql = "select * from post where account_no = :accountNo";
-
-        MapSqlParameterSource param = new MapSqlParameterSource("accountNo", accountNo);
-
-        return jdbcTemplate.query(sql, param, postRowMapper);
-    }
-
     public List<Integer> getPostNoListOfAllPost() {
         String sql = "SELECT * FROM POST";
         List<Integer> postNoList = new ArrayList<>();

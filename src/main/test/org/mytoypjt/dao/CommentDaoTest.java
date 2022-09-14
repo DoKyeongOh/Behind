@@ -19,20 +19,6 @@ class CommentDaoTest {
     }
 
     @Test
-    void getCommentsByAccountNo() {
-
-        boolean successed = true;
-        try {
-            // test content
-            System.out.println(commentDao.getCommentsByAccountNo(19).size());
-        }catch (Exception e) {
-            e.printStackTrace();
-            successed = false;
-        }
-        assertEquals(true, successed);
-    }
-
-    @Test
     void createComment() {
         boolean successed = true;
         try {
