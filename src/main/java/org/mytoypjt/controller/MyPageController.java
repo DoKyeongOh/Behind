@@ -1,7 +1,7 @@
 package org.mytoypjt.controller;
 
 import org.mytoypjt.models.entity.Profile;
-import org.mytoypjt.service.MemberService;
+import org.mytoypjt.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

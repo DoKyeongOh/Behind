@@ -2,10 +2,7 @@ package org.mytoypjt.service.post;
 
 import org.mytoypjt.dao.*;
 import org.mytoypjt.models.dto.PostSortType;
-import org.mytoypjt.models.entity.Comment;
-import org.mytoypjt.models.entity.Post;
-import org.mytoypjt.models.entity.Profile;
-import org.mytoypjt.models.entity.Reply;
+import org.mytoypjt.models.entity.*;
 import org.mytoypjt.models.vo.PostOption;
 import org.mytoypjt.service.post.strategy.pagecount.PostCountStrategyContext;
 import org.mytoypjt.service.post.strategy.posts.PostsStrategyContext;
@@ -13,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -100,19 +98,19 @@ public class PostService {
         post.setCity(city);
 
         postDao.createPost(post);
-        postLogDao.writePostActivityLog(post, "게시");
+        postLogDao.writeLog(post, "게시");
     }
 
     @Transactional
     public void updatePost(Post post) throws Exception {
         postDao.updatePost(post);
-        postLogDao.writePostActivityLog(post, "수정");
+        postLogDao.writeLog(post, "수정");
     }
 
     @Transactional
     public void deletePost(Post post) throws Exception {
         postDao.deletePost(post.getPostNo());
-        postLogDao.writePostActivityLog(post, "삭제");
+        postLogDao.writeLog(post, "삭제");
     }
 
     @Transactional
