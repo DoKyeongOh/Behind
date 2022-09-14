@@ -27,7 +27,7 @@ class PostLogDaoTest {
             post.setAccountNo(19);
             post.setPostNo(101);
 
-            postLogDao.writePostActivityLog(post, "테스트");
+            postLogDao.writeLog(post, "테스트");
         }catch (Exception e) {
             e.printStackTrace();
             successed = false;

@@ -153,12 +153,6 @@ class PostDaoTest {
         boolean successed = true;
         try {
             // test content
-            AbstractEntityLog abstractEntityLog = new PostLog();
-
-            Arrays.stream(abstractEntityLog.getClass().getSuperclass().getDeclaredFields()).forEach(field -> {
-                System.out.println(field.getName());
-            });
-
 //            abstractEntityLog.getClass().getSuperclass().getFields()
 //            abstractEntityLog.getClass().getFields()
 
