@@ -1,0 +1,7 @@
+CREATE TABLE `LIKE_LOG` (
+	`like_log_no` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`logging_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	`action_type` VARCHAR(10) NULL,
+	`post_no` bigint NULL,
+	`account_no` INT NULL REFERENCES PROFILE(account_no)
+);
