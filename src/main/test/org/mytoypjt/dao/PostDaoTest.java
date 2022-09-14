@@ -144,4 +144,18 @@ class PostDaoTest {
         }
         assertEquals(successed, true);
     }
+
+    @Test
+    void deletePost(){
+
+        boolean successed = true;
+        try {
+            // test content
+            this.postDao.deletePost(40);
+        }catch (Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(true, successed);
+    }
 }

@@ -167,4 +167,11 @@ public class PostDao {
         param.addValue("postNo", postNo);
         jdbcTemplate.update(sql, param);
     }
+
+    public void deletePost(int postNo) {
+        String sql = "delete from post where post_no = :postNo";
+        MapSqlParameterSource param = new MapSqlParameterSource();
+        param.addValue("postNo", postNo);
+        jdbcTemplate.update(sql, param);
+    }
 }

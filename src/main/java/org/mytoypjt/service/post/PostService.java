@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,14 +34,6 @@ public class PostService {
     private PostCountStrategyContext postCountStrategyContext;
     @Autowired
     private PostsStrategyContext postsStrategyContext;
-
-    final int PICTURE_COUNT = 10;
-    final int SORT_REALTIME = 1;
-    final int SORT_DAYS_LIKE = 2;
-    final int SORT_WEEKS_LIKE = 3;
-
-    final int POST_COUNT_IN_PAGE = 12;
-    final int PAGE_COUNT_IN_PAGE = 5;
 
     public PostService(){
     }
@@ -68,7 +58,7 @@ public class PostService {
 
         PostSortType type = getPostSortType(sortType);
         PostOption options = new PostOption(pageNo, sortType);
-        options.setPostLimitInMainPage();
+        options.setPostCountLimitInMainPage();
 
         int postCount = postCountStrategyContext.getStrategy(type).getPostCount();
         options.setStartEndPageNo(postCount);
@@ -79,6 +69,7 @@ public class PostService {
     public PostOption getDefaultPostsOption() {
         int pageTotalCount = postDao.getTotalPostCount();
         PostOption options = new PostOption("1", "1");
+        options.setPostCountLimitInMainPage();
         options.setStartEndPageNo(pageTotalCount);
         return options;
     }
@@ -116,6 +107,12 @@ public class PostService {
     public void updatePost(Post post) throws Exception {
         postDao.updatePost(post);
         postLogDao.writePostActivityLog(post, "수정");
+    }
+
+    @Transactional
+    public void deletePost(Post post) throws Exception {
+        postDao.deletePost(post.getPostNo());
+        postLogDao.writePostActivityLog(post, "삭제");
     }
 
     @Transactional
