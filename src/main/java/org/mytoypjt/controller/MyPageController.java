@@ -1,8 +1,6 @@
 package org.mytoypjt.controller;
 
 import org.mytoypjt.models.entity.Profile;
-import org.mytoypjt.models.etc.ViewInfo;
-import org.mytoypjt.models.vo.ActivityVO;
 import org.mytoypjt.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
