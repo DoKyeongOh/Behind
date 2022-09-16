@@ -148,7 +148,6 @@
     </div>
     <div class="input-group text-center" style="width: 100%">
         <input type="hidden" name="commentNo" value="${comment.commentNo}">
-        <input type="hidden" name="accountNo" value="${sessionScope.get("profile").accountNo}">
         <input type="text" class="form-control" placeholder="대댓글을 입력해주세요!" name="content" >
         <button class="btn btn-outline-secondary" type="submit" id="btn-comment-submit">등록</button>
     </div>

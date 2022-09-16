@@ -45,7 +45,7 @@ class PostServiceTest {
         boolean successed = true;
         try {
             // test content
-            this.postService.createReply("test content", "19", "1", null);
+            this.postService.createReply("test content", null, 1, null);
         }catch (Exception e) {
             e.printStackTrace();
             successed = false;

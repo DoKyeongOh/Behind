@@ -17,12 +17,12 @@ public class PostLogDao {
 
     NamedParameterJdbcTemplate jdbcTemplate;
     SimpleJdbcInsert jdbcInsert;
-    RowMapper<PostLog> postLogRowMapper;
+    RowMapper<PostLog> rowMapper;
 
     public PostLogDao(DataSource dataSource) {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("post");
-        postLogRowMapper = (rs, rowNum) -> {
+        rowMapper = (rs, rowNum) -> {
             PostLog postLog = new PostLog(
                     rs.getInt("post_log_no"),
                     rs.getDate("logging_date"),
@@ -54,6 +54,6 @@ public class PostLogDao {
                 .addValue("accountNo", accountNo)
                 .addValue("count", count);
 
-        return jdbcTemplate.query(sql, param, postLogRowMapper);
+        return jdbcTemplate.query(sql, param, rowMapper);
     }
 }
