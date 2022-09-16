@@ -20,11 +20,11 @@ public abstract class AbstractEntityLog {
     protected AbstractEntityLog() {
     }
 
-    public String getLogMsg() {
-        return logMsg;
-    }
+    public abstract String getLogMsg();
 
-    public abstract void setLogMsg(String logMsg);
+    public void setLogMsg(String logMsg) {
+
+    };
 
     public Date getLoggingDate() {
         return loggingDate;

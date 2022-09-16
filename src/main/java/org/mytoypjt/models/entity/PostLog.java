@@ -18,8 +18,8 @@ public class PostLog extends AbstractEntityLog {
     }
 
     @Override
-    public void setLogMsg(String logMsg) {
-        this.logMsg = "당신이 게시글을 "+ actionType +"하였습니다.";
+    public String getLogMsg() {
+        return this.logMsg = "당신이 게시글을 "+ actionType +"하였습니다.";
     }
 
     public int getPostLogNo() {
