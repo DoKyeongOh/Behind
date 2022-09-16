@@ -3,5 +3,5 @@ CREATE TABLE `COMMENT_LOG` (
 	`logging_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	`action_type` VARCHAR(10) NULL,
 	`entity_no` bigint NULL,
-	`account_no` INT NULL REFERENCES PROFILE(account_no)
+	`account_no` INT NULL
 );
