@@ -48,13 +48,13 @@ public class Comment {
         this.commentedDate = commentedDate;
     }
 
-    public Comment(String content, int postNo, String nicname, boolean nameAnonymous) {
+    public Comment(String content, int accountNo, int postNo, String nicname, boolean nameAnonymous) {
         this.content = content;
         this.postNo = postNo;
         this.nicname = nicname;
         this.nameAnonymous = nameAnonymous;
         this.replyCount = 0;
-        this.accountNo = 0;
+        this.accountNo = accountNo;
         this.commentedDate = new Date();
     }
 
