@@ -36,13 +36,13 @@ public class PostLogDao {
 
 
     public void writeLog(Post post, String action) {
-        String sql = "insert into post_log (post_log_no, logging_date, action_type, account_no, post_no) " +
-                "values (null, now(), :actionType, :accountNo, :postNo)";
+        String sql = "insert into post_log (post_log_no, logging_date, action_type, account_no, entity_no) " +
+                "values (null, now(), :actionType, :accountNo, :entityNo)";
 
         MapSqlParameterSource param = new MapSqlParameterSource()
                 .addValue("actionType", action)
                 .addValue("accountNo", post.getAccountNo())
-                .addValue("postNo", post.getPostNo());
+                .addValue("entityNo", post.getPostNo());
 
         jdbcTemplate.update(sql, param);
     }

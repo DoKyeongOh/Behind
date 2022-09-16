@@ -26,10 +26,6 @@ public class MemberService {
         postLogDao.getLogsByAccountNo(accountNo, count);
 
 
-
-
-
-
         // 로그부터 구현하고 해야할듯..?
         // 나의 활동이기 때문에 로그내역을 가져와서 구현해야함.
 
