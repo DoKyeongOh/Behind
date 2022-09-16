@@ -175,7 +175,7 @@ public class PostService {
         int postNo = Integer.parseInt(no);
         String nicname = isAnonymous ? "누군가" : profile.getNicname();
 
-        Comment comment = new Comment(content, postNo, nicname, isAnonymous);
+        Comment comment = new Comment(content, profile.getAccountNo(), postNo, nicname, isAnonymous);
 
         commentDao.createComment(comment);
 
@@ -198,16 +198,12 @@ public class PostService {
     }
 
     @Transactional
-    public void createReply(String content, String replierNo, String commentNo, String isAnonName) throws Exception {
-        int accountNo = Integer.parseInt(replierNo);
-        int commentNoInt = Integer.parseInt(commentNo);
-
+    public void createReply(String content, Profile profile, int commentNo, String isAnonName) throws Exception {
         boolean isAnonymousName = true;
         if (isAnonName == null)
             isAnonymousName = false;
 
-        Profile profile = profileDao.getProfile(accountNo);
-        replyDao.createReply(content, profile, commentNoInt, isAnonymousName);
+        replyDao.createReply(content, profile, commentNo, isAnonymousName);
     }
 
     public boolean isNull(Object...param) {

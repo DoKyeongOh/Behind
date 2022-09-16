@@ -8,10 +8,7 @@ import org.mytoypjt.models.etc.ViewInfo;
 import org.mytoypjt.service.post.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -80,18 +77,18 @@ public class CommentController {
     }
 
     @PostMapping(path = "/reply")
-    public ViewInfo createReply(@RequestParam Map<String, String> param){
+    public ModelAndView createReply(@RequestParam Map<String, String> param,
+                                @SessionAttribute(name = "profile") Profile profile){
         String content = param.get("content");
-        String replierNo = param.get("accountNo");
         String commentNo = param.get("commentNo");
         String isAnonName = param.get("nameAnonymous");
 
         try {
-            postService.createReply(content, replierNo, commentNo, isAnonName);
+            postService.createReply(content, profile, Integer.parseInt(commentNo), isAnonName);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ViewInfo.getRedirectViewInfo("/comment?no="+commentNo);
+        return new ModelAndView(new RedirectView("/comment?no="+commentNo));
     }
 
 }

@@ -32,6 +32,15 @@ public class Reply {
         this.repliedDate = repliedDate;
     }
 
+    public Reply(String content, int accountNo, int commentNo, boolean nameAnonymous, String nicname){
+        this.content = content;
+        this.accountNo = accountNo;
+        this.commentNo = commentNo;
+        this.nameAnonymous = nameAnonymous;
+        this.nicname = nicname;
+        this.repliedDate = new Date();
+    }
+
     public static boolean isCorrectReply(Reply reply){
         if (isNull(reply, reply.getContent()))
             return false;
