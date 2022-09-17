@@ -3,6 +3,7 @@ package org.mytoypjt.dao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mytoypjt.models.entity.Comment;
+import org.mytoypjt.models.entity.Like;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.utils.DBUtil;
@@ -14,6 +15,7 @@ public class TotalDaoTest {
     PostLogDao postLogDao;
     CommentLogDao commentLogDao;
     ReplyLogDao replyLogDao;
+    LikeLogDao likeLogDao;
 
     @BeforeEach
     public void init(){
@@ -21,6 +23,7 @@ public class TotalDaoTest {
         postLogDao = new PostLogDao(DBUtil.getBasicDataSource());
         commentLogDao = new CommentLogDao(DBUtil.getBasicDataSource());
         replyLogDao = new ReplyLogDao(DBUtil.getBasicDataSource());
+        likeLogDao = new LikeLogDao(DBUtil.getBasicDataSource());
     }
 
     @Test
@@ -39,14 +42,18 @@ public class TotalDaoTest {
             Reply reply =  new Reply("test-content", 6, 39, false, "admin-test");
 
 
-            for (int i=0 ; i<5 ; i++) {
-                randomValue = i % 3;
+            for (int i=0 ; i<10 ; i++) {
+                randomValue = i % 4;
                 switch (randomValue){
                     case 0:postLogDao.writeLog(post, "수정"); break;
                     case 1:commentLogDao.writeLog(comment, "수정"); break;
                     case 2:replyLogDao.writeLog(reply, "수정"); break;
+                    case 3: {
+                        likeLogDao.writeLog(new Like(6, 15), "좋아요");
+                        break;
+                    }
                 }
-                Thread.sleep(1000);
+                Thread.sleep(500);
             }
 
         } catch(Exception e) {
