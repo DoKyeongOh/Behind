@@ -19,10 +19,13 @@ public class MemberService {
     @Autowired
     ReplyLogDao replyLogDao;
 
+    @Autowired
+    LikeLogDao likeLogDao;
+
     public MemberService() {
     }
 
-    public List<AbstractEntityLog> loadEntityLogByAccountNo(int accountNo, int count) {
+    public List<AbstractEntityLog> getLogsByAccountNo(int accountNo, int count) {
         if (accountNo < 0)
             return null;
 
@@ -31,15 +34,9 @@ public class MemberService {
         logList.addAll(postLogDao.getLogsByAccountNo(accountNo, count));
         logList.addAll(commentLogDao.getLogsByAccountNo(accountNo, count));
         logList.addAll(replyLogDao.getLogsByAccountNo(accountNo, count));
+        logList.addAll(likeLogDao.getLogsByAccountNo(accountNo, count));
 
-        Collections.sort(logList, new Comparator<AbstractEntityLog>() {
-            @Override
-            public int compare(AbstractEntityLog o1, AbstractEntityLog o2) {
-                return o1.getLoggingDate().compareTo(o2.getLoggingDate());
-            }
-        });
-
-        // 이젠 좋아요 로그만 남기면됨.
+        Collections.sort(logList, Comparator.comparing(AbstractEntityLog::getLoggingDate));
 
         return logList;
     }

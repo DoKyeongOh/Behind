@@ -1,5 +1,6 @@
 package org.mytoypjt.controller;
 
+import org.mytoypjt.models.entity.AbstractEntityLog;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+
+import java.util.List;
 
 @Controller
 public class MyPageController {
@@ -22,8 +25,12 @@ public class MyPageController {
         if (profile == null)
             return new ModelAndView(new RedirectView("/"));
 
-//        ActivityVO activityVO = memberService.getActivities(profile);
-        return new ModelAndView("myPage");
+        List<AbstractEntityLog> logList =
+                memberService.getLogsByAccountNo(profile.getAccountNo(), 100);
+
+        ModelAndView mv = new ModelAndView("myPage");
+        mv.addObject("logList", logList);
+        return mv;
     }
 
 
