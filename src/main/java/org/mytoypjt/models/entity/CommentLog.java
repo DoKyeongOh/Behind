@@ -5,7 +5,7 @@ import java.util.Date;
 public class CommentLog extends AbstractEntityLog{
     int commentLogNo;
 
-    public CommentLog(int commentLogNo, Date loggingDate, String actionType, int accountNo, int entityNo) {
+    public CommentLog(int commentLogNo, String loggingDate, String actionType, int accountNo, int entityNo) {
         this.commentLogNo = commentLogNo;
         this.loggingDate = loggingDate;
         this.actionType = actionType;

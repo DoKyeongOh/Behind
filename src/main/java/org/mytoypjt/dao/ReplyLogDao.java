@@ -24,9 +24,10 @@ public class ReplyLogDao {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("reply_log");
         rowMapper = (rs, rowNum) -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("YY.MM.DD hh:mm:ss");
             ReplyLog replyLog = new ReplyLog(
                     rs.getInt("reply_log_no"),
-                    rs.getTimestamp("logging_date"),
+                    sdf.format(rs.getTimestamp("logging_date")),
                     rs.getString("action_type"),
                     rs.getInt("account_no"),
                     rs.getInt("entity_no")

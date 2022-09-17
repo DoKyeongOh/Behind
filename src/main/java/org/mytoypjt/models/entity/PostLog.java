@@ -5,11 +5,11 @@ import java.util.Date;
 public class PostLog extends AbstractEntityLog {
     int postLogNo;
 
-    public PostLog(Date loggingDate, String actionType, int accountNo, int targetNo) {
+    public PostLog(String loggingDate, String actionType, int accountNo, int targetNo) {
         super(loggingDate, actionType, accountNo, targetNo);
     }
 
-    public PostLog(int postLogNo, Date loggingDate, String actionType, int accountNo, int entityNo){
+    public PostLog(int postLogNo, String loggingDate, String actionType, int accountNo, int entityNo){
         this.postLogNo = postLogNo;
         this.loggingDate = loggingDate;
         this.actionType = actionType;

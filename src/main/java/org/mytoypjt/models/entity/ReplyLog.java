@@ -6,7 +6,7 @@ public class ReplyLog extends AbstractEntityLog{
 
     int replyLogNo;
 
-    public ReplyLog(int replyLogNo, Date loggingDate, String actionType, int accountNo, int entityNo) {
+    public ReplyLog(int replyLogNo, String loggingDate, String actionType, int accountNo, int entityNo) {
         this.replyLogNo = replyLogNo;
         this.loggingDate = loggingDate;
         this.actionType = actionType;

@@ -1,16 +1,17 @@
 package org.mytoypjt.models.entity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public abstract class AbstractEntityLog {
-    protected Date loggingDate;
+    protected String loggingDate;
     protected String actionType;
-
     protected int accountNo;
     protected int entityNo = -1;
     protected String logMsg = "";
 
-    public AbstractEntityLog(Date loggingDate, String actionType, int accountNo, int entityNo){
+    public AbstractEntityLog(String loggingDate, String actionType, int accountNo, int entityNo){
         this.loggingDate = loggingDate;
         this.actionType = actionType;
         this.accountNo = accountNo;
@@ -26,11 +27,11 @@ public abstract class AbstractEntityLog {
 
     };
 
-    public Date getLoggingDate() {
+    public String getLoggingDate() {
         return loggingDate;
     }
 
-    public void setLoggingDate(Date loggingDate) {
+    public void setLoggingDate(String loggingDate) {
         this.loggingDate = loggingDate;
     }
 

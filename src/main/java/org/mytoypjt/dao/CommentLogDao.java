@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Repository
@@ -23,9 +24,10 @@ public class CommentLogDao {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("comment_log");
         rowMapper = (rs, rowNum) -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("YY.MM.DD hh:mm:ss");
             CommentLog commentLog = new CommentLog(
                     rs.getInt("comment_log_no"),
-                    rs.getTimestamp("logging_date"),
+                    sdf.format(rs.getTimestamp("logging_date")),
                     rs.getString("action_type"),
                     rs.getInt("account_no"),
                     rs.getInt("entity_no")
