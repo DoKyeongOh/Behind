@@ -104,23 +104,14 @@
     <div id="my-activities">
         <h2 class="text-center font-border border rounded-pill p-3 bg-dark text-white">나의 활동</h2>
         <ul class="list-group list-group-flush mt-3 activity-list">
-            <c:forEach var="item" items="${activities}">
-                <a class="one-activity mb-1" href=""><li class="list-group-item">${item.content}</li></a>
+            <c:forEach var="logItem" items="${logList}">
+                <a class="one-activity mb-1" href="">
+                    <li class="list-group-item">
+                        <span class="display-inline-block">${logItem.logMsg}</span>
+                        <span class="display-inline-block">${logItem.loggingDate}</span>
+                    </li>
+                </a>
             </c:forEach>
-            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 게시하였습니다!</li></a>
-            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 좋아합니다!</li></a>
-            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 에 대댓글을 게시하였습니다!</li></a>
-            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 수정하였습니다!</li></a>
-            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 삭제하였습니다!</li></a>
-            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 에 대댓글을 게시하였습니다!</li></a>
-            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 수정하였습니다!</li></a>
-            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 좋아합니다!</li></a>
-            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 에 대댓글을 게시하였습니다!</li></a>
-            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 수정하였습니다!</li></a>
-            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 삭제하였습니다!</li></a>
-            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 에 대댓글을 게시하였습니다!</li></a>
-            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 수정하였습니다!</li></a>
-            <a class="one-activity mb-1" href=""><li class="list-group-item">당신이 "~~~" 을 삭제하였습니다!</li></a>
         </ul>
         <label class="badge bg-dark">글 : 5 개</label>
         <label class="badge bg-dark">댓글 : 5 개</label>
