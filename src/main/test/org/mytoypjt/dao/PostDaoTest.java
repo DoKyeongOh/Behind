@@ -9,9 +9,7 @@ import org.mytoypjt.models.entity.PostLog;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.DBUtil;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -153,8 +151,24 @@ class PostDaoTest {
         boolean successed = true;
         try {
             // test content
-//            abstractEntityLog.getClass().getSuperclass().getFields()
-//            abstractEntityLog.getClass().getFields()
+
+            List<Integer> list = new ArrayList<>();
+            list.add(1);
+            list.add(2);
+            list.add(3);
+
+            Collections.sort(list, new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    System.out.println("o1 = " + o1 + ", o2 = " + o2);
+                    int rate = o2 - o1;
+                    System.out.println("rate = " + rate);
+                    return rate;
+                }
+            });
+
+            list.forEach(System.out::println);
+
 
         }catch (Exception e) {
             e.printStackTrace();
