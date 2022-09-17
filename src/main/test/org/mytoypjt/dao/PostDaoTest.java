@@ -152,22 +152,11 @@ class PostDaoTest {
         try {
             // test content
 
-            List<Integer> list = new ArrayList<>();
-            list.add(1);
-            list.add(2);
-            list.add(3);
+            Date date1 = new Date();
+            Thread.sleep(100);
+            Date date2 = new Date();
 
-            Collections.sort(list, new Comparator<Integer>() {
-                @Override
-                public int compare(Integer o1, Integer o2) {
-                    System.out.println("o1 = " + o1 + ", o2 = " + o2);
-                    int rate = o2 - o1;
-                    System.out.println("rate = " + rate);
-                    return rate;
-                }
-            });
-
-            list.forEach(System.out::println);
+            System.out.println(date2.compareTo(date1));
 
 
         }catch (Exception e) {

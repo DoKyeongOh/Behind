@@ -24,12 +24,16 @@ class ReplyLogDaoTest {
         try {
             // test content
             Reply reply = new Reply("test-content", 6, 39, false, "admin-test");
-            
-            for (int i=0 ; i<3 ; i++)
-                replyLogDao.writeLog(reply, "생성");
 
-            for (int i=0 ; i<3 ; i++)
+            for (int i=0 ; i<3 ; i++) {
+                replyLogDao.writeLog(reply, "생성");
+                Thread.sleep(1000);
+            }
+
+            for (int i=0 ; i<3 ; i++) {
                 replyLogDao.writeLog(reply, "삭제");
+                Thread.sleep(1000);
+            }
 
         } catch(Exception e) {
             e.printStackTrace();

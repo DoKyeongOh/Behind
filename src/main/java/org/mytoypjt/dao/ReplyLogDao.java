@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -24,13 +26,11 @@ public class ReplyLogDao {
         rowMapper = (rs, rowNum) -> {
             ReplyLog replyLog = new ReplyLog(
                     rs.getInt("reply_log_no"),
-                    rs.getDate("logging_date"),
+                    rs.getTimestamp("logging_date"),
                     rs.getString("action_type"),
                     rs.getInt("account_no"),
                     rs.getInt("entity_no")
             );
-
-            Object object = rs.getDate("logging_date");
             return replyLog;
         };
     }

@@ -25,7 +25,7 @@ public class PostLogDao {
         rowMapper = (rs, rowNum) -> {
             PostLog postLog = new PostLog(
                     rs.getInt("post_log_no"),
-                    rs.getDate("logging_date"),
+                    rs.getTimestamp("logging_date"),
                     rs.getString("action_type"),
                     rs.getInt("account_no"),
                     rs.getInt("entity_no")

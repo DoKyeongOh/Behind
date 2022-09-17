@@ -24,10 +24,19 @@ class PostLogDaoTest {
         try {
             // test content
             Post post = new Post();
-            post.setAccountNo(19);
+            post.setAccountNo(6);
             post.setPostNo(101);
 
-            postLogDao.writeLog(post, "테스트");
+            for (int i=0 ; i<3 ; i++) {
+                postLogDao.writeLog(post, "생성");
+                Thread.sleep(1000);
+            }
+
+            for (int i=0 ; i<3 ; i++) {
+                postLogDao.writeLog(post, "삭제");
+                Thread.sleep(1000);
+            }
+
         }catch (Exception e) {
             e.printStackTrace();
             successed = false;

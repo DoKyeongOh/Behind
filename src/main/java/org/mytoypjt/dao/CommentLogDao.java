@@ -25,7 +25,7 @@ public class CommentLogDao {
         rowMapper = (rs, rowNum) -> {
             CommentLog commentLog = new CommentLog(
                     rs.getInt("comment_log_no"),
-                    rs.getDate("logging_date"),
+                    rs.getTimestamp("logging_date"),
                     rs.getString("action_type"),
                     rs.getInt("account_no"),
                     rs.getInt("entity_no")

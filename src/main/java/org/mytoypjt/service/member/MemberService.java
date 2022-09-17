@@ -35,14 +35,12 @@ public class MemberService {
         Collections.sort(logList, new Comparator<AbstractEntityLog>() {
             @Override
             public int compare(AbstractEntityLog o1, AbstractEntityLog o2) {
-                return 0;
+                return o1.getLoggingDate().compareTo(o2.getLoggingDate());
             }
         });
 
+        // 이젠 좋아요 로그만 남기면됨.
 
-        // 로그부터 구현하고 해야할듯..?
-        // 나의 활동이기 때문에 로그내역을 가져와서 구현해야함.
-
-        return null;
+        return logList;
     }
 }
