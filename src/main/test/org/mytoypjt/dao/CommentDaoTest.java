@@ -25,8 +25,7 @@ class CommentDaoTest {
             // test content
             Profile profile = new Profile(100);
             profile.setNicname("hhhh");
-            Comment comment = new Comment("test - 1", 15, "testName", true);
-            comment.setAccountNo(5);
+            Comment comment = new Comment("test - 1", 5, 15, "testName", true);
             commentDao.createComment(comment);
         }catch (Exception e) {
             e.printStackTrace();
