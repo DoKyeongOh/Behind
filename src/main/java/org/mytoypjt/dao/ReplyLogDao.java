@@ -24,7 +24,7 @@ public class ReplyLogDao {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("reply_log");
         rowMapper = (rs, rowNum) -> {
-            SimpleDateFormat sdf = new SimpleDateFormat("YY.MM.DD hh:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yy.MM.dd HH:mm:ss");
             ReplyLog replyLog = new ReplyLog(
                     rs.getInt("reply_log_no"),
                     sdf.format(rs.getTimestamp("logging_date")),

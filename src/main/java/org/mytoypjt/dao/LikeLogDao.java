@@ -23,7 +23,7 @@ public class LikeLogDao {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("likes");
         rowMapper = (rs, rowNum) -> {
-            SimpleDateFormat sdf = new SimpleDateFormat("YY.MM.DD hh:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yy.MM.dd HH:mm:ss");
             LikeLog likeLog = new LikeLog(
                     rs.getInt("like_log_no"),
                     sdf.format(rs.getTimestamp("logging_date")),

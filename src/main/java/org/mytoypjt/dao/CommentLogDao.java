@@ -24,7 +24,7 @@ public class CommentLogDao {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("comment_log");
         rowMapper = (rs, rowNum) -> {
-            SimpleDateFormat sdf = new SimpleDateFormat("YY.MM.DD hh:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yy.MM.dd HH:mm:ss");
             CommentLog commentLog = new CommentLog(
                     rs.getInt("comment_log_no"),
                     sdf.format(rs.getTimestamp("logging_date")),

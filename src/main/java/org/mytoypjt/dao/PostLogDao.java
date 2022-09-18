@@ -10,7 +10,9 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -24,7 +26,7 @@ public class PostLogDao {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("post");
         rowMapper = (rs, rowNum) -> {
-            SimpleDateFormat sdf = new SimpleDateFormat("yy.MM.dd hh:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yy.MM.dd HH:mm:ss");
             PostLog postLog = new PostLog(
                     rs.getInt("post_log_no"),
                     sdf.format(rs.getTimestamp("logging_date")),
@@ -50,7 +52,7 @@ public class PostLogDao {
     }
 
     public List<PostLog> getLogsByAccountNo(int accountNo, int count){
-        String sql = "select * from post_log where account_no=:accountNo order by logging_date desc limit :count";
+        String sql = "select * from post_log where account_no=:accountNo limit :count";
 
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("accountNo", accountNo)

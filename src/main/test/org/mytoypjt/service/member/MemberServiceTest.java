@@ -31,7 +31,9 @@ class MemberServiceTest {
 
         try {
             // test content
-            memberService.getLogsByAccountNo(6, 100);
+            memberService.getLogsByAccountNo(6, 100).forEach(log -> {
+                System.out.println(log.getLoggingDate() + " - " + log.getLogMsg());
+            });
         } catch(Exception e) {
             e.printStackTrace();
             successed = false;

@@ -41,7 +41,7 @@ public class TotalDaoTest {
             Comment comment =  new Comment("test-title", 6, 15, "admin-test", false);
             Reply reply =  new Reply("test-content", 6, 39, false, "admin-test");
 
-
+            String good = "";
             for (int i=0 ; i<10 ; i++) {
                 randomValue = i % 4;
                 switch (randomValue){
@@ -49,7 +49,8 @@ public class TotalDaoTest {
                     case 1:commentLogDao.writeLog(comment, "수정"); break;
                     case 2:replyLogDao.writeLog(reply, "수정"); break;
                     case 3: {
-                        likeLogDao.writeLog(new Like(6, 15), "좋아요");
+                        good = good.equals("좋아요") ? "" : "좋아요";
+                        likeLogDao.writeLog(new Like(6, 15), good);
                         break;
                     }
                 }
