@@ -19,7 +19,7 @@ import java.sql.SQLException;
 @Configuration
 @EnableTransactionManagement
 public class DBConfig {
-    private static String url = "jdbc:mysql://localhost:3306/behind?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    private static String url = "jdbc:mysql://localhost:3306/behind?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul";
     private static String id="behind_admin";
     private static String pw="1234";
 
