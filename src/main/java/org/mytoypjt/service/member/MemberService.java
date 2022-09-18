@@ -36,7 +36,12 @@ public class MemberService {
         logList.addAll(replyLogDao.getLogsByAccountNo(accountNo, count));
         logList.addAll(likeLogDao.getLogsByAccountNo(accountNo, count));
 
-        Collections.sort(logList, Comparator.comparing(AbstractEntityLog::getLoggingDate));
+        Collections.sort(logList, new Comparator<AbstractEntityLog>() {
+            @Override
+            public int compare(AbstractEntityLog o1, AbstractEntityLog o2) {
+                return o2.getLoggingDate().compareTo(o1.getLoggingDate());
+            }
+        });
 
         return logList;
     }
