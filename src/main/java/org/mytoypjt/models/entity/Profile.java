@@ -32,20 +32,13 @@ public class Profile {
         this.registerDate = registerDate;
         this.city = city;
         this.age = age;
-        this.gender = parseGender(gender);
+        this.gender = gender;
         this.userLevel = userLevel;
     }
 
     public static boolean isCorrectProfileNo(int profileNo){
         if (profileNo < 0) return false;
         return true;
-    }
-
-    public String parseGender(String gender){
-        if (gender == null) return "X";
-        if (gender.equals("남자")) return "M";
-        if (gender.equals("여자")) return "W";
-        return "M";
     }
 
     public static boolean isCorrectProfile(Profile profile) {
