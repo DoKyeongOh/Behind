@@ -10,6 +10,7 @@
 <% request.setAttribute("mainPage", request.getContextPath() + "/main/page"); %>
 <% request.setAttribute("myPage", request.getContextPath() + "/my/page"); %>
 <% request.setAttribute("logout", request.getContextPath() + "/login"); %>
+<% request.setAttribute("refreshProfileLink", request.getContextPath() + "/my/page"); %>
 
 <% request.setAttribute("post", request.getContextPath() + "/post"); %>
 <% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page/1"); %>
@@ -98,7 +99,7 @@
             <span class="badge bg-success mb-1">지역</span> :
             ${profile.city}
         </label><br>
-        <button id="btn-profile-change" class="btn btn-outline-dark">프로필 변경하러가기</button>
+        <button id="btn-profile-change" class="btn btn-outline-dark" href="${refreshProfileLink}">프로필 변경하러가기</button>
     </div>
 
     <div id="my-activities">
