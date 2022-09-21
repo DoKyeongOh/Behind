@@ -22,11 +22,12 @@
 </head>
 <body>
 
+
 <!-- navbar + offcanvas -->
 <nav class="navbar bg-light fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <img class="logo-img" src="../../icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
+            <img class="logo-img" src="icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
             <strong class="logo-text" onclick="location.href='${indexPage}'">Blind </strong>
         </a>
         <button class="navbar-toggler btn-dark " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
@@ -38,12 +39,8 @@
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3"><br/>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link text-center" aria-current="page" href="#">로그인 하러가기</a>
-                    </li> -->
-                    <li class="nav-item">
-                        <a class="nav-link text-center" href="${loginPage}">로그인 하러가기</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link text-center" aria-current="page" href=${loginPage}>로그인 하러가기</a></li>
+                    <li class="nav-item"><a class="nav-link text-center" href=${registerPage}>회원가입 하러가기</a></li>
                 </ul>
             </div>
             <button type="button" class="btn btn-dark" data-bs-dismiss="offcanvas" aria-label="Close">돌아가기</button>
