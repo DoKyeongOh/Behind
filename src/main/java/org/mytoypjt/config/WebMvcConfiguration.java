@@ -6,9 +6,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Configuration
@@ -33,8 +37,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        System.out.println("test 성공");
-        System.out.println("한글??");
         registry.addViewController("/test").setViewName("test");
     }
 
@@ -53,7 +55,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .excludePathPatterns("/pw/cert")
                 .excludePathPatterns("/pw")
                 .excludePathPatterns("/");
-        WebMvcConfigurer.super.addInterceptors(registry);
     }
 
     @Override
