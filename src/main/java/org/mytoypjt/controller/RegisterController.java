@@ -6,7 +6,6 @@ import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.vo.RegistVO;
 import org.mytoypjt.service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -135,7 +134,7 @@ public class RegisterController {
     }
 
     @PostMapping(path = "/profile")
-    public ModelAndView updateProfile(@RequestParam Map<String, String> param, HttpSession session){
+    public ModelAndView entryProfile(@RequestParam Map<String, String> param, HttpSession session){
         String nicname = param.get("nicname");
         String age = param.get("age");
         String city = param.get("city");
@@ -158,7 +157,6 @@ public class RegisterController {
             mv.addObject("noticeMessage", "예상치 못한 문제가 발생했습니다. 관리자에게 문의하세요!");
             return mv;
         }
-
         return mv;
     }
 }
