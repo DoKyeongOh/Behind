@@ -1,23 +1,37 @@
 package org.mytoypjt.utils;
 
-import org.mytoypjt.models.entity.Profile;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Component
 public class LoginManager {
 
-    Map<String, Date> loginMap; // <session-id:expired-date>
+    Map<Integer, Integer> loginMap; // <account-no:session-id>
+
+    int sessionIdLength = 7;
 
     public LoginManager(){
         loginMap = new HashMap<>();
     }
 
-    public boolean add(Profile profile){
+    public boolean addLoginSession(int accountNo){
+        int id = getNewSessionId();
+        loginMap.values().stream().filter(sessId -> {
+           return Integer.parseInt()
+        });
+
+
         return true;
     }
 
+    public void removeLoginSession(String sessionId){
+        loginMap.remove(sessionId);
+    }
+
+
+    public int getNewSessionId() {
+        return (int)(Math.random() * Math.pow(10, sessionIdLength));
+    }
 }
