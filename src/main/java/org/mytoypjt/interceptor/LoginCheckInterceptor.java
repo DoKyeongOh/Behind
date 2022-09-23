@@ -21,11 +21,11 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         HttpSession session = request.getSession();
+        System.out.println(session.getId());
         if (session.getAttribute("profile") == null) {
             response.sendRedirect("/");
             return false;
         }
-
         return true;
     }
 
