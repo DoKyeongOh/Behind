@@ -1,6 +1,7 @@
 package org.mytoypjt.controller;
 
 import org.mytoypjt.models.entity.Profile;
+import org.mytoypjt.models.vo.UserVO;
 import org.mytoypjt.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,9 +21,9 @@ public class LoginController {
     }
 
     @RequestMapping(path = "/login/page", method = RequestMethod.GET)
-    public ModelAndView getLoginPage(@SessionAttribute(name = "profile", required = false)Profile profile){
+    public ModelAndView getLoginPage(@SessionAttribute(name = "userInfo", required = false)UserVO userVO){
         ModelAndView modelAndView = new ModelAndView();
-        if (profile != null)
+        if (userVO != null)
             modelAndView.setView(new RedirectView("/main/page"));
 
         return new ModelAndView("loginPage");
@@ -44,7 +45,7 @@ public class LoginController {
         if (profile == null)
             return new ModelAndView("loginPage");
 
-        session.setAttribute("profile", profile);
+        session.setAttribute("userInfo", new UserVO(profile));
         ModelAndView mv = new ModelAndView();
         mv.setView(new RedirectView("/main/page"));
         return mv;
@@ -53,7 +54,7 @@ public class LoginController {
     @DeleteMapping(path = "/login")
     public ModelAndView deleteLoginSession(HttpSession session){
         ModelAndView mv = new ModelAndView(new RedirectView("/"));
-        session.setAttribute("profile", null);
+        session.setAttribute("userInfo", null);
         return mv;
     }
 
