@@ -9,17 +9,17 @@ import java.util.Map;
 @Component
 public class LoginManager {
 
-    Map<Integer, Integer> loginMap;
+    Map<Integer, HttpSession> loginMap;
 
     public LoginManager(){
         loginMap = new HashMap<>();
     }
 
-    public boolean addLoginSession(int accountNo, int sessionId){
+    public boolean addLoginSession(int accountNo, HttpSession session){
         if (loginMap.containsKey(accountNo))
             return false;
 
-        loginMap.put(accountNo, sessionId);
+        loginMap.put(accountNo, session);
         return true;
     }
 
@@ -27,4 +27,7 @@ public class LoginManager {
         loginMap.remove(accountNo);
     }
 
+    public void changeLoginSession(int accountNo, HttpSession session){
+        loginMap.replace(accountNo, session);
+    }
 }
