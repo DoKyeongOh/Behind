@@ -13,6 +13,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
@@ -42,19 +43,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginCheckInterceptor())
-                .excludePathPatterns("/register/page/{pageNo}")
-                .excludePathPatterns("/account")
-                .excludePathPatterns("/account/cert")
-                .excludePathPatterns("/profile")
-                .excludePathPatterns("/login/page")
-                .excludePathPatterns("/login")
-                .excludePathPatterns("/id/page")
-                .excludePathPatterns("/id/cert")
-                .excludePathPatterns("/pw/page/{pageNo}")
-                .excludePathPatterns("/pw/cert")
-                .excludePathPatterns("/pw")
-                .excludePathPatterns("/");
+        registry.addInterceptor(new LoginCheckInterceptor());
     }
 
     @Override
