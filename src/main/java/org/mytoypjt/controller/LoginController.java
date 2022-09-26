@@ -1,8 +1,8 @@
 package org.mytoypjt.controller;
 
 import org.mytoypjt.models.entity.Profile;
-import org.mytoypjt.models.vo.UserVO;
 import org.mytoypjt.service.LoginService;
+import org.mytoypjt.utils.LoginManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +17,16 @@ public class LoginController {
     @Autowired
     LoginService loginService;
 
+    @Autowired
+    LoginManager loginManager;
+
     public LoginController() {
     }
 
     @RequestMapping(path = "/login/page", method = RequestMethod.GET)
-    public ModelAndView getLoginPage(@SessionAttribute(name = "userInfo", required = false)UserVO userVO){
+    public ModelAndView getLoginPage(@SessionAttribute(name = "profile", required = false)Profile profile){
         ModelAndView modelAndView = new ModelAndView();
-        if (userVO != null)
+        if (profile != null)
             modelAndView.setView(new RedirectView("/main/page"));
 
         return new ModelAndView("loginPage");
@@ -45,16 +48,22 @@ public class LoginController {
         if (profile == null)
             return new ModelAndView("loginPage");
 
-        session.setAttribute("userInfo", new UserVO(profile));
+        loginManager.addLoginSession(profile.getAccountNo(), session);
+
+        session.setAttribute("profile", profile);
         ModelAndView mv = new ModelAndView();
         mv.setView(new RedirectView("/main/page"));
         return mv;
     }
 
     @DeleteMapping(path = "/login")
-    public ModelAndView deleteLoginSession(HttpSession session){
+    public ModelAndView deleteLoginSession(HttpSession session) {
+        Profile profile = (Profile) session.getAttribute("profile");
+        if (profile != null)
+            loginManager.removeLoginSession(profile.getAccountNo());
+
+        session.setAttribute("profile", null);
         ModelAndView mv = new ModelAndView(new RedirectView("/"));
-        session.setAttribute("userInfo", null);
         return mv;
     }
 

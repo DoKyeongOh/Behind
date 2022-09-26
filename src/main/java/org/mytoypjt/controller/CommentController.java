@@ -4,8 +4,6 @@ import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.entity.Reply;
-import org.mytoypjt.models.etc.ViewInfo;
-import org.mytoypjt.models.vo.UserVO;
 import org.mytoypjt.service.post.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,9 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -34,14 +29,12 @@ public class CommentController {
 
     @PostMapping(path = "/comment")
     public ModelAndView entryComment(@RequestParam Map<String, String> param,
-                                     @SessionAttribute(name = "userInfo")UserVO userVO){
+                                     @SessionAttribute(name = "profile")Profile profile){
 
         String nameAnonymous = param.get("nameAnonymous");
         String postNo = param.get("postNo");
         String accountNo = param.get("accountNo");
         String content = param.get("content");
-
-        Profile profile = userVO.getProfile();
 
         try {
             postService.createComment(postNo, profile, nameAnonymous, content);
