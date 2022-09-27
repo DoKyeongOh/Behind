@@ -1,8 +1,8 @@
 package org.mytoypjt.config;
 
-import org.mytoypjt.interceptor.login.LoginCheckInterceptor;
 import org.mytoypjt.interceptor.login.LoginNotRequireInterceptor;
 import org.mytoypjt.interceptor.login.LoginRequireInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -12,9 +12,7 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Configuration
 @EnableWebMvc
@@ -41,13 +39,19 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         registry.addViewController("/test").setViewName("test");
     }
 
+    @Autowired
+    private LoginRequireInterceptor loginRequireInterceptor;
+
+    @Autowired
+    private LoginNotRequireInterceptor loginNotRequireInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         List<String> loginRequireUrlPatterns = new ArrayList<>();
-        loginRequireUrlPatterns.add("/register/page/{pageNo}");
+        loginRequireUrlPatterns.add("/register/page/1");
+        loginRequireUrlPatterns.add("/register/page/2");
         loginRequireUrlPatterns.add("/account");
         loginRequireUrlPatterns.add("/account/cert");
-        loginRequireUrlPatterns.add("/profile");
         loginRequireUrlPatterns.add("/login/page");
         loginRequireUrlPatterns.add("/id/page");
         loginRequireUrlPatterns.add("/id/cert");
@@ -56,13 +60,12 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         loginRequireUrlPatterns.add("/pw");
         loginRequireUrlPatterns.add("/");
 
-        registry.addInterceptor(new LoginNotRequireInterceptor())
+        registry.addInterceptor(loginNotRequireInterceptor)
                 .addPathPatterns(loginRequireUrlPatterns);
 
-        loginRequireUrlPatterns.add("/login");
-        registry.addInterceptor(new LoginRequireInterceptor())
-                .excludePathPatterns(loginRequireUrlPatterns);
-
+        registry.addInterceptor(loginRequireInterceptor)
+                .excludePathPatterns(loginRequireUrlPatterns)
+                .excludePathPatterns("/login");
     }
 
     @Override
@@ -78,5 +81,15 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         return viewResolver;
     }
 
+
+    @Bean
+    public LoginRequireInterceptor loginRequireInterceptor(){
+        return new LoginRequireInterceptor();
+    }
+
+    @Bean
+    public LoginNotRequireInterceptor loginNotRequireInterceptor(){
+        return new LoginNotRequireInterceptor();
+    }
 
 }

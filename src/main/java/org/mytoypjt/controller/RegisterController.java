@@ -5,6 +5,7 @@ import org.mytoypjt.models.entity.Account;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.vo.RegistVO;
 import org.mytoypjt.service.RegisterService;
+import org.mytoypjt.utils.LoginManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,9 @@ public class RegisterController {
 
     @Autowired
     private RegisterService registerService;
+
+    @Autowired
+    LoginManager loginManager;
 
     final String ACCOUNT_CERT_KEY = "accountCert";
 
@@ -126,6 +130,7 @@ public class RegisterController {
 
         session.setAttribute(ACCOUNT_CERT_KEY, null);
         session.setAttribute("profile", profile);
+        loginManager.addLoginSession(profile.getAccountNo(), session);
 
         mv.setView(new RedirectView("/register/page/3"));
         return mv;
