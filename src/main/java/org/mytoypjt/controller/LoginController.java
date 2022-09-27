@@ -48,9 +48,9 @@ public class LoginController {
         if (profile == null)
             return new ModelAndView("loginPage");
 
+        session.setAttribute("profile", profile);
         loginManager.addLoginSession(profile.getAccountNo(), session);
 
-        session.setAttribute("profile", profile);
         ModelAndView mv = new ModelAndView();
         mv.setView(new RedirectView("/main/page"));
         return mv;
