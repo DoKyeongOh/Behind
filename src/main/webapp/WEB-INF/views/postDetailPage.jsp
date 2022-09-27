@@ -18,8 +18,6 @@
 
 <% request.setAttribute("myPage", request.getContextPath() + "/my/page"); %>
 
-<% request.setAttribute("post", request.getContextPath() + "/post"); %>
-
 <% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page/1"); %>
 <% request.setAttribute("postModifyPage", request.getContextPath() + "/post/page/3"); %>
 
