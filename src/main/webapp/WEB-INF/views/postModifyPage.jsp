@@ -7,12 +7,21 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<% request.setAttribute("postCreate", request.getContextPath() + "/post"); %>
 <% request.setAttribute("mainPage", request.getContextPath() + "/main/page"); %>
-<% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page/1"); %>
-<% request.setAttribute("postModify", request.getContextPath() + "/post"); %>
+<% request.setAttribute("logout", request.getContextPath() + "/login"); %>
+<% request.setAttribute("realTimePosts", request.getContextPath() + "/posts?type=1"); %>
+<% request.setAttribute("daysMostPosts", request.getContextPath() + "/posts?type=2"); %>
+<% request.setAttribute("weeksMostPosts", request.getContextPath() + "/posts?type=3"); %>
+<% request.setAttribute("searchPosts", request.getContextPath() + "/posts?type=4"); %>
 
 <% request.setAttribute("myPage", request.getContextPath() + "/my/page"); %>
+
+<% request.setAttribute("post", request.getContextPath() + "/post"); %>
+<% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page/1"); %>
+
+<% request.setAttribute("postCreate", request.getContextPath() + "/post"); %>
+<% request.setAttribute("postModify", request.getContextPath() + "/post"); %>
+
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -61,7 +70,6 @@
                 <input type="hidden" name="_method" value="delete">
                 <button type="submit" class="btn btn-outline-dark" data-bs-dismiss="offcanvas" id="btn-logout">로그아웃 하기</button>
             </form>
-
             <button type="button" class="btn btn-dark" data-bs-dismiss="offcanvas">돌아가기</button>
         </div>
     </div>

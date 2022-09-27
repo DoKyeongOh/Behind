@@ -1,4 +1,4 @@
-<%@ page import="org.mytoypjt.models.entity.Profile" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: dokyeongoh
   Date: 2022/06/30
@@ -35,7 +35,7 @@
 <nav class="navbar bg-light fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="${mainPage}">
-            <img class="logo-img" src="../../icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
+            <img class="logo-img" src="../../icons/chat-left-heart-fill.svg" onclick="location.href='${mainPage}'"/>
             <strong class="logo-text" onclick="location.href='${mainPage}'">Blind</strong>
         </a>
         <button class="navbar-toggler btn-dark" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
@@ -68,7 +68,6 @@
                 <input type="hidden" name="_method" value="delete">
                 <button type="submit" class="btn btn-outline-dark" data-bs-dismiss="offcanvas" id="btn-logout">로그아웃 하기</button>
             </form>
-
             <button type="button" class="btn btn-dark" data-bs-dismiss="offcanvas">돌아가기</button>
         </div>
     </div>

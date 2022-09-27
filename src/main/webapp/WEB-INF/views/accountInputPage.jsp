@@ -27,24 +27,25 @@
 <!-- navbar + offcanvas -->
 <nav class="navbar bg-light fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <img class="logo-img" src="icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
-            <strong class="logo-text" onclick="location.href='${indexPage}'">Blind </strong>
+        <a class="navbar-brand" href="${indexPage}">
+            <img class="logo-img" src="../../icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
+            <strong class="logo-text" onclick="location.href='${indexPage}'">Blind</strong>
         </a>
-        <button class="navbar-toggler btn-dark " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+        <button class="navbar-toggler btn-dark" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar">
             <div class="text-center"><br/>
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">사이드바 메뉴</h5>
+                <h5 class="offcanvas-title">사이드바 메뉴</h5>
             </div>
+
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3"><br/>
                     <li class="nav-item"><a class="nav-link text-center" aria-current="page" href=${loginPage}>로그인 하러가기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href=${registerPage}>회원가입 하러가기</a></li>
                 </ul>
             </div>
-            <button type="button" class="btn btn-dark" data-bs-dismiss="offcanvas" aria-label="Close">돌아가기</button>
+            <button type="button" class="btn btn-dark" data-bs-dismiss="offcanvas">돌아가기</button>
         </div>
     </div>
 </nav>

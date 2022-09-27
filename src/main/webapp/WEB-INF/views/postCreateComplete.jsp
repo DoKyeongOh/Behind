@@ -8,6 +8,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <% request.setAttribute("mainPage", request.getContextPath() + "/main/page"); %>
+<% request.setAttribute("logout", request.getContextPath() + "/login"); %>
+<% request.setAttribute("realTimePosts", request.getContextPath() + "/posts?type=1"); %>
+<% request.setAttribute("daysMostPosts", request.getContextPath() + "/posts?type=2"); %>
+<% request.setAttribute("weeksMostPosts", request.getContextPath() + "/posts?type=3"); %>
+<% request.setAttribute("searchPosts", request.getContextPath() + "/posts?type=4"); %>
+
+<% request.setAttribute("myPage", request.getContextPath() + "/my/page"); %>
+
+<% request.setAttribute("post", request.getContextPath() + "/post"); %>
+<% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page/1"); %>
+
 <html>
 <head>
     <title>Behind</title>
@@ -43,7 +54,7 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">마이페이지</a></li>
+                    <li class="nav-item"><a class="nav-link text-center" href="${myPage}">마이페이지</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${postCreatePage}">글 작성하기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">공지 목록 보기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">알림 확인하기</a></li>
@@ -54,7 +65,6 @@
                 <input type="hidden" name="_method" value="delete">
                 <button type="submit" class="btn btn-outline-dark" data-bs-dismiss="offcanvas" id="btn-logout">로그아웃 하기</button>
             </form>
-
             <button type="button" class="btn btn-dark" data-bs-dismiss="offcanvas">돌아가기</button>
         </div>
     </div>
