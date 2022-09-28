@@ -1,3 +1,18 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: User
+  Date: 2022-09-28
+  Time: 오후 10:42
+  To change this template use File | Settings | File Templates.
+--%>
+
+<% request.setAttribute("loginPage", request.getContextPath() + "/login/page"); %>
+<% request.setAttribute("registerPage", request.getContextPath() + "/register/page/1"); %>
+<% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
+<% request.setAttribute("login", request.getContextPath() + "/login"); %>
+<% request.setAttribute("loginChange", request.getContextPath() + "/login"); %>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Behind</title>
@@ -36,7 +51,7 @@
 
 <div class="text-center main-text">
     <h1 id="message-login-fail">Reset Complete!</h1>
-    <button type="button" class="btn btn-outline-primary" id="btn-login-change" onclick="location.href='${indexPage}'">
+    <button type="button" class="btn btn-outline-primary" id="btn-login-change" onclick="location.href='${loginChange}'">
         여기서 다시 로그인
     </button><br>
     <button type="button" class="btn btn-primary" id="btn-move-index-page" onclick="location.href='${indexPage}'">
