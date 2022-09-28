@@ -59,10 +59,8 @@ public class LoginController {
     @DeleteMapping(path = "/login")
     public ModelAndView deleteLoginSession(HttpSession session) {
         Profile profile = (Profile) session.getAttribute("profile");
-        if (profile != null)
-            loginManager.removeLoginSession(profile.getAccountNo());
-
         session.setAttribute("profile", null);
+        loginManager.removeLoginSession(profile.getAccountNo());
         ModelAndView mv = new ModelAndView(new RedirectView("/"));
         return mv;
     }

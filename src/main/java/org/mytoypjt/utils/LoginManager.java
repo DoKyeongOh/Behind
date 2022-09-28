@@ -4,6 +4,7 @@ import org.mytoypjt.models.entity.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,20 +25,10 @@ public class LoginManager {
         if (loginMap.isEmpty())
             return true;
 
-        int count = 0;
-        for (int no : loginMap.keySet()) {
-            System.out.println(count + ". no - " + no + ", information - " + loginMap.get(no).getAttribute("profile"));
-        }
-
         return true;
     }
 
     public void removeLoginSession(int accountNo){
-        System.out.println("logout : " + accountNo);
-        int count = 0;
-        for (int no : loginMap.keySet()) {
-            System.out.println(count + ". no - " + no + ", information - " + loginMap.get(no).getAttribute("profile"));
-        }
         loginMap.remove(accountNo);
     }
 
