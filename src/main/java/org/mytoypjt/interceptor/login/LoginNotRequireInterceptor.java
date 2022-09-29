@@ -27,6 +27,7 @@ public class LoginNotRequireInterceptor implements HandlerInterceptor {
             return false;
         }
 
+        session.setAttribute("profile", null);
         return true;
     }
 

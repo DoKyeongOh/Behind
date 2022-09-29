@@ -13,12 +13,6 @@ public class IndexController {
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public ModelAndView showIndexPage(@SessionAttribute(name = "profile", required = false)Profile profile){
-        if (profile != null) {
-            System.out.println("로그인 정보가 남아있어서 메인 페이지로 이동~");
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setView(new RedirectView("/main/page"));
-            return modelAndView;
-        }
         return new ModelAndView("index");
     }
 
