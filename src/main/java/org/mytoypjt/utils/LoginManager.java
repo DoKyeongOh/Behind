@@ -18,10 +18,8 @@ public class LoginManager {
     }
 
     public boolean addLoginSession(int accountNo, HttpSession session) {
-        if (loginMap.containsKey(accountNo)) {
-            // 중복 로그인 확인 및 로그인 변경 질의 창으로 리다이렉트하도록.
+        if (loginMap.containsKey(accountNo))
             return false;
-        }
 
         loginMap.put(accountNo, session);
 
