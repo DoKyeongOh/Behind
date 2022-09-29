@@ -8,6 +8,11 @@ import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.utils.DBUtil;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.sql.SQLOutput;
+import java.util.*;
+
 import static org.junit.Assert.assertEquals;
 
 public class TotalDaoTest {
@@ -70,6 +75,9 @@ public class TotalDaoTest {
 
         try {
             // test content
+
+            Integer.parseInt("1141");
+
         } catch(Exception e) {
             e.printStackTrace();
             successed = false;
