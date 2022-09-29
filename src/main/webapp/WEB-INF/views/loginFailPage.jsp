@@ -50,14 +50,17 @@
 <!-- navbar + offcanvas -->
 
 <div class="text-center main-text">
-    <h1 id="message-login-fail">Reset Complete!</h1>
-    <button type="button" class="btn btn-outline-primary" id="btn-login-change" onclick="location.href='${loginChange}'">
-        여기서 다시 로그인
-    </button><br>
+    <h1 id="message-login-fail">이미 로그인 되어있음!</h1>
+    <form action="${loginChange}" method="post">
+        <input type="hidden" name="_method" value="put">
+        <button type="submit" class="btn btn-outline-primary" id="btn-login-change">여기서 다시 로그인</button><br>
+    </form>
+
     <button type="button" class="btn btn-primary" id="btn-move-index-page" onclick="location.href='${indexPage}'">
         첫 화면으로 이동
     </button>
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 
