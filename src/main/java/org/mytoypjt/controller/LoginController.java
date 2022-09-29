@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 @Controller
 public class LoginController {
@@ -32,7 +36,7 @@ public class LoginController {
         return new ModelAndView("loginPage");
     }
 
-    @RequestMapping(path = "/login", method = RequestMethod.POST)
+    @PostMapping(path = "/login")
     public ModelAndView getLoginSession(
             @RequestParam(name = "accountId")String id,
             @RequestParam(name = "accountPw")String pw,
@@ -49,11 +53,21 @@ public class LoginController {
             return new ModelAndView("loginPage");
 
         session.setAttribute("profile", profile);
-        loginManager.addLoginSession(profile.getAccountNo(), session);
+        if (!loginManager.addLoginSession(profile.getAccountNo(), session)) {
+            return new ModelAndView("loginFailPage");
+        }
 
         ModelAndView mv = new ModelAndView();
+        mv.addObject("test", "it is test");
         mv.setView(new RedirectView("/main/page"));
         return mv;
+    }
+
+    @PutMapping(path = "/login")
+    public ModelAndView putLoginSession(@SessionAttribute(name = "profile", required = false) Profile profile,
+                                        HttpSession session) {
+        loginManager.changeLoginSession(profile.getAccountNo(), session);
+        return new ModelAndView(new RedirectView("/main/page"));
     }
 
     @DeleteMapping(path = "/login")
