@@ -91,6 +91,7 @@ public class RegisterController {
         if (param.containsKey("id"))
             newId = (String) param.get("id");
 
+        
         if (registerService.isUsableAccountId(newId))
             resMap.put("usable", true);
 
