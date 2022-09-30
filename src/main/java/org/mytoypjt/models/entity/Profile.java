@@ -16,6 +16,8 @@ public class Profile {
     String gender;
     int userLevel;
 
+    public Profile(){}
+
     public Profile(int accountNo) {
         this.accountNo = accountNo;
         this.nicname = "누군가";

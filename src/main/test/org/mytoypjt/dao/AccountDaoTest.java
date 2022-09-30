@@ -86,4 +86,18 @@ class AccountDaoTest {
         }
         assertEquals(true, successed);
     }
+
+    @Test
+    void isExistId(){
+        boolean successed = true;
+
+        try {
+            // test content
+            System.out.println(accountDao.isExistId("dkproh"));
+        } catch(Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(successed, true);
+    }
 }

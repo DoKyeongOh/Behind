@@ -73,11 +73,11 @@
 
         <div id="gender-select-box">
             <div class="form-check form-check-inline">
-                <input class="form-check-input" id="radio-man" type="radio" name="genderSelector" value="남자">
+                <input class="form-check-input" id="radio-man" type="radio" name="gender" value="남자">
                 <label class="form-check-label" id="label-man">남자</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" id="radio-woman" type="radio" name="genderSelector" value="여자">
+                <input class="form-check-input" id="radio-woman" type="radio" name="gender" value="여자">
                 <label class="form-check-label" id="label-woman">여자</label>
             </div>
         </div>

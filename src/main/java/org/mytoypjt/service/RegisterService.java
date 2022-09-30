@@ -25,9 +25,12 @@ public class RegisterService {
     public RegisterService() {
     }
 
-    public boolean isUsableAccountId(String id){
-        boolean isExistId = accountDao.isExistId(id);
-        return !isExistId;
+    public boolean isUsableAccountId(String id) {
+        try {
+            return !accountDao.isExistId(id);
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public AccountCertDTO sendAccountCert(Account account){

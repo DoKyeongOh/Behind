@@ -123,15 +123,9 @@ public class AccountDao {
     }
 
     public boolean isExistId(String id){
-        String sql = "select account_no from account where id=:id";
-        Map<String, String> param = new HashMap<>();
-        param.put("id", id);
-        try {
-            return jdbcTemplate.query(sql, param, accountRowMapper).size() > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return true;
-        }
+        String sql = "select * from account where id=:id";
+        SqlParameterSource param = new MapSqlParameterSource("id", id);
+        return jdbcTemplate.query(sql, param, accountRowMapper).size() > 0;
     }
 
     public int createAccount(Account account){

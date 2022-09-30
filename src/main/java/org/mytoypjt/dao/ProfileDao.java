@@ -1,7 +1,6 @@
 package org.mytoypjt.dao;
 
 import org.mytoypjt.models.entity.Profile;
-import org.mytoypjt.utils.DBUtil;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -11,7 +10,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.*;
 import java.util.List;
 
 @Repository

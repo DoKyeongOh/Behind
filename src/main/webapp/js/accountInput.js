@@ -14,9 +14,17 @@ btnCheckSameId.addEventListener("click", (event) => new function(event){
         const {target} = event;
         if (xhr.readyState === xhr.DONE) {
             if (xhr.status === 200 || xhr.status === 201) {
-                const isUsable = JSON.parse(target.response).isUsable; 
+                const usable = JSON.parse(target.response).usable;
                 const labelIsUsableId = document.getElementById("labelIsUsableId");
-                if (isUsable) {
+
+                console.log("리턴 값 : " + usable);
+
+                if (usable === "") {
+                    labelIsUsableId.innerText = "문제가 발생했습니다. 관리자에게 문의해주세요.";
+                    return;
+                }
+
+                if (usable) {
                     labelIsUsableId.innerText = "사용할 수 있는 아이디입니다.";
                 } else {
                     labelIsUsableId.innerText = "사용할 수 없는 아이디입니다.";
@@ -55,14 +63,7 @@ function getXmlHttpRequest(method, url, postData){
 
     xhr.open(method.toUpperCase(), url, true);
 
-    const contentType = {
-        name : "content-type",
-        value : "application/json"
-    }
-
-    xhr.setRequestHeader(contentType.name, contentType.value);
-
-    console.log(contentType);
+    xhr.setRequestHeader("content-type", "application/json");
 
     xhr.send(JSON.stringify(postData));
     return xhr;

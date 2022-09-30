@@ -1,5 +1,6 @@
 package org.mytoypjt.controller;
 
+import org.mytoypjt.controller.consts.SessionConst;
 import org.mytoypjt.models.dto.AccountCertDTO;
 import org.mytoypjt.models.entity.Account;
 import org.mytoypjt.models.entity.Profile;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -82,21 +84,17 @@ public class RegisterController {
 
     @ResponseBody
     @PostMapping(path = "/id-usage")
-    public ModelAndView checkSameId(@RequestBody Map<String, String> param){
+    public Map<String, Boolean> checkSameId(@RequestBody Map<String, String> param){
         String newId = "";
-        if (param.containsKey("id")) {
+        Map<String, Boolean> resMap = new HashMap<>();
+
+        if (param.containsKey("id"))
             newId = (String) param.get("id");
-        }
 
-        ModelAndView modelAndView = new ModelAndView();
-/*
-        JSONObject respJsonObject = new JSONObject();
-        RegisterService registerService = new RegisterService();
+        if (registerService.isUsableAccountId(newId))
+            resMap.put("usable", true);
 
-        boolean isUsable = registerService.isUsableAccountNo(newId);
-        respJsonObject.put("isUsable", isUsable);*/
-
-        return modelAndView;
+        return resMap;
     }
 
     @PostMapping(path = "/account/cert")
@@ -129,7 +127,7 @@ public class RegisterController {
         }
 
         session.setAttribute(ACCOUNT_CERT_KEY, null);
-        session.setAttribute("profile", profile);
+        session.setAttribute(SessionConst.userProfile, profile);
         loginManager.addLoginSession(profile.getAccountNo(), session);
 
         mv.setView(new RedirectView("/register/page/3"));
@@ -139,23 +137,19 @@ public class RegisterController {
     }
 
     @PostMapping(path = "/profile")
-    public ModelAndView entryProfile(@RequestParam Map<String, String> param, HttpSession session){
-        String nicname = param.get("nicname");
-        String age = param.get("age");
-        String city = param.get("city");
-        String gender = param.get("genderSelector");
-
+    public ModelAndView entryProfile(@RequestParam Map<String, String> param,
+                                     @ModelAttribute Profile inputProfile,
+                                     @SessionAttribute("profile") Profile profile,
+                                     HttpSession session){
         ModelAndView mv = new ModelAndView();
         mv.setView(new RedirectView("/"));
 
-        Profile profile = (Profile) session.getAttribute("profile");
+        profile.setNicname(inputProfile.getNicname());
+        profile.setAge(inputProfile.getAge());
+        profile.setCity(inputProfile.getCity());
+        profile.setGender(inputProfile.getGender());
 
-        profile.setNicname(nicname);
-        profile.setAge(Integer.parseInt(age));
-        profile.setCity(city);
-        profile.setGender(gender);
-
-        session.setAttribute("profile", profile);
+        session.setAttribute(SessionConst.userProfile, profile);
         boolean successed = registerService.updateProfile(profile);
 
         if (!successed) {
