@@ -1,5 +1,6 @@
 package org.mytoypjt.utils;
 
+import org.mytoypjt.controller.consts.SessionConst;
 import org.mytoypjt.models.entity.Profile;
 import org.springframework.stereotype.Component;
 
@@ -42,11 +43,11 @@ public class LoginManager {
         if (!loginMap.get(accountNo).equals(session))
             return false;
 
-        Profile profile = (Profile) session.getAttribute("profile");
+        Profile profile = (Profile) session.getAttribute(SessionConst.userProfile);
         if (profile == null)
             return false;
 
-        if (!loginMap.get(accountNo).getAttribute("profile").equals(profile))
+        if (!loginMap.get(accountNo).getAttribute(SessionConst.userProfile).equals(profile))
             return false;
 
         return true;
