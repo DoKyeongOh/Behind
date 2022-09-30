@@ -1,5 +1,6 @@
 package org.mytoypjt.controller;
 
+import org.mytoypjt.controller.consts.SessionConst;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.service.LoginService;
 import org.mytoypjt.utils.LoginManager;
@@ -72,8 +73,9 @@ public class LoginController {
 
     @DeleteMapping(path = "/login")
     public ModelAndView deleteLoginSession(HttpSession session) {
-        Profile profile = (Profile) session.getAttribute("profile");
-        session.setAttribute("profile", null);
+        Profile profile = (Profile) session.getAttribute(SessionConst.userProfile);
+
+        session.setAttribute(SessionConst.userProfile, null);
         loginManager.removeLoginSession(profile.getAccountNo());
         ModelAndView mv = new ModelAndView(new RedirectView("/"));
         return mv;

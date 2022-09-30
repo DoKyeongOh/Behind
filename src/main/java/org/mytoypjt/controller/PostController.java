@@ -1,5 +1,6 @@
 package org.mytoypjt.controller;
 
+import org.mytoypjt.controller.consts.SessionConst;
 import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
@@ -103,7 +104,7 @@ public class PostController {
         mv.addObject("post", post);
         mv.addObject("comments", comments);
 
-        Profile profile = (Profile) session.getAttribute("profile");
+        Profile profile = (Profile) session.getAttribute(SessionConst.userProfile);
 
         int accountNo = profile.getAccountNo();
         boolean isLike = postService.isLikePost(no, Integer.toString(accountNo));
