@@ -1,5 +1,6 @@
 package org.mytoypjt.utils;
 
+import org.mytoypjt.controller.consts.SessionConst;
 import org.mytoypjt.models.entity.Profile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +12,7 @@ public class ControllerUtils {
     public static boolean isExistProfileSession(HttpServletRequest req){
 
         HttpSession session = req.getSession();
-        Profile profile = (Profile) session.getAttribute("profile");
+        Profile profile = (Profile) session.getAttribute(SessionConst.userProfile);
         if (profile == null)
             return false;
         if (profile.getAccountNo() < 0)

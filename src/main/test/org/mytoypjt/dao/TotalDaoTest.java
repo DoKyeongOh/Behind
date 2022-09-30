@@ -76,7 +76,12 @@ public class TotalDaoTest {
         try {
             // test content
 
-            Integer.parseInt("1141");
+            try {
+                System.out.println(2/0);
+            } catch(Exception e) {
+                String msg = e.getMessage();
+                throw new RuntimeException(e);
+            }
 
         } catch(Exception e) {
             e.printStackTrace();
