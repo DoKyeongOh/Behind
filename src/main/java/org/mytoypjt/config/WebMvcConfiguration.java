@@ -50,6 +50,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         List<String> loginRequireUrlPatterns = new ArrayList<>();
         loginRequireUrlPatterns.add("/register/page/1");
         loginRequireUrlPatterns.add("/register/page/2");
+        loginRequireUrlPatterns.add("/id-usage");
         loginRequireUrlPatterns.add("/account");
         loginRequireUrlPatterns.add("/account/cert");
         loginRequireUrlPatterns.add("/login/page");
