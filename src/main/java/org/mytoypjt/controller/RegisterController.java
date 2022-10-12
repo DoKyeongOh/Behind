@@ -91,7 +91,6 @@ public class RegisterController {
         if (param.containsKey("id"))
             newId = (String) param.get("id");
 
-        
         if (registerService.isUsableAccountId(newId))
             resMap.put("usable", true);
 
@@ -139,24 +138,25 @@ public class RegisterController {
 
     @PostMapping(path = "/profile")
     public ModelAndView entryProfile(@RequestParam Map<String, String> param,
-                                     @ModelAttribute Profile inputProfile,
                                      @SessionAttribute("profile") Profile profile,
                                      HttpSession session){
         ModelAndView mv = new ModelAndView();
         mv.setView(new RedirectView("/"));
 
-        profile.setNicname(inputProfile.getNicname());
-        profile.setAge(inputProfile.getAge());
-        profile.setCity(inputProfile.getCity());
-        profile.setGender(inputProfile.getGender());
+        profile.setNicname(param.get("nicname"));
+        profile.setAge(Integer.parseInt(param.get("age")));
+        profile.setCity(param.get("city"));
+        profile.setGender(param.get("gender"));
 
-        session.setAttribute(SessionConst.userProfile, profile);
-        boolean successed = registerService.updateProfile(profile);
-
-        if (!successed) {
-            mv.addObject("noticeMessage", "예상치 못한 문제가 발생했습니다. 관리자에게 문의하세요!");
+        String msg = registerService.updateProfile(profile);
+        if (!msg.equals("")) {
+            mv.addObject("noticeMessage", msg);
+            mv.setViewName("profileInputPage");
             return mv;
         }
+
+        session.setAttribute(SessionConst.userProfile, profile);
+
         return mv;
     }
 }
