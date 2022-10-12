@@ -75,13 +75,16 @@ public class TotalDaoTest {
 
         try {
             // test content
-
-            try {
-                System.out.println(2/0);
-            } catch(Exception e) {
-                String msg = e.getMessage();
-                throw new RuntimeException(e);
-            }
+            String answer = "1234";
+            String[] items = answer.split("");
+            answer = "";
+            for (int i=0 ; i<4 ; i++)
+                answer = answer + items[i] + " ";
+            answer = answer.substring(0, answer.length()-1);
+            answer += "!";
+            answer += 'f';
+            answer.charAt(answer.length()-1);
+            System.out.println(answer);
 
         } catch(Exception e) {
             e.printStackTrace();

@@ -35,6 +35,7 @@ public class AccountDao {
                     rs.getString("password"),
                     rs.getString("email")
             );
+
             return account;
         };
     }
