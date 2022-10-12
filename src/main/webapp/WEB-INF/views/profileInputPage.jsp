@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: dokyeongoh
@@ -10,7 +11,16 @@
 <% request.setAttribute("registerPage", request.getContextPath() + "/register/page/1"); %>
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 
-<% request.setAttribute("profile", request.getContextPath() + "/profile"); %>
+
+<% request.setAttribute("mainPage", request.getContextPath() + "/main/page"); %>
+<% request.setAttribute("logout", request.getContextPath() + "/login"); %>
+<% request.setAttribute("realTimePosts", request.getContextPath() + "/posts?type=1"); %>
+<% request.setAttribute("daysMostPosts", request.getContextPath() + "/posts?type=2"); %>
+<% request.setAttribute("weeksMostPosts", request.getContextPath() + "/posts?type=3"); %>
+<% request.setAttribute("searchPosts", request.getContextPath() + "/posts?type=4"); %>
+<% request.setAttribute("myPage", request.getContextPath() + "/my/page"); %>
+<% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page/1"); %>
+
 
 <html>
 <head>
@@ -40,8 +50,26 @@
 
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3"><br/>
-                    <li class="nav-item"><a class="nav-link text-center" aria-current="page" href=${loginPage}>로그인 하러가기</a></li>
-                    <li class="nav-item"><a class="nav-link text-center" href=${registerPage}>회원가입 하러가기</a></li>
+                    <li class="nav-item dropdown text-center">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">글 목록 보기</a>
+                        <ul class="dropdown-menu text-center">
+                            <li><a class="dropdown-item" href="${realTimePosts}">실시간 글</a></li>
+                            <li><a class="dropdown-item" href="${daysMostPosts}">일일 인기글</a></li>
+                            <li><a class="dropdown-item" href="${weeksMostPosts}">주간 인기글</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link text-center" href="${myPage}">마이페이지</a></li>
+                    <li class="nav-item"><a class="nav-link text-center" href="${postCreatePage}">글 작성하기</a></li>
+                    <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">공지 목록 보기</a></li>
+                    <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">알림 확인하기</a></li>
+                    <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">관리자 페이지</a></li>
+                </ul>
+
+                <form action="${logout}" method="post">
+                    <input type="hidden" name="_method" value="delete">
+                    <button type="submit" class="btn btn-outline-dark" data-bs-dismiss="offcanvas" id="btn-logout">로그아웃 하기</button>
+                </form>
                 </ul>
             </div>
             <button type="button" class="btn btn-dark" data-bs-dismiss="offcanvas">돌아가기</button>
@@ -57,7 +85,7 @@
 
 <!-- 계정 정보 입력 폼 -->
 <div class="text-center">
-    <form id="profile-input-form" method="post" action="${profile}">
+    <form id="profile-input-form" method="post" action="/profile">
 
         <input type="text" class="form-control" placeholder="사용할 닉네임" id="input-nicname" name="nicname">
 
