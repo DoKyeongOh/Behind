@@ -11,16 +11,16 @@
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 <% request.setAttribute("mainPage", request.getContextPath() + "/main/page"); %>
 <% request.setAttribute("logout", request.getContextPath() + "/login"); %>
+
 <% request.setAttribute("realTimePosts", request.getContextPath() + "/posts?type=1"); %>
 <% request.setAttribute("daysMostPosts", request.getContextPath() + "/posts?type=2"); %>
 <% request.setAttribute("weeksMostPosts", request.getContextPath() + "/posts?type=3"); %>
 <% request.setAttribute("searchPosts", request.getContextPath() + "/posts?type=4"); %>
 
 <% request.setAttribute("myPage", request.getContextPath() + "/my/page"); %>
-
 <% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page/1"); %>
 <% request.setAttribute("postModifyPage", request.getContextPath() + "/post/page/3"); %>
-
+<% request.setAttribute("deletePost", request.getContextPath() + "post"); %>
 
 <% request.setAttribute("like", request.getContextPath() + "/like"); %>
 <% request.setAttribute("entryComment", request.getContextPath() + "/comment"); %>
@@ -113,15 +113,24 @@
     <label id="label-like-count" class="badge rounded-pill bg-dark"> 좋아요 ${post.likeCount}개</label>
 </div>
 
-<!-- 좋아요, 신고하기 버튼 -->
+<!-- 삭제, 수정, 신고, 좋아요 버튼 -->
 <div class="text-right inline-block" style="width: 59%; padding-top: 1%">
     <c:set var="profile" value="${sessionScope.get('profile')}"/>
+    <c:if test="${post.accountNo eq profile.accountNo}">
+        <form action="${deletePost}" method="post" id="form-modify">
+            <input type="hidden" name="_method" value="delete">
+            <input type="hidden" value="${post.postNo}" name="postNo">
+            <button type="submit" class="btn btn-outline-secondary btn-sm">삭제하기</button>
+        </form>
+    </c:if>
+
     <form action="${postModifyPage}" method="get" id="form-modify">
         <input type="hidden" value="${post.postNo}" name="postNo">
         <c:if test="${post.accountNo eq profile.accountNo}">
             <button type="submit" class="btn btn-outline-success btn-sm">수정하기</button>
         </c:if>
     </form>
+
     <form action="/report/page" method="get" id="form-report">
         <input type="hidden" name="reportType" value="post">
         <input type="hidden" name="no" value="${post.postNo}">
@@ -149,7 +158,7 @@
             </button>
     </form>
 </div>
-<!-- 좋아요, 신고하기 버튼 -->
+<!-- 삭제, 수정, 신고, 좋아요 버튼 -->
 <hr>
 
 <!-- 댓글 -->
