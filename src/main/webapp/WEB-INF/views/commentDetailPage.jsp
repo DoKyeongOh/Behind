@@ -31,14 +31,17 @@
 </head>
 <body>
 
-
 <!-- navbar + offcanvas -->
 <nav class="navbar bg-light fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="${mainPage}">
-            <img class="logo-img" src="../../icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
+            <img class="logo-img" src="../../icons/chat-left-heart-fill.svg" onclick="location.href='${mainPage}'"/>
             <strong class="logo-text" onclick="location.href='${mainPage}'">Blind</strong>
         </a>
+
+        <c:set var="myProfile" value="${sessionScope.get('profile')}"/>
+        <button onclick="location.href='${myPage}'" class="border border-0" id="profile-display"> "${myProfile.nicname}" 님 안녕하세요! </button>
+
         <button class="navbar-toggler btn-dark" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -74,8 +77,6 @@
     </div>
 </nav>
 <!-- navbar + offcanvas -->
-
-
 
 <!-- 글 상세보기 페이지로 돌아가기 버튼 -->
 <button id="btn-return-post" class="btn btn-dark btn-sm" onclick="location.href='/post?no=${comment.postNo}'">

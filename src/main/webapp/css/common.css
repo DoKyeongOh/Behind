@@ -74,3 +74,10 @@ html, body {
     width: 80%;
     margin-left: 10%;
 }
+
+#profile-display {
+    margin-left: 75%;
+    color: black;
+    background-color: inherit;
+    font-weight: 800;
+}

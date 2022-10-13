@@ -36,10 +36,14 @@
 <!-- navbar + offcanvas -->
 <nav class="navbar bg-light fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="${indexPage}">
-            <img class="logo-img" src="../../icons/chat-left-heart-fill.svg" onclick="location.href='${indexPage}'"/>
-            <strong class="logo-text" onclick="location.href='${indexPage}'">Blind</strong>
+        <a class="navbar-brand" href="${mainPage}">
+            <img class="logo-img" src="../../icons/chat-left-heart-fill.svg" onclick="location.href='${mainPage}'"/>
+            <strong class="logo-text" onclick="location.href='${mainPage}'">Blind</strong>
         </a>
+
+        <c:set var="myProfile" value="${sessionScope.get('profile')}"/>
+        <button onclick="location.href='${myPage}'" class="border border-0" id="profile-display"> "${myProfile.nicname}" 님 안녕하세요! </button>
+
         <button class="navbar-toggler btn-dark" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -47,9 +51,9 @@
             <div class="text-center"><br/>
                 <h5 class="offcanvas-title">사이드바 메뉴</h5>
             </div>
-
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3"><br/>
+
                     <li class="nav-item dropdown text-center">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">글 목록 보기</a>
                         <ul class="dropdown-menu text-center">
@@ -65,13 +69,11 @@
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">알림 확인하기</a></li>
                     <li class="nav-item"><a class="nav-link text-center" href="${mainPage}">관리자 페이지</a></li>
                 </ul>
-
-                <form action="${logout}" method="post">
-                    <input type="hidden" name="_method" value="delete">
-                    <button type="submit" class="btn btn-outline-dark" data-bs-dismiss="offcanvas" id="btn-logout">로그아웃 하기</button>
-                </form>
-                </ul>
             </div>
+            <form action="${logout}" method="post">
+                <input type="hidden" name="_method" value="delete">
+                <button type="submit" class="btn btn-outline-dark" data-bs-dismiss="offcanvas" id="btn-logout">로그아웃 하기</button>
+            </form>
             <button type="button" class="btn btn-dark" data-bs-dismiss="offcanvas">돌아가기</button>
         </div>
     </div>
