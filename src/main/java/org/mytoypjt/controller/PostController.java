@@ -157,8 +157,13 @@ public class PostController {
     }
 
     @DeleteMapping(path = "/post")
-    public String deletePost(){
-        return null;
+    public ModelAndView deletePost(@RequestParam(name = "postNo")int postNo){
+        try {
+            postService.deletePost(postNo);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return new ModelAndView(new RedirectView("/main/page"));
     }
 
     @PutMapping(path = "/post")

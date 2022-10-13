@@ -25,9 +25,13 @@ public class PostService {
     @Autowired
     private ProfileDao profileDao;
     @Autowired
+    private LikeDao likeDao;
+    @Autowired
     private PostLogDao postLogDao;
     @Autowired
-    private LikeDao likeDao;
+    private CommentLogDao commentLogDao;
+    @Autowired
+    private ReplyLogDao replyLogDao;
     @Autowired
     private PostCountStrategyContext postCountStrategyContext;
     @Autowired
@@ -108,8 +112,11 @@ public class PostService {
     }
 
     @Transactional
-    public void deletePost(Post post) throws Exception {
-        postDao.deletePost(post.getPostNo());
+    public void deletePost(int postNo) throws Exception {
+        Post post = postDao.getPost(postNo);
+        if (!Post.isCorrectPost(post))
+            return;
+        postDao.deletePost(postNo);
         postLogDao.writeLog(post, "삭제");
     }
 
@@ -178,6 +185,7 @@ public class PostService {
         Comment comment = new Comment(content, profile.getAccountNo(), postNo, nicname, isAnonymous);
 
         commentDao.createComment(comment);
+        commentLogDao.writeLog(comment, "생성");
 
         int commentCount = commentDao.getCommentCount(postNo);
         postDao.updateCommentCount(postNo, commentCount);
