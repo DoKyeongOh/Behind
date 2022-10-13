@@ -28,8 +28,8 @@ public class CommentController {
     }
 
     @PostMapping(path = "/comment")
-    public ModelAndView entryComment(@RequestParam Map<String, String> param,
-                                     @SessionAttribute(name = "profile")Profile profile){
+    public ModelAndView createComment(@RequestParam Map<String, String> param,
+                                      @SessionAttribute(name = "profile")Profile profile){
 
         String nameAnonymous = param.get("nameAnonymous");
         String postNo = param.get("postNo");
