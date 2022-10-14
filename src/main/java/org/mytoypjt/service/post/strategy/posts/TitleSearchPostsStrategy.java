@@ -4,7 +4,7 @@ import org.mytoypjt.dao.PostDao;
 import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.vo.PostOption;
-import org.mytoypjt.service.post.strategy.PostConst;
+import org.mytoypjt.service.post.PostConst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
