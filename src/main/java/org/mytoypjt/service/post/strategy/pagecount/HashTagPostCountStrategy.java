@@ -21,7 +21,7 @@ public class HashTagPostCountStrategy extends BasePostCountStrategy {
     }
 
     @Override
-    public int getPostCount() {
+    public int getPostCount(PostOption options) {
         return 0;
     }
 }

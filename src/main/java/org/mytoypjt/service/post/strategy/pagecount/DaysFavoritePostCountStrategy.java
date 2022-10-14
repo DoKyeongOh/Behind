@@ -21,7 +21,7 @@ public class DaysFavoritePostCountStrategy extends BasePostCountStrategy {
     }
 
     @Override
-    public int getPostCount() {
+    public int getPostCount(PostOption options) {
         return postDao.getDaysPostCount();
     }
 }

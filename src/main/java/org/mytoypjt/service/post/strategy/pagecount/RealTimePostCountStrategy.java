@@ -20,7 +20,7 @@ public class RealTimePostCountStrategy extends BasePostCountStrategy {
     }
 
     @Override
-    public int getPostCount() {
+    public int getPostCount(PostOption options) {
         return postDao.getTotalPostCount();
     }
 }

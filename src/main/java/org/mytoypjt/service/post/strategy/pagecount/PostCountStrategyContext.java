@@ -17,8 +17,9 @@ public class PostCountStrategyContext {
         strategyMap.put(PostSortType.REAL_TIME, ac.getBean(RealTimePostCountStrategy.class));
         strategyMap.put(PostSortType.DAYS_FAVORITE, ac.getBean(DaysFavoritePostCountStrategy.class));
         strategyMap.put(PostSortType.WEEKS_FAVORITE, ac.getBean(WeeksFavoritePostCountStrategy.class));
-        strategyMap.put(PostSortType.SEARCH_TITLE_FROM_USER, ac.getBean(TitleSearchPostCountStrategy.class));
-        strategyMap.put(PostSortType.SEARCH_CONTENT_FROM_USER, ac.getBean(ContentSearchPostCountStrategy.class));
+        strategyMap.put(PostSortType.SEARCH_BY_TITLE, ac.getBean(TitleSearchPostCountStrategy.class));
+        strategyMap.put(PostSortType.SEARCH_BY_CONTENT, ac.getBean(ContentSearchPostCountStrategy.class));
+        strategyMap.put(PostSortType.SEARCH_BY_NICNAME, ac.getBean(NicNameSearchPostCountStrategy.class));
         strategyMap.put(PostSortType.HASH_TAG, ac.getBean(HashTagPostCountStrategy.class));
         
     }

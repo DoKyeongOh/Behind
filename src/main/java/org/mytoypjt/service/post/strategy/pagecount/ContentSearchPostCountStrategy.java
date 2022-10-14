@@ -17,11 +17,11 @@ public class ContentSearchPostCountStrategy extends BasePostCountStrategy {
 
     @Override
     public PostSortType getSortType() {
-        return PostSortType.SEARCH_CONTENT_FROM_USER;
+        return PostSortType.SEARCH_BY_CONTENT;
     }
 
     @Override
-    public int getPostCount() {
+    public int getPostCount(PostOption options) {
         return 0;
     }
 

@@ -10,6 +10,6 @@ public abstract class BasePostCountStrategy {
 
     public abstract PostSortType getSortType();
 
-    public abstract int getPostCount();
+    public abstract int getPostCount(PostOption options);
 
 }
