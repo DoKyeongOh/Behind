@@ -169,9 +169,10 @@
 
 <!-- 검색 창 -->
 <form method="get" action="${searchPosts}" id="search-block" class="input-group">
-    <select name="searchOption" class="form-select" style="width: 15%">
-        <option value="1" selected>제목</option>
-        <option value="2">내용</option>
+    <select name="type" class="form-select" style="width: 15%">
+        <option value="4" selected>제목</option>
+        <option value="5">내용</option>
+        <option value="6">작성자</option>
     </select>
     <input type="text" name="searchWord" class="form-control" style="width: 60%">
     <button type="submit" style="width: 15%" class="btn btn-outline-secondary form-control">검색하기</button>

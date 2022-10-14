@@ -146,6 +146,39 @@ class PostDaoTest {
     }
 
     @Test
+    void getPostsByTitle(){
+        boolean successed = true;
+
+        try {
+            // test content
+            this.postDao.getPostsByTitle(1, 12, "ㅇ ")
+                    .forEach(post -> {
+                        System.out.println(post.toString());
+                    });
+        } catch(Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(successed, true);
+    }
+
+    @Test
+    void getPostCountByTitle(){
+        boolean successed = true;
+
+        try {
+            // test content
+            System.out.println(
+                    postDao.getPostCountByTitle("ㅇ")
+            );
+        } catch(Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(successed, true);
+    }
+
+    @Test
     void test(){
 
         boolean successed = true;

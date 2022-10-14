@@ -20,11 +20,12 @@ public class ContentSearchPostsStrategy extends BasePostsStrategy {
 
     @Override
     public PostSortType getSortType() {
-        return PostSortType.SEARCH_CONTENT_FROM_USER;
+        return PostSortType.SEARCH_BY_CONTENT;
     }
 
     @Override
     public List<Post> getPosts(PostOption optionVO) {
+        System.out.println("dd");
         return null;
     }
 }
