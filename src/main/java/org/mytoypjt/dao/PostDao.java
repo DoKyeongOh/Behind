@@ -95,6 +95,21 @@ public class PostDao {
         return jdbcTemplate.query(sql, param, postRowMapper);
     }
 
+    public List<Post> getPostsByContent(int pageNo, int postCountInPage, String content) {
+        int startNo = (pageNo - 1) * postCountInPage;
+        if (startNo < 0) startNo = 1;
+
+        content = "%" + content + "%";
+        String sql = "select * from post where content like :content order by posted_date desc limit :startNo, :count";
+
+        MapSqlParameterSource param = new MapSqlParameterSource();
+        param.addValue("startNo", startNo);
+        param.addValue("count", postCountInPage);
+        param.addValue("content", content);
+
+        return jdbcTemplate.query(sql, param, postRowMapper);
+    }
+
     public Post getPost(int postNo) {
         String sql = "select * from post where post_no = :postNo";
         MapSqlParameterSource param = new MapSqlParameterSource("postNo", postNo);
@@ -137,6 +152,14 @@ public class PostDao {
         title = "%" + title + "%";
         String sql = "select count(*) from post where title like :title";
         SqlParameterSource param = new MapSqlParameterSource("title", title);
+
+        return jdbcTemplate.queryForObject(sql, param, (rs, rowNum) -> rs.getInt(1));
+    }
+
+    public int getPostCountByContent(String content) {
+        content = "%" + content + "%";
+        String sql = "select count(*) from post where content like :content";
+        SqlParameterSource param = new MapSqlParameterSource("content", content);
 
         return jdbcTemplate.queryForObject(sql, param, (rs, rowNum) -> rs.getInt(1));
     }

@@ -198,4 +198,36 @@ class PostDaoTest {
         }
         assertEquals(true, successed);
     }
+
+    @Test
+    void getPostsByContent() {
+        boolean successed = true;
+
+        try {
+            // test content
+            postDao.getPostsByContent(1, 12, "?").forEach(post -> {
+                System.out.println(post.getContent());
+            });
+        } catch(Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(successed, true);
+    }
+
+    @Test
+    void getPostCountByContent() {
+        boolean successed = true;
+
+        try {
+            // test content
+            System.out.println(
+                    postDao.getPostCountByContent("?")
+            );
+        } catch(Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(successed, true);
+    }
 }
