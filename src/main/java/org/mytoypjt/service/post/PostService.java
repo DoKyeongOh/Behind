@@ -4,13 +4,13 @@ import org.mytoypjt.dao.*;
 import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.*;
 import org.mytoypjt.models.vo.PostOption;
+import org.mytoypjt.service.post.strategy.PostConst;
 import org.mytoypjt.service.post.strategy.pagecount.PostCountStrategyContext;
 import org.mytoypjt.service.post.strategy.posts.PostsStrategyContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -41,28 +41,26 @@ public class PostService {
     }
 
     public PostOption createPostsOption(PostOption reqOp, PostOption sessOp){
-        String sortType = "";
-        String pageNo = "";
-
-        if (!reqOp.getSortType().isEmpty() && !sessOp.getSortType().isEmpty()) {
-            sortType = reqOp.getSortType();
-            pageNo = reqOp.getPageNo();
-        } else if (reqOp.getSortType().isEmpty() && !sessOp.getSortType().isEmpty()) {
+        String sortType = reqOp.getSortType();
+        if (sortType == null || sortType.equals(""))
             sortType = sessOp.getSortType();
-            pageNo = reqOp.getPageNo();
-        } else if (!reqOp.getSortType().isEmpty() && sessOp.getSortType().isEmpty()) {
-            sortType = reqOp.getSortType();
-            pageNo = sessOp.getPageNo();
-        }
+        if (sortType.isEmpty())
+            sortType = "1";
 
-        pageNo = pageNo.isEmpty() ? "1" : pageNo;
-        sortType = sortType.isEmpty() ? "1" : sortType;
+        String pageNo = reqOp.getPageNo();
+        if (pageNo == null || pageNo.equals(""))
+            pageNo = sessOp.getPageNo();
+        if (pageNo.isEmpty())
+            pageNo = "1";
 
         PostSortType type = getPostSortType(sortType);
         PostOption options = new PostOption(pageNo, sortType);
         options.setPostCountLimitInMainPage();
 
-        int postCount = postCountStrategyContext.getStrategy(type).getPostCount();
+        if (sessOp.getOptionMap().containsKey(PostConst.SEARCH_WORD) && reqOp.getSortType().isEmpty())
+            options.setOptionMap(sessOp.getOptionMap());
+
+        int postCount = postCountStrategyContext.getStrategy(type).getPostCount(options);
         options.setStartEndPageNo(postCount);
 
         return options;
@@ -230,6 +228,10 @@ public class PostService {
             case "1": return PostSortType.REAL_TIME;
             case "2": return PostSortType.DAYS_FAVORITE;
             case "3": return PostSortType.WEEKS_FAVORITE;
+            case "4": return PostSortType.SEARCH_BY_TITLE;
+            case "5": return PostSortType.SEARCH_BY_CONTENT;
+            case "6": return PostSortType.SEARCH_BY_NICNAME;
+            case "7": return PostSortType.HASH_TAG;
             default: return PostSortType.REAL_TIME;
         }
     }

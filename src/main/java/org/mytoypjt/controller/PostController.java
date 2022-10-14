@@ -51,21 +51,15 @@ public class PostController {
 
     @GetMapping(path = "/posts")
     public ModelAndView showPosts(HttpSession session, @RequestParam Map<String, String> param){
-        PostOption optionInSession =
-                (PostOption) session.getAttribute(this.postsOptionKey);
-
-        PostOption optionInRequest = new PostOption(
-                param.get("pageNo"),
-                param.get("type")
-        );
-        
+        PostOption optionInSession = (PostOption) session.getAttribute(this.postsOptionKey);
+        PostOption optionInRequest = new PostOption(param.get("pageNo"), param.get("type"));
         PostOption actualOption = postService.createPostsOption(optionInRequest, optionInSession);
-        actualOption.setOptionMap(param);
+
+        actualOption.getOptionMap().putAll(param);
+        List<Post> posts = postService.getPosts(actualOption);
         session.setAttribute(this.postsOptionKey, actualOption);
 
         ModelAndView mv = new ModelAndView("mainPage");
-
-        List<Post> posts = postService.getPosts(actualOption);
         mv.addObject("posts", posts);
 
         PostSortType postSortType = postService.getPostSortType(actualOption.getSortType());
