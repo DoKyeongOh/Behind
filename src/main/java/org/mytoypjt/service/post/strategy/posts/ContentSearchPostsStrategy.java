@@ -4,6 +4,7 @@ import org.mytoypjt.dao.PostDao;
 import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.vo.PostOption;
+import org.mytoypjt.service.post.PostConst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +26,9 @@ public class ContentSearchPostsStrategy extends BasePostsStrategy {
 
     @Override
     public List<Post> getPosts(PostOption optionVO) {
-        System.out.println("dd");
-        return null;
+        String searchWord = optionVO.getOptionMap().get(PostConst.SEARCH_WORD);
+        int pageNo = Integer.parseInt(optionVO.getPageNo());
+
+        return postDao.getPostsByContent(pageNo, optionVO.getPostCountLimitInPage(), searchWord);
     }
 }

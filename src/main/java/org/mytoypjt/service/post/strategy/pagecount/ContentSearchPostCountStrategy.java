@@ -3,6 +3,7 @@ package org.mytoypjt.service.post.strategy.pagecount;
 import org.mytoypjt.dao.PostDao;
 import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.vo.PostOption;
+import org.mytoypjt.service.post.PostConst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +23,11 @@ public class ContentSearchPostCountStrategy extends BasePostCountStrategy {
 
     @Override
     public int getPostCount(PostOption options) {
-        return 0;
+        String searchWord = options.getOptionMap().get(PostConst.SEARCH_WORD);
+        if (searchWord == null)
+            searchWord = "";
+
+        return postDao.getPostCountByContent(searchWord);
     }
 
 }
