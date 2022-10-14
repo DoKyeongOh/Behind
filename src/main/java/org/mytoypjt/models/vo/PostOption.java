@@ -1,5 +1,7 @@
 package org.mytoypjt.models.vo;
 
+import org.mytoypjt.service.post.PostConst;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -148,6 +150,27 @@ public class PostOption {
 
     public void setOptionMap(Map<String, String> optionMap) {
         this.optionMap = optionMap;
+    }
+
+    public boolean isExistSortType() {
+        String type = getSortType();
+        if (type == null || type.isEmpty())
+            return false;
+        return true;
+    }
+
+    public boolean isExistPageNo(){
+        String pageNo = getPageNo();
+        if (pageNo == null || pageNo.isEmpty())
+            return false;
+        return true;
+    }
+
+    public boolean isContainSearchWord(){
+        String searchWord = optionMap.get(PostConst.SEARCH_WORD);
+        if (searchWord == null || searchWord.isEmpty())
+            return false;
+        return true;
     }
 
     @Override
