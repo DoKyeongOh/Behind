@@ -4,6 +4,7 @@ import org.mytoypjt.dao.PostDao;
 import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.vo.PostOption;
+import org.mytoypjt.service.post.strategy.PostConst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,11 +21,14 @@ public class TitleSearchPostsStrategy extends BasePostsStrategy {
 
     @Override
     public PostSortType getSortType() {
-        return PostSortType.SEARCH_TITLE_FROM_USER;
+        return PostSortType.SEARCH_BY_TITLE;
     }
 
     @Override
     public List<Post> getPosts(PostOption optionVO) {
-        return null;
+        String searchWord = optionVO.getOptionMap().get(PostConst.SEARCH_WORD);
+        int pageNo = Integer.parseInt(optionVO.getPageNo());
+
+        return postDao.getPostsByTitle(pageNo, optionVO.getPostCountLimitInPage(), searchWord);
     }
 }
