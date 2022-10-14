@@ -4,7 +4,6 @@ import org.mytoypjt.dao.*;
 import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.*;
 import org.mytoypjt.models.vo.PostOption;
-import org.mytoypjt.service.post.strategy.PostConst;
 import org.mytoypjt.service.post.strategy.pagecount.PostCountStrategyContext;
 import org.mytoypjt.service.post.strategy.posts.PostsStrategyContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,24 +40,20 @@ public class PostService {
     }
 
     public PostOption createPostsOption(PostOption reqOp, PostOption sessOp){
-        String sortType = reqOp.getSortType();
-        if (sortType == null || sortType.equals(""))
-            sortType = sessOp.getSortType();
-        if (sortType.isEmpty())
-            sortType = "1";
+        String sortType = reqOp.isExistSortType() ?
+                reqOp.getSortType() : (sessOp.isExistSortType() ? sessOp.getSortType() : "1");
 
-        String pageNo = reqOp.getPageNo();
-        if (pageNo == null || pageNo.equals(""))
-            pageNo = sessOp.getPageNo();
-        if (pageNo.isEmpty())
-            pageNo = "1";
+        String pageNo = reqOp.isExistPageNo() ?
+                reqOp.getPageNo() : (sessOp.isExistPageNo() ? sessOp.getPageNo() : "1");
 
         PostSortType type = getPostSortType(sortType);
         PostOption options = new PostOption(pageNo, sortType);
         options.setPostCountLimitInMainPage();
 
-        if (sessOp.getOptionMap().containsKey(PostConst.SEARCH_WORD) && reqOp.getSortType().isEmpty())
-            options.setOptionMap(sessOp.getOptionMap());
+        String searchWord = reqOp.getOptionMap().get(PostConst.SEARCH_WORD);
+        if (!reqOp.isContainSearchWord())
+            searchWord = sessOp.getOptionMap().get(PostConst.SEARCH_WORD);
+        options.getOptionMap().put(PostConst.SEARCH_WORD, searchWord);
 
         int postCount = postCountStrategyContext.getStrategy(type).getPostCount(options);
         options.setStartEndPageNo(postCount);
