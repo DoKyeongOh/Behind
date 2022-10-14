@@ -53,9 +53,10 @@ public class PostController {
     public ModelAndView showPosts(HttpSession session, @RequestParam Map<String, String> param){
         PostOption optionInSession = (PostOption) session.getAttribute(this.postsOptionKey);
         PostOption optionInRequest = new PostOption(param.get("pageNo"), param.get("type"));
+
+        optionInRequest.getOptionMap().putAll(param);
         PostOption actualOption = postService.createPostsOption(optionInRequest, optionInSession);
 
-        actualOption.getOptionMap().putAll(param);
         List<Post> posts = postService.getPosts(actualOption);
         session.setAttribute(this.postsOptionKey, actualOption);
 
