@@ -80,6 +80,21 @@ public class PostDao {
         return jdbcTemplate.query(sql, param, postRowMapper);
     }
 
+    public List<Post> getPostsByTitle(int pageNo, int postCountInPage, String title) {
+        int startNo = (pageNo - 1) * postCountInPage;
+        if (startNo < 0) startNo = 1;
+
+        title = "%" + title + "%";
+        String sql = "select * from post where title like :title order by posted_date desc limit :startNo, :count";
+
+        MapSqlParameterSource param = new MapSqlParameterSource();
+        param.addValue("startNo", startNo);
+        param.addValue("count", postCountInPage);
+        param.addValue("title", title);
+
+        return jdbcTemplate.query(sql, param, postRowMapper);
+    }
+
     public Post getPost(int postNo) {
         String sql = "select * from post where post_no = :postNo";
         MapSqlParameterSource param = new MapSqlParameterSource("postNo", postNo);
@@ -116,6 +131,14 @@ public class PostDao {
                 "where posted_date between date_add(now(), interval -1 week) and now() ";
 
         return jdbcTemplate.queryForObject(sql, (SqlParameterSource) null, (rs, rowNum) -> rs.getInt(1));
+    }
+
+    public int getPostCountByTitle(String title) {
+        title = "%" + title + "%";
+        String sql = "select count(*) from post where title like :title";
+        SqlParameterSource param = new MapSqlParameterSource("title", title);
+
+        return jdbcTemplate.queryForObject(sql, param, (rs, rowNum) -> rs.getInt(1));
     }
 
     public boolean createPost(Post post) {
