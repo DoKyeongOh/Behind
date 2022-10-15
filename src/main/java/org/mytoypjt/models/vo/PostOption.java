@@ -166,13 +166,6 @@ public class PostOption {
         return true;
     }
 
-    public boolean isContainSearchWord(){
-        String searchWord = optionMap.get(PostConst.SEARCH_WORD);
-        if (searchWord == null || searchWord.isEmpty())
-            return false;
-        return true;
-    }
-
     @Override
     public int hashCode() {
         return super.hashCode();
