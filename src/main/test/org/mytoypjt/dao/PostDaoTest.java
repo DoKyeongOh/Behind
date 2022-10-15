@@ -230,4 +230,13 @@ class PostDaoTest {
         }
         assertEquals(successed, true);
     }
+
+    @Test
+    void getPostsByNicName() {
+        try {
+            System.out.println(postDao.getPostsByNicName(1, 12, "두").size());
+        } catch(Exception e) {
+
+        }
+    }
 }

@@ -110,6 +110,21 @@ public class PostDao {
         return jdbcTemplate.query(sql, param, postRowMapper);
     }
 
+    public List<Post> getPostsByNicName(int pageNo, int postCountInPage, String nicname){
+        int startNo = (pageNo - 1) * postCountInPage;
+        if (startNo < 0) startNo = 1;
+
+        nicname = "%" + nicname + "%";
+        String sql = "select * from post where nicname like :nicname order by posted_date desc limit :startNo, :count";
+
+        MapSqlParameterSource param = new MapSqlParameterSource();
+        param.addValue("startNo", startNo);
+        param.addValue("count", postCountInPage);
+        param.addValue("nicname", nicname);
+
+        return jdbcTemplate.query(sql, param, postRowMapper);
+    }
+
     public Post getPost(int postNo) {
         String sql = "select * from post where post_no = :postNo";
         MapSqlParameterSource param = new MapSqlParameterSource("postNo", postNo);
@@ -160,6 +175,14 @@ public class PostDao {
         content = "%" + content + "%";
         String sql = "select count(*) from post where content like :content";
         SqlParameterSource param = new MapSqlParameterSource("content", content);
+
+        return jdbcTemplate.queryForObject(sql, param, (rs, rowNum) -> rs.getInt(1));
+    }
+
+    public int getPostCountByNicName(String nicName) {
+        nicName = "%" + nicName + "%";
+        String sql = "select count(*) from post where nicName like :nicName";
+        SqlParameterSource param = new MapSqlParameterSource("nicName", nicName);
 
         return jdbcTemplate.queryForObject(sql, param, (rs, rowNum) -> rs.getInt(1));
     }
