@@ -51,18 +51,12 @@ public class ReplyDao {
         return jdbcTemplate.query(sql, param, replyRowMapper);
     }
 
-    public void createReply(String content, Profile profile, int commentNoInt, boolean isAnonName) {
+    public void createReply(Reply reply) {
         String sql = "insert into reply " +
-                "(reply_no, content, account_no, comment_no, is_use_anonymous_name, nicname, replied_date)" +
+                "(reply_no, content, account_no, comment_no, name_anonymous, nicname, replied_date)" +
                 "values (null, :content, :accountNo, :commentNo, :nameAnonymous, :nicname, now())";
 
-        MapSqlParameterSource param = new MapSqlParameterSource();
-        param.addValue("content", content);
-        param.addValue("accountNo", profile.getAccountNo());
-        param.addValue("commentNo", commentNoInt);
-        param.addValue("nameAnonymous", isAnonName);
-        param.addValue("nicname", profile.getNicname());
-
+        SqlParameterSource param = new BeanPropertySqlParameterSource(reply);
         jdbcTemplate.update(sql, param);
     }
 

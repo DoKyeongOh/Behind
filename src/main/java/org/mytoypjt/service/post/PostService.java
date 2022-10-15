@@ -32,6 +32,8 @@ public class PostService {
     @Autowired
     private ReplyLogDao replyLogDao;
     @Autowired
+    private LikeLogDao likeLogDao;
+    @Autowired
     private PostCountStrategyContext postCountStrategyContext;
     @Autowired
     private PostsStrategyContext postsStrategyContext;
@@ -51,7 +53,7 @@ public class PostService {
         options.setPostCountLimitInMainPage();
 
         String searchWord = reqOp.getOptionMap().get(PostConst.SEARCH_WORD);
-        if (!reqOp.isContainSearchWord())
+        if (searchWord == null)
             searchWord = sessOp.getOptionMap().get(PostConst.SEARCH_WORD);
         options.getOptionMap().put(PostConst.SEARCH_WORD, searchWord);
 
@@ -204,7 +206,10 @@ public class PostService {
         if (isAnonName == null)
             isAnonymousName = false;
 
-        replyDao.createReply(content, profile, commentNo, isAnonymousName);
+        Reply reply = new Reply(content, profile.getAccountNo(), commentNo, isAnonymousName, profile.getNicname());
+
+        replyDao.createReply(reply);
+        replyLogDao.writeLog(reply, "생성");
     }
 
     public boolean isNull(Object...param) {

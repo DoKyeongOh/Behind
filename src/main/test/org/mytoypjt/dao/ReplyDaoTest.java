@@ -3,6 +3,7 @@ package org.mytoypjt.dao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mytoypjt.models.entity.Profile;
+import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.utils.DBUtil;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,7 +41,7 @@ class ReplyDaoTest {
 
             Profile profile = new Profile(100);
             profile.setNicname("hhhh");
-            this.replyDao.createReply("ddd", profile, 13, true);
+            this.replyDao.createReply(new Reply("ddd", profile.getAccountNo(), 13, true, "testNicName"));
         }catch (Exception e) {
             e.printStackTrace();
             successed = false;
