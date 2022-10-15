@@ -88,9 +88,15 @@
 </button>
 <!-- 글 상세보기 페이지로 돌아가기 버튼 -->
 
-<!-- 신고하기 버튼 -->
-<div id="btn-report">
-    <form action="/report/page" method="get" id="form-report">
+<!-- 삭제, 신고 버튼 -->
+<div id="btn-crud">
+    <form class="display-inline-block" method="post" action="comment">
+        <input type="hidden" name="_method" value="delete" />
+        <input type="hidden" name="comment" value="${comment}" />
+        <button type="submit" class="btn btn-secondary btn-sm">삭제하기</button>
+    </form>
+
+    <form action="/report/page" method="get" id="form-report" class="display-inline-block">
         <button class="btn btn-danger btn-sm">
             <input type="hidden" name="reportType" value="comment">
             <input type="hidden" name="no" value="${comment.commentNo}">
@@ -101,7 +107,7 @@
         </button>
     </form>
 </div>
-<!-- 신고하기 버튼 -->
+<!-- 삭제, 신고 버튼 -->
 
 <!-- 댓글 본문 -->
 <div id="comment-wrapper" >
@@ -180,3 +186,4 @@
 
 </body>
 </html>
+
