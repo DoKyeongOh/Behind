@@ -78,4 +78,17 @@ class PostServiceTest {
         }
         assertEquals(successed, true);
     }
+
+    @Test
+    void deleteComment() {
+        boolean successed = true;
+
+        try {
+            // test content
+        } catch(Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(successed, true);
+    }
 }

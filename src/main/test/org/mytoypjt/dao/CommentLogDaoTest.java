@@ -25,13 +25,10 @@ class CommentLogDaoTest {
 
         try {
             // test content
-            Comment comment = new Comment("test-title", 6, 15, "admin-test", false);
-            
-            for (int i=0 ; i<3 ; i++)
-                commentLogDao.writeLog(comment, "생성");
+            Comment comment = new Comment("testcomment", 6, 37, "테스트닉네임", false);
+            comment.setCommentNo(42);
+            this.commentLogDao.writeLog(comment, "테스트");
 
-            for (int i=0 ; i<3 ; i++)
-                commentLogDao.writeLog(comment, "삭제");
             
         } catch(Exception e) {
             e.printStackTrace();
@@ -54,5 +51,9 @@ class CommentLogDaoTest {
             successed = false;
         }
         assertEquals(successed, true);
+    }
+
+    @Test
+    void testWriteLog() {
     }
 }

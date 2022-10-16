@@ -24,7 +24,16 @@ public class CommentController {
     final String PARENT_TITLE = "parentPost";
 
     public CommentController() {
-        int a = 32;
+    }
+
+    @DeleteMapping(path = "/comment")
+    public ModelAndView deleteComment(@ModelAttribute("comment") Comment comment) {
+        try {
+            postService.deleteComment(comment);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return new ModelAndView(new RedirectView("/post?"+comment.getPostNo()));
     }
 
     @PostMapping(path = "/comment")

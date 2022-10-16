@@ -109,8 +109,6 @@ public class PostService {
     @Transactional
     public void deletePost(int postNo) throws Exception {
         Post post = postDao.getPost(postNo);
-        if (!Post.isCorrectPost(post))
-            return;
         postDao.deletePost(postNo);
         postLogDao.writeLog(post, "삭제");
     }
@@ -184,6 +182,12 @@ public class PostService {
 
         int commentCount = commentDao.getCommentCount(postNo);
         postDao.updateCommentCount(postNo, commentCount);
+    }
+
+    @Transactional
+    public void deleteComment(Comment comment) {
+        commentDao.deleteComment(comment.getCommentNo());
+        commentLogDao.writeLog(comment, "삭제");
     }
 
     public Comment getComment(String no){

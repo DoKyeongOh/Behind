@@ -46,4 +46,20 @@ class CommentDaoTest {
         }
         assertEquals(true, successed);
     }
+
+    @Test
+    void deleteComment() {
+        boolean successed = true;
+
+        try {
+            // test content
+            Comment comment = new Comment("testcomment", 6, 37, "테스트닉네임", false);
+            comment.setCommentNo(42);
+            commentDao.deleteComment(comment.getCommentNo());
+        } catch(Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(successed, true);
+    }
 }

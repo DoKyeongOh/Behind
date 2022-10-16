@@ -57,6 +57,13 @@ public class CommentDao {
         jdbcInsert.execute(param);
     }
 
+    public void deleteComment(int commentNo) {
+        String sql = "delete from comment where comment_no = :commentNo";
+        MapSqlParameterSource param =
+                new MapSqlParameterSource("commentNo", commentNo);
+        jdbcTemplate.update(sql, param);
+    }
+
     public int getCommentCount(int postNo) {
         String sql = "select count(*) from comment where post_no=:postNo";
         return jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("postNo", postNo),
@@ -68,6 +75,5 @@ public class CommentDao {
         MapSqlParameterSource param = new MapSqlParameterSource("commentNo", commentNo);
         return jdbcTemplate.query(sql, param, commentRowMapper).get(0);
     }
-
 
 }

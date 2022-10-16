@@ -90,7 +90,7 @@
 
 <!-- 삭제, 신고 버튼 -->
 <div id="btn-crud">
-    <form class="display-inline-block" method="post" action="comment">
+    <form class="display-inline-block" method="post" action="/comment">
         <input type="hidden" name="_method" value="delete" />
         <input type="hidden" name="comment" value="${comment}" />
         <button type="submit" class="btn btn-secondary btn-sm">삭제하기</button>
