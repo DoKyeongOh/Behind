@@ -43,4 +43,20 @@ ul {
 #modefy-form {
     width: auto;
     width: 80%;
+    margin-top: 1%;
+}
+
+#form-modify-apply {
+    margin-top: 0.5%;
+    margin-left: 70%;
+    width: 80%;
+    text-align: left;
+}
+
+#check-anonymous {
+    margin-right: 3%;
+}
+
+#btn-modify-apply {
+    width: 10%;
 }

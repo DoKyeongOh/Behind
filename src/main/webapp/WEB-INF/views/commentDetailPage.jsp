@@ -90,13 +90,15 @@
 
 <!-- 삭제, 신고 버튼 -->
 <div id="btn-crud">
-    <c:if test="">
+    <c:set var="profile" value="${sessionScope.get('profile')}"/>
+    <c:if test="${comment.accountNo eq profile.accountNo}">
         <form class="display-inline-block" method="get" action="/comment/page/1">
             <input type="hidden" name="commentNo" value="${comment.commentNo}" />
             <button type="submit" class="btn btn-secondary btn-sm">수정하기</button>
         </form>
 
         <form class="display-inline-block" method="post" action="/comment">
+            <input type="hidden" name="_method" value="delete" />
             <input type="hidden" name="commentNo" value="${comment.commentNo}" />
             <input type="hidden" name="postNo" value="${comment.postNo}" />
             <button type="submit" class="btn btn-secondary btn-sm">삭제하기</button>
