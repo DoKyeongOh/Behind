@@ -1,6 +1,6 @@
 package org.mytoypjt.controller;
 
-import org.mytoypjt.models.entity.AbstractEntityLog;
+import org.mytoypjt.models.etc.AbstractEntityLog;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;

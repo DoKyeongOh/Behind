@@ -114,15 +114,10 @@
                 <a class="one-activity mb-1" href="">
                     <li class="list-group-item">
                         <span class="display-inline-block">${logItem.logMsg}</span>
-                        <span class="display-inline-block">${logItem.loggingDate}</span>
                     </li>
                 </a>
             </c:forEach>
         </ul>
-        <label class="badge bg-dark">글 : 5 개</label>
-        <label class="badge bg-dark">댓글 : 5 개</label>
-        <label class="badge bg-dark">대댓글 : 5 개</label>
-        <label class="badge bg-dark">좋아요 : 5 개</label>
     </div>
 </div>
 <!-- 마이페이지 내용 -->

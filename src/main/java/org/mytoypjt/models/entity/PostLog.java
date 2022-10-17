@@ -1,6 +1,6 @@
 package org.mytoypjt.models.entity;
 
-import java.util.Date;
+import org.mytoypjt.models.etc.AbstractEntityLog;
 
 public class PostLog extends AbstractEntityLog {
     int postLogNo;
@@ -12,14 +12,14 @@ public class PostLog extends AbstractEntityLog {
     public PostLog(int postLogNo, String loggingDate, String actionType, int accountNo, int entityNo){
         this.postLogNo = postLogNo;
         this.loggingDate = loggingDate;
-        this.actionType = actionType;
+        this.action = actionType;
         this.accountNo = accountNo;
         this.entityNo = entityNo;
     }
 
     @Override
     public String getLogMsg() {
-        return this.logMsg = "당신이 게시글을 "+ actionType +"하였습니다.";
+        return this.logMsg = "당신이 게시글을 "+ action +"하였습니다.";
     }
 
     public int getPostLogNo() {

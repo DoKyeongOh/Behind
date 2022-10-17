@@ -2,11 +2,7 @@ package org.mytoypjt.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mytoypjt.models.entity.AbstractEntityLog;
 import org.mytoypjt.models.entity.Post;
-import org.mytoypjt.models.dto.PostSortType;
-import org.mytoypjt.models.entity.PostLog;
-import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.DBUtil;
 
 import java.util.*;

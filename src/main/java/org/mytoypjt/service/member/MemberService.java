@@ -1,7 +1,7 @@
 package org.mytoypjt.service.member;
 
 import org.mytoypjt.dao.*;
-import org.mytoypjt.models.entity.AbstractEntityLog;
+import org.mytoypjt.models.etc.AbstractEntityLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

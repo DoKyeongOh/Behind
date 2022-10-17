@@ -90,7 +90,7 @@
     <form id="profile-input-form" method="post" action="/profile">
 
         <input type="text" class="form-control" placeholder="사용할 닉네임" id="input-nicname" name="nicname">
-
+    
         <div class="certer-inline-align">
             <select class="form-select" name="age" id="btn-age-dropdown">
                 <option selected>나이를 선택하세요</option>

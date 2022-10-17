@@ -1,22 +1,22 @@
 package org.mytoypjt.models.entity;
 
-import java.util.Date;
+import org.mytoypjt.models.etc.AbstractEntityLog;
 
-public class ReplyLog extends AbstractEntityLog{
+public class ReplyLog extends AbstractEntityLog {
 
     int replyLogNo;
 
     public ReplyLog(int replyLogNo, String loggingDate, String actionType, int accountNo, int entityNo) {
         this.replyLogNo = replyLogNo;
         this.loggingDate = loggingDate;
-        this.actionType = actionType;
+        this.action = actionType;
         this.accountNo = accountNo;
         this.entityNo = entityNo;
     }
 
     @Override
     public String getLogMsg() {
-        return this.logMsg = "당신이 대댓글을 "+ actionType +"하였습니다.";
+        return this.logMsg = "당신이 대댓글을 "+ action +"하였습니다.";
     }
 
     public int getReplyLogNo() {

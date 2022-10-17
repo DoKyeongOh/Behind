@@ -1,21 +1,21 @@
 package org.mytoypjt.models.entity;
 
-import java.util.Date;
+import org.mytoypjt.models.etc.AbstractEntityLog;
 
-public class CommentLog extends AbstractEntityLog{
+public class CommentLog extends AbstractEntityLog {
     int commentLogNo;
 
     public CommentLog(int commentLogNo, String loggingDate, String actionType, int accountNo, int entityNo) {
         this.commentLogNo = commentLogNo;
         this.loggingDate = loggingDate;
-        this.actionType = actionType;
+        this.action = actionType;
         this.accountNo = accountNo;
         this.entityNo = entityNo;
     }
 
     @Override
     public String getLogMsg() {
-        return this.logMsg = "당신이 댓글을 "+ actionType +"하였습니다.";
+        return this.logMsg = "당신이 댓글을 "+ action +"하였습니다.";
     }
 
     public int getCommentLogNo() {
