@@ -1,3 +1,28 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: dokyeongoh
+  Date: 2022/10/17
+  Time: 4:29 PM
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<% request.setAttribute("mainPage", request.getContextPath() + "/main/page"); %>
+<% request.setAttribute("logout", request.getContextPath() + "/login"); %>
+<% request.setAttribute("realTimePosts", request.getContextPath() + "/posts?type=1"); %>
+<% request.setAttribute("daysMostPosts", request.getContextPath() + "/posts?type=2"); %>
+<% request.setAttribute("weeksMostPosts", request.getContextPath() + "/posts?type=3"); %>
+<% request.setAttribute("searchPosts", request.getContextPath() + "/posts?type=4"); %>
+
+<% request.setAttribute("myPage", request.getContextPath() + "/my/page"); %>
+
+<% request.setAttribute("post", request.getContextPath() + "/post"); %>
+<% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page/1"); %>
+
+<% request.setAttribute("myPage", request.getContextPath() + "/my/page"); %>
+
 <html>
 <head>
     <title>Behind</title>
@@ -154,3 +179,4 @@
 
 </body>
 </html>
+
