@@ -148,7 +148,13 @@ public class RegisterController {
         profile.setCity(param.get("city"));
         profile.setGender(param.get("gender"));
 
-        String msg = registerService.updateProfile(profile);
+        String msg = "";
+        try {
+            msg = registerService.updateProfile(profile);
+        } catch(Exception e) {
+            msg = "예상치 못한 문제가 발생했습니다! 관리자에게 문의하세요!";
+            e.printStackTrace();
+        }
         if (!msg.equals("")) {
             mv.addObject("noticeMessage", msg);
             mv.setViewName("profileInputPage");
