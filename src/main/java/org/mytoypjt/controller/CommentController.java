@@ -81,6 +81,26 @@ public class CommentController {
         return new ModelAndView(new RedirectView("/post?no="+postNo));
     }
 
+    @PutMapping(path = "/comment")
+    public ModelAndView updateComment(@RequestParam Map<String, String> param,
+                                      @SessionAttribute("profile") Profile profile) {
+        String content = param.get("content");
+        String commentNo = param.get("commentNo");
+        int postNo = Integer.parseInt(param.get("pageNo"));
+
+        boolean nameAnonymous = param.get("nameAnonymous").equals("true") ? true : false;
+        String nicname = nameAnonymous ? "누군가" : profile.getNicname();
+
+        Comment comment = new Comment(content, profile.getAccountNo(), postNo, nicname, nameAnonymous);
+        ModelAndView mv = new ModelAndView(new RedirectView("/comment?no="+commentNo));
+        try {
+            postService.updateComment(comment);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mv;
+    }
+
     @GetMapping(path = "/comment/page/{pageNo}")
     public ModelAndView getCommentPage(@PathVariable(name = "pageNo") int pageNo,
                                        @RequestParam Map<String, String> param) {
@@ -91,7 +111,7 @@ public class CommentController {
                 Comment comment = postService.getComment(commentNo);
                 mv.addObject("comment", comment);
                 mv.setViewName("commentModifyPage");
-                break;
+                return mv;
             }
         }
 

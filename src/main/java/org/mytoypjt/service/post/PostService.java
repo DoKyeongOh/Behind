@@ -191,6 +191,12 @@ public class PostService {
         commentLogDao.writeLog(comment, "삭제");
     }
 
+    @Transactional
+    public void updateComment(Comment comment) {
+        commentDao.updateComment(comment);
+        commentLogDao.writeLog(comment, "수정");
+    }
+
     public Comment getComment(String no){
         try {
             int commentNo = Integer.parseInt(no);

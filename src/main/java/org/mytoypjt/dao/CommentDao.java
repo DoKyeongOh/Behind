@@ -64,6 +64,13 @@ public class CommentDao {
         jdbcTemplate.update(sql, param);
     }
 
+    public void updateComment(Comment comment) {
+        String sql = "update comment set content=:content, name_anonymous:=:nameAnonymous, nicname=:nicname " +
+                "where comment_no=:commentNo";
+        SqlParameterSource param = new BeanPropertySqlParameterSource(comment);
+        jdbcTemplate.update(sql, param);
+    }
+
     public int getCommentCount(int postNo) {
         String sql = "select count(*) from comment where post_no=:postNo";
         return jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("postNo", postNo),

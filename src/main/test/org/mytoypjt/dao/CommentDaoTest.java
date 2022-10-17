@@ -62,4 +62,21 @@ class CommentDaoTest {
         }
         assertEquals(successed, true);
     }
+
+    @Test
+    void updateComment() {
+
+        boolean successed = true;
+        try {
+            // test content
+            String content = "진짜로 로그가 남는대요 - 2";
+            Comment comment = new Comment(content, 19, 68, "admin", false);
+            comment.setCommentNo(45);
+            commentDao.updateComment(comment);
+        }catch (Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(true, successed);
+    }
 }

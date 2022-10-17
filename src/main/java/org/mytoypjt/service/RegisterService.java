@@ -63,12 +63,8 @@ public class RegisterService {
             return "닉네임은 10글자보다 짧아야 합니다!";
         if (profile.getNicname().contains(" "))
             return "닉네임에 공백은 사용할 수 없습니다!";
-        try {
-            if (!profileDao.updateProfile(profile))
-                return "성공적으로 완수되지 못했습니다! 관리자에게 문의하세요!";
-        } catch(Exception e) {
-            return "예상치 못한 문제가 발생했습니다! 관리자에게 문의하세요!";
-        }
+        if (!profileDao.updateProfile(profile))
+            return "성공적으로 완수되지 못했습니다! 관리자에게 문의하세요!";
         return "";
     }
 
