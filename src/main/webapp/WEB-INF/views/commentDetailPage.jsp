@@ -91,8 +91,15 @@
 <!-- 삭제, 신고 버튼 -->
 <div id="btn-crud">
     <form class="display-inline-block" method="post" action="/comment">
+        <input type="hidden" name="commentNo" value="${comment.commentNo}" />
+        <input type="hidden" name="postNo" value="${comment.postNo}" />
+        <button type="submit" class="btn btn-secondary btn-sm">삭제하기</button>
+    </form>
+
+    <form class="display-inline-block" method="post" action="/comment">
         <input type="hidden" name="_method" value="delete" />
-        <input type="hidden" name="comment" value="${comment}" />
+        <input type="hidden" name="commentNo" value="${comment.commentNo}" />
+        <input type="hidden" name="postNo" value="${comment.postNo}" />
         <button type="submit" class="btn btn-secondary btn-sm">삭제하기</button>
     </form>
 

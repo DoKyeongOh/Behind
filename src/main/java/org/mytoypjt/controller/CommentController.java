@@ -27,13 +27,14 @@ public class CommentController {
     }
 
     @DeleteMapping(path = "/comment")
-    public ModelAndView deleteComment(@ModelAttribute("comment") Comment comment) {
+    public ModelAndView deleteComment(@RequestParam("commentNo") int commentNo,
+                                      @RequestParam("postNo") int postNo) {
         try {
-            postService.deleteComment(comment);
+            postService.deleteComment(commentNo);
         } catch(Exception e) {
             e.printStackTrace();
         }
-        return new ModelAndView(new RedirectView("/post?"+comment.getPostNo()));
+        return new ModelAndView(new RedirectView("/post?no="+postNo));
     }
 
     @PostMapping(path = "/comment")

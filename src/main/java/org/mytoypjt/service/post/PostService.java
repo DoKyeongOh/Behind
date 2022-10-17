@@ -185,7 +185,8 @@ public class PostService {
     }
 
     @Transactional
-    public void deleteComment(Comment comment) {
+    public void deleteComment(int commentNo) {
+        Comment comment = commentDao.getCommentByCommentNo(commentNo);
         commentDao.deleteComment(comment.getCommentNo());
         commentLogDao.writeLog(comment, "삭제");
     }
