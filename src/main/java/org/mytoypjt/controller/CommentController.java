@@ -26,6 +26,32 @@ public class CommentController {
     public CommentController() {
     }
 
+    @GetMapping(path = "/comment")
+    public ModelAndView showCommentPage(@RequestParam Map<String, String> param){
+        String no = param.get("no");
+
+        ModelAndView mv = new ModelAndView();
+
+        Comment comment = postService.getComment(no);
+        if (Comment.isCorrectComment(comment)) {
+            mv.setView(new RedirectView("/post?no=" + no));
+            return mv;
+        }
+
+        Post post = postService.getPost(comment.getPostNo());
+        String title = post.getTitle();
+        if (title.length() > 7)
+            title = title.substring(0,7) + "...";
+
+        List<Reply> replies = postService.getReplies(comment);
+        mv.addObject(COMMENT, comment);
+        mv.addObject(REPLIES, replies);
+        mv.addObject(PARENT_TITLE, title);
+        mv.setViewName("commentDetailPage");
+
+        return mv;
+    }
+
     @DeleteMapping(path = "/comment")
     public ModelAndView deleteComment(@RequestParam("commentNo") int commentNo,
                                       @RequestParam("postNo") int postNo) {
@@ -55,31 +81,24 @@ public class CommentController {
         return new ModelAndView(new RedirectView("/post?no="+postNo));
     }
 
-    @GetMapping(path = "/comment")
-    public ModelAndView showCommentPage(@RequestParam Map<String, String> param){
-        String no = param.get("no");
-
+    @GetMapping(path = "/comment/page/{pageNo}")
+    public ModelAndView getCommentPage(@PathVariable(name = "pageNo") int pageNo,
+                                       @RequestParam Map<String, String> param) {
         ModelAndView mv = new ModelAndView();
-
-        Comment comment = postService.getComment(no);
-        if (Comment.isCorrectComment(comment)) {
-            mv.setView(new RedirectView("/post?no=" + no));
-            return mv;
+        switch (pageNo) {
+            case 1: {
+                String commentNo = param.get("commentNo");
+                Comment comment = postService.getComment(commentNo);
+                mv.addObject("comment", comment);
+                mv.setViewName("commentModifyPage");
+                break;
+            }
         }
 
-        Post post = postService.getPost(comment.getPostNo());
-        String title = post.getTitle();
-        if (title.length() > 7)
-            title = title.substring(0,7) + "...";
-
-        List<Reply> replies = postService.getReplies(comment);
-        mv.addObject(COMMENT, comment);
-        mv.addObject(REPLIES, replies);
-        mv.addObject(PARENT_TITLE, title);
-        mv.setViewName("commentDetailPage");
-
+        mv.setView(new RedirectView("/main/page"));
         return mv;
     }
+
 
     @PostMapping(path = "/reply")
     public ModelAndView createReply(@RequestParam Map<String, String> param,
