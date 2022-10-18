@@ -60,4 +60,16 @@ public class ReplyDao {
         jdbcTemplate.update(sql, param);
     }
 
+    public void deleteReply(int replyNo) {
+        String sql = "delete from reply where reply_no=:replyNo";
+        SqlParameterSource param = new MapSqlParameterSource("replyNo", replyNo);
+        jdbcTemplate.update(sql, param);
+    }
+
+    public Reply getReply(int replyNo) {
+        String sql = "select * from reply where reply_no=:replyNo";
+        SqlParameterSource param = new MapSqlParameterSource("replyNo", replyNo);
+        List<Reply> replies = jdbcTemplate.query(sql, param, replyRowMapper);
+        return replies.size() == 0 ? null : replies.get(0);
+    }
 }

@@ -136,4 +136,15 @@ public class CommentController {
         return new ModelAndView(new RedirectView("/comment?no="+commentNo));
     }
 
+    @DeleteMapping(path = "/reply")
+    public ModelAndView deleteReply(@RequestParam("replyNo") int replyNo,
+                                    @RequestParam("commentNo") int commentNo) {
+        try {
+            postService.deleteReply(replyNo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ModelAndView(new RedirectView("/comment?no="+commentNo));
+    }
+
 }

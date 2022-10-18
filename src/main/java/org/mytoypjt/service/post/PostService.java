@@ -247,4 +247,10 @@ public class PostService {
         }
     }
 
+    @Transactional
+    public void deleteReply(int replyNo) {
+        Reply reply = replyDao.getReply(replyNo);
+        replyLogDao.writeLog(reply, "삭제");
+        replyDao.deleteReply(replyNo);
+    }
 }
