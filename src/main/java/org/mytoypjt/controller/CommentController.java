@@ -85,13 +85,14 @@ public class CommentController {
     public ModelAndView updateComment(@RequestParam Map<String, String> param,
                                       @SessionAttribute("profile") Profile profile) {
         String content = param.get("content");
-        String commentNo = param.get("commentNo");
-        int postNo = Integer.parseInt(param.get("pageNo"));
+        int commentNo = Integer.parseInt(param.get("commentNo"));
+        int postNo = Integer.parseInt(param.get("postNo"));
 
-        boolean nameAnonymous = param.get("nameAnonymous").equals("true") ? true : false;
+        boolean nameAnonymous = param.get("nameAnonymous") == null ? false : true;
         String nicname = nameAnonymous ? "누군가" : profile.getNicname();
 
         Comment comment = new Comment(content, profile.getAccountNo(), postNo, nicname, nameAnonymous);
+        comment.setCommentNo(commentNo);
         ModelAndView mv = new ModelAndView(new RedirectView("/comment?no="+commentNo));
         try {
             postService.updateComment(comment);
