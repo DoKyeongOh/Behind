@@ -15,8 +15,6 @@
 <% request.setAttribute("searchPosts", request.getContextPath() + "/posts?type=4"); %>
 
 <% request.setAttribute("myPage", request.getContextPath() + "/my/page"); %>
-
-<% request.setAttribute("post", request.getContextPath() + "/post"); %>
 <% request.setAttribute("postCreatePage", request.getContextPath() + "/post/page/1"); %>
 
 <% request.setAttribute("postCreate", request.getContextPath() + "/post"); %>

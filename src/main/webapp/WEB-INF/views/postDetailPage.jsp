@@ -101,7 +101,7 @@
     <div class="text-center">
         <img class="inline-block" src="../../pictures/origin/${post.pictureNo}.jpeg" id="post-img"
              oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onkeydown="return false">
-        <div class="inline-block text-center" id="post-content">
+        <div class="inline-block text-center pre-line" id="post-content">
             <c:if test="${post ne null}">
                 ${post.content}
             </c:if>
