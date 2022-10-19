@@ -110,3 +110,7 @@ body {
     margin-left: 1%;
 }
 
+.pre-line {
+    white-space: pre-line;
+}
+
