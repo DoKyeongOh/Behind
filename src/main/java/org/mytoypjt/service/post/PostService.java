@@ -206,8 +206,7 @@ public class PostService {
         }
     }
 
-    public List<Reply> getReplies(Comment comment) {
-        int commentNo = comment.getCommentNo();
+    public List<Reply> getReplies(int commentNo) {
         return replyDao.getReplies(commentNo);
     }
 
@@ -252,5 +251,14 @@ public class PostService {
         Reply reply = replyDao.getReply(replyNo);
         replyLogDao.writeLog(reply, "삭제");
         replyDao.deleteReply(replyNo);
+    }
+
+    public Comment getCommentByReplyNo(int replyNo) {
+        return commentDao.getCommentByReplyNo(replyNo);
+    }
+    @Transactional
+    public List<Reply> getRepliesByReplyNo(int replyNo) {
+        Comment comment = getCommentByReplyNo(replyNo);
+        return getReplies(comment.getCommentNo());
     }
 }

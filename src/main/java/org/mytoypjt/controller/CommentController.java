@@ -43,7 +43,7 @@ public class CommentController {
         if (title.length() > 7)
             title = title.substring(0,7) + "...";
 
-        List<Reply> replies = postService.getReplies(comment);
+        List<Reply> replies = postService.getReplies(comment.getCommentNo());
         mv.addObject(COMMENT, comment);
         mv.addObject(REPLIES, replies);
         mv.addObject(PARENT_TITLE, title);
@@ -110,13 +110,37 @@ public class CommentController {
             case 1: {
                 String commentNo = param.get("commentNo");
                 Comment comment = postService.getComment(commentNo);
+
+                List<Reply> replies = postService.getReplies(comment.getCommentNo());
                 mv.addObject("comment", comment);
+                mv.addObject("replies", replies);
                 mv.setViewName("commentModifyPage");
                 return mv;
             }
         }
 
         mv.setView(new RedirectView("/main/page"));
+        return mv;
+    }
+
+    @GetMapping(path = "/reply/page/{pageNo}")
+    public ModelAndView getReplyPage(@RequestParam("replyNo")int replyNo,
+                                     @PathVariable("pageNo")int pageNo) {
+        ModelAndView mv = new ModelAndView();
+        switch (pageNo) {
+            case 1: {
+                try {
+                    List<Reply> replies = postService.getRepliesByReplyNo(replyNo);
+                    mv.addObject("replies", replies);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                mv.addObject("replyNo", replyNo);
+                mv.setViewName("replyModifyPage");
+                return mv;
+            }
+        }
         return mv;
     }
 

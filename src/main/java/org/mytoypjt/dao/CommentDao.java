@@ -83,4 +83,12 @@ public class CommentDao {
         return jdbcTemplate.query(sql, param, commentRowMapper).get(0);
     }
 
+    public Comment getCommentByReplyNo(int replyNo) {
+        String sql = "select * from comment where reply_no=:replyNo";
+        SqlParameterSource param = new MapSqlParameterSource("replyNo", replyNo);
+        List<Comment> comments = jdbcTemplate.query(sql, param, commentRowMapper);
+        if (comments.size() == 0)
+            return null;
+        return comments.get(0);
+    }
 }
