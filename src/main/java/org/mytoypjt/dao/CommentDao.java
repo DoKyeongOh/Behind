@@ -1,9 +1,6 @@
 package org.mytoypjt.dao;
 
-import org.mytoypjt.models.entity.Account;
 import org.mytoypjt.models.entity.Comment;
-import org.mytoypjt.models.entity.Profile;
-import org.mytoypjt.utils.DBUtil;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -13,11 +10,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class CommentDao {
@@ -83,12 +76,4 @@ public class CommentDao {
         return jdbcTemplate.query(sql, param, commentRowMapper).get(0);
     }
 
-    public Comment getCommentByReplyNo(int replyNo) {
-        String sql = "select * from comment where reply_no=:replyNo";
-        SqlParameterSource param = new MapSqlParameterSource("replyNo", replyNo);
-        List<Comment> comments = jdbcTemplate.query(sql, param, commentRowMapper);
-        if (comments.size() == 0)
-            return null;
-        return comments.get(0);
-    }
 }

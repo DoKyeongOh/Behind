@@ -1,5 +1,6 @@
 package org.mytoypjt.dao;
 
+import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.utils.DBUtil;
@@ -71,5 +72,14 @@ public class ReplyDao {
         SqlParameterSource param = new MapSqlParameterSource("replyNo", replyNo);
         List<Reply> replies = jdbcTemplate.query(sql, param, replyRowMapper);
         return replies.size() == 0 ? null : replies.get(0);
+    }
+
+    public int getCommentNoByReplyNo(int replyNo) {
+        String sql = "select * from reply where reply_no=:replyNo";
+        SqlParameterSource param = new MapSqlParameterSource("replyNo", replyNo);
+        List<Reply> replies = jdbcTemplate.query(sql, param, replyRowMapper);
+        if (replies.size() == 0)
+            return -1;
+        return replies.get(0).getCommentNo();
     }
 }

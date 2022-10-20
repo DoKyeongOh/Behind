@@ -8,6 +8,7 @@ import org.mytoypjt.service.post.strategy.pagecount.PostCountStrategyContext;
 import org.mytoypjt.service.post.strategy.posts.PostsStrategyContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -253,9 +254,12 @@ public class PostService {
         replyDao.deleteReply(replyNo);
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
     public Comment getCommentByReplyNo(int replyNo) {
-        return commentDao.getCommentByReplyNo(replyNo);
+        int commentNo = replyDao.getCommentNoByReplyNo(replyNo);
+        return commentDao.getCommentByCommentNo(commentNo);
     }
+
     @Transactional
     public List<Reply> getRepliesByReplyNo(int replyNo) {
         Comment comment = getCommentByReplyNo(replyNo);
