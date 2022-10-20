@@ -127,7 +127,7 @@ public class RegisterController {
         }
 
         session.setAttribute(ACCOUNT_CERT_KEY, null);
-        session.setAttribute(SessionConst.userProfile, profile);
+        session.setAttribute(SessionConst.USER_PROFILE, profile);
         loginManager.addLoginSession(profile.getAccountNo(), session);
 
         mv.setView(new RedirectView("/register/page/3"));
@@ -161,7 +161,7 @@ public class RegisterController {
             return mv;
         }
 
-        session.setAttribute(SessionConst.userProfile, profile);
+        session.setAttribute(SessionConst.USER_PROFILE, profile);
 
         return mv;
     }
