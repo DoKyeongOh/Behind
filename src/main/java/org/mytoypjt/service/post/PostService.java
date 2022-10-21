@@ -253,12 +253,9 @@ public class PostService {
         replyDao.deleteReply(replyNo);
     }
 
-    public Comment getCommentByReplyNo(int replyNo) {
-        return commentDao.getCommentByReplyNo(replyNo);
-    }
     @Transactional
     public List<Reply> getRepliesByReplyNo(int replyNo) {
-        Comment comment = getCommentByReplyNo(replyNo);
-        return getReplies(comment.getCommentNo());
+        int commentNo = replyDao.getCommentNoByReplyNo(replyNo);
+        return getReplies(commentNo);
     }
 }
