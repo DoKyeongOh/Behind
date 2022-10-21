@@ -1,5 +1,6 @@
 package org.mytoypjt.dao;
 
+import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.utils.DBUtil;

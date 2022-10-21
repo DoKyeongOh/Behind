@@ -1,5 +1,6 @@
 package org.mytoypjt.controller;
 
+import org.mytoypjt.controller.consts.PostConst;
 import org.mytoypjt.controller.consts.SessionConst;
 import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.Comment;
@@ -22,7 +23,6 @@ public class PostController {
 
     @Autowired
     PostService postService;
-    String postsOptionKey = "PostOption";
 
     public PostController (){}
 
@@ -44,21 +44,21 @@ public class PostController {
         mv.addObject("daysChecked", "");
         mv.addObject("weeksChecked", "");
 
-        session.setAttribute(this.postsOptionKey, postOption);
+        session.setAttribute(SessionConst.POST_OPTION_KEY, postOption);
 
         return mv;
     }
 
     @GetMapping(path = "/posts")
     public ModelAndView showPosts(HttpSession session, @RequestParam Map<String, String> param){
-        PostOption optionInSession = (PostOption) session.getAttribute(this.postsOptionKey);
+        PostOption optionInSession = (PostOption) session.getAttribute(SessionConst.POST_OPTION_KEY);
         PostOption optionInRequest = new PostOption(param.get("pageNo"), param.get("type"));
 
         optionInRequest.getOptionMap().putAll(param);
         PostOption actualOption = postService.createPostsOption(optionInRequest, optionInSession);
 
         List<Post> posts = postService.getPosts(actualOption);
-        session.setAttribute(this.postsOptionKey, actualOption);
+        session.setAttribute(SessionConst.POST_OPTION_KEY, actualOption);
 
         ModelAndView mv = new ModelAndView("mainPage");
         mv.addObject("posts", posts);
@@ -95,15 +95,15 @@ public class PostController {
         List<Comment> comments = postService.getComments(post.getPostNo());
 
         ModelAndView mv = new ModelAndView("postDetailPage");
-        mv.addObject("posterCity", post.getCity());
-        mv.addObject("post", post);
-        mv.addObject("comments", comments);
+        mv.addObject(PostConst.POSTER_CITY, post.getCity());
+        mv.addObject(PostConst.POST, post);
+        mv.addObject(PostConst.COMMENTS, comments);
 
-        Profile profile = (Profile) session.getAttribute(SessionConst.userProfile);
+        Profile profile = (Profile) session.getAttribute(SessionConst.USER_PROFILE);
 
         int accountNo = profile.getAccountNo();
         boolean isLike = postService.isLikePost(no, Integer.toString(accountNo));
-        mv.addObject("isLike", isLike);
+        mv.addObject(PostConst.IS_LIKE, isLike);
 
         return mv;
     }
@@ -137,17 +137,17 @@ public class PostController {
     public String showPostCreatePage(@PathVariable(value = "pageNo")int pageNo,
                                      @RequestParam Map<String, String> param, Model model){
         switch (pageNo) {
-            case 1 : return "postCreatePage";
-            case 2 : return "postCreateComplete";
+            case 1 : return PostConst.POST_CREATE_PAGE;
+            case 2 : return PostConst.POST_CREATE_COMPLETE_PAGE;
             case 3 : {
                 int postNo = Integer.parseInt(param.get("postNo"));
                 Post post = postService.getPost(postNo);
                 if (post == null) return "mainPage";
 
                 model.addAttribute("post", post);
-                return "postModifyPage";
+                return PostConst.POST_MODIFY_PAGE;
             }
-            default: return "postCreatePage";
+            default: return PostConst.POST_CREATE_PAGE;
         }
     }
 

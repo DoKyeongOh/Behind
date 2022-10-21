@@ -1,5 +1,6 @@
 package org.mytoypjt.controller;
 
+import org.mytoypjt.controller.consts.PostConst;
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
@@ -18,10 +19,6 @@ import java.util.Map;
 public class CommentController {
     @Autowired
     PostService postService;
-
-    final String REPLIES = "replies";
-    final String COMMENT = "comment";
-    final String PARENT_TITLE = "parentPost";
 
     public CommentController() {
     }
@@ -44,9 +41,9 @@ public class CommentController {
             title = title.substring(0,7) + "...";
 
         List<Reply> replies = postService.getReplies(comment.getCommentNo());
-        mv.addObject(COMMENT, comment);
-        mv.addObject(REPLIES, replies);
-        mv.addObject(PARENT_TITLE, title);
+        mv.addObject(PostConst.COMMENT, comment);
+        mv.addObject(PostConst.REPLIES, replies);
+        mv.addObject(PostConst.POST_TITLE, title);
         mv.setViewName("commentDetailPage");
 
         return mv;
@@ -112,8 +109,9 @@ public class CommentController {
                 Comment comment = postService.getComment(commentNo);
 
                 List<Reply> replies = postService.getReplies(comment.getCommentNo());
-                mv.addObject("comment", comment);
-                mv.addObject("replies", replies);
+                mv.addObject(PostConst.POST_TITLE, "게시 글");
+                mv.addObject(PostConst.REPLIES, replies);
+                mv.addObject(PostConst.COMMENT, comment);
                 mv.setViewName("commentModifyPage");
                 return mv;
             }
@@ -131,7 +129,10 @@ public class CommentController {
             case 1: {
                 try {
                     List<Reply> replies = postService.getRepliesByReplyNo(replyNo);
-                    mv.addObject("replies", replies);
+                    Comment comment = postService.getCommentByReplyNo(replyNo);
+                    mv.addObject(PostConst.POST_TITLE, "게시 글");
+                    mv.addObject(PostConst.REPLIES, replies);
+                    mv.addObject(PostConst.COMMENT, comment);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

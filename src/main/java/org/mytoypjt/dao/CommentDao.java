@@ -1,7 +1,6 @@
 package org.mytoypjt.dao;
 
 import org.mytoypjt.models.entity.Comment;
-import org.mytoypjt.models.entity.Reply;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

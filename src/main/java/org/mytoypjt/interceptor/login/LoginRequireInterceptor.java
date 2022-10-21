@@ -4,7 +4,6 @@ import org.mytoypjt.controller.consts.SessionConst;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.utils.LoginManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,7 +21,7 @@ public class LoginRequireInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
-        Profile profile = (Profile) session.getAttribute(SessionConst.userProfile);
+        Profile profile = (Profile) session.getAttribute(SessionConst.USER_PROFILE);
         if (profile == null){
             response.sendRedirect("/");
             return false;

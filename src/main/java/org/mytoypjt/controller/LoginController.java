@@ -10,11 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 @Controller
 public class LoginController {
@@ -73,9 +69,9 @@ public class LoginController {
 
     @DeleteMapping(path = "/login")
     public ModelAndView deleteLoginSession(HttpSession session) {
-        Profile profile = (Profile) session.getAttribute(SessionConst.userProfile);
+        Profile profile = (Profile) session.getAttribute(SessionConst.USER_PROFILE);
 
-        session.setAttribute(SessionConst.userProfile, null);
+        session.setAttribute(SessionConst.USER_PROFILE, null);
         loginManager.removeLoginSession(profile.getAccountNo());
         ModelAndView mv = new ModelAndView(new RedirectView("/"));
         return mv;

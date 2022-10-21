@@ -5,7 +5,6 @@ import org.mytoypjt.models.entity.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,11 +42,11 @@ public class LoginManager {
         if (!loginMap.get(accountNo).equals(session))
             return false;
 
-        Profile profile = (Profile) session.getAttribute(SessionConst.userProfile);
+        Profile profile = (Profile) session.getAttribute(SessionConst.USER_PROFILE);
         if (profile == null)
             return false;
 
-        if (!loginMap.get(accountNo).getAttribute(SessionConst.userProfile).equals(profile))
+        if (!loginMap.get(accountNo).getAttribute(SessionConst.USER_PROFILE).equals(profile))
             return false;
 
         return true;
