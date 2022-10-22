@@ -265,4 +265,11 @@ public class PostService {
         int commentNo = replyDao.getCommentNoByReplyNo(replyNo);
         return getReplies(commentNo);
     }
+
+    @Transactional
+    public void updateReply(int replyNo, String content) {
+        Reply reply = replyDao.getReply(replyNo);
+        reply.setContent(content);
+        replyDao.updateReply(reply);
+    }
 }

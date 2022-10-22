@@ -105,12 +105,12 @@ public class Reply {
         this.nicname = nicname;
     }
 
-    public boolean getnameAnonymous() {
+    public boolean getNameAnonymous() {
         return nameAnonymous;
     }
 
-    public void setUseAnonymousName(boolean useAnonymousName) {
-        nameAnonymous = useAnonymousName;
+    public void setNameAnonymous(boolean nameAnonymous) {
+        this.nameAnonymous = nameAnonymous;
     }
 
     public Date getRepliedDate() {

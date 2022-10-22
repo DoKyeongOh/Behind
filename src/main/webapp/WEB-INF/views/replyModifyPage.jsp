@@ -139,33 +139,30 @@
         <li class="list-group-item display-inline-block">
             <div class="display-inline-block" id="wrap-reply-content">
                 <label class="text-secondary reply-item">${reply.nicname}</label><br>
-                <c:if test="${replyNo eq null}">
+                <c:if test="${replyNo ne reply.replyNo}">
                     <span style="margin-left: 1%;">${reply.content}</span>
                 </c:if>
-                <c:if test="${replyNo ne null}">
+                <c:if test="${replyNo eq reply.replyNo}">
                     <form class="input-group mb-3" action="/reply" method="post">
-                        <div class="input-group-text">
-                            <input class="form-check-input mt-0" type="checkbox" name="nameAnonymous">
-                        </div>
                         <input type="text" class="form-control" value="${reply.content}" placeholder="대댓글을 입력해주세요!" name="content" >
                         <input type="hidden" name="_method" value="put" />
-                        <input type="hidden" name="replyNo" value="replyNo" />
-                        <input type="hidden" name="commentNo" value="commentNo" />
+                        <input type="hidden" name="replyNo" value="${reply.replyNo}" />
+                        <input type="hidden" name="commentNo" value="${reply.commentNo}" />
                         <button class="btn btn-outline-secondary" type="submit">등록</button>
                     </form>
                 </c:if>
             </div>
 
             <c:if test="${sessionScope.get('profile').accountNo eq reply.accountNo}">
+                <form action="/reply/page/1" method="get" class="display-inline-block">
+                    <input type="hidden" name="replyNo" value="${reply.replyNo}">
+                    <button type="submit" class="btn btn-outline-dark btn-sm">✒</button>
+                </form>
+
                 <form action="/reply" method="post" class="display-inline-block">
                     <input type="hidden" name="_method" value="delete">
                     <input type="hidden" name="replyNo" value="${reply.replyNo}">
                     <input type="hidden" name="commentNo" value="${comment.commentNo}">
-                    <button type="submit" class="btn btn-outline-dark btn-sm">🗑</button>
-                </form>
-
-                <form action="/reply/page/1" method="get" class="display-inline-block">
-                    <input type="hidden" name="replyNo" value="${reply.replyNo}">
                     <button type="submit" class="btn btn-outline-dark btn-sm">🗑</button>
                 </form>
             </c:if>

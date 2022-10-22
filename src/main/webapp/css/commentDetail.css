@@ -67,3 +67,8 @@ ul {
     width: 80%;
     white-space: pre-line;
 }
+
+#label-reply-nameAnonymous-1 {
+    font-size: 80%;
+    margin-right: 3%;
+}

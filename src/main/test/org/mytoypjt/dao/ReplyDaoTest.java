@@ -48,4 +48,20 @@ class ReplyDaoTest {
         }
         assertEquals(true, successed);
     }
+
+    @Test
+    void updateReply() {
+        boolean successed = true;
+        try {
+            // test content
+            Reply reply = replyDao.getReply(11);
+            reply.setContent("안녕하세요 - 수정된 대댓글임 - 3");
+            reply.setNameAnonymous(false);
+            replyDao.updateReply(reply);
+        }catch (Exception e) {
+            e.printStackTrace();
+            successed = false;
+        }
+        assertEquals(true, successed);
+    }
 }

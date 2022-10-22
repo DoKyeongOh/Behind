@@ -8,6 +8,7 @@ import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.service.post.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -151,10 +152,24 @@ public class CommentController {
                                 @SessionAttribute(name = "profile") Profile profile){
         String content = param.get("content");
         String commentNo = param.get("commentNo");
-        String isAnonName = param.get("nameAnonymous");
+        String nameAnonymous = param.get("nameAnonymous");
 
         try {
-            postService.createReply(content, profile, Integer.parseInt(commentNo), isAnonName);
+            postService.createReply(content, profile, Integer.parseInt(commentNo), nameAnonymous);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ModelAndView(new RedirectView("/comment?no="+commentNo));
+    }
+
+    @PutMapping(path = "/reply")
+    public ModelAndView updateReply(@RequestParam Map<String, String> param) {
+        String content = param.get("content");
+        int replyNo = Integer.parseInt(param.get("replyNo"));
+        int commentNo = Integer.parseInt(param.get("commentNo"));
+
+        try {
+            postService.updateReply(replyNo, content);
         } catch (Exception e) {
             e.printStackTrace();
         }
