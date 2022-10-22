@@ -82,4 +82,10 @@ public class ReplyDao {
             return -1;
         return replies.get(0).getCommentNo();
     }
+
+    public void updateReply(Reply reply) {
+        String sql = "update reply set content=:content where reply_no=:replyNo";
+        SqlParameterSource param = new BeanPropertySqlParameterSource(reply);
+        jdbcTemplate.update(sql, param);
+    }
 }
