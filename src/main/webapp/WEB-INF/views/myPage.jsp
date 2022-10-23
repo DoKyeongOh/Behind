@@ -110,11 +110,9 @@
     <div id="my-activities">
         <h2 class="text-center font-border border rounded-pill p-3 bg-dark text-white">나의 활동</h2>
         <ul class="list-group list-group-flush mt-3 activity-list">
-            <c:forEach var="logItem" items="${logList}">
-                <a class="one-activity mb-1" href="">
-                    <li class="list-group-item">
-                        <span class="display-inline-block">${logItem.logMsg}</span>
-                    </li>
+            <c:forEach begin="0" end="${logList.size()-1}" var="idx">
+                <a class="one-activity mb-1" href="${loggingPathList.get(idx)}">
+                    <li class="list-group-item"><span class="display-inline-block">${logList.get(idx).logMsg}</span></li>
                 </a>
             </c:forEach>
         </ul>
