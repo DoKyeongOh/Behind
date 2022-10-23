@@ -29,7 +29,7 @@ public class ReplyDao {
 
     public ReplyDao(DataSource dataSource) {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("profile");
+        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("reply").usingGeneratedKeyColumns("reply_no");
         replyRowMapper = (rs, rowNum) -> {
             Reply reply = new Reply(
                     rs.getInt("reply_no"),
@@ -52,13 +52,9 @@ public class ReplyDao {
         return jdbcTemplate.query(sql, param, replyRowMapper);
     }
 
-    public void createReply(Reply reply) {
-        String sql = "insert into reply " +
-                "(reply_no, content, account_no, comment_no, name_anonymous, nicname, replied_date)" +
-                "values (null, :content, :accountNo, :commentNo, :nameAnonymous, :nicname, now())";
-
+    public int createReply(Reply reply) {
         SqlParameterSource param = new BeanPropertySqlParameterSource(reply);
-        jdbcTemplate.update(sql, param);
+        return jdbcInsert.executeAndReturnKey(param).intValue();
     }
 
     public void deleteReply(int replyNo) {
@@ -87,5 +83,11 @@ public class ReplyDao {
         String sql = "update reply set content=:content where reply_no=:replyNo";
         SqlParameterSource param = new BeanPropertySqlParameterSource(reply);
         jdbcTemplate.update(sql, param);
+    }
+
+    public int getReplyCount(int commentNo) {
+        String sql = "select count(*) from reply where comment_no=:commentNo";
+        SqlParameterSource param = new MapSqlParameterSource("commentNo", commentNo);
+        return jdbcTemplate.queryForObject(sql, param, (rs, rowNum) -> rs.getInt(1));
     }
 }

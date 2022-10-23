@@ -21,7 +21,7 @@ public class PostDao {
 
     public PostDao(DataSource dataSource) {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("post");
+        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("post").usingGeneratedKeyColumns("post_no");
         postRowMapper = (rs, rowNum) -> {
             Post post = new Post(
                     rs.getInt("post_no"),
@@ -187,9 +187,9 @@ public class PostDao {
         return jdbcTemplate.queryForObject(sql, param, (rs, rowNum) -> rs.getInt(1));
     }
 
-    public boolean createPost(Post post) {
+    public int createPost(Post post) {
         SqlParameterSource param = new BeanPropertySqlParameterSource(post);
-        return jdbcInsert.execute(param) == 1;
+        return jdbcInsert.executeAndReturnKey(param).intValue();
     }
 
     public void updatePost(Post post) {

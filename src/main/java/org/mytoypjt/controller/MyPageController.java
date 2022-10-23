@@ -28,8 +28,11 @@ public class MyPageController {
         List<AbstractEntityLog> logList =
                 memberService.getLogsByAccountNo(profile.getAccountNo(), 100);
 
+        List<String> loggingPathList = memberService.getLoggingPathList(logList);
+
         ModelAndView mv = new ModelAndView("myPage");
         mv.addObject("logList", logList);
+        mv.addObject("loggingPathList", loggingPathList);
         return mv;
     }
 

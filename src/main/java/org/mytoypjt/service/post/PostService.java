@@ -97,7 +97,7 @@ public class PostService {
         String city = post.getcityAnonymous() ? "어딘가" : post.getCity();
         post.setCity(city);
 
-        postDao.createPost(post);
+        post.setPostNo(postDao.createPost(post));
         postLogDao.writeLog(post, "게시");
     }
 
@@ -122,10 +122,15 @@ public class PostService {
         int postNo = Integer.parseInt(post);
         int accountNo = Integer.parseInt(account);
 
-        if (likeDao.isAlreadyLikeThis(postNo, accountNo))
+        Like like = new Like(accountNo, postNo);
+        if (likeDao.isAlreadyLikeThis(postNo, accountNo)) {
             likeDao.delLike(postNo, accountNo);
-        else
+            likeLogDao.writeLog(like, "");
+        } else {
             likeDao.addLike(postNo, accountNo);
+            likeLogDao.writeLog(like, "좋아요");
+        }
+
 
         int likeCount = likeDao.getLikeCount(postNo);
         postDao.updateLikeCount(postNo, likeCount);
@@ -178,8 +183,8 @@ public class PostService {
 
         Comment comment = new Comment(content, profile.getAccountNo(), postNo, nicname, isAnonymous);
 
-        commentDao.createComment(comment);
-        commentLogDao.writeLog(comment, "생성");
+        comment.setCommentNo(commentDao.createComment(comment));
+        commentLogDao.writeLog(comment, "게시");
 
         int commentCount = commentDao.getCommentCount(postNo);
         postDao.updateCommentCount(postNo, commentCount);
@@ -190,6 +195,9 @@ public class PostService {
         Comment comment = commentDao.getCommentByCommentNo(commentNo);
         commentDao.deleteComment(comment.getCommentNo());
         commentLogDao.writeLog(comment, "삭제");
+
+        int commentCount = commentDao.getCommentCount(comment.getPostNo());
+        postDao.updateCommentCount(comment.getPostNo(), commentCount);
     }
 
     @Transactional
@@ -219,8 +227,11 @@ public class PostService {
 
         Reply reply = new Reply(content, profile.getAccountNo(), commentNo, isAnonymousName, profile.getNicname());
 
-        replyDao.createReply(reply);
+        reply.setReplyNo(replyDao.createReply(reply));
         replyLogDao.writeLog(reply, "생성");
+
+        int replyCount = replyDao.getReplyCount(reply.getCommentNo());
+        commentDao.updateReplyCount(reply.getCommentNo(), replyCount);
     }
 
     public boolean isNull(Object...param) {
@@ -271,5 +282,6 @@ public class PostService {
         Reply reply = replyDao.getReply(replyNo);
         reply.setContent(content);
         replyDao.updateReply(reply);
+        replyLogDao.writeLog(reply, "수정");
     }
 }

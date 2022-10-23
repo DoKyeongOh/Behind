@@ -21,7 +21,7 @@ public class CommentDao {
 
     public CommentDao(DataSource dataSource) {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("comment");
+        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("comment").usingGeneratedKeyColumns("comment_no");
         commentRowMapper = (rs, rowNum) -> {
             Comment comment = new Comment(
                     rs.getInt("comment_no"),
@@ -45,9 +45,9 @@ public class CommentDao {
         return jdbcTemplate.query(sql, new MapSqlParameterSource("postNo", postNo), commentRowMapper);
     }
 
-    public void createComment(Comment comment) {
+    public int createComment(Comment comment) {
         SqlParameterSource param = new BeanPropertySqlParameterSource(comment);
-        jdbcInsert.execute(param);
+        return jdbcInsert.executeAndReturnKey(param).intValue();
     }
 
     public void deleteComment(int commentNo) {
@@ -76,4 +76,11 @@ public class CommentDao {
         return jdbcTemplate.query(sql, param, commentRowMapper).get(0);
     }
 
+    public void updateReplyCount(int commentNo, int replyCount) {
+        String sql = "update comment set reply_count = :replyCount where comment_no = :commentNo";
+        MapSqlParameterSource param = new MapSqlParameterSource();
+        param.addValue("replyCount", replyCount);
+        param.addValue("commentNo", commentNo);
+        jdbcTemplate.update(sql, param);
+    }
 }

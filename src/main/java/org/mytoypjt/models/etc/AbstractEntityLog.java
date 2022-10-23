@@ -6,6 +6,7 @@ public abstract class AbstractEntityLog {
     protected int accountNo;
     protected int entityNo = -1;
     protected String logMsg = "";
+    protected EntityLogTypeIdentifier logTypeIdentifier;
 
     public AbstractEntityLog(String loggingDate, String action, int accountNo, int entityNo){
         this.loggingDate = loggingDate;
@@ -53,5 +54,13 @@ public abstract class AbstractEntityLog {
 
     public void setEntityNo(int entityNo) {
         this.entityNo = entityNo;
+    }
+
+    public EntityLogTypeIdentifier getLogTypeIdentifier() {
+        return logTypeIdentifier;
+    }
+
+    public void setLogTypeIdentifier(EntityLogTypeIdentifier logTypeIdentifier) {
+        this.logTypeIdentifier = logTypeIdentifier;
     }
 }

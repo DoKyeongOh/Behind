@@ -36,15 +36,42 @@ public class MemberService {
         logList.addAll(replyLogDao.getLogsByAccountNo(accountNo, count));
         logList.addAll(likeLogDao.getLogsByAccountNo(accountNo, count));
 
-        Collections.sort(logList, new Comparator<AbstractEntityLog>() {
-            @Override
-            public int compare(AbstractEntityLog o1, AbstractEntityLog o2) {
-                return o2.getLoggingDate().compareTo(o1.getLoggingDate());
-            }
-        });
-
-
+        Collections.sort(logList, (o1, o2) -> o2.getLoggingDate().compareTo(o1.getLoggingDate()));
 
         return logList;
+    }
+
+    public List<String> getLoggingPathList(List<AbstractEntityLog> logList) {
+        List<String> loggingPathList = new ArrayList<>();
+        logList.forEach(log -> {
+            String loggingPath = "";
+            switch (log.getLogTypeIdentifier()) {
+                case post: {
+                    loggingPath = "/post?no=" + log.getEntityNo();
+                    break;
+                }
+
+                case comment: {
+                    loggingPath = "/comment?no=" + log.getEntityNo();
+                    break;
+                }
+
+                case reply: {
+                    loggingPath = "/comment?no=" + log.getEntityNo();
+                    break;
+                }
+
+                case like: {
+                    loggingPath = "/post?no=" + log.getEntityNo();
+                    break;
+                }
+            }
+            if (log.getLogMsg().equals("삭제"))
+                loggingPath = "";
+            if (log.getEntityNo() <= 0)
+                loggingPath = "";
+            loggingPathList.add(loggingPath);
+        });
+        return loggingPathList;
     }
 }

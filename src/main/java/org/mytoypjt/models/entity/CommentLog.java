@@ -1,6 +1,7 @@
 package org.mytoypjt.models.entity;
 
 import org.mytoypjt.models.etc.AbstractEntityLog;
+import org.mytoypjt.models.etc.EntityLogTypeIdentifier;
 
 public class CommentLog extends AbstractEntityLog {
     int commentLogNo;
@@ -11,6 +12,7 @@ public class CommentLog extends AbstractEntityLog {
         this.action = actionType;
         this.accountNo = accountNo;
         this.entityNo = entityNo;
+        this.logTypeIdentifier = EntityLogTypeIdentifier.comment;
     }
 
     @Override
