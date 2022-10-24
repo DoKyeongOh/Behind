@@ -108,7 +108,7 @@
     </div>
 
     <div id="my-activities">
-        <h2 class="text-center font-border border rounded-pill p-3 bg-dark text-white">나의 활동</h2>
+        <h2 class="text-center font-border border rounded-pill p-3 bg-dark text-white">최근 활동</h2>
         <ul class="list-group list-group-flush mt-3 activity-list">
             <c:forEach begin="0" end="${logList.size()-1}" var="idx">
                 <a class="one-activity mb-1" href="${loggingPathList.get(idx)}">
