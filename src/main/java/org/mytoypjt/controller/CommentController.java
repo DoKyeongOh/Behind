@@ -146,6 +146,17 @@ public class CommentController {
         return mv;
     }
 
+    @GetMapping(path = "/reply")
+    public ModelAndView getReply(@RequestParam("no") int replyNo){
+        try {
+            Comment comment = postService.getCommentByReplyNo(replyNo);
+            return new ModelAndView(new RedirectView("/comment?no="+comment.getCommentNo()));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return new ModelAndView(new RedirectView("/main/page"));
+    }
+
 
     @PostMapping(path = "/reply")
     public ModelAndView createReply(@RequestParam Map<String, String> param,

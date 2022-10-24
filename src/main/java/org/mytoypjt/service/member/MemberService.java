@@ -57,7 +57,7 @@ public class MemberService {
                 }
 
                 case reply: {
-                    loggingPath = "/comment?no=" + log.getEntityNo();
+                    loggingPath = "/reply?no=" + log.getEntityNo();
                     break;
                 }
 
