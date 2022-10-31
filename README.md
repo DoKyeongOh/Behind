@@ -20,6 +20,7 @@
  이 프로젝트는 아래 버전을 바탕으로 개발 중입니다!
  + [Java 11 version](https://www.oracle.com/kr/java/technologies/javase/jdk11-archive-downloads.html)
  + [톰캣(WAS) 8.5.78 version](https://tomcat.apache.org/download-80.cgi)
+ + [스프링 프레임워크 5.3.23 version](https://spring.io/)
 
 <br /><br />
 
