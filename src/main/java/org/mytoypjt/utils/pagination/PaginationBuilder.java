@@ -35,16 +35,16 @@ public class PaginationBuilder<T>{
         if (displayCount == 0)
             displayCount = 1;
 
-        int firstNo = ((int) pageNo / displayCount) * displayCount + 1;
+        int firstPageNo = ((int) pageNo / displayCount) * displayCount + 1;
 
-        if (firstNo + displayCount - 1 > pageCapacity)
-            displayCount = pageCapacity - firstNo + 1;
+        if (firstPageNo + displayCount - 1 > pageCapacity)
+            displayCount = pageCapacity - firstPageNo + 1;
 
         int startItemNo = (pageNo-1) * pagination.getDisplayItemCountInPage() + 1;
         int endItemNo = startItemNo + pagination.getDisplayItemCountInPage() - 1;
 
         pagination.setPageNo(pageNo);
-        pagination.setFirstPageNo(firstNo);
+        pagination.setFirstPageNo(firstPageNo);
         pagination.setDisplayPageCount(displayCount);
         pagination.setPageCount(pageCapacity);
         pagination.setStartItemNo(startItemNo);

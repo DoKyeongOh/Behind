@@ -110,36 +110,12 @@
     <div id="my-activities">
         <h2 class="text-center font-border border rounded-pill p-3 bg-dark text-white">최근 활동</h2>
         <ul class="list-group list-group-flush mt-3 activity-list">
-            <c:forEach begin="${pagination.startItemNo}" end="${pagination.endItemNo}" var="idx">
+            <c:forEach begin="0" end="${logList.size()-1}" var="idx">
                 <a class="one-activity mb-1" href="${loggingPathList.get(idx)}">
-                    <li class="list-group-item"><span class="display-inline-block">${pagination.items.get(idx).logMsg}</span></li>
+                    <li class="list-group-item"><span class="display-inline-block">${logList.get(idx).logMsg}</span></li>
                 </a>
             </c:forEach>
         </ul>
-
-        <!-- 페이지네이션 -->
-        <ul class="pagination" id="pagenation">
-            <c:if test="${pagination.firstPageNo ne 1}">
-                <li class="page-item"><a class="page-link" href="">Previous</a></li>
-            </c:if>
-
-            <c:set var="startPageNo" value="${pagination.firstPageNo}"/>
-            <c:set var="endPageNo" value="${startPageNo + pagination.displayPageCount}"/>
-            <c:forEach var="pageIndex" begin="${startPageNo}" end="${endPageNo}">
-                <c:if test="${pageNo eq pageIndex}">
-                    <li class="page-item active"><a class="page-link" href="">${pageIndex}</a></li>
-                </c:if>
-
-                <c:if test="${pageNo ne pageIndex}">
-                    <li class="page-item"><a class="page-link" href="">${pageIndex}</a></li>
-                </c:if>
-            </c:forEach>
-
-            <c:if test="${pagination.pageCount > (pagination.firstPageNo + pagination.displayPageCount)}">
-                <li class="page-item"><a class="page-link" href="">Next</a></li>
-            </c:if>
-        </ul>
-        <!-- 페이지네이션 -->
     </div>
 </div>
 <!-- 마이페이지 내용 -->

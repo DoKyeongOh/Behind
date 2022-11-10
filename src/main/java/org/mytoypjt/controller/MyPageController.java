@@ -30,22 +30,11 @@ public class MyPageController {
         List<AbstractEntityLog> logList =
                 memberService.getLogsByAccountNo(profile.getAccountNo(), 100);
 
-        Pagination<AbstractEntityLog> logPagination
-                = new PaginationBuilder(logList, 1)
-                .displayItemCountInPage(3)
-                .displayPageCount(7)
-                .build();
-
         List<String> loggingPathList = memberService.getLoggingPathList(logList);
 
         ModelAndView mv = new ModelAndView("myPage");
-        mv.addObject("pagination", logPagination);
         mv.addObject("logList", logList);
         mv.addObject("loggingPathList", loggingPathList);
         return mv;
     }
-
-
-
-
 }
