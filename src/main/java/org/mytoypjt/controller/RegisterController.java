@@ -138,30 +138,36 @@ public class RegisterController {
 
     @PostMapping(path = "/profile")
     public ModelAndView entryProfile(@RequestParam Map<String, String> param,
-                                     @SessionAttribute("profile") Profile profile,
+                                     @SessionAttribute("profile") Profile inputProfile,
                                      HttpSession session){
         ModelAndView mv = new ModelAndView();
         mv.setView(new RedirectView("/"));
 
-        profile.setNicname(param.get("nicname"));
-        profile.setAge(Integer.parseInt(param.get("age")));
-        profile.setCity(param.get("city"));
-        profile.setGender(param.get("gender"));
+        Profile newProfile = new Profile(
+                inputProfile.getAccountNo(),
+                param.get("nicname"),
+                inputProfile.getRegisterDate(),
+                param.get("city"),
+                Integer.parseInt(param.get("age")),
+                param.get("gender"),
+                1);
 
         String msg = "";
         try {
-            msg = registerService.updateProfile(profile);
+            msg = registerService.updateProfile(newProfile);
         } catch(Exception e) {
             msg = "예상치 못한 문제가 발생했습니다! 관리자에게 문의하세요!";
             e.printStackTrace();
         }
+
         if (!msg.equals("")) {
             mv.addObject("noticeMessage", msg);
             mv.setViewName("profileInputPage");
             return mv;
         }
 
-        session.setAttribute(SessionConst.USER_PROFILE, profile);
+        inputProfile.injectProfile(newProfile);
+        session.setAttribute(SessionConst.USER_PROFILE, inputProfile);
 
         return mv;
     }

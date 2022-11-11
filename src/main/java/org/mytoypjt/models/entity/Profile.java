@@ -107,4 +107,11 @@ public class Profile {
     public void setUserLevel(int userLevel) {
         this.userLevel = userLevel;
     }
+
+    public void injectProfile(Profile profile) {
+        setNicname(profile.getNicname());
+        setCity(profile.getCity());
+        setAge(profile.getAge());
+        setGender(profile.getGender());
+    }
 }
