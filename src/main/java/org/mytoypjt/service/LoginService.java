@@ -2,6 +2,7 @@ package org.mytoypjt.service;
 
 import org.mytoypjt.dao.AccountDao;
 import org.mytoypjt.dao.ProfileDao;
+import org.mytoypjt.dao.log.LoginLogDao;
 import org.mytoypjt.models.entity.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ public class LoginService {
     private AccountDao accountDao;
     @Autowired
     private ProfileDao profileDao;
+    @Autowired
+    private LoginLogDao loginLogDao;
 
     public LoginService() {}
 
@@ -23,7 +26,12 @@ public class LoginService {
 
         if (!Profile.isCorrectProfileNo(accountNo)) return null;
         Profile profile = profileDao.getProfile(accountNo);
+        loginLogDao.writeLog(accountNo, "로그인");
 
         return profile;
+    }
+
+    public void logout(int accountNo){
+        loginLogDao.writeLog(accountNo, "로그아웃");
     }
 }

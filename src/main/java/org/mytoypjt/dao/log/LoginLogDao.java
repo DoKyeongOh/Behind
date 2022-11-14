@@ -1,4 +1,4 @@
-package org.mytoypjt.dao;
+package org.mytoypjt.dao.log;
 
 import org.mytoypjt.models.entity.*;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,25 +17,25 @@ public class LoginLogDao {
 
     NamedParameterJdbcTemplate jdbcTemplate;
     SimpleJdbcInsert jdbcInsert;
-    RowMapper<LoginLog> rowMapper;
+    RowMapper rowMapper;
 
     public LoginLogDao(DataSource dataSource) {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("post");
+        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("login_log");
         rowMapper = (rs, rowNum) -> {
             SimpleDateFormat sdf = new SimpleDateFormat("yy.MM.dd HH:mm:ss");
             LoginLog loginLog = new LoginLog(
-                    rs.getInt("post_log_no"),
+                    rs.getInt("login_log_no"),
                     sdf.format(rs.getTimestamp("logging_date")),
                     rs.getString("action_type"),
-                    rs.getInt("entity_no")
+                    rs.getInt("account_no")
             );
             return loginLog;
         };
     }
 
     public void writeLog(int accountNo, String action) {
-        String sql = "insert into login_log (post_log_no, logging_date, action_type, account_no) " +
+        String sql = "insert into login_log (login_log_no, logging_date, action_type, account_no) " +
                 "values (null, now(), :actionType, :accountNo)";
 
         MapSqlParameterSource param = new MapSqlParameterSource()

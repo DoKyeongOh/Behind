@@ -70,6 +70,11 @@ public class LoginController {
     @DeleteMapping(path = "/login")
     public ModelAndView deleteLoginSession(HttpSession session) {
         Profile profile = (Profile) session.getAttribute(SessionConst.USER_PROFILE);
+        try {
+            loginService.logout(profile.getAccountNo());
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
 
         session.setAttribute(SessionConst.USER_PROFILE, null);
         loginManager.removeLoginSession(profile.getAccountNo());
