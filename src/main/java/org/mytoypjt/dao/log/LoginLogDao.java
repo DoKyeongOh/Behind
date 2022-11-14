@@ -1,9 +1,6 @@
 package org.mytoypjt.dao;
 
-import org.mytoypjt.models.entity.LoginLog;
-import org.mytoypjt.models.entity.Post;
-import org.mytoypjt.models.entity.PostLog;
-import org.mytoypjt.models.entity.Profile;
+import org.mytoypjt.models.entity.*;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -37,13 +34,13 @@ public class LoginLogDao {
         };
     }
 
-    public void writeLog(Profile profile, String action) {
+    public void writeLog(int accountNo, String action) {
         String sql = "insert into login_log (post_log_no, logging_date, action_type, account_no) " +
                 "values (null, now(), :actionType, :accountNo)";
 
         MapSqlParameterSource param = new MapSqlParameterSource()
                 .addValue("actionType", action)
-                .addValue("accountNo", profile.getAccountNo());
+                .addValue("accountNo", accountNo);
 
         jdbcTemplate.update(sql, param);
     }
