@@ -1,4 +1,4 @@
-package org.mytoypjt.dao;
+package org.mytoypjt.dao.log;
 
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.CommentLog;
