@@ -20,6 +20,10 @@ import java.util.List;
 @Import({DBConfig.class})
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
+    public WebMvcConfiguration() {
+        int a=3;
+    }
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("*/css/**").addResourceLocations("/css/").setCachePeriod(31556926);
