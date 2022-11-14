@@ -2,17 +2,11 @@ package org.mytoypjt.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mytoypjt.dao.log.PostLogDao;
 import org.mytoypjt.models.entity.Post;
-import org.mytoypjt.models.entity.PostLog;
 import org.mytoypjt.utils.DBUtil;
 
-import java.sql.Connection;
 import java.util.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,4 +1,4 @@
-package org.mytoypjt.dao;
+package org.mytoypjt.dao.log;
 
 import org.mytoypjt.models.entity.Like;
 import org.mytoypjt.models.entity.LikeLog;

@@ -2,10 +2,9 @@ package org.mytoypjt.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mytoypjt.dao.log.CommentLogDao;
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.utils.DBUtil;
-
-import java.awt.image.DataBuffer;
 
 import static org.junit.jupiter.api.Assertions.*;
 

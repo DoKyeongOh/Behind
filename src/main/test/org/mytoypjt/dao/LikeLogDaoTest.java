@@ -2,6 +2,7 @@ package org.mytoypjt.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mytoypjt.dao.log.LikeLogDao;
 import org.mytoypjt.models.entity.Like;
 import org.mytoypjt.utils.DBUtil;
 
