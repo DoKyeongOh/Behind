@@ -1,8 +1,8 @@
 package org.mytoypjt.interceptor.login;
 
-import org.mytoypjt.controller.consts.SessionConst;
+import org.mytoypjt.consts.SessionConst;
 import org.mytoypjt.models.entity.Profile;
-import org.mytoypjt.utils.LoginManager;
+import org.mytoypjt.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 public class LoginRequireInterceptor implements HandlerInterceptor {
 
     @Autowired
-    LoginManager loginManager;
+    LoginService loginService;
 
     public LoginRequireInterceptor(){}
 
@@ -27,7 +27,7 @@ public class LoginRequireInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        if (!loginManager.isCorrectProfile(profile.getAccountNo(), session)) {
+        if (!loginService.isProfileUsable(profile.getAccountNo(), session)) {
             response.sendRedirect("/");
             return false;
         }
