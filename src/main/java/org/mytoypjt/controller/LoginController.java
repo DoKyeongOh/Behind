@@ -34,30 +34,9 @@ public class LoginController {
     }
 
     @PostMapping(path = "/login")
-    public ModelAndView getLoginSession(
-            @RequestParam(name = "accountId")String id,
-            @RequestParam(name = "accountPw")String pw,
-            HttpSession session){
-
-        Profile profile = null;
-        try {
-            profile = loginService.getProfile(id, pw);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (profile == null)
-            return new ModelAndView("loginPage");
-
-        session.setAttribute("profile", profile);
-        if (!loginManager.addLoginSession(profile.getAccountNo(), session)) {
-            return new ModelAndView("loginFailPage");
-        }
-
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("test", "it is test");
-        mv.setView(new RedirectView("/main/page"));
-        return mv;
+    public ModelAndView login(LoginRequestDTO dto, HttpSession session){
+        loginService.login(dto, session);
+        return new ModelAndView(new RedirectView("/main/page"));
     }
 
     @PutMapping(path = "/login")
