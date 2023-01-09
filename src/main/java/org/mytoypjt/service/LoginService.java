@@ -1,12 +1,20 @@
 package org.mytoypjt.service;
 
+import org.mytoypjt.consts.SessionConst;
 import org.mytoypjt.dao.AccountDao;
-import org.mytoypjt.dao.ProfileDao;
 import org.mytoypjt.dao.LoginLogDao;
+import org.mytoypjt.dao.ProfileDao;
+import org.mytoypjt.exception.CustomException;
+import org.mytoypjt.exception.ErrorCode;
+import org.mytoypjt.models.dto.login.LoginRequestDTO;
 import org.mytoypjt.models.entity.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class LoginService {
@@ -20,18 +28,16 @@ public class LoginService {
 
     Map<Integer, HttpSession> loginSessionMap;
 
-    @Transactional
-    public Profile getProfile(String accountId, String accountPw) throws Exception {
-        int accountNo = accountDao.getAccountNo(accountId, accountPw);
     public LoginService() {
         loginSessionMap = new HashMap<>();
     }
 
-        if (!Profile.isCorrectProfileNo(accountNo)) return null;
+    @Transactional
+    public void login(LoginRequestDTO dto, HttpSession session) {
+        int accountNo = accountDao.getAccountByIdAndPw(dto.getId(), dto.getPw()).getAccountNo();
         Profile profile = profileDao.getProfile(accountNo);
-        loginLogDao.writeLog(accountNo, "로그인");
-
-        return profile;
+        addLoginSession(profile.getAccountNo(), session);
+        session.setAttribute(SessionConst.USER_PROFILE, profile);
     }
 
     public void logout(int accountNo){
