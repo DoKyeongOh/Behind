@@ -33,5 +33,39 @@ public class LoginService {
 
     public void logout(int accountNo){
         loginLogDao.writeLog(accountNo, "로그아웃");
+    public boolean addLoginSession(int accountNo, HttpSession session) {
+        if (loginSessionMap.containsKey(accountNo)) {
+            throw new CustomException(ErrorCode.ACCOUNT_IS_ALREADY_LOGIN);
+        }
+
+        loginSessionMap.put(accountNo, session);
+        return true;
+    }
+
+    public void removeLoginSession(int accountNo){
+        HttpSession session = loginSessionMap.get(accountNo);
+        session.setAttribute(SessionConst.USER_PROFILE, null);
+        loginSessionMap.remove(accountNo);
+    }
+
+    public void changeLoginSession(int accountNo, HttpSession session){
+        loginSessionMap.replace(accountNo, session);
+    }
+
+    public boolean isProfileUsable(int accountNo, HttpSession session){
+        if (session == null)
+            return false;
+
+        if (!loginSessionMap.get(accountNo).equals(session))
+            return false;
+
+        Profile profile = (Profile) session.getAttribute(SessionConst.USER_PROFILE);
+        if (profile == null)
+            return false;
+
+        if (!loginSessionMap.get(accountNo).getAttribute(SessionConst.USER_PROFILE).equals(profile))
+            return false;
+
+        return true;
     }
 }
