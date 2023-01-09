@@ -18,11 +18,14 @@ public class LoginService {
     @Autowired
     private LoginLogDao loginLogDao;
 
-    public LoginService() {}
+    Map<Integer, HttpSession> loginSessionMap;
 
     @Transactional
     public Profile getProfile(String accountId, String accountPw) throws Exception {
         int accountNo = accountDao.getAccountNo(accountId, accountPw);
+    public LoginService() {
+        loginSessionMap = new HashMap<>();
+    }
 
         if (!Profile.isCorrectProfileNo(accountNo)) return null;
         Profile profile = profileDao.getProfile(accountNo);
