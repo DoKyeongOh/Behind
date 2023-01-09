@@ -1,8 +1,9 @@
 package org.mytoypjt.dao;
 
+import org.mytoypjt.exception.CustomException;
+import org.mytoypjt.exception.ErrorCode;
 import org.mytoypjt.models.entity.Account;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -40,18 +41,16 @@ public class AccountDao {
         };
     }
 
-    public int getAccountNo(String id, String pw) {
+    public Account getAccountByIdAndPw(String id, String pw) {
         String sql = "select * from account where id=:id and password=:password";
-
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("id", id);
         sqlParameterSource.addValue("password", pw);
-
-        List<Account> accountList = jdbcTemplate.query(sql, sqlParameterSource, accountRowMapper);
-        if (accountList.size() > 1)
-            return -1;
-
-        return accountList.isEmpty() ? -1 : accountList.get(0).getAccountNo();
+        List<Account> accounts = jdbcTemplate.query(sql, sqlParameterSource, accountRowMapper);
+        if (accounts.isEmpty()) {
+            throw new CustomException(ErrorCode.ACCOUNT_IS_NOT_EXIST);
+        }
+        return accounts.get(0);
     }
 
     public List<String> getAccountListByEmail(String email){
