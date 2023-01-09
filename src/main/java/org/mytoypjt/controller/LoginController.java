@@ -24,13 +24,9 @@ public class LoginController {
     public LoginController() {
     }
 
-    @RequestMapping(path = "/login/page", method = RequestMethod.GET)
-    public ModelAndView getLoginPage(@SessionAttribute(name = "profile", required = false)Profile profile){
-        ModelAndView modelAndView = new ModelAndView();
-        if (profile != null)
-            modelAndView.setView(new RedirectView("/main/page"));
-
-        return new ModelAndView("loginPage");
+    @GetMapping(path = "/login/page")
+    public String loginPage(){
+        return "loginPage";
     }
 
     @PostMapping(path = "/login")
