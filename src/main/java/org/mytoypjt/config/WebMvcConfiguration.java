@@ -21,7 +21,6 @@ import java.util.List;
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
     public WebMvcConfiguration() {
-        int a=3;
     }
 
     @Override
