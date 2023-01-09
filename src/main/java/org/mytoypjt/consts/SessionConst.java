@@ -1,4 +1,4 @@
-package org.mytoypjt.controller.consts;
+package org.mytoypjt.consts;
 
 public class SessionConst {
     public static final String USER_PROFILE = "profile";

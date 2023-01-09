@@ -1,4 +1,4 @@
-package org.mytoypjt.controller.consts;
+package org.mytoypjt.consts;
 
 public class PostConst {
     public static final String POST = "post";
