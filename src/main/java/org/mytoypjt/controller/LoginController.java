@@ -1,9 +1,9 @@
 package org.mytoypjt.controller;
 
-import org.mytoypjt.controller.consts.SessionConst;
+import org.mytoypjt.consts.SessionConst;
+import org.mytoypjt.models.dto.login.LoginRequestDTO;
 import org.mytoypjt.models.entity.Profile;
 import org.mytoypjt.service.LoginService;
-import org.mytoypjt.utils.LoginManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +17,6 @@ public class LoginController {
 
     @Autowired
     LoginService loginService;
-
-    @Autowired
-    LoginManager loginManager;
 
     public LoginController() {
     }
@@ -36,9 +33,9 @@ public class LoginController {
     }
 
     @PutMapping(path = "/login")
-    public ModelAndView putLoginSession(@SessionAttribute(name = "profile", required = false) Profile profile,
-                                        HttpSession session) {
-        loginManager.changeLoginSession(profile.getAccountNo(), session);
+    public ModelAndView reLogin(@SessionAttribute(name = "profile", required = false) Profile profile,
+                                HttpSession session) {
+        loginService.changeLoginSession(profile.getAccountNo(), session);
         return new ModelAndView(new RedirectView("/main/page"));
     }
 
