@@ -42,6 +42,8 @@ public class LoginService {
 
     public void logout(int accountNo){
         loginLogDao.writeLog(accountNo, "로그아웃");
+        removeLoginSession(accountNo);
+    }
     public boolean addLoginSession(int accountNo, HttpSession session) {
         if (loginSessionMap.containsKey(accountNo)) {
             throw new CustomException(ErrorCode.ACCOUNT_IS_ALREADY_LOGIN);
