@@ -183,7 +183,7 @@ public class PostService {
             isAnonymous = true;
 
         int postNo = Integer.parseInt(no);
-        String nicname = isAnonymous ? "누군가" : profile.getNicname();
+        String nicname = isAnonymous ? "누군가" : profile.getNickname();
 
         Comment comment = new Comment(content, profile.getAccountNo(), postNo, nicname, isAnonymous);
 
@@ -229,7 +229,7 @@ public class PostService {
         if (isAnonName == null)
             isAnonymousName = false;
 
-        Reply reply = new Reply(content, profile.getAccountNo(), commentNo, isAnonymousName, profile.getNicname());
+        Reply reply = new Reply(content, profile.getAccountNo(), commentNo, isAnonymousName, profile.getNickname());
 
         reply.setReplyNo(replyDao.createReply(reply));
         replyLogDao.writeLog(reply, "생성");

@@ -59,9 +59,9 @@ public class RegisterService {
     }
 
     public String updateProfile(Profile profile) {
-        if (profile.getNicname().length() > 10)
+        if (profile.getNickname().length() > 10)
             return "닉네임은 10글자보다 짧아야 합니다!";
-        if (profile.getNicname().contains(" "))
+        if (profile.getNickname().contains(" "))
             return "닉네임에 공백은 사용할 수 없습니다!";
         if (!profileDao.updateProfile(profile))
             return "성공적으로 완수되지 못했습니다! 관리자에게 문의하세요!";

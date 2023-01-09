@@ -40,7 +40,7 @@ class ReplyDaoTest {
             // test content
 
             Profile profile = new Profile(100);
-            profile.setNicname("hhhh");
+            profile.setNickname("hhhh");
             this.replyDao.createReply(new Reply("ddd", profile.getAccountNo(), 13, true, "testNicName"));
         }catch (Exception e) {
             e.printStackTrace();

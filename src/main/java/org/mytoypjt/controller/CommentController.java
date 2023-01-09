@@ -1,6 +1,6 @@
 package org.mytoypjt.controller;
 
-import org.mytoypjt.controller.consts.PostConst;
+import org.mytoypjt.consts.PostConst;
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
 import org.mytoypjt.models.entity.Profile;
@@ -8,7 +8,6 @@ import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.service.post.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -87,7 +86,7 @@ public class CommentController {
         int postNo = Integer.parseInt(param.get("postNo"));
 
         boolean nameAnonymous = param.get("nameAnonymous") == null ? false : true;
-        String nicname = nameAnonymous ? "누군가" : profile.getNicname();
+        String nicname = nameAnonymous ? "누군가" : profile.getNickname();
 
         Comment comment = new Comment(content, profile.getAccountNo(), postNo, nicname, nameAnonymous);
         comment.setCommentNo(commentNo);

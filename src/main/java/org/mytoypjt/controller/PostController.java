@@ -1,7 +1,7 @@
 package org.mytoypjt.controller;
 
-import org.mytoypjt.controller.consts.PostConst;
-import org.mytoypjt.controller.consts.SessionConst;
+import org.mytoypjt.consts.PostConst;
+import org.mytoypjt.consts.SessionConst;
 import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.Comment;
 import org.mytoypjt.models.entity.Post;
@@ -122,7 +122,7 @@ public class PostController {
 
         Post post = new Post(
                 title, content, new Date(), commentCount, likeCount, profile.getAccountNo(),
-                pictureNo, isAnonymousName, isAnonymousCity, profile.getNicname(), profile.getCity());
+                pictureNo, isAnonymousName, isAnonymousCity, profile.getNickname(), profile.getCity());
 
         try {
             postService.createPost(post);
@@ -171,7 +171,7 @@ public class PostController {
         int pictureNo = Integer.parseInt(param.get("imgNo"));
         boolean isAnonymousName = (Objects.equals(param.get("isAnonName"), "true")) ? true : false;
         boolean isAnonymousCity = (Objects.equals(param.get("isAnonCity"), "true")) ? true : false;
-        String nicname = isAnonymousName ? "누군가" : profile.getNicname();
+        String nicname = isAnonymousName ? "누군가" : profile.getNickname();
         String city = isAnonymousCity ? "어딘가" : profile.getCity();
 
         Post post = new Post(postNo, title, content, new Date(), 0, 0,

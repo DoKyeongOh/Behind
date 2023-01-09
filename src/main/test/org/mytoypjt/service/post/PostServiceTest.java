@@ -11,7 +11,6 @@ import org.mytoypjt.config.WebMvcConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,7 +53,7 @@ class PostServiceTest {
         try {
             // test content
             Profile profile = new Profile(19);
-            profile.setNicname("테스트");
+            profile.setNickname("테스트");
             profile.setCity("도시");
 
             this.postService.createPost(new Post());

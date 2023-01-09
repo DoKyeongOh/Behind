@@ -9,7 +9,7 @@ import java.util.Date;
 @Setter
 public class Profile {
     int accountNo;
-    String nicname;
+    String nickname;
     Date registerDate;
     String city;
     int age;
@@ -20,7 +20,7 @@ public class Profile {
 
     public Profile(int accountNo) {
         this.accountNo = accountNo;
-        this.nicname = "누군가";
+        this.nickname = "누군가";
         this.registerDate = new Date();
         this.city = "어딘가";
         this.age = 0;
@@ -30,7 +30,7 @@ public class Profile {
 
     public Profile(int accountNo, String nicName, Date registerDate, String city, int age, String gender, int userLevel) {
         this.accountNo = accountNo;
-        this.nicname = nicName;
+        this.nickname = nicName;
         this.registerDate = registerDate;
         this.city = city;
         this.age = age;
@@ -38,15 +38,10 @@ public class Profile {
         this.userLevel = userLevel;
     }
 
-    public static boolean isCorrectProfileNo(int profileNo){
-        if (profileNo < 0) return false;
-        return true;
-    }
-
     public static boolean isCorrectProfile(Profile profile) {
         if (profile == null) return false;
         if (profile.getGender().length() > 1) return false;
-        if (profile.getNicname().equals("")) return false;
+        if (profile.getNickname().equals("")) return false;
         if (profile.getAccountNo() < 1) return false;
         if (profile.getUserLevel() < 1) return false;
         return true;
@@ -60,12 +55,12 @@ public class Profile {
         this.accountNo = accountNo;
     }
 
-    public String getNicname() {
-        return nicname;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setNicname(String nicname) {
-        this.nicname = nicname;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public Date getRegisterDate() {
@@ -109,7 +104,7 @@ public class Profile {
     }
 
     public void injectProfile(Profile profile) {
-        setNicname(profile.getNicname());
+        setNickname(profile.getNickname());
         setCity(profile.getCity());
         setAge(profile.getAge());
         setGender(profile.getGender());
