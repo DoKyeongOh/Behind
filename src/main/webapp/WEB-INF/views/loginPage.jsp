@@ -62,11 +62,11 @@
     <form class="input-form" method="post" action="${login}">
         <div class="mb-3">
             <label class="form-label">ID</label>
-            <input type="text" class="form-control" name="accountId">
+            <input type="text" class="form-control" name="id">
         </div>
         <div class="mb-3">
             <label class="form-label">Password</label>
-            <input type="password" class="form-control" name="accountPw">
+            <input type="password" class="form-control" name="pw">
         </div>
         <div>
             <button type="submit" class="btn btn-primary btn-login-submit">로그인 하기</button>
