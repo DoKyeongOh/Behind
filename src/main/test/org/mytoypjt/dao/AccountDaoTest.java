@@ -4,15 +4,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mytoypjt.config.WebMvcConfiguration;
-import org.mytoypjt.models.entity.Account;
 import org.mytoypjt.utils.DBUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -36,7 +32,7 @@ class AccountDaoTest {
         try {
             // test content
 
-            System.out.println(accountDao.getAccountNo("dkproh", "1234"));
+            System.out.println(accountDao.getAccountByIdAndPw("dkproh", "1234"));
 
         }catch (Exception e) {
             e.printStackTrace();
