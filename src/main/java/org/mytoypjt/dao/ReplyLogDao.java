@@ -1,7 +1,7 @@
-package org.mytoypjt.dao.log;
+package org.mytoypjt.dao;
 
-import org.mytoypjt.models.entity.Post;
-import org.mytoypjt.models.entity.PostLog;
+import org.mytoypjt.models.entity.Reply;
+import org.mytoypjt.models.entity.ReplyLog;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -10,49 +10,46 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 @Repository
-public class PostLogDao {
-
+public class ReplyLogDao {
     NamedParameterJdbcTemplate jdbcTemplate;
     SimpleJdbcInsert jdbcInsert;
-    RowMapper<PostLog> rowMapper;
+    RowMapper<ReplyLog> rowMapper;
 
-    public PostLogDao(DataSource dataSource) {
+    public ReplyLogDao(DataSource dataSource) {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("post");
+        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("reply_log");
         rowMapper = (rs, rowNum) -> {
             SimpleDateFormat sdf = new SimpleDateFormat("yy.MM.dd HH:mm:ss");
-            PostLog postLog = new PostLog(
-                    rs.getInt("post_log_no"),
+            ReplyLog replyLog = new ReplyLog(
+                    rs.getInt("reply_log_no"),
                     sdf.format(rs.getTimestamp("logging_date")),
                     rs.getString("action_type"),
                     rs.getInt("account_no"),
                     rs.getInt("entity_no")
             );
-            return postLog;
+            return replyLog;
         };
     }
 
-
-    public void writeLog(Post post, String action) {
-        String sql = "insert into post_log (post_log_no, logging_date, action_type, account_no, entity_no) " +
+    public void writeLog(Reply reply, String action) {
+        String sql = "insert into reply_log (reply_log_no, logging_date, action_type, account_no, entity_no) " +
                 "values (null, now(), :actionType, :accountNo, :entityNo)";
 
         MapSqlParameterSource param = new MapSqlParameterSource()
                 .addValue("actionType", action)
-                .addValue("accountNo", post.getAccountNo())
-                .addValue("entityNo", post.getPostNo());
+                .addValue("accountNo", reply.getAccountNo())
+                .addValue("entityNo", reply.getReplyNo());
 
         jdbcTemplate.update(sql, param);
     }
 
-    public List<PostLog> getLogsByAccountNo(int accountNo, int count){
-        String sql = "select * from post_log where account_no=:accountNo limit :count";
+    public List<ReplyLog> getLogsByAccountNo(int accountNo, int count){
+        String sql = "select * from reply_log where account_no=:accountNo order by logging_date desc limit :count";
 
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("accountNo", accountNo)

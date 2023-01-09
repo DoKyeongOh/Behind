@@ -2,7 +2,7 @@ package org.mytoypjt.service;
 
 import org.mytoypjt.dao.AccountDao;
 import org.mytoypjt.dao.ProfileDao;
-import org.mytoypjt.dao.log.LoginLogDao;
+import org.mytoypjt.dao.LoginLogDao;
 import org.mytoypjt.models.entity.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

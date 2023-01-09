@@ -1,10 +1,10 @@
 package org.mytoypjt.service.post;
 
 import org.mytoypjt.dao.*;
-import org.mytoypjt.dao.log.CommentLogDao;
-import org.mytoypjt.dao.log.LikeLogDao;
-import org.mytoypjt.dao.log.PostLogDao;
-import org.mytoypjt.dao.log.ReplyLogDao;
+import org.mytoypjt.dao.CommentLogDao;
+import org.mytoypjt.dao.LikeLogDao;
+import org.mytoypjt.dao.PostLogDao;
+import org.mytoypjt.dao.ReplyLogDao;
 import org.mytoypjt.models.dto.PostSortType;
 import org.mytoypjt.models.entity.*;
 import org.mytoypjt.models.vo.PostOption;

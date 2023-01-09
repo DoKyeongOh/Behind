@@ -1,6 +1,7 @@
-package org.mytoypjt.dao.log;
+package org.mytoypjt.dao;
 
-import org.mytoypjt.models.entity.*;
+import org.mytoypjt.models.entity.Comment;
+import org.mytoypjt.models.entity.CommentLog;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -13,40 +14,42 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Repository
-public class LoginLogDao {
+public class CommentLogDao {
 
     NamedParameterJdbcTemplate jdbcTemplate;
     SimpleJdbcInsert jdbcInsert;
-    RowMapper rowMapper;
+    RowMapper<CommentLog> rowMapper;
 
-    public LoginLogDao(DataSource dataSource) {
+    public CommentLogDao(DataSource dataSource) {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("login_log");
+        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("comment_log");
         rowMapper = (rs, rowNum) -> {
             SimpleDateFormat sdf = new SimpleDateFormat("yy.MM.dd HH:mm:ss");
-            LoginLog loginLog = new LoginLog(
-                    rs.getInt("login_log_no"),
+            CommentLog commentLog = new CommentLog(
+                    rs.getInt("comment_log_no"),
                     sdf.format(rs.getTimestamp("logging_date")),
                     rs.getString("action_type"),
-                    rs.getInt("account_no")
+                    rs.getInt("account_no"),
+                    rs.getInt("entity_no")
             );
-            return loginLog;
+            return commentLog;
         };
     }
 
-    public void writeLog(int accountNo, String action) {
-        String sql = "insert into login_log (login_log_no, logging_date, action_type, account_no) " +
-                "values (null, now(), :actionType, :accountNo)";
+    public void writeLog(Comment comment, String action) {
+        String sql = "insert into comment_log (comment_log_no, logging_date, action_type, account_no, entity_no) " +
+                "values (null, now(), :actionType, :accountNo, :entityNo)";
 
         MapSqlParameterSource param = new MapSqlParameterSource()
                 .addValue("actionType", action)
-                .addValue("accountNo", accountNo);
+                .addValue("accountNo", comment.getAccountNo())
+                .addValue("entityNo", comment.getCommentNo());
 
         jdbcTemplate.update(sql, param);
     }
 
-    public List<LoginLog> getLogsByAccountNo(int accountNo, int count){
-        String sql = "select * from login_log where account_no=:accountNo limit :count";
+    public List<CommentLog> getLogsByAccountNo(int accountNo, int count){
+        String sql = "select * from comment_log where account_no=:accountNo order by logging_date desc limit :count";
 
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("accountNo", accountNo)
@@ -54,4 +57,5 @@ public class LoginLogDao {
 
         return jdbcTemplate.query(sql, param, rowMapper);
     }
+
 }

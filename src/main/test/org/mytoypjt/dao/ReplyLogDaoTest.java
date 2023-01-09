@@ -2,7 +2,6 @@ package org.mytoypjt.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mytoypjt.dao.log.ReplyLogDao;
 import org.mytoypjt.models.entity.Reply;
 import org.mytoypjt.utils.DBUtil;
 

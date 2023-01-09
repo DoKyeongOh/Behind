@@ -1,7 +1,7 @@
-package org.mytoypjt.dao.log;
+package org.mytoypjt.dao;
 
-import org.mytoypjt.models.entity.Reply;
-import org.mytoypjt.models.entity.ReplyLog;
+import org.mytoypjt.models.entity.Like;
+import org.mytoypjt.models.entity.LikeLog;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -11,45 +11,45 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @Repository
-public class ReplyLogDao {
+public class LikeLogDao {
     NamedParameterJdbcTemplate jdbcTemplate;
     SimpleJdbcInsert jdbcInsert;
-    RowMapper<ReplyLog> rowMapper;
+    RowMapper<LikeLog> rowMapper;
 
-    public ReplyLogDao(DataSource dataSource) {
+    public LikeLogDao(DataSource dataSource) {
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("reply_log");
+        jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("likes");
         rowMapper = (rs, rowNum) -> {
             SimpleDateFormat sdf = new SimpleDateFormat("yy.MM.dd HH:mm:ss");
-            ReplyLog replyLog = new ReplyLog(
-                    rs.getInt("reply_log_no"),
+            LikeLog likeLog = new LikeLog(
+                    rs.getInt("like_log_no"),
                     sdf.format(rs.getTimestamp("logging_date")),
                     rs.getString("action_type"),
                     rs.getInt("account_no"),
                     rs.getInt("entity_no")
             );
-            return replyLog;
+            return likeLog;
         };
     }
 
-    public void writeLog(Reply reply, String action) {
-        String sql = "insert into reply_log (reply_log_no, logging_date, action_type, account_no, entity_no) " +
+
+    public void writeLog(Like like, String action) {
+        String sql = "insert into like_log (like_log_no, logging_date, action_type, account_no, entity_no) " +
                 "values (null, now(), :actionType, :accountNo, :entityNo)";
 
         MapSqlParameterSource param = new MapSqlParameterSource()
                 .addValue("actionType", action)
-                .addValue("accountNo", reply.getAccountNo())
-                .addValue("entityNo", reply.getReplyNo());
+                .addValue("accountNo", like.getAccountNo())
+                .addValue("entityNo", like.getPostNo());
 
         jdbcTemplate.update(sql, param);
     }
 
-    public List<ReplyLog> getLogsByAccountNo(int accountNo, int count){
-        String sql = "select * from reply_log where account_no=:accountNo order by logging_date desc limit :count";
+    public List<LikeLog> getLogsByAccountNo(int accountNo, int count){
+        String sql = "select * from like_log where account_no=:accountNo order by logging_date desc limit :count";
 
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("accountNo", accountNo)
