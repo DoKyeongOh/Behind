@@ -55,6 +55,14 @@ public class AccountFindService {
     public String getRandomValue(){
         String value = Integer.toString((int)(Math.random() * 1000000));
         return value;
+    public void checkPwCert(PwCertDTO dto, String certValue) {
+        if (dto == null) {
+            throw new CustomException(ErrorCode.CERT_VALUE_IS_NULL);
+        }
+        if (!dto.getCertValue().equals(certValue)) {
+            throw new CustomException(ErrorCode.CERT_VALUE_IS_NOT_CORRECT);
+        }
+        dto.checkCertValue(certValue);
     }
 
     }
