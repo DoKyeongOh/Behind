@@ -1,9 +1,7 @@
 package org.mytoypjt.service;
 
 import org.mytoypjt.consts.SessionConst;
-import org.mytoypjt.dao.AccountDao;
 import org.mytoypjt.dao.LoginLogDao;
-import org.mytoypjt.dao.ProfileDao;
 import org.mytoypjt.exception.CustomException;
 import org.mytoypjt.exception.ErrorCode;
 import org.mytoypjt.models.dto.login.LoginRequestDTO;
@@ -20,9 +18,9 @@ import java.util.Map;
 public class LoginService {
 
     @Autowired
-    private AccountDao accountDao;
+    private AccountService accountService;
     @Autowired
-    private ProfileDao profileDao;
+    private ProfileService profileService;
     @Autowired
     private LoginLogDao loginLogDao;
 
@@ -34,8 +32,8 @@ public class LoginService {
 
     @Transactional
     public void login(LoginRequestDTO dto, HttpSession session) {
-        int accountNo = accountDao.getAccountByIdAndPw(dto.getId(), dto.getPw()).getAccountNo();
-        Profile profile = profileDao.getProfile(accountNo);
+        int accountNo = accountService.getAccount(dto.getId(), dto.getPw()).getAccountNo();
+        Profile profile = profileService.getProfile(accountNo);
         addLoginSession(profile.getAccountNo(), session);
         session.setAttribute(SessionConst.USER_PROFILE, profile);
     }
