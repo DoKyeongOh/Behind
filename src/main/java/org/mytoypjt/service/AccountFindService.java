@@ -19,10 +19,15 @@ public class AccountFindService {
 
     }
 
-    public IdCertificationInfo getIdCertification(String email){
-        accountService.getAccountsByEmail(email);
-        String certificationValue = getRandomValue();
-        new MailUtil().sendCertMail(email, certificationValue);
+    public IdCertDTO createIdCert(String email){
+        List<Account> accounts = accountService.getAccountsByEmail(email);
+        if (accounts.isEmpty()) {
+            throw new CustomException(ErrorCode.EMAIL_IS_NOT_EXIST);
+        }
+        String certValue = getRandomValue();
+        mailService.sendCertMail(email, certValue);
+        return new IdCertDTO(certValue, email);
+    }
 
         return new IdCertificationInfo(certificationValue, email);
     }
