@@ -1,7 +1,7 @@
 package org.mytoypjt.controller;
 
 import org.mytoypjt.models.dto.PwCertificationInfo;
-import org.mytoypjt.service.FindAccountService;
+import org.mytoypjt.service.AccountFindService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import java.util.Map;
 @Controller
 public class PwResolveController {
     @Autowired
-    private FindAccountService findAccountService;
+    private AccountFindService accountFindService;
 
     public PwResolveController(){}
 
@@ -56,7 +56,7 @@ public class PwResolveController {
 
         ModelAndView mv = new ModelAndView("findPwPage");
 
-        PwCertificationInfo certificationInfo = findAccountService.getPwCertification(id, emailAddress);
+        PwCertificationInfo certificationInfo = accountFindService.getPwCertification(id, emailAddress);
         if (certificationInfo == null) {
             mv.addObject("noticeMessage", "입력 정보가 잘못되었습니다 !!");
             return mv;
@@ -110,12 +110,7 @@ public class PwResolveController {
                 (PwCertificationInfo) session.getAttribute("pwCertificationInfo");
 
         int accountNo = certificationInfo.getAccountNo();
-        boolean success = findAccountService.resetPassword(accountNo, pwInput);
-
-        if (!success) {
-            mv.addObject("noticeMessage", "오류입니다. 관리자에게 문의하세요..");
-            return mv;
-        }
+        accountFindService.resetPassword(accountNo, pwInput);
 
         session.setAttribute("pwCertificationInfo", null);
         mv.setView(new RedirectView("/pw/page/3"));
