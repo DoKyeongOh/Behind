@@ -54,7 +54,7 @@
 
 <!-- 아이디, 이메일 입력 폼 -->
 <div class="form-auth-input">
-    <form class="input-form" method="get" action="${pwCert}">
+    <form class="input-form" method="post" action="${pwCert}">
         <p><input type="text" class="form-control" placeholder="ID" name="id"/></p>
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Email" name="email">
@@ -73,7 +73,8 @@
 
 <!-- 인증번호 입력 폼 -->
     <form class="form-auth-check text-center" method="post" action="${pwCert}">
-        <span><input type="password" name="pwCertificationInput"></span>
+        <input type="hidden" name="_method" value="delete" />
+        <span><input type="password" name="certValue"></span>
         <span><button class="btn btn-outline-primary btn-sm btn-auth-check" type="submit">인증하고 비밀번호 재설정하기</button></span>
     </form>
 <!-- 인증번호 입력 폼 -->

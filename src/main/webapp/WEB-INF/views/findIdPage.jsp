@@ -10,7 +10,6 @@
 <% request.setAttribute("registerPage", request.getContextPath() + "/register/page/1"); %>
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 
-<% request.setAttribute("idPage", request.getContextPath() + "/id/page"); %>
 <% request.setAttribute("idCert", request.getContextPath() + "/id/cert"); %>
 
 <html>
@@ -55,7 +54,7 @@
 
 <!-- 아이디 찾기 폼 -->
 <div class="form-auth-input">
-    <form class="input-form" method="get" action="${idCert}">
+    <form class="input-form" method="post" action="${idCert}">
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Email" name="email">
             <span class="input-group-text">@</span>
@@ -76,7 +75,8 @@
 
 <!-- 인증번호 입력 폼 -->
     <form class="form-auth-check text-center" method="post" action="${idCert}">
-        <span><input type="password" name="idCertificationInput"></span>
+        <input type="hidden" name="_method" value="delete" />
+        <span><input type="password" name="certValue"></span>
         <span><button class="btn btn-outline-primary btn-sm btn-auth-check" type="submit">인증</button></span>
     </form>
 <!-- 인증번호 입력 폼 -->
