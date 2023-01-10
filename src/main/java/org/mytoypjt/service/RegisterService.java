@@ -5,7 +5,6 @@ import org.mytoypjt.dao.ProfileDao;
 import org.mytoypjt.models.dto.AccountCertDTO;
 import org.mytoypjt.models.entity.Account;
 import org.mytoypjt.models.entity.Profile;
-import org.mytoypjt.utils.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +16,9 @@ public class RegisterService {
     private AccountDao accountDao;
     @Autowired
     private ProfileDao profileDao;
+
+    @Autowired
+    MailService mailService;
 
     public enum CertErrorType {
         isNull, notInput, notSame, good
@@ -35,8 +37,7 @@ public class RegisterService {
 
     public AccountCertDTO sendAccountCert(Account account){
         String certValue = getRandomValue().trim();
-        MailUtil mailUtil = new MailUtil();
-        mailUtil.sendCertMail(account.getEmail(), certValue);
+        mailService.sendCertMail(account.getEmail(), certValue);
         return new AccountCertDTO(account, certValue);
     }
 
