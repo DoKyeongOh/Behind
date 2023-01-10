@@ -65,9 +65,10 @@ public class AccountFindService {
         dto.checkCertValue(certValue);
     }
 
+    public void resetPassword(int accountNo, PwResetRequestDTO dto) {
+        dto.checkValue();
+        accountService.setPassword(accountNo, dto.getPassword());
     }
 
-    public void resetPassword(int accountNo, String password){
-        accountService.setPassword(accountNo, password);
     }
 }
