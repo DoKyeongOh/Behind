@@ -5,14 +5,15 @@ import org.mytoypjt.dao.ProfileDao;
 import org.mytoypjt.exception.CustomException;
 import org.mytoypjt.exception.ErrorCode;
 import org.mytoypjt.models.entity.Profile;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class ProfileService {
 
+    @Autowired
     private ProfileDao profileDao;
 
     public Profile getProfile(int accountNo) {

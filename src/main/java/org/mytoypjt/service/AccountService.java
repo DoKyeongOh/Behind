@@ -5,15 +5,16 @@ import org.mytoypjt.dao.AccountDao;
 import org.mytoypjt.exception.CustomException;
 import org.mytoypjt.exception.ErrorCode;
 import org.mytoypjt.models.entity.Account;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class AccountService {
 
+    @Autowired
     private AccountDao accountDao;
 
     public Account getAccount(String id, String pw) {
@@ -26,7 +27,7 @@ public class AccountService {
 
     public List<Account> getAccountsByEmail(String email) {
         List<Account> accounts = accountDao.findByEmail(email);
-        if (accounts == null || accounts.isEmpty()) {
+        if (accounts == null) {
             accounts = new ArrayList<>();
         }
         return accounts;
