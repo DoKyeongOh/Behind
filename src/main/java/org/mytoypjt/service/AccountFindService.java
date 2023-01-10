@@ -29,14 +29,18 @@ public class AccountFindService {
         return new IdCertDTO(certValue, email);
     }
 
-        return new IdCertificationInfo(certificationValue, email);
+    public PwCertDTO createPwCert(PwCertRequestDTO dto){
+        if (dto == null) {
+            throw new CustomException(ErrorCode.CERT_VALUE_IS_NULL);
+        }
+        String certValue = getRandomValue();
+        String email = dto.getEmailAddress();
+        mailService.sendCertMail(email, certValue);
+
+        int accountNo = accountService.getAccountNo(dto.getId(), email);
+        return new PwCertDTO(certValue, accountNo);
     }
 
-    public PwCertificationInfo getPwCertification(String id, String email){
-        int accountNo = accountService.getAccountNo(id, email);
-        String certificationValue = getRandomValue();
-        new MailUtil().sendCertMail(email, certificationValue);
-        return new PwCertificationInfo(accountNo, certificationValue);
     }
 
     public String getRandomValue(){
