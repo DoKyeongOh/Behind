@@ -32,7 +32,7 @@ class AccountDaoTest {
         try {
             // test content
 
-            System.out.println(accountDao.getAccountByIdAndPw("dkproh", "1234"));
+            System.out.println(accountDao.findAccountByIdAndPw("dkproh", "1234"));
 
         }catch (Exception e) {
             e.printStackTrace();
@@ -48,7 +48,7 @@ class AccountDaoTest {
         boolean successed = true;
         try {
             // test content
-            this.accountDao.getAccountListByEmail("dkproh@gmail.com").forEach(System.out::println);
+            this.accountDao.findByEmail("dkproh@gmail.com").forEach(System.out::println);
         }catch (Exception e) {
             e.printStackTrace();
             successed = false;
