@@ -1,7 +1,5 @@
 package org.mytoypjt.dao;
 
-import org.mytoypjt.exception.CustomException;
-import org.mytoypjt.exception.ErrorCode;
 import org.mytoypjt.models.entity.Account;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -41,73 +39,26 @@ public class AccountDao {
         };
     }
 
-    public Account getAccountByIdAndPw(String id, String pw) {
+    public List<Account> findAccountByIdAndPw(String id, String pw) {
         String sql = "select * from account where id=:id and password=:password";
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("id", id);
         sqlParameterSource.addValue("password", pw);
-        List<Account> accounts = jdbcTemplate.query(sql, sqlParameterSource, accountRowMapper);
-        if (accounts.isEmpty()) {
-            throw new CustomException(ErrorCode.ACCOUNT_IS_NOT_EXIST);
-        }
-        return accounts.get(0);
+        return jdbcTemplate.query(sql, sqlParameterSource, accountRowMapper);
     }
 
-    public List<String> getAccountListByEmail(String email){
-        String sql = "select id from account where email=:email";
+    public List<Account> findByEmail(String email){
+        String sql = "select * from account where email=:email";
         MapSqlParameterSource param = new MapSqlParameterSource("email", email);
-        try {
-            return jdbcTemplate.query(sql, param, (rs, rowNum) -> rs.getString("id"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return jdbcTemplate.query(sql, param, accountRowMapper);
     }
 
-    public int findAccountNo(String id, String email){
+    public List<Account> findByIdAndEmail(String id, String email){
         String sql = "select * from account where id=:id and email=:email";
-
         MapSqlParameterSource param = new MapSqlParameterSource();
         param.addValue("id", id);
         param.addValue("email", email);
-
-        try {
-            List<Account> accounts = jdbcTemplate.query(sql, param, accountRowMapper);
-            if (accounts.size() > 2 || accounts.size() < 1)
-                return -1;
-            return accounts.get(0).getAccountNo();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
-    public int findAccountNo(String id, String password, String email){
-        String sql = "select account_no from account where id=:id and password=:password and email=:email";
-
-        MapSqlParameterSource param = new MapSqlParameterSource();
-        param.addValue("id", id);
-        param.addValue("password", password);
-        param.addValue("email", email);
-
-        try {
-            List<Account> accounts = jdbcTemplate.query(sql, param, accountRowMapper);
-            if (accounts.size() > 2 || accounts.size() < 1)
-                return -1;
-            return accounts.get(0).getAccountNo();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
-    public int findAccountNo(Account account){
-        String id = account.getId();
-        String password = account.getPassword();
-        String email = account.getEmail();
-
-        int accountNo = findAccountNo(id, password, email);
-        return accountNo;
+        return jdbcTemplate.query(sql, param, accountRowMapper);
     }
 
     public boolean setAccountPw(int accountNo, String password){
