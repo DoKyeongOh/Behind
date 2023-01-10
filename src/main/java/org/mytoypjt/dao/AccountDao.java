@@ -61,16 +61,12 @@ public class AccountDao {
         return jdbcTemplate.query(sql, param, accountRowMapper);
     }
 
-    public boolean setAccountPw(int accountNo, String password){
+    public void setAccountPw(int accountNo, String password){
         String sql = "update account set password = :password where account_no = :accountNo";
         MapSqlParameterSource param = new MapSqlParameterSource();
         param.addValue("password", password);
         param.addValue("accountNo", accountNo);
-        try {
-            return jdbcTemplate.update(sql, param) == 1;
-        } catch (Exception e) {
-            return false;
-        }
+        jdbcTemplate.update(sql, param);
     }
 
     public boolean isExistId(String id){
