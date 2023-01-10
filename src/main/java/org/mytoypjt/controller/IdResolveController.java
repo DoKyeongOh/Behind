@@ -1,7 +1,8 @@
 package org.mytoypjt.controller;
 
 import org.mytoypjt.models.dto.IdCertificationInfo;
-import org.mytoypjt.service.FindAccountService;
+import org.mytoypjt.models.entity.Account;
+import org.mytoypjt.service.AccountFindService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +13,13 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class IdResolveController {
 
     @Autowired
-    private FindAccountService findAccountService;
+    private AccountFindService accountFindService;
 
     public IdResolveController(){}
 
@@ -33,7 +35,7 @@ public class IdResolveController {
         String domain = param.get("domain");
         String mailAddress = email + "@" + domain;
 
-        IdCertificationInfo certificationInfo = findAccountService.getIdCertification(mailAddress);
+        IdCertificationInfo certificationInfo = accountFindService.getIdCertification(mailAddress);
 
         ModelAndView mv = new ModelAndView("findIdPage");
 
@@ -71,7 +73,10 @@ public class IdResolveController {
             return mv;
         }
 
-        List<String> idList = findAccountService.getAccountListByEmail(certificationInfo.getEmailAddress());
+        List<String> idList = accountFindService.getAccountsByEmail(certificationInfo.getEmailAddress())
+                .stream()
+                .map(Account::getId)
+                .collect(Collectors.toList());
         if (idList == null){
             mv.addObject("noticeMessage", "오류가 발생했습니다 관리자에게 문의해주세요 !!");
             return mv;
