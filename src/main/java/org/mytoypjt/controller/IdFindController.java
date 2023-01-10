@@ -14,12 +14,12 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
-public class IdResolveController {
+public class IdFindController {
 
     @Autowired
     private AccountFindService accountFindService;
 
-    public IdResolveController(){}
+    public IdFindController(){}
 
     @GetMapping(path = "/id/page")
     public String showFindIdPage(HttpSession session){
