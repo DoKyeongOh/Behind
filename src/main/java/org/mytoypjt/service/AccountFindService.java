@@ -41,6 +41,15 @@ public class AccountFindService {
         return new PwCertDTO(certValue, accountNo);
     }
 
+    public List<String> checkIdCert(IdCertDTO sessDTO, String certValue){
+        if (sessDTO == null) {
+            throw new CustomException(ErrorCode.CERT_VALUE_IS_NULL);
+        }
+        sessDTO.checkCertValue(certValue);
+        return accountService.getAccountsByEmail(sessDTO.getEmail())
+                .stream()
+                .map(Account::getId)
+                .collect(Collectors.toList());
     }
 
     public String getRandomValue(){
@@ -48,8 +57,6 @@ public class AccountFindService {
         return value;
     }
 
-    public List<Account> getAccountsByEmail(String email){
-        return accountService.getAccountsByEmail(email);
     }
 
     public void resetPassword(int accountNo, String password){
