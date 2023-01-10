@@ -36,13 +36,10 @@ public class ProfileDao {
         };
     }
 
-    public Profile getProfile(int accountNo) {
+    public List<Profile> findByAccountNo(int accountNo) {
         String sql = "select * from profile where account_no = :accountNo";
-
         MapSqlParameterSource param = new MapSqlParameterSource("accountNo", accountNo);
-
-        List<Profile> profileList = jdbcTemplate.query(sql, param, profileRowMapper);
-        return profileList.size() != 0 ? profileList.get(0) : null;
+        return jdbcTemplate.query(sql, param, profileRowMapper);
     }
 
     public boolean createProfile(Profile profile){
