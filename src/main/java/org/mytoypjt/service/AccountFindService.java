@@ -1,19 +1,25 @@
 package org.mytoypjt.service;
 
-import org.mytoypjt.models.dto.IdCertificationInfo;
-import org.mytoypjt.models.dto.PwCertificationInfo;
+import lombok.AllArgsConstructor;
+import org.mytoypjt.exception.CustomException;
+import org.mytoypjt.exception.ErrorCode;
+import org.mytoypjt.models.dto.IdCertDTO;
+import org.mytoypjt.models.dto.PwCertDTO;
+import org.mytoypjt.models.dto.cert.PwCertRequestDTO;
+import org.mytoypjt.models.dto.cert.PwResetRequestDTO;
 import org.mytoypjt.models.entity.Account;
-import org.mytoypjt.utils.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AccountFindService {
-
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private MailService mailService;
 
     public AccountFindService() {
 
@@ -52,9 +58,6 @@ public class AccountFindService {
                 .collect(Collectors.toList());
     }
 
-    public String getRandomValue(){
-        String value = Integer.toString((int)(Math.random() * 1000000));
-        return value;
     public void checkPwCert(PwCertDTO dto, String certValue) {
         if (dto == null) {
             throw new CustomException(ErrorCode.CERT_VALUE_IS_NULL);
@@ -70,5 +73,9 @@ public class AccountFindService {
         accountService.setPassword(accountNo, dto.getPassword());
     }
 
+    public String getRandomValue(){
+        String value = Integer.toString((int)(Math.random() * 1000000));
+        return value;
     }
+
 }
