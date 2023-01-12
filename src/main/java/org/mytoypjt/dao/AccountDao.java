@@ -83,12 +83,10 @@ public class AccountDao {
 
     public int createAccount(Account account){
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("account_no", account.getAccountNo())
                 .addValue("id", account.getId())
                 .addValue("password", account.getPassword())
                 .addValue("email", account.getEmail());
-        BigInteger bigInteger = (BigInteger) jdbcInsert.executeAndReturnKey(param);
-        return bigInteger.intValue();
+        return jdbcInsert.executeAndReturnKey(param).intValue();
     }
 
     public void deleteAccount(int accountNo){
