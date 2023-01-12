@@ -62,33 +62,16 @@ public class RegisterController {
     }
 
     @PostMapping(path = "/account/cert")
-    public ModelAndView checkAccountCert(HttpSession session, @RequestParam Map<String, String> param){
-        AccountCertDTO dto = (AccountCertDTO) session.getAttribute(ACCOUNT_CERT_KEY);
-        String inputValue = param.get("accountCertInput");
+    public ModelAndView createRegistrationCert(HttpSession session, RegistrationRequestDTO registrationRequestDTO) {
+        session.setAttribute(
+                SessionConst.REGISTRATION_CERT,
+                registerService.createRegistrationCertDTO(registrationRequestDTO)
+        );
 
-        RegisterService.CertErrorType type = registerService.getCertErrorType(dto, inputValue);
-        String errorMessage = registerService.getCertErrorMessage(type);
+        return new ModelAndView("accountInputPage")
+                .addObject("noticeMessage", "이메일에서 인증번호 확인 후 인증번호를 입력해주세요");
+    }
 
-        ModelAndView mv = new ModelAndView("accountInputPage");
-
-        if (!errorMessage.equals("")) {
-            mv.addObject("noticeMessage", errorMessage);
-            return mv;
-        }
-
-        Profile profile = null;
-        try {
-            profile = registerService.createAccount(dto);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (profile == null) {
-            String errorKey = "noticeMessage";
-            String errorValue = "예상치 못한 오류가 발생했습니다 다시 시도해주세요.";
-            mv.addObject(errorKey, errorValue);
-            return mv;
-        }
 
         session.setAttribute(ACCOUNT_CERT_KEY, null);
         session.setAttribute(SessionConst.USER_PROFILE, profile);
