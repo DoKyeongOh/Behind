@@ -13,10 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class RegisterService {
 
     @Autowired
-    private AccountDao accountDao;
+    private AccountService accountService;
     @Autowired
-    private ProfileDao profileDao;
-
+    private ProfileService profileService;
     @Autowired
     MailService mailService;
 
