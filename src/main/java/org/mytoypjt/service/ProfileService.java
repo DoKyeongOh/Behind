@@ -24,4 +24,8 @@ public class ProfileService {
         return profiles.get(0);
     }
 
+    @Transactional
+    public Profile createDefaultProfile(int accountNo) {
+        return profileDao.createProfile(new Profile(accountNo));
+    }
 }
