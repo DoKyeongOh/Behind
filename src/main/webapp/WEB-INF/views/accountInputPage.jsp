@@ -10,7 +10,7 @@
 <% request.setAttribute("registerPage", request.getContextPath() + "/register/page/1"); %>
 <% request.setAttribute("indexPage", request.getContextPath() + "/"); %>
 
-<% request.setAttribute("account", request.getContextPath() + "/account"); %>
+<% request.setAttribute("account", request.getContextPath() + "/account/cert"); %>
 <% request.setAttribute("accountCert", request.getContextPath() + "/account/cert"); %>
 
 
@@ -85,7 +85,8 @@
 
 <%--인증번호 입력 폼--%>
 <form class="text-center" method="post" action="${accountCert}">
-    <span><input type="password" name="accountCertInput"></span>
+    <input type="hidden" name="_method" value="delete">
+    <span><input type="password" name="certValue"></span>
     <span><button class="btn btn-outline-primary btn-sm btn-auth-check" type="submit">인증</button></span>
 </form>
 <%--인증번호 입력 폼--%>
