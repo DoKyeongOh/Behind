@@ -1,6 +1,5 @@
 package org.mytoypjt.service;
 
-import lombok.AllArgsConstructor;
 import org.mytoypjt.exception.CustomException;
 import org.mytoypjt.exception.ErrorCode;
 import org.mytoypjt.models.dto.IdCertDTO;
@@ -63,7 +62,7 @@ public class AccountFindService {
             throw new CustomException(ErrorCode.CERT_VALUE_IS_NULL);
         }
         if (!dto.getCertValue().equals(certValue)) {
-            throw new CustomException(ErrorCode.CERT_VALUE_IS_NOT_CORRECT);
+            throw new CustomException(ErrorCode.CERT_INPUT_IS_NOT_CORRECT);
         }
         dto.checkCertValue(certValue);
     }
