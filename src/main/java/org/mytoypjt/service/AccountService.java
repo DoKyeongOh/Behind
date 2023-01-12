@@ -1,9 +1,9 @@
 package org.mytoypjt.service;
 
-import lombok.AllArgsConstructor;
 import org.mytoypjt.dao.AccountDao;
 import org.mytoypjt.exception.CustomException;
 import org.mytoypjt.exception.ErrorCode;
+import org.mytoypjt.models.dto.RegistrationRequestDTO;
 import org.mytoypjt.models.entity.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +39,14 @@ public class AccountService {
             throw new CustomException(ErrorCode.ACCOUNT_IS_NOT_EXIST);
         }
         return accounts.get(0).getAccountNo();
+    }
+
+    public int createAccount(RegistrationRequestDTO dto) {
+        try {
+            return accountDao.createAccount(new Account(dto));
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.ACCOUNT_CREATION_FAILURE, e.getMessage());
+        }
     }
 
     public void setPassword(int accountNo, String password) {
