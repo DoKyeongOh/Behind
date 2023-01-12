@@ -75,36 +75,6 @@ public class RegisterService {
         return true;
     }
 
-    public CertErrorType getCertErrorType(AccountCertDTO dto, String inputValue){
-        CertErrorType type = CertErrorType.isNull;
-        if (dto == null)
-            return CertErrorType.isNull;
-
-        if (inputValue == null)
-            return CertErrorType.notInput;
-
-        if (!inputValue.equals(dto.getCertValue()))
-            return CertErrorType.notSame;
-
-        return CertErrorType.good;
-    }
-
-    public String getCertErrorMessage(CertErrorType selector){
-
-        switch (selector) {
-            case isNull : return "정보를 입력하고 이메일 인증을 먼저 시도해주세요 !!";
-
-            case notInput : return "인증번호를 입력해주세요 !!";
-
-            case notSame : return "인증번호가 일치하지 않습니다 !!";
-
-            case good: return "";
-        }
-
-        return "예상치 못한 에러가 발생했습니다 관리자에게 문의해주세요 !!";
-    }
-
-
 
 
 }
