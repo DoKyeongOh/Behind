@@ -53,6 +53,12 @@ public class Profile {
         }
     }
 
+    public void convert(Profile profile) {
+        this.nickname = profile.getNickname();
+        this.city = profile.getCity();
+        this.age = profile.getAge();
+        this.gender = profile.getGender();
+        this.userLevel = profile.userLevel;
     }
 
 }
