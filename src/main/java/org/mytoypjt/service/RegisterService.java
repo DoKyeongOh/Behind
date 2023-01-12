@@ -1,10 +1,10 @@
 package org.mytoypjt.service;
 
-import org.mytoypjt.dao.AccountDao;
-import org.mytoypjt.dao.ProfileDao;
-import org.mytoypjt.models.dto.AccountCertDTO;
-import org.mytoypjt.models.entity.Account;
+import org.mytoypjt.exception.CustomException;
+import org.mytoypjt.exception.ErrorCode;
+import org.mytoypjt.models.dto.cert.RegistrationCertDTO;
 import org.mytoypjt.models.entity.Profile;
+import org.mytoypjt.models.dto.RegistrationRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,10 +18,6 @@ public class RegisterService {
     private ProfileService profileService;
     @Autowired
     MailService mailService;
-
-    public enum CertErrorType {
-        isNull, notInput, notSame, good
-    }
 
     public RegisterService() {
     }
@@ -43,7 +39,7 @@ public class RegisterService {
     }
 
     public String getRandomValue(){
-        String value = Integer.toString((int)(Math.random() * 1000000));
+        String value = Integer.toString((int)(Math.random() * 1000000)).trim();
         return value;
     }
 
@@ -53,10 +49,6 @@ public class RegisterService {
         return profileService.createDefaultProfile(accountNo);
     }
 
-    public boolean isCorrectPw(String pw, String pwCheck){
-        if (pw == null || pwCheck == null) return false;
-        if (!pw.equals(pwCheck)) return false;
-        return true;
     public void updateProfile(Profile profile, Profile inputProfile) {
         inputProfile.checkConvention();
         profile.convert(inputProfile);
