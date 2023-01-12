@@ -1,15 +1,14 @@
 package org.mytoypjt.controller;
 
 import org.mytoypjt.consts.SessionConst;
-import org.mytoypjt.models.dto.AccountCertDTO;
-import org.mytoypjt.models.entity.Account;
+import org.mytoypjt.models.dto.cert.RegistrationCertDTO;
 import org.mytoypjt.models.entity.Profile;
-import org.mytoypjt.models.vo.RegistVO;
+import org.mytoypjt.models.dto.RegistrationRequestDTO;
+import org.mytoypjt.service.AccountService;
 import org.mytoypjt.service.LoginService;
 import org.mytoypjt.service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -31,55 +30,26 @@ public class RegisterController {
 
     public RegisterController(){}
 
-    @GetMapping(path = "/register/page/{pageNo}")
-    public ModelAndView ShowRegisterPages(@PathVariable(name = "pageNo")int pageNo,
-                                          @RequestParam Map<String, String> param){
-        ModelAndView mv = new ModelAndView("registerPage");
-        switch (pageNo) {
-            case 1:
-                return mv;
-            case 2: {
-                String agree = param.get("isAgree");
-                if (agree == null || !agree.equals("agree")) {
-                    mv.addObject("noticeMessage", "약관에 동의해주세요!!");
-                    return mv;
-                }
-                mv.setViewName("accountInputPage");
-                return mv;
-            }
-            case 3: {
-                mv.setViewName("profileInputPage");
-            }
-            default: return mv;
-        }
+
+    @GetMapping("/register/page/1")
+    public String showRegisterPage() {
+        return "registerPage";
     }
 
-
-    @PostMapping(path = "/account")
-    public ModelAndView entryAccount(Model model, HttpSession session, @ModelAttribute RegistVO registVO){
-        ModelAndView modelAndView = new ModelAndView("accountInputPage");
-
-        boolean isUsableId = registerService.isUsableAccountId(registVO.getId());
-        if (!isUsableId) {
-            model.addAttribute("noticeMessage", "아이디를 이미 사용중입니다 !!");
-            return modelAndView;
+    @GetMapping(path = "/register/page/2")
+    public ModelAndView showAccountInputPage(@RequestParam(required = false) String agreement){
+        ModelAndView mv = new ModelAndView("registerPage");
+        if (agreement != null) {
+            mv.setViewName("accountInputPage");
+            return mv;
         }
+        mv.addObject("noticeMessage", "약관에 동의해주세요!!");
+        return mv;
+    }
 
-        if (!registerService.isCorrectPw(registVO.getPw(), registVO.getPwCheck())) {
-            model.addAttribute("noticeMessage", "비밀번호를 확인해주세요 !!");
-            return modelAndView;
-        }
-
-        String rcvMailAddress = registVO.getEmailAddress();
-        Account account = new Account(registVO.getId(), registVO.getPw(), rcvMailAddress);
-
-        AccountCertDTO dto = registerService.sendAccountCert(account);
-        dto.setAccount(account);
-
-        session.setAttribute(ACCOUNT_CERT_KEY, dto);
-
-        model.addAttribute("noticeMessage", "이메일에서 인증번호 확인 후 인증번호를 입력해주세요");
-        return modelAndView;
+    @GetMapping("/register/page/3")
+    public String showProfileInputPage(){
+        return "profileInputPage";
     }
 
     @ResponseBody
