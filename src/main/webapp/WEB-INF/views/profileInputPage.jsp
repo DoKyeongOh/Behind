@@ -42,7 +42,7 @@
         </a>
 
         <c:set var="myProfile" value="${sessionScope.get('profile')}"/>
-        <button onclick="location.href='${myPage}'" class="border border-0" id="profile-display"> "${myProfile.nicname}" 님 안녕하세요! </button>
+        <button onclick="location.href='${myPage}'" class="border border-0" id="profile-display"> "${myProfile.nickname}" 님 안녕하세요! </button>
 
         <button class="navbar-toggler btn-dark" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -88,8 +88,8 @@
 <!-- 계정 정보 입력 폼 -->
 <div class="text-center">
     <form id="profile-input-form" method="post" action="/profile">
-
-        <input type="text" class="form-control" placeholder="사용할 닉네임" id="input-nicname" name="nicname">
+        <input type="hidden" name="_method" value="put" />
+        <input type="text" class="form-control" placeholder="사용할 닉네임" id="input-nickname" name="nickname">
     
         <div class="certer-inline-align">
             <select class="form-select" name="age" id="btn-age-dropdown">

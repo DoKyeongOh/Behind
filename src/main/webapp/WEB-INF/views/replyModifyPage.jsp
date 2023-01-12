@@ -39,7 +39,7 @@
         </a>
 
         <c:set var="myProfile" value="${sessionScope.get('profile')}"/>
-        <button onclick="location.href='${myPage}'" class="border border-0" id="profile-display"> "${myProfile.nicname}" 님 안녕하세요! </button>
+        <button onclick="location.href='${myPage}'" class="border border-0" id="profile-display"> "${myProfile.nickname}" 님 안녕하세요! </button>
 
         <button class="navbar-toggler btn-dark" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -125,7 +125,7 @@
                 ${comment.content}
             </h1>
             <div id="info-commenter">
-                <span class="badge rounded-pill bg-dark">${comment.nicname}</span>
+                <span class="badge rounded-pill bg-dark">${comment.nickname}</span>
                 <span class="badge rounded-pill bg-dark">${comment.commentedDate}</span>
             </div>
         </li>
@@ -138,7 +138,7 @@
     <c:forEach var="reply" items="${replies}">
         <li class="list-group-item display-inline-block">
             <div class="display-inline-block" id="wrap-reply-content">
-                <label class="text-secondary reply-item">${reply.nicname}</label><br>
+                <label class="text-secondary reply-item">${reply.nickname}</label><br>
                 <c:if test="${replyNo ne reply.replyNo}">
                     <span style="margin-left: 1%;">${reply.content}</span>
                 </c:if>

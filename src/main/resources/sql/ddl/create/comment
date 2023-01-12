@@ -6,5 +6,5 @@ CREATE TABLE `COMMENT` (
 	`is_use_anonymous_name`	BOOL NULL,
 	`account_no` INT NULL REFERENCES PROFILE(account_no),
 	`post_no` BIGINT NULL REFERENCES POST(post_no),
-    `nicname` VARCHAR(15)
+    `nickname` VARCHAR(15)
 );

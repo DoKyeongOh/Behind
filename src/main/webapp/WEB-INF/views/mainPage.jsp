@@ -40,7 +40,7 @@
         </a>
 
         <c:set var="myProfile" value="${sessionScope.get('profile')}"/>
-        <button onclick="location.href='${myPage}'" class="border border-0" id="profile-display"> "${myProfile.nicname}" 님 안녕하세요! </button>
+        <button onclick="location.href='${myPage}'" class="border border-0" id="profile-display"> "${myProfile.nickname}" 님 안녕하세요! </button>
 
         <button class="navbar-toggler btn-dark" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -116,7 +116,7 @@
 
                                 <div class="card-body">
                                     <h5 class="title-font">${posts[idx].title}</h5>
-                                    <label class="label-poster-name">${posts[idx].nicname}</label><br>
+                                    <label class="label-poster-name">${posts[idx].nickname}</label><br>
 
                                     <div class="text-right">
                                         <label class="label-poster-name display-inline-block">

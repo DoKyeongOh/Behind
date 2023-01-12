@@ -86,9 +86,9 @@ public class CommentController {
         int postNo = Integer.parseInt(param.get("postNo"));
 
         boolean nameAnonymous = param.get("nameAnonymous") == null ? false : true;
-        String nicname = nameAnonymous ? "누군가" : profile.getNickname();
+        String nickname = nameAnonymous ? "누군가" : profile.getNickname();
 
-        Comment comment = new Comment(content, profile.getAccountNo(), postNo, nicname, nameAnonymous);
+        Comment comment = new Comment(content, profile.getAccountNo(), postNo, nickname, nameAnonymous);
         comment.setCommentNo(commentNo);
         ModelAndView mv = new ModelAndView(new RedirectView("/comment?no="+commentNo));
         try {

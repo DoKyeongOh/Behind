@@ -11,17 +11,17 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class NicNameSearchPostsStrategy extends BasePostsStrategy {
+public class NicknameSearchPostsStrategy extends BasePostsStrategy {
 
     @Autowired
     PostDao postDao;
 
-    public NicNameSearchPostsStrategy() {
+    public NicknameSearchPostsStrategy() {
     }
 
     @Override
     public PostSortType getSortType() {
-        return PostSortType.SEARCH_BY_NICNAME;
+        return PostSortType.SEARCH_BY_NICKNAME;
     }
 
     @Override
@@ -29,6 +29,6 @@ public class NicNameSearchPostsStrategy extends BasePostsStrategy {
         String searchWord = optionVO.getOptionMap().get(PostConst.SEARCH_WORD);
         int pageNo = Integer.parseInt(optionVO.getPageNo());
 
-        return postDao.getPostsByNicName(pageNo, optionVO.getPostCountLimitInPage(), searchWord);
+        return postDao.getPostsBynickname(pageNo, optionVO.getPostCountLimitInPage(), searchWord);
     }
 }

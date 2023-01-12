@@ -8,7 +8,7 @@ public class Reply {
     int accountNo;
     int commentNo;
     boolean nameAnonymous;
-    String nicname;
+    String nickname;
 
     Date repliedDate;
 
@@ -18,26 +18,26 @@ public class Reply {
         this.accountNo = -1;
         this.commentNo = -1;
         this.nameAnonymous = false;
-        this.nicname = "";
+        this.nickname = "";
         this.repliedDate = new Date();
     }
 
-    public Reply(int replyNo, String content, int accountNo, int commentNo, boolean nameAnonymous, String nicname, Date repliedDate){
+    public Reply(int replyNo, String content, int accountNo, int commentNo, boolean nameAnonymous, String nickname, Date repliedDate){
         this.replyNo = replyNo;
         this.content = content;
         this.accountNo = accountNo;
         this.commentNo = commentNo;
         this.nameAnonymous = nameAnonymous;
-        this.nicname = nicname;
+        this.nickname = nickname;
         this.repliedDate = repliedDate;
     }
 
-    public Reply(String content, int accountNo, int commentNo, boolean nameAnonymous, String nicname){
+    public Reply(String content, int accountNo, int commentNo, boolean nameAnonymous, String nickname){
         this.content = content;
         this.accountNo = accountNo;
         this.commentNo = commentNo;
         this.nameAnonymous = nameAnonymous;
-        this.nicname = nicname;
+        this.nickname = nickname;
         this.repliedDate = new Date();
     }
 
@@ -97,12 +97,12 @@ public class Reply {
         this.commentNo = commentNo;
     }
 
-    public String getNicname() {
-        return nicname;
+    public String getnickname() {
+        return nickname;
     }
 
-    public void setNicname(String nicname) {
-        this.nicname = nicname;
+    public void setnickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public boolean getNameAnonymous() {

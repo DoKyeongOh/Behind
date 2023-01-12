@@ -1,7 +1,7 @@
 CREATE TABLE `PROFILE` (
 	`account_no` INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	`register_date`	DATE NULL,
-	`nicname` VARCHAR(10) NOT NULL,
+	`nickname` VARCHAR(10) NOT NULL,
 	`city` TEXT NULL,
 	`age` INT UNSIGNED NULL,
 	`gender` CHAR(1) NULL,

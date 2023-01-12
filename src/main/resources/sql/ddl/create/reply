@@ -5,5 +5,5 @@ CREATE TABLE `REPLY` (
 	`is_use_anonymous_name` BOOL NULL,
 	`account_no` INT NULL,
 	`comment_no` VARCHAR(30) NULL REFERENCES PROFILE(account_no),
-	`nicname` VARCHAR(15)
+	`nickname` VARCHAR(15)
 );

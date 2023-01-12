@@ -46,7 +46,7 @@ body {
     font-size: 80%;
 }
 
-.title-and-nicname {
+.title-and-nickname {
     padding-top: 1%;
     padding-bottom: 1%;
     width: 100%;
@@ -102,7 +102,7 @@ body {
     display: inline-block;
 }
 
-.commenter-nicname {
+.commenter-nickname {
     font-size: 80%;
 }
 

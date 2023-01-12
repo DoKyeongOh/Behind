@@ -40,7 +40,7 @@
         </a>
 
         <c:set var="myProfile" value="${sessionScope.get('profile')}"/>
-        <button onclick="location.href='${myPage}'" class="border border-0" id="profile-display"> "${myProfile.nicname}" 님 안녕하세요! </button>
+        <button onclick="location.href='${myPage}'" class="border border-0" id="profile-display"> "${myProfile.nickname}" 님 안녕하세요! </button>
 
         <button class="navbar-toggler btn-dark" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -111,7 +111,7 @@
     <c:forEach var="reply" items="${replies}">
         <li class="list-group-item display-inline-block">
             <div class="display-inline-block" style="width: 97%">
-                <label class="text-secondary reply-item">${reply.nicname}</label><br>
+                <label class="text-secondary reply-item">${reply.nickname}</label><br>
                 <span style="margin-left: 1%;">${reply.content}</span>
             </div>
 

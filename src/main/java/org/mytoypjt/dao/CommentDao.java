@@ -30,7 +30,7 @@ public class CommentDao {
                     rs.getInt("account_no"),
                     rs.getInt("post_no"),
                     rs.getBoolean("name_anonymous"),
-                    rs.getString("nicname"),
+                    rs.getString("nickname"),
                     rs.getDate("commented_date")
             );
             return comment;
@@ -40,7 +40,7 @@ public class CommentDao {
 
     public List<Comment> getComments(int postNo) {
         String sql = "select " +
-                "comment_no, content, reply_count, account_no, post_no, name_anonymous, nicname, commented_date" +
+                "comment_no, content, reply_count, account_no, post_no, name_anonymous, nickname, commented_date" +
                 " from comment where post_no = :postNo";
         return jdbcTemplate.query(sql, new MapSqlParameterSource("postNo", postNo), commentRowMapper);
     }
@@ -58,7 +58,7 @@ public class CommentDao {
     }
 
     public void updateComment(Comment comment) {
-        String sql = "update comment set content=:content, name_anonymous:=:nameAnonymous, nicname=:nicname " +
+        String sql = "update comment set content=:content, name_anonymous:=:nameAnonymous, nickname=:nickname " +
                 "where comment_no=:commentNo";
         SqlParameterSource param = new BeanPropertySqlParameterSource(comment);
         jdbcTemplate.update(sql, param);

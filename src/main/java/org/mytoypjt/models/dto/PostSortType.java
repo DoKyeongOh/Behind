@@ -6,6 +6,6 @@ public enum PostSortType {
     WEEKS_FAVORITE,
     SEARCH_BY_TITLE,
     SEARCH_BY_CONTENT,
-    SEARCH_BY_NICNAME,
+    SEARCH_BY_NICKNAME,
     HASH_TAG
 }

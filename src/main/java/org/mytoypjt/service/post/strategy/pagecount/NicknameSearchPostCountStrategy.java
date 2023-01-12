@@ -8,17 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NicNameSearchPostCountStrategy extends BasePostCountStrategy{
+public class NicknameSearchPostCountStrategy extends BasePostCountStrategy{
 
     @Autowired
     PostDao postDao;
 
-    public NicNameSearchPostCountStrategy() {
+    public NicknameSearchPostCountStrategy() {
     }
 
     @Override
     public PostSortType getSortType() {
-        return PostSortType.SEARCH_BY_NICNAME;
+        return PostSortType.SEARCH_BY_NICKNAME;
     }
 
     @Override
@@ -27,6 +27,6 @@ public class NicNameSearchPostCountStrategy extends BasePostCountStrategy{
         if (searchWord == null)
             searchWord = "";
 
-        return postDao.getPostCountByNicName(searchWord);
+        return postDao.getPostCountBynickname(searchWord);
     }
 }

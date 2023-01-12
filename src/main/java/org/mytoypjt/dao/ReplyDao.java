@@ -37,7 +37,7 @@ public class ReplyDao {
                     rs.getInt("account_no"),
                     rs.getInt("comment_no"),
                     rs.getBoolean("name_anonymous"),
-                    rs.getString("nicname"),
+                    rs.getString("nickname"),
                     rs.getDate("replied_date")
             );
             return reply;

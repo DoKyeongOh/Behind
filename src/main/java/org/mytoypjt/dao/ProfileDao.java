@@ -1,5 +1,7 @@
 package org.mytoypjt.dao;
 
+import org.mytoypjt.exception.CustomException;
+import org.mytoypjt.exception.ErrorCode;
 import org.mytoypjt.models.entity.Profile;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -8,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -25,7 +28,7 @@ public class ProfileDao {
         profileRowMapper = (rs, rowNum) -> {
             Profile profile = new Profile(
                     rs.getInt("account_no"),
-                    rs.getString("nicname"),
+                    rs.getString("nickname"),
                     rs.getDate("register_date"),
                     rs.getString("city"),
                     rs.getInt("age"),
@@ -42,22 +45,32 @@ public class ProfileDao {
         return jdbcTemplate.query(sql, param, profileRowMapper);
     }
 
-    public boolean createProfile(Profile profile){
+    public Profile createProfile(Profile profile){
         String sql = "insert into profile(" +
-                "account_no, register_date, nicname, city, age, gender, user_level) " +
-                "values (:accountNo, :registerDate, :nicname, :city, :age, :gender, :userLevel)";
+                "account_no, register_date, nickname, city, age, gender, user_level) " +
+                "values (:accountNo, :registerDate, :nickname, :city, :age, :gender, :userLevel)";
 
         SqlParameterSource param = new BeanPropertySqlParameterSource(profile);
-        int returnCode = jdbcTemplate.update(sql, param);
-        return returnCode == 1 ? true : false;
+
+        try {
+            jdbcTemplate.update(sql, param);
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.PROFILE_CREATION_FAILURE, e.getMessage());
+        }
+        return profile;
     }
 
-    public boolean updateProfile(Profile profile){
-        String sql = "update profile set nicname=:nicname, city=:city, age=:age, gender=:gender, user_level=:userLevel " +
+    public Profile updateProfile(Profile profile) {
+        String sql = "update profile set nickname=:nickname, city=:city, age=:age, gender=:gender, user_level=:userLevel " +
                 "where account_no=:accountNo";
 
         SqlParameterSource param = new BeanPropertySqlParameterSource(profile);
-        int returnCode = jdbcTemplate.update(sql, param);
-        return returnCode == 1 ? true : false;
+
+        try {
+            jdbcTemplate.update(sql, param);
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.PROFILE_UPDATE_FAILURE, e.getMessage());
+        }
+        return profile;
     }
 }

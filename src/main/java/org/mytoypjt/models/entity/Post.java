@@ -14,7 +14,7 @@ public class Post {
     int pictureNo;
     boolean nameAnonymous;
     boolean cityAnonymous;
-    String nicname;
+    String nickname;
     String city;
 
     public Post() {
@@ -28,12 +28,12 @@ public class Post {
         this.pictureNo = 1;
         this.nameAnonymous = false;
         this.cityAnonymous = false;
-        this.nicname = "nicname";
+        this.nickname = "nickname";
         this.city = "city";
     }
 
     public Post(int postNo, String title, String content, Date postedDate, int commentCount, int likeCount, int accountNo,
-                int pictureNo, boolean nameAnonymous, boolean cityAnonymous, String nicname, String city) {
+                int pictureNo, boolean nameAnonymous, boolean cityAnonymous, String nickname, String city) {
         this.postNo = postNo;
         this.title = title;
         this.content = content;
@@ -44,11 +44,11 @@ public class Post {
         this.pictureNo = pictureNo;
         this.nameAnonymous = nameAnonymous;
         this.cityAnonymous = cityAnonymous;
-        this.nicname = nicname;
+        this.nickname = nickname;
         this.city = city;
     }
 
-    public Post(String title, String content, Date postedDate, int commentCount, int likeCount, int accountNo, int pictureNo, boolean nameAnonymous, boolean cityAnonymous, String nicname, String city) {
+    public Post(String title, String content, Date postedDate, int commentCount, int likeCount, int accountNo, int pictureNo, boolean nameAnonymous, boolean cityAnonymous, String nickname, String city) {
         this.title = title;
         this.content = content;
         this.postedDate = postedDate;
@@ -58,7 +58,7 @@ public class Post {
         this.pictureNo = pictureNo;
         this.nameAnonymous = nameAnonymous;
         this.cityAnonymous = cityAnonymous;
-        this.nicname = nicname;
+        this.nickname = nickname;
         this.city = city;
     }
 
@@ -138,12 +138,12 @@ public class Post {
         this.cityAnonymous = cityAnonymous;
     }
 
-    public String getNicname() {
-        return nicname;
+    public String getnickname() {
+        return nickname;
     }
 
-    public void setNicname(String nicname) {
-        this.nicname = nicname;
+    public void setnickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getCity() {

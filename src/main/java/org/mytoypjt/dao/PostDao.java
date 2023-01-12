@@ -34,7 +34,7 @@ public class PostDao {
                     rs.getInt("picture_no"),
                     rs.getBoolean("name_anonymous"),
                     rs.getBoolean("city_anonymous"),
-                    rs.getString("nicname"),
+                    rs.getString("nickname"),
                     rs.getString("city"));
             return post;
         };
@@ -110,17 +110,17 @@ public class PostDao {
         return jdbcTemplate.query(sql, param, postRowMapper);
     }
 
-    public List<Post> getPostsByNicName(int pageNo, int postCountInPage, String nicname){
+    public List<Post> getPostsBynickname(int pageNo, int postCountInPage, String nickname){
         int startNo = (pageNo - 1) * postCountInPage;
         if (startNo < 0) startNo = 1;
 
-        nicname = "%" + nicname + "%";
-        String sql = "select * from post where nicname like :nicname order by posted_date desc limit :startNo, :count";
+        nickname = "%" + nickname + "%";
+        String sql = "select * from post where nickname like :nickname order by posted_date desc limit :startNo, :count";
 
         MapSqlParameterSource param = new MapSqlParameterSource();
         param.addValue("startNo", startNo);
         param.addValue("count", postCountInPage);
-        param.addValue("nicname", nicname);
+        param.addValue("nickname", nickname);
 
         return jdbcTemplate.query(sql, param, postRowMapper);
     }
@@ -179,10 +179,10 @@ public class PostDao {
         return jdbcTemplate.queryForObject(sql, param, (rs, rowNum) -> rs.getInt(1));
     }
 
-    public int getPostCountByNicName(String nicName) {
-        nicName = "%" + nicName + "%";
-        String sql = "select count(*) from post where nicName like :nicName";
-        SqlParameterSource param = new MapSqlParameterSource("nicName", nicName);
+    public int getPostCountBynickname(String nickname) {
+        nickname = "%" + nickname + "%";
+        String sql = "select count(*) from post where nickname like :nickname";
+        SqlParameterSource param = new MapSqlParameterSource("nickname", nickname);
 
         return jdbcTemplate.queryForObject(sql, param, (rs, rowNum) -> rs.getInt(1));
     }
@@ -195,7 +195,7 @@ public class PostDao {
     public void updatePost(Post post) {
         String sql = "update post set title=:title, content=:content, picture_no=:pictureNo, " +
                 "name_anonymous=:nameAnonymous, city_anonymous=:cityAnonymous, " +
-                "nicname=:nicname, city=:city where post_no=:postNo";
+                "nickname=:nickname, city=:city where post_no=:postNo";
 
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(post);
         jdbcTemplate.update(sql, param);

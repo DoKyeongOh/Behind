@@ -95,8 +95,8 @@ public class PostService {
 
     @Transactional
     public void createPost(Post post) throws Exception{
-        String nicname = post.getnameAnonymous() ? "누군가" : post.getNicname();
-        post.setNicname(nicname);
+        String nickname = post.getnameAnonymous() ? "누군가" : post.getnickname();
+        post.setnickname(nickname);
 
         String city = post.getcityAnonymous() ? "어딘가" : post.getCity();
         post.setCity(city);
@@ -183,9 +183,9 @@ public class PostService {
             isAnonymous = true;
 
         int postNo = Integer.parseInt(no);
-        String nicname = isAnonymous ? "누군가" : profile.getNickname();
+        String nickname = isAnonymous ? "누군가" : profile.getNickname();
 
-        Comment comment = new Comment(content, profile.getAccountNo(), postNo, nicname, isAnonymous);
+        Comment comment = new Comment(content, profile.getAccountNo(), postNo, nickname, isAnonymous);
 
         comment.setCommentNo(commentDao.createComment(comment));
         commentLogDao.writeLog(comment, "게시");
@@ -256,7 +256,7 @@ public class PostService {
             case "3": return PostSortType.WEEKS_FAVORITE;
             case "4": return PostSortType.SEARCH_BY_TITLE;
             case "5": return PostSortType.SEARCH_BY_CONTENT;
-            case "6": return PostSortType.SEARCH_BY_NICNAME;
+            case "6": return PostSortType.SEARCH_BY_NICKNAME;
             case "7": return PostSortType.HASH_TAG;
             default: return PostSortType.REAL_TIME;
         }

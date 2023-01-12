@@ -171,11 +171,11 @@ public class PostController {
         int pictureNo = Integer.parseInt(param.get("imgNo"));
         boolean isAnonymousName = (Objects.equals(param.get("isAnonName"), "true")) ? true : false;
         boolean isAnonymousCity = (Objects.equals(param.get("isAnonCity"), "true")) ? true : false;
-        String nicname = isAnonymousName ? "누군가" : profile.getNickname();
+        String nickname = isAnonymousName ? "누군가" : profile.getNickname();
         String city = isAnonymousCity ? "어딘가" : profile.getCity();
 
         Post post = new Post(postNo, title, content, new Date(), 0, 0,
-                profile.getAccountNo(), pictureNo, isAnonymousName, isAnonymousCity, nicname, city);
+                profile.getAccountNo(), pictureNo, isAnonymousName, isAnonymousCity, nickname, city);
 
         try {
             postService.updatePost(post);

@@ -40,7 +40,7 @@
         </a>
 
         <c:set var="myProfile" value="${sessionScope.get('profile')}"/>
-        <button onclick="location.href='${myPage}'" class="border border-0" id="profile-display"> "${myProfile.nicname}" 님 안녕하세요! </button>
+        <button onclick="location.href='${myPage}'" class="border border-0" id="profile-display"> "${myProfile.nickname}" 님 안녕하세요! </button>
 
         <button class="navbar-toggler btn-dark" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -92,7 +92,7 @@
         <h2 class="text-center font-border border rounded-pill p-3 bg-dark text-white">내 프로필</h2>
         <label class="profile-font mt-3">
             <span class="badge bg-success mb-1">닉네임</span> :
-            ${profile.nicname}
+            ${profile.nickname}
         </label><br>
         <label class="profile-font">
             <span class="badge bg-success mb-1">성별</span> : ${profile.gender}

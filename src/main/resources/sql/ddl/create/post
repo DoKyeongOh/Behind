@@ -8,5 +8,5 @@ CREATE TABLE `POST` (
 	`comment_count` INT UNSIGNED NULL,
 	`like_count` INT UNSIGNED NULL,
 	`account_no` INT NULL REFERENCES PROFILE(account_no),
-    `nicname` VARCHAR(15)
+    `nickname` VARCHAR(15)
 );

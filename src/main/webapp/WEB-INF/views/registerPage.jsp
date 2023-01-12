@@ -301,11 +301,11 @@
     <div class="text-center">
         이용 약관에 동의하십니까? <br>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="isAgree" value="agree">
+            <input class="form-check-input" type="radio" name="agreement" value="agree">
             <label class="form-check-label">동의</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="isAgree" value="disagree">
+            <input class="form-check-input" type="radio" name="agreement" value="disagree">
             <label class="form-check-label">비동의</label>
         </div>
     </div>

@@ -45,7 +45,7 @@
         </a>
 
         <c:set var="myProfile" value="${sessionScope.get('profile')}"/>
-        <button onclick="location.href='${myPage}'" class="border border-0" id="profile-display"> "${myProfile.nicname}" 님 안녕하세요! </button>
+        <button onclick="location.href='${myPage}'" class="border border-0" id="profile-display"> "${myProfile.nickname}" 님 안녕하세요! </button>
 
         <button class="navbar-toggler btn-dark" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -85,10 +85,10 @@
 
 <!-- 글 제목 -->
 <br><br><br><br>
-<div class="title-and-nicname">
+<div class="title-and-nickname">
     <h2 id="post-title"> ${post.title} </h2>
     <h6 id="poster-name">
-        <label style="font-size: 130%"> 작성자 : ${post.nicname}</label><br>
+        <label style="font-size: 130%"> 작성자 : ${post.nickname}</label><br>
         <label class="" style="padding-top: 0.5%;">지역 : ${posterCity} </label><br>
         <label class="" style="padding-top: 0.5%;">작성 일시 : ${post.postedDate}</label>
     </h6>
@@ -161,7 +161,7 @@
     <ul id="ul-comments" class="list-group list-group-flush">
         <c:forEach var="comment" items="${comments}">
             <li class="list-group-item">
-                <span class="commenter-nicname">${comment.nicname}</span><br>
+                <span class="commenter-nickname">${comment.nickname}</span><br>
                 <span class="comment-content"> ${comment.content} </span>
                 <button id="btn-expand-reply" class="btn btn-sm" onclick="location.href='/comment?no=${comment.commentNo}'">➥</button>
             </li>

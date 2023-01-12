@@ -11,7 +11,7 @@ public class Comment {
     int replyCount;
     int accountNo;
     int postNo;
-    String nicname;
+    String nickname;
     boolean nameAnonymous;
     Date commentedDate;
 
@@ -23,35 +23,35 @@ public class Comment {
         this.accountNo = -1;
         this.postNo = -1;
         this.nameAnonymous = false;
-        this.nicname = "";
+        this.nickname = "";
         this.commentedDate = new Date();
     }
 
-    public Comment(int commentNo, String content, int replyCount, int accountNo, int postNo, boolean nameAnonymous,String nicname, Date commentedDate) {
+    public Comment(int commentNo, String content, int replyCount, int accountNo, int postNo, boolean nameAnonymous,String nickname, Date commentedDate) {
         this.commentNo = commentNo;
         this.content = content;
         this.replyCount = replyCount;
         this.accountNo = accountNo;
         this.postNo = postNo;
         this.nameAnonymous = nameAnonymous;
-        this.nicname = nicname;
+        this.nickname = nickname;
         this.commentedDate = commentedDate;
     }
 
-    public Comment(String content, int replyCount, int accountNo, int postNo, String nicname, boolean nameAnonymous, Date commentedDate) {
+    public Comment(String content, int replyCount, int accountNo, int postNo, String nickname, boolean nameAnonymous, Date commentedDate) {
         this.content = content;
         this.replyCount = replyCount;
         this.accountNo = accountNo;
         this.postNo = postNo;
-        this.nicname = nicname;
+        this.nickname = nickname;
         this.nameAnonymous = nameAnonymous;
         this.commentedDate = commentedDate;
     }
 
-    public Comment(String content, int accountNo, int postNo, String nicname, boolean nameAnonymous) {
+    public Comment(String content, int accountNo, int postNo, String nickname, boolean nameAnonymous) {
         this.content = content;
         this.postNo = postNo;
-        this.nicname = nicname;
+        this.nickname = nickname;
         this.nameAnonymous = nameAnonymous;
         this.replyCount = 0;
         this.accountNo = accountNo;
@@ -126,12 +126,12 @@ public class Comment {
         this.postNo = postNo;
     }
 
-    public String getNicname() {
-        return nicname;
+    public String getnickname() {
+        return nickname;
     }
 
-    public void setNicname(String nicname) {
-        this.nicname = nicname;
+    public void setnickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public boolean isNameAnonymous() {

@@ -20,7 +20,7 @@ public class PostsStrategyContext {
         strategyMap.put(PostSortType.WEEKS_FAVORITE, ac.getBean(WeeksFavoritePostsStrategy.class));
         strategyMap.put(PostSortType.SEARCH_BY_TITLE, ac.getBean(TitleSearchPostsStrategy.class));
         strategyMap.put(PostSortType.SEARCH_BY_CONTENT, ac.getBean(ContentSearchPostsStrategy.class));
-        strategyMap.put(PostSortType.SEARCH_BY_NICNAME, ac.getBean(NicNameSearchPostsStrategy.class));
+        strategyMap.put(PostSortType.SEARCH_BY_NICKNAME, ac.getBean(NicknameSearchPostsStrategy.class));
         strategyMap.put(PostSortType.HASH_TAG, ac.getBean(HashTagPostsStrategy.class));
     }
 
