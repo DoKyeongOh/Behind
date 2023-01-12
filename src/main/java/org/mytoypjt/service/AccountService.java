@@ -52,4 +52,8 @@ public class AccountService {
     public void setPassword(int accountNo, String password) {
         accountDao.setAccountPw(accountNo, password);
     }
+
+    public boolean isIdUsing(String id) {
+        return accountDao.isIdUsing(id);
+    }
 }
