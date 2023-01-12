@@ -72,13 +72,16 @@ public class RegisterController {
                 .addObject("noticeMessage", "이메일에서 인증번호 확인 후 인증번호를 입력해주세요");
     }
 
+    @DeleteMapping(path = "/account/cert")
+    public String deleteRegistrationCert(HttpSession session, String certValue){
+        RegistrationCertDTO certDTO = (RegistrationCertDTO) session.getAttribute(SessionConst.REGISTRATION_CERT);
+        certDTO.checkCertValue(certValue);
 
-        session.setAttribute(ACCOUNT_CERT_KEY, null);
+        Profile profile = registerService.register(certDTO);
+        session.setAttribute(SessionConst.REGISTRATION_CERT, null);
         session.setAttribute(SessionConst.USER_PROFILE, profile);
         loginService.addLoginSession(profile.getAccountNo(), session);
-
-        mv.setView(new RedirectView("/register/page/3"));
-        return mv;
+        return "redirect:/register/page/3";
 
 
     }
