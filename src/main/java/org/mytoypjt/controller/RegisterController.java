@@ -54,16 +54,10 @@ public class RegisterController {
 
     @ResponseBody
     @PostMapping(path = "/id-usage")
-    public Map<String, Boolean> checkSameId(@RequestBody Map<String, String> param){
-        String newId = "";
+    public Map<String, Boolean> checkSameId(@RequestBody Map<String, String> body){
         Map<String, Boolean> resMap = new HashMap<>();
-
-        if (param.containsKey("id"))
-            newId = (String) param.get("id");
-
-        if (registerService.isUsableAccountId(newId))
+        if (accountService.isIdUsing(body.get("id")))
             resMap.put("usable", true);
-
         return resMap;
     }
 
