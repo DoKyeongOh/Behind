@@ -26,20 +26,21 @@ public class RegisterService {
     public RegisterService() {
     }
 
-    public boolean isUsableAccountId(String id) {
-        try {
-            return !accountDao.isExistId(id);
-        } catch(Exception e) {
-            throw new RuntimeException(e);
+    @Transactional
+    public RegistrationCertDTO createRegistrationCertDTO(RegistrationRequestDTO dto) {
+        if (!accountService.isIdUsing(dto.getId())) {
+            throw new CustomException(ErrorCode.ID_IS_USING);
         }
+        if (!dto.isPasswordUsable()) {
+            throw new CustomException(ErrorCode.PASSWORD_CHECK_FAILURE);
+        }
+        RegistrationCertDTO certDTO = RegistrationCertDTO.builder()
+                .registrationRequestDTO(dto)
+                .certValue(getRandomValue())
+                .build();
+        mailService.sendCertMail(dto.getEmailAddress(), certDTO.getCertValue());
+        return certDTO;
     }
-
-    public AccountCertDTO sendAccountCert(Account account){
-        String certValue = getRandomValue().trim();
-        mailService.sendCertMail(account.getEmail(), certValue);
-        return new AccountCertDTO(account, certValue);
-    }
-
 
     public String getRandomValue(){
         String value = Integer.toString((int)(Math.random() * 1000000));
