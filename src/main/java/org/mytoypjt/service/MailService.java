@@ -1,6 +1,8 @@
 package org.mytoypjt.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.mytoypjt.exception.CustomException;
+import org.mytoypjt.exception.ErrorCode;
 import org.mytoypjt.utils.PropertiesUtil;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +62,7 @@ public class MailService {
             Transport.send(message);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new CustomException(ErrorCode.MAIL_SEND_FAILURE, e.getMessage());
         }
     }
 
