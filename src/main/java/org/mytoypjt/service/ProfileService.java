@@ -7,6 +7,7 @@ import org.mytoypjt.exception.ErrorCode;
 import org.mytoypjt.models.entity.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,5 +28,10 @@ public class ProfileService {
     @Transactional
     public Profile createDefaultProfile(int accountNo) {
         return profileDao.createProfile(new Profile(accountNo));
+    }
+
+    @Transactional
+    public Profile updateProfile(Profile profile) {
+        return profileDao.updateProfile(profile);
     }
 }
