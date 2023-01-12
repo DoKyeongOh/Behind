@@ -1,5 +1,7 @@
 package org.mytoypjt.dao;
 
+import org.mytoypjt.exception.CustomException;
+import org.mytoypjt.exception.ErrorCode;
 import org.mytoypjt.models.entity.Account;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -69,10 +71,14 @@ public class AccountDao {
         jdbcTemplate.update(sql, param);
     }
 
-    public boolean isExistId(String id){
+    public boolean isIdUsing(String id) {
         String sql = "select * from account where id=:id";
         SqlParameterSource param = new MapSqlParameterSource("id", id);
-        return jdbcTemplate.query(sql, param, accountRowMapper).size() > 0;
+        try {
+            return jdbcTemplate.query(sql, param, accountRowMapper).isEmpty();
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.ID_SEARCH_FAILURE);
+        }
     }
 
     public int createAccount(Account account){
