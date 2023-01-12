@@ -38,6 +38,19 @@ public class Profile {
         this.userLevel = userLevel;
     }
 
+    public void checkConvention() {
+        if (gender.length() > 1) {
+            throw new CustomException(ErrorCode.PROFILE_INPUT_GENDER_INCORRECT);
+        }
+        if (nickname.isEmpty() || nickname.length() > 15) {
+            throw new CustomException(ErrorCode.PROFILE_INPUT_NICKNAME_INCORRECT);
+        }
+        if (nickname.contains(" ")) {
+            throw new CustomException(ErrorCode.PROFILE_INPUT_NICKNAME_HAS_BLANK);
+        }
+        if (accountNo == null) {
+            throw new CustomException(ErrorCode.PROFILE_INPUT_ITEM_HAS_NULL);
+        }
     }
 
     }
