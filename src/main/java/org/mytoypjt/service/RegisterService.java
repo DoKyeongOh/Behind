@@ -48,14 +48,6 @@ public class RegisterService {
     }
 
     @Transactional
-    public String updateProfile(Profile profile) {
-        if (profile.getNickname().length() > 10)
-            return "닉네임은 10글자보다 짧아야 합니다!";
-        if (profile.getNickname().contains(" "))
-            return "닉네임에 공백은 사용할 수 없습니다!";
-        if (!profileDao.updateProfile(profile))
-            return "성공적으로 완수되지 못했습니다! 관리자에게 문의하세요!";
-        return "";
     public Profile register(RegistrationCertDTO certDTO) {
         int accountNo = accountService.createAccount(certDTO.getRegistrationRequestDTO());
         return profileService.createDefaultProfile(accountNo);
@@ -65,6 +57,10 @@ public class RegisterService {
         if (pw == null || pwCheck == null) return false;
         if (!pw.equals(pwCheck)) return false;
         return true;
+    public void updateProfile(Profile profile, Profile inputProfile) {
+        inputProfile.checkConvention();
+        profile.convert(inputProfile);
+        profileService.updateProfile(profile);
     }
 
 
