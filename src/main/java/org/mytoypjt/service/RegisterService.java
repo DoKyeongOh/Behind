@@ -48,17 +48,6 @@ public class RegisterService {
     }
 
     @Transactional
-    public Profile createAccount(AccountCertDTO certDTO) throws Exception {
-        Account account = certDTO.getAccount();
-        int accountNo = accountDao.createAccount(account);
-        if (!Account.isCorrectAccountNo(accountNo))
-            return null;
-
-        Profile profile = new Profile(accountNo);
-        profileDao.createProfile(profile);
-        return profile;
-    }
-
     public String updateProfile(Profile profile) {
         if (profile.getNickname().length() > 10)
             return "닉네임은 10글자보다 짧아야 합니다!";
@@ -67,6 +56,9 @@ public class RegisterService {
         if (!profileDao.updateProfile(profile))
             return "성공적으로 완수되지 못했습니다! 관리자에게 문의하세요!";
         return "";
+    public Profile register(RegistrationCertDTO certDTO) {
+        int accountNo = accountService.createAccount(certDTO.getRegistrationRequestDTO());
+        return profileService.createDefaultProfile(accountNo);
     }
 
     public boolean isCorrectPw(String pw, String pwCheck){
